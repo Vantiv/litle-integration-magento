@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Litle_Payment>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Litle_Payment>
+    </modules>
+</config> 
