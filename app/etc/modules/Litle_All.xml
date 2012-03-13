@@ -1,8 +1,9 @@
+<?xml version="1.0"?>
 <config>
     <modules>
-        <Litle_Payment>
+        <Litle_LitlePayment>
             <active>true</active>
             <codePool>local</codePool>
-        </Litle_Payment>
+        </Litle_LitlePayment>
     </modules>
-</config> 
+</config>

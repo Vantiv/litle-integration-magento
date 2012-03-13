@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<modules>
+		<Litle_LitlePayment>
+			<version>0.1.0</version>
+		</Litle_LitlePayment>
+	</modules>
+	<global>
+		<models>
+			<litlepayment>
+				<class>Litle_LitlePayment_Model</class>
+			</litlepayment>
+		</models>
+		<resources>
+			<litlepayment_setup>
+				<setup>
+					<module>Litle_LitlePayment</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</litlepayment_setup>
+			<litlepayment_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</litlepayment_write>
+			<litlepayment_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</litlepayment_read>
+		</resources>
+	</global>
+	<default>
+        <payment>
+            <modulename>
+                <active>0</active>
+                <model>litlepayment/paymentLogic</model>
+                <order_status>pending</order_status>
+                <title>Credit Card (Litle Payment)</title>
+                <api_key>1234</api_key>
+                <api_secret>1234</api_secret>
+                <cctypes>AE,VI,MC,DI,SS</cctypes>
+                <payment_action>authorize_capture</payment_action>
+                <allowspecific>0</allowspecific>
+            </modulename>
+        </payment>
+    </default>
+</config>
