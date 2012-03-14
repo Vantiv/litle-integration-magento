@@ -42,7 +42,7 @@
                 <api_key>1234</api_key>
                 <api_secret>1234</api_secret>
                 <cctypes>AE,VI,MC,DI,SS</cctypes>
-                <payment_action>authorize_capture</payment_action>
+                <payment_action>authorize</payment_action>
                 <allowspecific>0</allowspecific>
             </litlepayment>
         </payment>
