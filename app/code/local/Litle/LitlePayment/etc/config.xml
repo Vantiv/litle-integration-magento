@@ -35,7 +35,7 @@
 	<default>
         <payment>
             <modulename>
-                <active>0</active>
+                <active>1</active>
                 <model>litlepayment/paymentLogic</model>
                 <order_status>pending</order_status>
                 <title>Credit Card (Litle Payment)</title>
