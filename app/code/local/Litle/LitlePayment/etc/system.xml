@@ -3,7 +3,7 @@
     <sections>
         <payment>
             <groups>
-                <modulename translate="label" module="paygate">
+                <LitlePayment translate="label" module="paygate">
                     <label>Litle Payment</label>
                     <sort_order>670</sort_order>
                     <show_in_default>1</show_in_default>
@@ -62,7 +62,7 @@
                             <show_in_store>0</show_in_store>
                         </title>
                     </fields>
-                </modulename>
+                </LitlePayment>
             </groups>
         </payment>
     </sections>

@@ -34,7 +34,7 @@
 	</global>
 	<default>
         <payment>
-            <modulename>
+            <litlepayment>
                 <active>1</active>
                 <model>litlepayment/paymentLogic</model>
                 <order_status>pending</order_status>
@@ -44,7 +44,7 @@
                 <cctypes>AE,VI,MC,DI,SS</cctypes>
                 <payment_action>authorize_capture</payment_action>
                 <allowspecific>0</allowspecific>
-            </modulename>
+            </litlepayment>
         </payment>
     </default>
 </config>
