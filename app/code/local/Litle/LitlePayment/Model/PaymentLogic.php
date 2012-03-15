@@ -93,7 +93,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			}
 		}
 	}
-	
+
 	public function getShipToAddress(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
@@ -119,25 +119,28 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	}
 	/**
 	 * this method is called if we are just authorising
-	* a transaction
-	*/
+	 * a transaction
+	 */
 	public function authorize (Varien_Object $payment, $amount)
 	{
-		$hash_in = array(
-	 					'orderId'=> "6",
+		$order = $payment->getOrder();
+		if (!empty($order)){
+			$hash_in = array(
+	 					'orderId'=> $order->getIncrementId(),
 	 					'amount'=> ($amount* 100),
 	 					'orderSource'=> "ecommerce",
 						'billToAddress'=> $this->getBillToAddress($payment),
 						'shipToAddress'=> $this->getAddressInfo($payment),
 	 					'card'=> $this->getCreditCardInfo($payment)
-		);
-		$litleRequest = new LitleOnlineRequest();
-		$response = $litleRequest->authorizationRequest($hash_in);
-		//Mage::throwException($response);
-		//Mage::throwException("this is me");
-		//Mage::throwException(XmlParser::getAttribute($response,'litleOnlineResponse','message'));
-		Mage::throwException(XmlParser::getNode($response,'message'));
-		//Mage::throwException(XmlParser::getNode($response,'litleTxnId'));
+			);
+			$litleRequest = new LitleOnlineRequest();
+			$response = $litleRequest->authorizationRequest($hash_in);
+			//Mage::throwException($response);
+			//Mage::throwException("this is me");
+			//Mage::throwException(XmlParser::getAttribute($response,'litleOnlineResponse','message'));
+			 Mage::throwException(XmlParser::getNode($response,'message'));
+			//Mage::throwException(XmlParser::getNode($response,'litleTxnId'));
+		}
 	}
 
 	/**
