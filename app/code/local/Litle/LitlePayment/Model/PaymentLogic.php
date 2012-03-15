@@ -77,10 +77,12 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$billing = $order ->getBillingAddress();
 			if(!empty($billing)){
 				$retArray = array();
-				$retArray["firstName"] = $billing->getFirstname();
+				$retArray["firstName"] =$billing->getFirstname();
 				$retArray["lastName"] = $billing->getLastname();
 				$retArray["companyName"] = $billing->getCompany();
 				$retArray["addressLine1"] = $billing->getStreet(1);
+				$retArray["addressLine2"] = $billing->getStreet(2);
+				$retArray["addressLine3"] = $billing->getStreet(3);
 				$retArray["city"] = $billing->getCity();
 				$retArray["state"] = $billing->getRegion();
 				$retArray["zip"] = $billing->getPostcode();
@@ -103,12 +105,14 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$retArray["lastName"] = $shipping->getLastname();
 				$retArray["companyName"] = $shipping->getCompany();
 				$retArray["addressLine1"] = $shipping->getStreet(1);
+				$retArray["addressLine2"] = $shipping->getStreet(2);
+				$retArray["addressLine3"] = $shipping->getStreet(3);
 				$retArray["city"] = $shipping->getCity();
 				$retArray["state"] = $shipping->getRegion();
 				$retArray["zip"] = $shipping->getPostcode();
 				$retArray["country"] = $shipping->getCountry();
-				//$retArray["email"] = $shipping->getCustomerEmail();
-				//$retArray["phone"] = $shipping->getTelephone();
+				$retArray["email"] = $shipping->getCustomerEmail();
+				$retArray["phone"] = $shipping->getTelephone();
 				return $retArray;
 			}
 		}
@@ -120,7 +124,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function authorize (Varien_Object $payment, $amount)
 	{
 		$hash_in = array(
-	 					'orderId'=> "2135",
+	 					'orderId'=> "6",
 	 					'amount'=> ($amount* 100),
 	 					'orderSource'=> "ecommerce",
 						'billToAddress'=> $this->getBillToAddress($payment),
@@ -130,8 +134,10 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$litleRequest = new LitleOnlineRequest();
 		$response = $litleRequest->authorizationRequest($hash_in);
 		//Mage::throwException($response);
+		//Mage::throwException("this is me");
 		//Mage::throwException(XmlParser::getAttribute($response,'litleOnlineResponse','message'));
 		Mage::throwException(XmlParser::getNode($response,'message'));
+		//Mage::throwException(XmlParser::getNode($response,'litleTxnId'));
 	}
 
 	/**
