@@ -88,7 +88,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 // 		return $retArray;
 // 	}
 	
-	public function getCreditCardInfo()
+	public function getCreditCardInfo(Varien_Object $payment)
 	{
 		//$this->load->model('checkout/order');
 		//$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
@@ -99,14 +99,14 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 // 		//TODO: fix the logic for expDate
 // 		$retArray["expDate"] = $this->request->post['cc_expire_date_month'] . ($this->request->post['cc_expire_date_year']-2000);
 // 		$retArray["cardValidationNum"] = $this->request->post['cc_cvv2'];
-
 		$retArray = array();
-		$retArray["type"] = "VI";
-		$retArray["number"] = "4100000000000001";
+		$retArray["type"] = $payment->getCcType();
+		$retArray["number"] = $payment->getCcNumber();
 		//TODO: fix the logic for expDate
-		$retArray["expDate"] = "1125";
-		$retArray["cardValidationNum"] = "369";
-			
+		preg_match("/\d\d(\d\d)/", $payment->getCcExpYear(), $expYear);
+		$retArray["expDate"] = sprintf('%02d%02d', $payment->getCcExpMonth(), $expYear[1]);
+		//Mage::throwException($payment->getCcExpYear() . ' ' . $expYear[1]);
+		$retArray["cardValidationNum"] = $payment->getCcCid();
 		return $retArray;
 	}
 	
@@ -145,7 +145,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 // 			//sale txn
 // 			$response = $litleRequest->saleRequest($hash_in);
 // 			$litleResponseMessagePrefix = "LitleCaptureTxn: ";
-// 		}
+// 		}P
 	
 // 		$code = XMLParser::getNode($response, "response");
 // 		$litleValidationMessage = XMLParser::getNode($response, "message");
@@ -154,7 +154,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 // 		$json = array();
 // 		if($code == "000") {
 // 			//Success
-// 			if($doingAuth) {
+// 			if($doingAuth) {$expYear[1]
 // 				$orderStatusId = 1; //Pending
 // 			}
 // 			else {
@@ -201,6 +201,23 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function authorize (Varien_Object $payment, $amount)
 	{
+		
+// 		$orders = Mage::getModel('sales/mysql4_order_collection');
+// 		$myOrder = Mage::getModel('sales/order');
+// 		$orderIds = $orders->getAllIds();
+		
+// 		foreach($orderIds as $currentId) {
+// 			$myOrder->load($currentId);
+// 			$payments = $myOrder->getAllPayments();
+		
+// 			foreach($payments as $pay){
+// 				$payData = $pay->getData();
+// 				$ccEncrypt = $payData['cc_number_enc'];
+// 				//Mage::throwException("Encrypted CC number: " . $ccEncrypt . PHP_EOL);
+// 				//Mage::throwException("Deecrypted CC Number: " . $pay->decrypt($ccEncrypt));
+// 			}
+// 		}
+		//$order = Mage::registry('directpost_order');
 		//sleep(20);
 		$hash_in = array(
 	 					'orderId'=> "2135",
@@ -208,11 +225,12 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 					'orderSource'=> "ecommerce",
 	 					//'billToAddress'=> $this->getAddressInfo($order_info, "payment"),
 	 					//'shipToAddress'=> $this->getAddressInfo($order_info, "shipping"),
-	 					'card'=> $this->getCreditCardInfo(),
+	 					'card'=> $this->getCreditCardInfo($payment),
 		);
 		$litleRequest = new LitleOnlineRequest();
 		$response = $litleRequest->authorizationRequest($hash_in);
-		Mage::throwException("LitleTxnId: " . XMLParser::getNode($response, "litleTxnId"));
+		Mage::throwException($hash_in['card']['type']);
+		//Mage::throwException($order->getPayment()->decrypt($order->getPayment()->getCcNumberEnc()));
 		//$litleResponseMessagePrefix = "LitleAuthTxn: ";
 	}
 
