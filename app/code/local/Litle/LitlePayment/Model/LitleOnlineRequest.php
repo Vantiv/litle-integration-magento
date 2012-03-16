@@ -61,7 +61,6 @@ class LitleOnlineRequest
 			'merchantData'=>(XmlFields::filteringType($hash_in['merchantData'])),
 			'recyclingRequest'=>(XmlFields::recyclingRequestType($hash_in['recyclingRequest'])));
 		}
-
 		$choice_hash = array($hash_out['card'],$hash_out['paypal'],$hash_out['token'],$hash_out['paypage']);
 		$authorizationResponse = LitleOnlineRequest::processRequest($hash_out,$hash_in,'authorization',$choice_hash);
 		return $authorizationResponse;
@@ -181,7 +180,7 @@ class LitleOnlineRequest
 	{
 		$hash_out = array(
 		'partial'=>$hash_in['partial'],
-	    	'litleTxnId' => Checker::requiredField($hash_in['litleTxnId']),
+	    'litleTxnId' => Checker::requiredField($hash_in['litleTxnId']),
 		'amount' =>($hash_in['amount']),
 		'enhancedData'=>XmlFields::enhancedData($hash_in['enhancedData']),
 		'processingInstructions'=>XmlFields::processingInstructions($hash_in['processingInstructions']),
