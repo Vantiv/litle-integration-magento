@@ -59,6 +59,9 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	protected $_canSaveCc = false;
 
+	protected $dummy_fail = false;
+
+
 	public function getCreditCardInfo(Varien_Object $payment)
 	{
 		$retArray = array();
@@ -67,8 +70,78 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		preg_match("/\d\d(\d\d)/", $payment->getCcExpYear(), $expYear);
 		$retArray["expDate"] = sprintf('%02d%02d', $payment->getCcExpMonth(), $expYear[1]);
 		$retArray["cardValidationNum"] = $payment->getCcCid();
+
+		if($dummy_fail)
+		{
+			$retArray["type"] = "VI";
+			$retArray["number"] = "4457010100000008";
+			$retArray["expDate"] = "0612";
+			$retArray["cardValidationNum"] = "992";
+		}
+
 		return $retArray;
 	}
+	//!########################## DELETE THIS DATA ####################################
+	// 	new Auth(orderId: '6', amount: '60060', name: 'Joe Green', addressLine1: '6 Main St.', city: 'Derry',
+	// 	state: 'NH', zip: '03038', country: 'US', type: 'VI', number: '4457010100000008', expDate: '0612',
+	// 	cardValidationNum: '992', response: '110', message: 'Insufficient Funds', avsResult: '34',
+	// 	cardValidationResult: 'P', returnLitleTxnId: '600000000000000001').save()
+
+	// 	new Sale(orderId: '6', amount: '60060', name: 'Joe Green', addressLine1: '6 Main St.', city: 'Derry',
+	// 	 state: 'NH', zip: '03038', country: 'US', type: 'VI', number: '4457010100000008', expDate: '0612',
+	// 	 cardValidationNum: '992', response: '110', message: 'Insufficient Funds', avsResult: '34',
+	// 	 cardValidationResult: 'P', returnLitleTxnId: '600000000000000002').save()
+
+
+	// 	new Auth(orderId: '7', amount: '70070', name: 'Jane Murray', addressLine1: '7 Main St.', city: 'Amesbury',
+	// 	state: 'MA', zip: '01913', country: 'US', type: 'MC', number: '5112010100000002', expDate: '0712',
+	// 	cardValidationNum: '251', response: '301', message: 'Invalid Account Number', authCode: '', avsResult: '34',
+	// 	 cardValidationResult: 'N', returnLitleTxnId: '700000000000000001').save()
+
+	// 	new Auth(orderId: '7', amount: '000', name: 'Jane Murray', addressLine1: '7 Main St.', city: 'Amesbury',
+	// 	state: 'MA', zip: '01913', country: 'US', type: 'MC', number: '5112010100000002', expDate: '0712',
+	// 	cardValidationNum: '251', response: '301', message: 'Invalid Account Number', authCode: '',
+	// 	avsResult: '34', cardValidationResult: 'N', returnLitleTxnId: '700000000000000002').save()
+
+	// 	new Sale(orderId: '7', amount: '70070', name: 'Jane Murray', addressLine1: '7 Main St.', city: 'Amesbury',
+	// 	state: 'MA', zip: '01913', country: 'US', type: 'MC', number: '5112010100000002', expDate: '0712',
+	// 	cardValidationNum: '251', response: '301', message: 'Invalid Account Number', authCode: '', avsResult: '34',
+	// 	 cardValidationResult: 'N', returnLitleTxnId: '700000000000000003').save()
+
+	//!########################## DELETE THIS DATA ####################################
+
+	public function getContactInformation($contactInfo)
+	{
+		if(!empty($contactInfo)){
+			$retArray = array();
+			if($dummy_fail)
+			{
+				$retArray["name"] = "Joe Green";
+				$retArray["addressLine1"] = "6 Main St.";
+				$retArray["city"] = "Derry";
+				$retArray["state"] = "NH";
+				$retArray["zip"] = "03038";
+				$retArray["country"] = "US";
+			}
+			else{
+				$retArray["firstName"] =$contactInfo->getFirstname();
+				$retArray["lastName"] = $contactInfo->getLastname();
+				$retArray["companyName"] = $contactInfo->getCompany();
+				$retArray["addressLine1"] = $contactInfo->getStreet(1);
+				$retArray["addressLine2"] = $contactInfo->getStreet(2);
+				$retArray["addressLine3"] = $contactInfo->getStreet(3);
+				$retArray["city"] = $contactInfo->getCity();
+				$retArray["state"] = $contactInfo->getRegion();
+				$retArray["zip"] = $contactInfo->getPostcode();
+				$retArray["country"] = $contactInfo->getCountry();
+				$retArray["email"] = $contactInfo->getCustomerEmail();
+				$retArray["phone"] = $contactInfo->getTelephone();
+			}
+			return $retArray;
+		}
+		return NULL;
+	}
+
 
 	public function getBillToAddress(Varien_Object $payment)
 	{
@@ -76,22 +149,10 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		if(!empty($order)){
 			$billing = $order ->getBillingAddress();
 			if(!empty($billing)){
-				$retArray = array();
-				$retArray["firstName"] =$billing->getFirstname();
-				$retArray["lastName"] = $billing->getLastname();
-				$retArray["companyName"] = $billing->getCompany();
-				$retArray["addressLine1"] = $billing->getStreet(1);
-				$retArray["addressLine2"] = $billing->getStreet(2);
-				$retArray["addressLine3"] = $billing->getStreet(3);
-				$retArray["city"] = $billing->getCity();
-				$retArray["state"] = $billing->getRegion();
-				$retArray["zip"] = $billing->getPostcode();
-				$retArray["country"] = $billing->getCountry();
-				$retArray["email"] = $billing->getCustomerEmail();
-				$retArray["phone"] = $billing->getTelephone();
-				return $retArray;
+				return $this->getContactInformation($billing);
 			}
 		}
+		return NULL;
 	}
 
 	public function getShipToAddress(Varien_Object $payment)
@@ -100,22 +161,10 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		if(!empty($order)){
 			$shipping = $order->getShippingAddress();
 			if(!empty($shipping)){
-				$retArray = array();
-				$retArray["firstName"] = $shipping->getFirstname();
-				$retArray["lastName"] = $shipping->getLastname();
-				$retArray["companyName"] = $shipping->getCompany();
-				$retArray["addressLine1"] = $shipping->getStreet(1);
-				$retArray["addressLine2"] = $shipping->getStreet(2);
-				$retArray["addressLine3"] = $shipping->getStreet(3);
-				$retArray["city"] = $shipping->getCity();
-				$retArray["state"] = $shipping->getRegion();
-				$retArray["zip"] = $shipping->getPostcode();
-				$retArray["country"] = $shipping->getCountry();
-				$retArray["email"] = $shipping->getCustomerEmail();
-				$retArray["phone"] = $shipping->getTelephone();
-				return $retArray;
+				return $this->getContactInformation($shipping);
 			}
 		}
+		return NULL;
 	}
 	/**
 	 * this method is called if we are just authorising
@@ -124,30 +173,32 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function authorize (Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
+		$orderId = $dummy_fail ? "6" : $order->getIncrementId();
+		$amountToPass = $dummy_fail ? "60060" : ($amount* 100);
+		
 		if (!empty($order)){
 			$hash_in = array(
-	 					'orderId'=> $order->getIncrementId(),
-	 					'amount'=> ($amount* 100),
+	 					'orderId'=> $orderId,
+	 					'amount'=> $amountToPass,
 	 					'orderSource'=> "ecommerce",
 						'billToAddress'=> $this->getBillToAddress($payment),
 						'shipToAddress'=> $this->getAddressInfo($payment),
 	 					'card'=> $this->getCreditCardInfo($payment)
 			);
+			Mage::throwException($hash_in);
 			$litleRequest = new LitleOnlineRequest();
 			$litleResponse = $litleRequest->authorizationRequest($hash_in);
-			//Mage::throwException($response);
-			//Mage::throwException(XmlParser::getAttribute($response,'litleOnlineResponse','message'));
-			//Mage::throwException(XmlParser::getNode($response,'message'));
-			//Mage::throwException(XmlParser::getNode($response,'litleTxnId'));
+			//Mage::throwException($litleResponse->saveXML());
 			if( isset($litleResponse))
 			{
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
-					// 					$order_status_id = 1;
-					// 					if( $latest_order_history ){
-					// 						$order_status_id = $latest_order_history[0]['order_status_id'];
-					// 					}
+					$payment
+					->setStatus("Rejected")
+					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setCcApproval("Rejected");
 				}
 				else
 				{
@@ -155,21 +206,13 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					->setStatus("Approved")
 					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setCcApproval("Approved");
-					//->setAddressResult($result->getAddressResult())
-					//->setPostcodeResult($result->getPostCodeResult())
-					//->setCv2Result($result->getCV2Result())
-					//->setCcCidStatus($result->getTxAuthNo())
-					//->setSecurityKey($result->getSecurityKey());
+					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setIsTransactionClosed(0)
+					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'))
+					->setCcApproval("Approved")
+					->setAddressResult(XmlParser::getNode($litleResponse,'avsResult'))
+					->setCv2Result(XmlParser::getNode($litleResponse,'cardValidationResult'));
 				}
-				//$comment = $litleTxtToInsertInComment . ": " . XMLParser::getNode($litleResponse,'message') . " \n ". $this->language->get('text_litle_response_code') . " " . $litleResponseCode . "\n ". $this->language->get('text_litle_transaction_id'). " " . XMLParser::getNode($litleResponse,'litleTxnId');
-
-				// 				$data = array(
-				// 									'order_status_id'=>$order_status_id,
-				// 									'comment'=>$comment
-				// 				);
-
-				// 				$this->model_sale_order->addOrderHistory($order_id, $data);
 				return $this;
 			}
 		}
@@ -183,16 +226,8 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$order = $payment->getOrder();
 		if (!empty($order)){
-			// 			$hash_in = array(
-			// 			 					'orderId'=> $order->getIncrementId(),
-			// 			 					'amount'=> ($amount* 100),
-			// 			 					'orderSource'=> "ecommerce",
-			// 								'billToAddress'=> $this->getBillToAddress($payment),
-			// 								'shipToAddress'=> $this->getAddressInfo($payment),
-			// 			 					'card'=> $this->getCreditCardInfo($payment)
-			// 			);
 			$hash_in = array(
-								'litleTxnId' => $payment->getCcTransId()
+							'litleTxnId' => $payment->getCcTransId()
 			);
 			$litleRequest = new LitleOnlineRequest();
 			$litleResponse = $litleRequest->captureRequest($hash_in);
@@ -204,10 +239,6 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 			if($litleResponseCode != "000")
 			{
-				// 					$order_status_id = 1;
-				// 					if( $latest_order_history ){
-				// 						$order_status_id = $latest_order_history[0]['order_status_id'];
-				// 					}
 			}
 			else
 			{
@@ -218,23 +249,9 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 				->setIsTransactionClosed(0)
 				->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
-				//->setCcApproval("Approved");
-				// 					->setAddressResult($result->getAddressResult())
-				// 					->setPostcodeResult($result->getPostCodeResult())
-				// 					->setCv2Result($result->getCV2Result())
-				// 					->setCcCidStatus($result->getTxAuthNo())
-				// 					->setSecurityKey($result->getSecurityKey());
 			}
-			
+
 			return $this;
-			//$comment = $litleTxtToInsertInComment . ": " . XMLParser::getNode($litleResponse,'message') . " \n ". $this->language->get('text_litle_response_code') . " " . $litleResponseCode . "\n ". $this->language->get('text_litle_transaction_id'). " " . XMLParser::getNode($litleResponse,'litleTxnId');
-
-			// 				$data = array(
-			// 									'order_status_id'=>$order_status_id,
-			// 									'comment'=>$comment
-			// 				);
-
-			// 				$this->model_sale_order->addOrderHistory($order_id, $data);
 		}
 	}
 
