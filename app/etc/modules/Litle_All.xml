@@ -6,4 +6,10 @@
             <codePool>local</codePool>
         </Litle_LitlePayment>
     </modules>
+    <modules>
+        <Litle_LitleEcheck>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Litle_LitleEcheck>
+    </modules>
 </config>
