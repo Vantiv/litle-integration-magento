@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<modules>
+		<Litle_LitleEcheck>
+			<version>0.1.0</version>
+		</Litle_LitleEcheck>
+	</modules>
+	<global>
+		<models>
+			<litleecheck>
+				<class>Litle_LitleEcheck_Model</class>
+			</litleecheck>
+		</models>
+		<resources>
+			<litleecheck_setup>
+				<setup>
+					<module>Litle_LitleEcheck</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</litleecheck_setup>
+			<litleecheck_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</litleecheck_write>
+			<litleecheck_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</litleecheck_read>
+		</resources>
+	</global>
+	<default>
+		<payment>
+			<litleecheck>
+				<active>0</active>
+				<accounttypes>CHECKING,BUSINESSCHECKING,SAVINGS</accounttypes>
+				<cgi_url>https://secure.authorize.net/gateway/transact.dll</cgi_url>
+				<debug>0</debug>
+				<email_customer>0</email_customer>
+				<cctypes>AE,VI,MC,DI</cctypes>
+				<login backend_model="adminhtml/system_config_backend_encrypted" />
+				<merchant_email></merchant_email>
+				<model>echeck/authorizenet</model>
+				<order_status>1</order_status>
+				<payment_action>authorize</payment_action>
+				<test>1</test>
+				<title>Litle Echeck</title>
+				<trans_key backend_model="adminhtml/system_config_backend_encrypted" />
+				<allowspecific>0</allowspecific>
+			</litleecheck>
+		</payment>
+	</default>
+</config>

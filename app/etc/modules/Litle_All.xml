@@ -1,9 +1,15 @@
 <?xml version="1.0"?>
 <config>
-    <modules>
-        <Litle_LitlePayment>
-            <active>true</active>
-            <codePool>local</codePool>
-        </Litle_LitlePayment>
-    </modules>
+	<modules>
+		<Litle_LitlePayment>
+			<active>true</active>
+			<codePool>local</codePool>
+		</Litle_LitlePayment>
+	</modules>
+	<modules>
+		<Litle_LitleEcheck>
+			<active>true</active>
+			<codePool>local</codePool>
+		</Litle_LitleEcheck>
+	</modules>
 </config>
