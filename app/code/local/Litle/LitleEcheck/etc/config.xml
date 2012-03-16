@@ -7,29 +7,29 @@
 	</modules>
 	<global>
 		<models>
-			<litlepayment>
+			<litleecheck>
 				<class>Litle_LitleEcheck_Model</class>
-			</litlepayment>
+			</litleecheck>
 		</models>
 		<resources>
-			<litlepayment_setup>
+			<litleecheck_setup>
 				<setup>
 					<module>Litle_LitleEcheck</module>
 				</setup>
 				<connection>
 					<use>core_setup</use>
 				</connection>
-			</litlepayment_setup>
-			<litlepayment_write>
+			</litleecheck_setup>
+			<litleecheck_write>
 				<connection>
 					<use>core_write</use>
 				</connection>
-			</litlepayment_write>
-			<litlepayment_read>
+			</litleecheck_write>
+			<litleecheck_read>
 				<connection>
 					<use>core_read</use>
 				</connection>
-			</litlepayment_read>
+			</litleecheck_read>
 		</resources>
 	</global>
 	<default>
