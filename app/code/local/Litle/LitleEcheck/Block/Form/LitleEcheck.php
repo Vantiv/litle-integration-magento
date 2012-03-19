@@ -22,20 +22,8 @@ class Litle_LitleEcheck_Block_Form_LitleEcheck extends Mage_Payment_Block_Form
      *
      * @return array
      */
-//     public function getAccountAvailableTypes()
-//     {
-//         $types = $this->_getConfig()->getAccountTypes();
-//         if ($method = $this->getMethod()) {
-//             $availableTypes = $method->getConfigData('accounttypes');
-//             if ($availableTypes) {
-//                 $availableTypes = explode(',', $availableTypes);
-//                 foreach ($types as $code=>$name) {
-//                     if (!in_array($code, $availableTypes)) {
-//                         unset($types[$code]);
-//                     }
-//                 }
-//             }
-//         }
-//         return $types;
-//     }
+    public function getAccountAvailableTypes()
+    {
+        return array('CHECKING', 'BUSINESSCHECKING', 'SAVINGS');
+    }
 }

@@ -126,7 +126,7 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	public function authorize (Varien_Object $payment, $amount)
 	{
 		$bankName = $payment->getEcheckBankName();
-		Mage::throwException($bankName);
+		Mage::throwException("123123");
 // 		$order = $payment->getOrder();
 // 		if (!empty($order)){
 // 			$hash_in = array(
