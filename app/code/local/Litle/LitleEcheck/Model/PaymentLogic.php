@@ -1,13 +1,15 @@
 <?php
-require_once('LitleOnline.php');
+require_once('Litle/LitleSDK/LitleOnline.php');
 
-class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
+class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstract
 {
 	/**
 	 * unique internal payment method identifier
 	 */
-	protected $_code = 'litlepayment';
+	protected $_code = 'litleecheck';
 
+	//protected $_formBlockType = 'litleecheck/form_litleecheck';
+	
 	/**
 	 * this should probably be true if you're using this
 	 * method to take payments

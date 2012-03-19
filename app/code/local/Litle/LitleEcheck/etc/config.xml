@@ -6,6 +6,16 @@
 		</Litle_LitleEcheck>
 	</modules>
 	<global>
+		<blocks>
+			<litleecheck>
+				<class>Litle_LitleEcheck_Block</class>
+			</litleecheck>
+		</blocks>
+		<helpers>
+	    	<echeck>
+				<class>Litle_LitleEcheck_Helper</class>
+			</echeck>
+		</helpers>
 		<models>
 			<litleecheck>
 				<class>Litle_LitleEcheck_Model</class>
@@ -35,20 +45,17 @@
 	<default>
 		<payment>
 			<litleecheck>
-				<active>0</active>
+				<active>1</active>
 				<accounttypes>CHECKING,BUSINESSCHECKING,SAVINGS</accounttypes>
-				<cgi_url>https://secure.authorize.net/gateway/transact.dll</cgi_url>
 				<debug>0</debug>
 				<email_customer>0</email_customer>
 				<cctypes>AE,VI,MC,DI</cctypes>
-				<login backend_model="adminhtml/system_config_backend_encrypted" />
 				<merchant_email></merchant_email>
-				<model>echeck/authorizenet</model>
+				<model>litleecheck/paymentLogic</model>
 				<order_status>1</order_status>
 				<payment_action>authorize</payment_action>
 				<test>1</test>
 				<title>Litle Echeck</title>
-				<trans_key backend_model="adminhtml/system_config_backend_encrypted" />
 				<allowspecific>0</allowspecific>
 			</litleecheck>
 		</payment>
