@@ -25,7 +25,6 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 * can this method capture funds?
 	 */
 	protected $_canCapture              = true;
-
 	/**
 	 * can we capture only partial amounts?
 	 */
@@ -60,6 +59,23 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 * can this method save cc info for later use?
 	 */
 	protected $_canSaveCc = false;
+	
+	public function assignData($data)
+	{
+		
+		if (!($data instanceof Varien_Object)) {
+			$data = new Varien_Object($data);
+		}
+		
+		$info = $this->getInfoInstance();
+		$info->setEcheckRoutingNum($data->getEcheckRoutingNumber())
+		->setEcheckBankName($data->getEcheckBankName())
+		->setEcheckBankAcctNum($data->getEcheckBankAcctNum())
+		->setEcheckAccountType($data->getEcheckAccountType())
+		->setEcheckAccountName($data->getEcheckAccountName());
+		//Mage::throwException($this->getInfoInstance()->getEcheckBankAcctNum());
+		return $this;
+	}
 
 	public function getCreditCardInfo(Varien_Object $payment)
 	{
@@ -125,8 +141,12 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	public function authorize (Varien_Object $payment, $amount)
 	{
-		$bankName = $payment->getEcheckBankName();
-		Mage::throwException("123123");
+		//Mage::throwException($this->getInfoInstance()->getEcheckBankAcctNum());
+		$order = $payment->getEcheckBankAcctNum();
+		$info = $this->getInfoInstance();
+		$bankName = $info->getEcheckAccountType();
+		Mage::throwException("123" .$order);
+		//var_dump($payment->getEcheckAccountType())
 // 		$order = $payment->getOrder();
 // 		if (!empty($order)){
 // 			$hash_in = array(
