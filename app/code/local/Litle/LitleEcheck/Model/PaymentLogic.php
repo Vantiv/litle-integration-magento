@@ -60,19 +60,25 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	protected $_canSaveCc = false;
 	
+	public function validate()
+	{
+		return $this;
+	}
+	
 	public function assignData($data)
 	{
-		
+		//echo Varien_Debug::backtrace(true, true); exit;
 		if (!($data instanceof Varien_Object)) {
 			$data = new Varien_Object($data);
 		}
 		
 		$info = $this->getInfoInstance();
-		$info->setEcheckRoutingNum($data->getEcheckRoutingNumber())
-		->setEcheckBankName($data->getEcheckBankName())
-		->setEcheckBankAcctNum($data->getEcheckBankAcctNum())
-		->setEcheckAccountType($data->getEcheckAccountType())
-		->setEcheckAccountName($data->getEcheckAccountName());
+// 		$info->setEcheckRoutingNum($data->getEcheckRoutingNumber())
+// 		->setEcheckBankName($data->getEcheckBankName())
+// 		->setEcheckBankAcctNum($data->getEcheckBankAcctNum())
+// 		->setEcheckAccountType($data->getEcheckAccountType())
+// 		->setEcheckAccountName($data->getEcheckAccountName());
+		$info->setAdditionalInformation('echeck_routing_num', $data->getEcheckRoutingNumber());
 		//Mage::throwException($this->getInfoInstance()->getEcheckBankAcctNum());
 		return $this;
 	}
@@ -141,11 +147,15 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	public function authorize (Varien_Object $payment, $amount)
 	{
-		//Mage::throwException($this->getInfoInstance()->getEcheckBankAcctNum());
-		$order = $payment->getEcheckBankAcctNum();
+		//echo Varien_Debug::backtrace(true, true); exit;
+		//Mage::throwException(var_dump($payment->debug()));
+		//echo Varien_Debug::backtrace(true, true); exit;
+		//Mage::throwException("ding dong" . $data->getEcheckBankName());
+		//echeck_routing_num
+		$order = $payment->getEcheckRoutingNum();
 		$info = $this->getInfoInstance();
-		$bankName = $info->getEcheckAccountType();
-		Mage::throwException("123" .$order);
+		$bankName = $info->getAdditionalInformation('echeck_routing_num');
+		Mage::throwException("123" . $bankName);
 		//var_dump($payment->getEcheckAccountType())
 // 		$order = $payment->getOrder();
 // 		if (!empty($order)){
