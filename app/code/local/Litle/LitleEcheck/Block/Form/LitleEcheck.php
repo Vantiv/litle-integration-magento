@@ -1,5 +1,5 @@
 <?php
-class Litle_LitleEcheck_Block_Form_Echeck extends Mage_Payment_Block_Form
+class Litle_LitleEcheck_Block_Form_LitleEcheck extends Mage_Payment_Block_Form
 {
     protected function _construct()
     {
@@ -14,7 +14,7 @@ class Litle_LitleEcheck_Block_Form_Echeck extends Mage_Payment_Block_Form
      */
 //     protected function _getConfig()
 //     {
-//         return Mage::getSingleton('echeck/config');
+//         return Mage::getSingleton('litleecheck/config');
 //     }
 
     /**

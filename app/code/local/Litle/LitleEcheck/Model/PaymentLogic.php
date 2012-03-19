@@ -8,7 +8,7 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	protected $_code = 'litleecheck';
 
-	//protected $_formBlockType = 'litleecheck/form_litleecheck';
+	protected $_formBlockType = 'litleecheck/form_litleEcheck';
 	
 	/**
 	 * this should probably be true if you're using this
