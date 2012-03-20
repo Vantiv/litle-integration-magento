@@ -3,7 +3,7 @@ class Litle_LitleEcheck_Model_Accounttypes
 {
     public function getAllowedTypes()
     {
-        return array('CHECKING', 'BUSINESSCHECKING', 'SAVINGS');
+        return array('CHECKING', 'BUSINESSCHECKING', 'SAAVINGS');
     }
     
 	public function toOptionArray()
