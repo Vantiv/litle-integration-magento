@@ -237,14 +237,18 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	public function capture (Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
+		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
+		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);
+		
 		if (!empty($order)){
 			$hash = array(
+	 			'amount'=> $amountToPass,
 				'litleTxnId' => $payment->getCcTransId()
 			);
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
-			$litleResponse = $litleRequest->captureRequest($hash_in);
+			$litleResponse = $litleRequest->echeckSaleRequest($hash_in);
 		}
 		$this->processResponse($payment,$litleResponse);
 	}
