@@ -61,7 +61,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 	protected $dummy_fail = false;
 
-	public function getConfigData($fieldToLookFor, $store)
+	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/LitlePayment/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
@@ -180,6 +180,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function authorize (Varien_Object $payment, $amount)
 	{
+		Mage::throwException($this->getConfigData("api_key"));
 		$order = $payment->getOrder();
 		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
 		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);

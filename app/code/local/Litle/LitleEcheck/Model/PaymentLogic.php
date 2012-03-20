@@ -81,7 +81,7 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 		return $this;
 	}
 	
-	public function getConfigData($fieldToLookFor, $store)
+	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/LitleEcheck/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
@@ -159,6 +159,7 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	public function authorize (Varien_Object $payment, $amount)
 	{
+		Mage::throwException($this->getConfigData("api_key"));
 		//echo Mage::getStoreConfig('payment/LitleEcheck/active'); exit;
 		$order = $payment->getOrder();
 		$orderId = $order->getIncrementId();
