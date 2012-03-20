@@ -85,26 +85,15 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	{
 		$info = $this->getInfoInstance();
 		$retArray = array();
-		
-		$retArray["accNum"] = $info->getAdditionalInformation('echeck_bank_acc_num');
-		
-		$retArray["accType"] = "Checking";//$info->getAdditionalInformation('echeck_acc_type');
-	
-		$retArray["routingNum"] = $info->getAdditionalInformation('echeck_routing_num');
-	
-		return $retArray;
-		
-	}
 
-	public function getCreditCardInfo(Varien_Object $payment)
-	{
-		$retArray = array();
-		$retArray["type"] = $payment->getCcType();
-		$retArray["number"] = $payment->getCcNumber();
-		preg_match("/\d\d(\d\d)/", $payment->getCcExpYear(), $expYear);
-		$retArray["expDate"] = sprintf('%02d%02d', $payment->getCcExpMonth(), $expYear[1]);
-		$retArray["cardValidationNum"] = $payment->getCcCid();
+		$retArray["accNum"] = $info->getAdditionalInformation('echeck_bank_acc_num');
+
+		$retArray["accType"] = "Checking";//$info->getAdditionalInformation('echeck_acc_type');
+
+		$retArray["routingNum"] = $info->getAdditionalInformation('echeck_routing_num');
+
 		return $retArray;
+
 	}
 
 	public function getBillToAddress(Varien_Object $payment)
@@ -160,146 +149,114 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	public function authorize (Varien_Object $payment, $amount)
 	{
-		//echo Varien_Debug::backtrace(true, true); exit;
-		//Mage::throwException(var_dump($payment->debug()));
-		//echo Varien_Debug::backtrace(true, true); exit;
-		//Mage::throwException("ding dong" . $data->getEcheckBankName());
-		//echeck_routing_num
-		//$order = $payment->getEcheckRoutingNum();
-		//$info = $this->getInfoInstance();
-		//$bankName = $info->getAdditionalInformation('echeck_routing_num');
-		//Mage::throwException("123" . $bankName);
-		//var_dump($payment->getEcheckAccountType())
 		$order = $payment->getOrder();
+		$orderId = $order->getIncrementId();
+		$amountToPass = $amount* 100;
+		
 		if (!empty($order)){
 			$hash_in = array(
-			 					'orderId'=> $order->getIncrementId(),
-			 					'amount'=> ($amount* 100),
-			 					'orderSource'=> "ecommerce",
-								'billToAddress'=> $this->getBillToAddress($payment),
-								'shipToAddress'=> $this->getAddressInfo($payment),
-			 					'echeck'=> $this->getEcheckInfo($payment)
+	 					'orderId'=> $orderId,
+	 					'amount'=> $amountToPass,
+	 					'orderSource'=> "ecommerce",
+						'billToAddress'=> $this->getBillToAddress($payment),
+						'shipToAddress'=> $this->getAddressInfo($payment),
+	 					'echeck'=> $this->getEcheckInfo($payment)
 			);
-			
 			$litleRequest = new LitleOnlineRequest();
-			
 			$litleResponse = $litleRequest->echeckVerificationRequest($hash_in);
-			// 			//Mage::throwException($response);
-	 		Mage::throwException(XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message'));
-			// 			//Mage::throwException(XmlParser::getNode($response,'message'));
-			// 			//Mage::throwException(XmlParser::getNode($response,'litleTxnId'));
-			// 			if( isset($litleResponse))
-			// 			{
-			// 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
-			// 				if($litleResponseCode != "000")
-			// 				{
-				// 					// 					$order_status_id = 1;
-				// 					// 					if( $latest_order_history ){
-				// 					// 						$order_status_id = $latest_order_history[0]['order_status_id'];
-				// 					// 					}
-				// 				}
-				// 				else
-				// 				{
-					// 					$payment
-					// 					->setStatus("Approved")
-					// 					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					// 					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					// 					->setCcApproval("Approved");
-					// 					//->setAddressResult($result->getAddressResult())
-					// 					//->setPostcodeResult($result->getPostCodeResult())
-					// 					//->setCv2Result($result->getCV2Result())
-					// 					//->setCcCidStatus($result->getTxAuthNo())
-					// 					//->setSecurityKey($result->getSecurityKey());
-					// 				}
-					// 				//$comment = $litleTxtToInsertInComment . ": " . XMLParser::getNode($litleResponse,'message') . " \n ". $this->language->get('text_litle_response_code') . " " . $litleResponseCode . "\n ". $this->language->get('text_litle_transaction_id'). " " . XMLParser::getNode($litleResponse,'litleTxnId');
-
-					// 				// 				$data = array(
-					// 				// 									'order_status_id'=>$order_status_id,
-					// 				// 									'comment'=>$comment
-					// 				// 				);
-
-					// 				// 				$this->model_sale_order->addOrderHistory($order_id, $data);
-					// 				return $this;
-					// 			}
-				}
-		}
-
-		/**
-		 * this method is called if we are authorising AND
-		 * capturing a transaction
-		 */
-		public function capture (Varien_Object $payment, $amount)
-		{
-			$order = $payment->getOrder();
-			if (!empty($order)){
-				// 			$hash_in = array(
-				// 			 					'orderId'=> $order->getIncrementId(),
-				// 			 					'amount'=> ($amount* 100),
-				// 			 					'orderSource'=> "ecommerce",
-				// 								'billToAddress'=> $this->getBillToAddress($payment),
-				// 								'shipToAddress'=> $this->getAddressInfo($payment),
-				// 			 					'card'=> $this->getCreditCardInfo($payment)
-				// 			);
-				$hash_in = array(
-								'litleTxnId' => $payment->getCcTransId()
-				);
-				$litleRequest = new LitleOnlineRequest();
-				$litleResponse = $litleRequest->captureRequest($hash_in);
-				//Mage::throwException($litleResponse->saveXML());
-			}
-
+			//Mage::throwException($response);
+			//Mage::throwException(XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message'));
+			//Mage::throwException(XmlParser::getNode($litleResponse,'message'));
+			//Mage::throwException(XmlParser::getNode($response,'litleTxnId'));
 			if( isset($litleResponse))
 			{
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
-					// 					$order_status_id = 1;
-					// 					if( $latest_order_history ){
-					// 						$order_status_id = $latest_order_history[0]['order_status_id'];
-						// 					}
-					}
-					else
-					{
-						$payment
-						->setStatus("Approved")
-						->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-						->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-						->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
-						->setIsTransactionClosed(0)
-						->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
-						//->setCcApproval("Approved");
-						// 					->setAddressResult($result->getAddressResult())
-						// 					->setPostcodeResult($result->getPostCodeResult())
-						// 					->setCv2Result($result->getCV2Result())
-						// 					->setCcCidStatus($result->getTxAuthNo())
-						// 					->setSecurityKey($result->getSecurityKey());
-					}
-
-					return $this;
-					//$comment = $litleTxtToInsertInComment . ": " . XMLParser::getNode($litleResponse,'message') . " \n ". $this->language->get('text_litle_response_code') . " " . $litleResponseCode . "\n ". $this->language->get('text_litle_transaction_id'). " " . XMLParser::getNode($litleResponse,'litleTxnId');
-
-					// 				$data = array(
-					// 									'order_status_id'=>$order_status_id,
-					// 									'comment'=>$comment
-					// 				);
-
-					// 				$this->model_sale_order->addOrderHistory($order_id, $data);
+					$payment
+					->setStatus("Rejected")
+					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setIsTransactionClosed(0)
+					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+				}
+				else
+				{
+					$payment
+					->setStatus("Approved")
+					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setIsTransactionClosed(0)
+					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+					//->setCcApproval("Approved")
+					//->setAddressResult(XmlParser::getNode($litleResponse,'avsResult'))
+					//->setCv2Result(XmlParser::getNode($litleResponse,'cardValidationResult'));
+				}
+				return $this;
 			}
 		}
+	}
+			
 
-		/**
-		 * called if refunding
-		 */
-		public function refund (Varien_Object $payment, $amount)
-		{
-
+	/**
+	 * this method is called if we are authorising AND
+	 * capturing a transaction
+	 */
+	public function capture (Varien_Object $payment, $amount)
+	{
+		$order = $payment->getOrder();
+		if (!empty($order)){
+			$hash_in = array(
+							'litleTxnId' => $payment->getCcTransId()
+			);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->echeckSaleRequest($hash_in);
+			//Mage::throwException($litleResponse->saveXML());
 		}
-
-		/**
-		 * called if voiding a payment
-		 */
-		public function void (Varien_Object $payment)
+			
+		if( isset($litleResponse))
 		{
+			$litleResponseCode = XMLParser::getNode($litleResponse,'response');
+			if($litleResponseCode != "000")
+			{
+				$payment
+				->setStatus("Rejected")
+				->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+				->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+				->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
+				->setIsTransactionClosed(0)
+				->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+			}
+			else
+			{
+				$payment
+				->setStatus("Approved")
+				->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+				->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+				->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
+				->setIsTransactionClosed(0)
+				->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+			}
 
+			return $this;
 		}
+	}
+
+/**
+ * called if refunding
+ */
+public function refund (Varien_Object $payment, $amount)
+{
+
+}
+
+/**
+ * called if voiding a payment
+ */
+public function void (Varien_Object $payment)
+{
+
+}
 }
