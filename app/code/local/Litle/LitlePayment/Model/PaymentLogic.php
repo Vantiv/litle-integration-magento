@@ -219,9 +219,11 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function capture (Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
+		$amountToPass = ($amount* 100);
 		if (!empty($order)){
 			$hash = array(
-				'litleTxnId' => $payment->getCcTransId()
+				'litleTxnId' => $payment->getCcTransId(),
+				'amount' => $amountToPass
 			);
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
@@ -236,7 +238,19 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function refund (Varien_Object $payment, $amount)
 	{
-
+		$order = $payment->getOrder();
+		$amountToPass = ($amount* 100);
+		if (!empty($order)){
+			$hash = array(
+						'litleTxnId' => $payment->getCcTransId(),
+						'amount' => $amountToPass
+			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->creditRequest($hash_in);
+		}
+		$this->processResponse($payment,$litleResponse);
 	}
 
 	/**
@@ -244,6 +258,16 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function void (Varien_Object $payment)
 	{
-
+		$order = $payment->getOrder();
+		if (!empty($order)){
+			$hash = array(
+						'litleTxnId' => $payment->getCcTransId()
+			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->voidRequest($hash_in);
+		}
+		$this->processResponse($payment,$litleResponse);
 	}
 }
