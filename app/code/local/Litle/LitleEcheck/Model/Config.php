@@ -56,7 +56,7 @@ class Litle_LitleEcheck_Model_Config
      */
     public function getAccountTypes()
     {
-        $types = array('CHECKING' => 'Checking', 'BUSINESSCHECKING' => 'Business checking', 'SAVINGS' => 'Savings');
+        $types = array('Checking' => 'Checking', 'Savings' => 'Savings','Corporate'=>'Corporate','Corp Savings' => 'Corp Savings');
         return $types;
     }
 

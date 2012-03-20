@@ -24,6 +24,6 @@ class Litle_LitleEcheck_Block_Form_LitleEcheck extends Mage_Payment_Block_Form
      */
     public function getAccountAvailableTypes()
     {
-        return array('CHECKING', 'BUSINESSCHECKING', 'SAVINGS');
+        return array('Checking', 'Savings', 'Corporate', 'Corp Savings');
     }
 }

@@ -3,7 +3,7 @@ class Litle_LitleEcheck_Model_Accounttypes
 {
     public function getAllowedTypes()
     {
-        return array('CHECKING', 'BUSINESSCHECKING', 'SAAVINGS');
+        return array('Checking','Savings', 'Corporate', 'Corp Savings');
     }
     
 	public function toOptionArray()
@@ -18,11 +18,12 @@ class Litle_LitleEcheck_Model_Accounttypes
             if (in_array($code, $allowed) || !count($allowed)) {
                 $options[] = array(
                    'value' => $code,
-                   'label' => $name
+                   'label' => $name 
                 );
             }
         }
 
         return $options;
+        
     }
 }
