@@ -65,7 +65,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/LitlePayment/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
-			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 
 		return $returnFromThisModel;
 	}
@@ -146,86 +146,16 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		}
 		return NULL;
 	}
-	
- 	public function merchantData(Varien_Object $payment)
- 	{
- 		$hash = array('user'=> $this->getConfigData("user"),
+
+	public function merchantData(Varien_Object $payment)
+	{
+		$hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
 					'merchantId'=>$this->getConfigData("merchantId"));
- 		return $hash;
- 	}
-	/**
-	 * this method is called if we are just authorising
-	 * a transaction
-	 */
-	public function authorize (Varien_Object $payment, $amount)
-	{
-		#Mage::throwException($this->getConfigData("password"));
-		$order = $payment->getOrder();
-		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
-		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);
-		
-		if (!empty($order)){
-			$hash = array(
-	 					'orderId'=> $orderId,
-	 					'amount'=> $amountToPass,
-	 					'orderSource'=> "ecommerce",
-						'billToAddress'=> $this->getBillToAddress($payment),
-						'shipToAddress'=> $this->getAddressInfo($payment),
-	 					'card'=> $this->getCreditCardInfo($payment)
-			);
-			$merchantData = $this->merchantData($payment);
-			$hash_in = array_merge($hash,$merchantData);
-			$litleRequest = new LitleOnlineRequest();
-			$litleResponse = $litleRequest->authorizationRequest($hash_in);
-			Mage::throwException(XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message'));
-			if( isset($litleResponse))
-			{
-				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
-				if($litleResponseCode != "000")
-				{
-					$payment
-					->setStatus("Rejected")
-					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setIsTransactionClosed(0)
-					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
-				}
-				else
-				{
-					$payment
-					->setStatus("Approved")
-					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setIsTransactionClosed(0)
-					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
-					//->setCcApproval("Approved")
-					//->setAddressResult(XmlParser::getNode($litleResponse,'avsResult'))
-					//->setCv2Result(XmlParser::getNode($litleResponse,'cardValidationResult'));
-				}
-				return $this;
-			}
-		}
+		return $hash;
 	}
-
-	/**
-	 * this method is called if we are authorising AND
-	 * capturing a transaction
-	 */
-	public function capture (Varien_Object $payment, $amount)
-	{
-		$order = $payment->getOrder();
-		if (!empty($order)){
-			$hash_in = array(
-							'litleTxnId' => $payment->getCcTransId()
-			);
-			$litleRequest = new LitleOnlineRequest();
-			$litleResponse = $litleRequest->captureRequest($hash_in);
-			//Mage::throwException($litleResponse->saveXML());
-		}
-			
+	
+	public function processResponse(Varien_Object $payment,$litleResponse){
 		if( isset($litleResponse))
 		{
 			$litleResponseCode = XMLParser::getNode($litleResponse,'response');
@@ -248,10 +178,57 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 				->setIsTransactionClosed(0)
 				->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+				//->setCcApproval("Approved")
+				//->setAddressResult(XmlParser::getNode($litleResponse,'avsResult'))
+				//->setCv2Result(XmlParser::getNode($litleResponse,'cardValidationResult'));
 			}
-
 			return $this;
 		}
+	}
+	/**
+	 * this method is called if we are just authorising
+	 * a transaction
+	 */
+	public function authorize(Varien_Object $payment, $amount)
+	{
+		$order = $payment->getOrder();
+		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
+		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);
+
+		if (!empty($order)){
+			$hash = array(
+	 					'orderId'=> $orderId,
+	 					'amount'=> $amountToPass,
+	 					'orderSource'=> "ecommerce",
+						'billToAddress'=> $this->getBillToAddress($payment),
+						'shipToAddress'=> $this->getAddressInfo($payment),
+	 					'card'=> $this->getCreditCardInfo($payment)
+			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->authorizationRequest($hash_in);
+			$this->processResponse($payment,$litleResponse);
+		}
+	}
+
+	/**
+	 * this method is called if we are authorising AND
+	 * capturing a transaction
+	 */
+	public function capture (Varien_Object $payment, $amount)
+	{
+		$order = $payment->getOrder();
+		if (!empty($order)){
+			$hash = array(
+				'litleTxnId' => $payment->getCcTransId()
+			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->captureRequest($hash_in);
+		}
+		$this->processResponse($payment,$litleResponse);
 	}
 
 	/**
