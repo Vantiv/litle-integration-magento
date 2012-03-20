@@ -81,13 +81,18 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 		return $this;
 	}
 	
-	public function getConfigData($fieldToLookFor, $store)
+	public function getConfigData($fieldToLookFor)
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/LitleEcheck/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
 			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 		
 		return $returnFromThisModel;
+	}
+	
+	public function getConfigData($fieldToLookFor, $store)
+	{
+		return getConfigData($fieldToLookFor);
 	}
 
 	public function getEcheckInfo(Varien_Object $payment)
