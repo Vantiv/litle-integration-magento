@@ -25,6 +25,7 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 * can this method capture funds?
 	 */
 	protected $_canCapture              = true;
+
 	/**
 	 * can we capture only partial amounts?
 	 */
@@ -60,33 +61,28 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	protected $_canSaveCc = false;
 
-	public function validate()
-	{
-		return $this;
-	}
+	protected $dummy_fail = false;
 
 	public function assignData($data)
 	{
-		//echo Varien_Debug::backtrace(true, true); exit;
 		if (!($data instanceof Varien_Object)) {
 			$data = new Varien_Object($data);
 		}
 
 		$info = $this->getInfoInstance();
 		$info->setAdditionalInformation('echeck_routing_num', $data->getEcheckRoutingNumber());
-		//$info->setAdditionalInformation('echeck_bank_name', $data->getEcheckBankName());
 		$info->setAdditionalInformation('echeck_bank_acc_num', $data->getEcheckBankAcctNum());
 		$info->setAdditionalInformation('echeck_acc_type', $data->getEcheckAccountType());
-		//$info->setAdditionalInformation('echeck_acc_name', $data->getEcheckAccountName());
+
 		return $this;
 	}
-	
+
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/LitleEcheck/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
-			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
-		
+		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+
 		return $returnFromThisModel;
 	}
 
@@ -105,28 +101,49 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 
 	}
 
+	public function getContactInformation($contactInfo)
+	{
+		if(!empty($contactInfo)){
+			$retArray = array();
+			if($this->dummy_fail)
+			{
+				$retArray["name"] = "Joe Green";
+				$retArray["addressLine1"] = "6 Main St.";
+				$retArray["city"] = "Derry";
+				$retArray["state"] = "NH";
+				$retArray["zip"] = "03038";
+				$retArray["country"] = "US";
+			}
+			else{
+				$retArray["firstName"] =$contactInfo->getFirstname();
+				$retArray["lastName"] = $contactInfo->getLastname();
+				$retArray["companyName"] = $contactInfo->getCompany();
+				$retArray["addressLine1"] = $contactInfo->getStreet(1);
+				$retArray["addressLine2"] = $contactInfo->getStreet(2);
+				$retArray["addressLine3"] = $contactInfo->getStreet(3);
+				$retArray["city"] = $contactInfo->getCity();
+				$retArray["state"] = $contactInfo->getRegion();
+				$retArray["zip"] = $contactInfo->getPostcode();
+				$retArray["country"] = $contactInfo->getCountry();
+				$retArray["email"] = $contactInfo->getCustomerEmail();
+				$retArray["phone"] = $contactInfo->getTelephone();
+			}
+			return $retArray;
+		}
+		return NULL;
+	}
+
+
 	public function getBillToAddress(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
 		if(!empty($order)){
 			$billing = $order ->getBillingAddress();
 			if(!empty($billing)){
-				$retArray = array();
-				$retArray["firstName"] =$billing->getFirstname();
-				$retArray["lastName"] = $billing->getLastname();
-				$retArray["companyName"] = $billing->getCompany();
-				$retArray["addressLine1"] = $billing->getStreet(1);
-				$retArray["addressLine2"] = $billing->getStreet(2);
-				$retArray["addressLine3"] = $billing->getStreet(3);
-				$retArray["city"] = $billing->getCity();
-				$retArray["state"] = $billing->getRegion();
-				$retArray["zip"] = $billing->getPostcode();
-				$retArray["country"] = $billing->getCountry();
-				$retArray["email"] = $billing->getCustomerEmail();
-				$retArray["phone"] = $billing->getTelephone();
-				return $retArray;
+				return $this->getContactInformation($billing);
 			}
 		}
+		return NULL;
 	}
 
 	public function getShipToAddress(Varien_Object $payment)
@@ -135,51 +152,23 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 		if(!empty($order)){
 			$shipping = $order->getShippingAddress();
 			if(!empty($shipping)){
-				$retArray = array();
-				$retArray["firstName"] = $shipping->getFirstname();
-				$retArray["lastName"] = $shipping->getLastname();
-				$retArray["companyName"] = $shipping->getCompany();
-				$retArray["addressLine1"] = $shipping->getStreet(1);
-				$retArray["addressLine2"] = $shipping->getStreet(2);
-				$retArray["addressLine3"] = $shipping->getStreet(3);
-				$retArray["city"] = $shipping->getCity();
-				$retArray["state"] = $shipping->getRegion();
-				$retArray["zip"] = $shipping->getPostcode();
-				$retArray["country"] = $shipping->getCountry();
-				$retArray["email"] = $shipping->getCustomerEmail();
-				$retArray["phone"] = $shipping->getTelephone();
-				return $retArray;
+				return $this->getContactInformation($shipping);
 			}
 		}
+		return NULL;
 	}
-	
-	/**
-	 * this method is called if we are just authorising
-	 * a transaction
-	 */
-	public function authorize (Varien_Object $payment, $amount)
+
+	public function merchantData(Varien_Object $payment)
 	{
-		Mage::throwException($this->getConfigData("api_key"));
-		//echo Mage::getStoreConfig('payment/LitleEcheck/active'); exit;
-		$order = $payment->getOrder();
-		$orderId = $order->getIncrementId();
-		$amountToPass = $amount* 100;
-		
-		if (!empty($order)){
-			$hash_in = array(
-	 					'orderId'=> $orderId,
-	 					'amount'=> $amountToPass,
-	 					'orderSource'=> "ecommerce",
-						'billToAddress'=> $this->getBillToAddress($payment),
-						'shipToAddress'=> $this->getAddressInfo($payment),
-	 					'echeck'=> $this->getEcheckInfo($payment)
-			);
-			$litleRequest = new LitleOnlineRequest();
-			$litleResponse = $litleRequest->echeckVerificationRequest($hash_in);
-			//Mage::throwException($response);
-			//Mage::throwException(XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message'));
-			//Mage::throwException(XmlParser::getNode($litleResponse,'message'));
-			//Mage::throwException(XmlParser::getNode($response,'litleTxnId'));
+		$hash = array('user'=> $this->getConfigData("user"),
+ 					'password'=> $this->getConfigData("password"),
+					'merchantId'=>$this->getConfigData("merchantId"));
+		return $hash;
+	}
+
+	public function processResponse(Varien_Object $payment,$litleResponse){
+		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
+		if ($message == "Valid Format"){
 			if( isset($litleResponse))
 			{
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
@@ -209,8 +198,37 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 				return $this;
 			}
 		}
+		else{
+			Mage::throwException($message);
+		}
 	}
-			
+	/**
+	 * this method is called if we are just authorising
+	 * a transaction
+	 */
+	public function authorize(Varien_Object $payment, $amount)
+	{
+		$order = $payment->getOrder();
+		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
+		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);
+
+		if (!empty($order)){
+			$hash = array(
+	 					'orderId'=> $orderId,
+	 					'amount'=> $amountToPass,
+	 					'orderSource'=> "ecommerce",
+						'verify'=>'true',
+						'billToAddress'=> $this->getBillToAddress($payment),
+						'shipToAddress'=> $this->getAddressInfo($payment),
+	 					'echeck'=> $this->getEcheckInfo($payment)
+			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->echeckVerificationRequest($hash_in);
+			$this->processResponse($payment,$litleResponse);
+		}
+	}
 
 	/**
 	 * this method is called if we are authorising AND
@@ -220,55 +238,30 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	{
 		$order = $payment->getOrder();
 		if (!empty($order)){
-			$hash_in = array(
-							'litleTxnId' => $payment->getCcTransId()
+			$hash = array(
+				'litleTxnId' => $payment->getCcTransId()
 			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
-			$litleResponse = $litleRequest->echeckSaleRequest($hash_in);
-			//Mage::throwException($litleResponse->saveXML());
+			$litleResponse = $litleRequest->captureRequest($hash_in);
 		}
-			
-		if( isset($litleResponse))
-		{
-			$litleResponseCode = XMLParser::getNode($litleResponse,'response');
-			if($litleResponseCode != "000")
-			{
-				$payment
-				->setStatus("Rejected")
-				->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setIsTransactionClosed(0)
-				->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
-			}
-			else
-			{
-				$payment
-				->setStatus("Approved")
-				->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setIsTransactionClosed(0)
-				->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
-			}
-
-			return $this;
-		}
+		$this->processResponse($payment,$litleResponse);
 	}
 
-/**
- * called if refunding
- */
-public function refund (Varien_Object $payment, $amount)
-{
+	/**
+	 * called if refunding
+	 */
+	public function refund (Varien_Object $payment, $amount)
+	{
 
-}
+	}
 
-/**
- * called if voiding a payment
- */
-public function void (Varien_Object $payment)
-{
+	/**
+	 * called if voiding a payment
+	 */
+	public function void (Varien_Object $payment)
+	{
 
-}
+	}
 }
