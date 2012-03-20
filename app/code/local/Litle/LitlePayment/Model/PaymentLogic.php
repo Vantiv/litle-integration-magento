@@ -89,34 +89,6 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 		return $retArray;
 	}
-	//!########################## DELETE THIS DATA ####################################
-	// 	new Auth(orderId: '6', amount: '60060', name: 'Joe Green', addressLine1: '6 Main St.', city: 'Derry',
-	// 	state: 'NH', zip: '03038', country: 'US', type: 'VI', number: '4457010100000008', expDate: '0612',
-	// 	cardValidationNum: '992', response: '110', message: 'Insufficient Funds', avsResult: '34',
-	// 	cardValidationResult: 'P', returnLitleTxnId: '600000000000000001').save()
-
-	// 	new Sale(orderId: '6', amount: '60060', name: 'Joe Green', addressLine1: '6 Main St.', city: 'Derry',
-	// 	 state: 'NH', zip: '03038', country: 'US', type: 'VI', number: '4457010100000008', expDate: '0612',
-	// 	 cardValidationNum: '992', response: '110', message: 'Insufficient Funds', avsResult: '34',
-	// 	 cardValidationResult: 'P', returnLitleTxnId: '600000000000000002').save()
-
-
-	// 	new Auth(orderId: '7', amount: '70070', name: 'Jane Murray', addressLine1: '7 Main St.', city: 'Amesbury',
-	// 	state: 'MA', zip: '01913', country: 'US', type: 'MC', number: '5112010100000002', expDate: '0712',
-	// 	cardValidationNum: '251', response: '301', message: 'Invalid Account Number', authCode: '', avsResult: '34',
-	// 	 cardValidationResult: 'N', returnLitleTxnId: '700000000000000001').save()
-
-	// 	new Auth(orderId: '7', amount: '000', name: 'Jane Murray', addressLine1: '7 Main St.', city: 'Amesbury',
-	// 	state: 'MA', zip: '01913', country: 'US', type: 'MC', number: '5112010100000002', expDate: '0712',
-	// 	cardValidationNum: '251', response: '301', message: 'Invalid Account Number', authCode: '',
-	// 	avsResult: '34', cardValidationResult: 'N', returnLitleTxnId: '700000000000000002').save()
-
-	// 	new Sale(orderId: '7', amount: '70070', name: 'Jane Murray', addressLine1: '7 Main St.', city: 'Amesbury',
-	// 	state: 'MA', zip: '01913', country: 'US', type: 'MC', number: '5112010100000002', expDate: '0712',
-	// 	cardValidationNum: '251', response: '301', message: 'Invalid Account Number', authCode: '', avsResult: '34',
-	// 	 cardValidationResult: 'N', returnLitleTxnId: '700000000000000003').save()
-
-	//!########################## DELETE THIS DATA ####################################
 
 	public function getContactInformation($contactInfo)
 	{
@@ -174,19 +146,27 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		}
 		return NULL;
 	}
+	
+ 	public function merchantData(Varien_Object $payment)
+ 	{
+ 		$hash = array('user'=> $this->getConfigData("user"),
+ 					'password'=> $this->getConfigData("password"),
+					'merchantId'=>$this->getConfigData("merchantId"));
+ 		return $hash;
+ 	}
 	/**
 	 * this method is called if we are just authorising
 	 * a transaction
 	 */
 	public function authorize (Varien_Object $payment, $amount)
 	{
-		Mage::throwException($this->getConfigData("api_key"));
+		#Mage::throwException($this->getConfigData("password"));
 		$order = $payment->getOrder();
 		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
 		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);
 		
 		if (!empty($order)){
-			$hash_in = array(
+			$hash = array(
 	 					'orderId'=> $orderId,
 	 					'amount'=> $amountToPass,
 	 					'orderSource'=> "ecommerce",
@@ -194,8 +174,11 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 						'shipToAddress'=> $this->getAddressInfo($payment),
 	 					'card'=> $this->getCreditCardInfo($payment)
 			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
 			$litleResponse = $litleRequest->authorizationRequest($hash_in);
+			Mage::throwException(XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message'));
 			if( isset($litleResponse))
 			{
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');

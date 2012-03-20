@@ -39,8 +39,6 @@
                 <model>litlepayment/paymentLogic</model>
                 <order_status>pending</order_status>
                 <title>Credit Card (Litle Payment)</title>
-                <api_key>1234</api_key>
-                <api_secret>1234</api_secret>
                 <cctypes>AE,VI,MC,DI,SS</cctypes>
                 <payment_action>authorize</payment_action>
                 <allowspecific>0</allowspecific>
