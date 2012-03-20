@@ -80,6 +80,15 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 		//$info->setAdditionalInformation('echeck_acc_name', $data->getEcheckAccountName());
 		return $this;
 	}
+	
+	public function getConfigData($fieldToLookFor, $store)
+	{
+		$returnFromThisModel = Mage::getStoreConfig('payment/LitleEcheck/' . $fieldToLookFor);
+		if( $returnFromThisModel == NULL )
+			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+		
+		return $returnFromThisModel;
+	}
 
 	public function getEcheckInfo(Varien_Object $payment)
 	{
@@ -143,12 +152,14 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 			}
 		}
 	}
+	
 	/**
 	 * this method is called if we are just authorising
 	 * a transaction
 	 */
 	public function authorize (Varien_Object $payment, $amount)
 	{
+		//echo Mage::getStoreConfig('payment/LitleEcheck/active'); exit;
 		$order = $payment->getOrder();
 		$orderId = $order->getIncrementId();
 		$amountToPass = $amount* 100;

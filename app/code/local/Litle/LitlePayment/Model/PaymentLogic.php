@@ -61,6 +61,14 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 	protected $dummy_fail = false;
 
+	public function getConfigData($fieldToLookFor, $store)
+	{
+		$returnFromThisModel = Mage::getStoreConfig('payment/LitlePayment/' . $fieldToLookFor);
+		if( $returnFromThisModel == NULL )
+			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+
+		return $returnFromThisModel;
+	}
 
 	public function getCreditCardInfo(Varien_Object $payment)
 	{
