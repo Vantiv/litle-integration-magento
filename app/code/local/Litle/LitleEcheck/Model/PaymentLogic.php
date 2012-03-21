@@ -36,6 +36,8 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	protected $_canRefund               = true;
 
+	protected $_canRefundInvoicePartial       = true;
+
 	/**
 	 * can this method void transactions?
 	 */
@@ -234,12 +236,12 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 * this method is called if we are authorising AND
 	 * capturing a transaction
 	 */
-	public function capture (Varien_Object $payment, $amount)
+	public function capture (Varien_Object $payment, $amount)true
 	{
 		$order = $payment->getOrder();
 		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
 		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);
-		
+
 		if (!empty($order)){
 			$hash = array(
 	 			'amount'=> $amountToPass,
@@ -258,7 +260,19 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	public function refund (Varien_Object $payment, $amount)
 	{
-
+		$order = $payment->getOrder();
+		$amountToPass = ($amount* 100);
+		if (!empty($order)){
+			$hash = array(
+			'litleTxnId' => $payment->getCcTransId(),
+			'amount' => $amountToPass
+			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->echeckCreditRequest($hash_in);
+		}
+		$this->processResponse($payment,$litleResponse);
 	}
 
 	/**
@@ -266,6 +280,16 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	public function void (Varien_Object $payment)
 	{
-
+		$order = $payment->getOrder();
+		if (!empty($order)){
+			$hash = array(
+						'litleTxnId' => $payment->getCcTransId()
+			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->echeckVoidRequest($hash_in);
+		}
+		$this->processResponse($payment,$litleResponse);
 	}
 }
