@@ -250,6 +250,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$litleResponse = $litleRequest->creditRequest($hash_in);
 		}
 		$this->processResponse($payment,$litleResponse);
+		return $this;
 	}
 
 	/**
