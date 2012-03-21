@@ -33,6 +33,8 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 * can this method refund?
 	 */
 	protected $_canRefund               = true;
+	
+	protected $_canRefundInvoicePartial		= true;
 
 	/**
 	 * can this method void transactions?
@@ -65,7 +67,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/LitlePayment/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
-		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 
 		return $returnFromThisModel;
 	}
@@ -178,9 +180,6 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 				->setIsTransactionClosed(0)
 				->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
-				//->setCcApproval("Approved")
-				//->setAddressResult(XmlParser::getNode($litleResponse,'avsResult'))
-				//->setCv2Result(XmlParser::getNode($litleResponse,'cardValidationResult'));
 			}
 			return $this;
 		}
