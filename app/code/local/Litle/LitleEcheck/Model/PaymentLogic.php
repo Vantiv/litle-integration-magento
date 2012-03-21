@@ -236,7 +236,7 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 * this method is called if we are authorising AND
 	 * capturing a transaction
 	 */
-	public function capture (Varien_Object $payment, $amount)true
+	public function capture (Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
 		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
@@ -267,12 +267,15 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 			'litleTxnId' => $payment->getCcTransId(),
 			'amount' => $amountToPass
 			);
+
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
 			$litleResponse = $litleRequest->echeckCreditRequest($hash_in);
 		}
+
 		$this->processResponse($payment,$litleResponse);
+		return $this;
 	}
 
 	/**
