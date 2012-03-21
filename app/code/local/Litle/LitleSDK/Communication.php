@@ -23,8 +23,8 @@
 * OTHER DEALINGS IN THE SOFTWARE.
 */
 class Communication{
-	function httpRequest($req){
-		$config = Communication::getConfig();
+	function httpRequest($req,$hash_config=NULL){
+		$config = Obj2xml::getConfig($hash_config);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_PROXY, $config['proxy']);
 		curl_setopt($ch, CURLOPT_POST, true);
@@ -48,15 +48,4 @@ class Communication{
 		}
 
 	}
-	private function getConfig()
-	{
-		if (file_exists(realpath(dirname(__FILE__)) . '/litle_SDK_config.ini')){
-			$configArray =parse_ini_file('litle_SDK_config.ini');
-			return $configArray;
-		}else{
-			throw new Exception("Missing Configuration File, please Run Setup.php");
-		}
-
-	}
 }
-
