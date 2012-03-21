@@ -164,7 +164,13 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	{
 		$hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
-					'merchantId'=>$this->getConfigData("merchantId"));
+					'merchantId'=>$this->getConfigData("merchantId"),
+					'version'=>$this->getConfigData("version"),
+					'reportGroup'=>$this->getConfigData("reportGroup"),
+					'url'=>$this->getConfigData("url"),	
+					'proxy'=>$this->getConfigData("proxy"),
+					'timeout'=>$this->getConfigData("timeout")
+		);
 		return $hash;
 	}
 
@@ -267,12 +273,15 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 			'litleTxnId' => $payment->getCcTransId(),
 			'amount' => $amountToPass
 			);
+
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
 			$litleResponse = $litleRequest->echeckCreditRequest($hash_in);
 		}
+
 		$this->processResponse($payment,$litleResponse);
+		return $this;
 	}
 
 	/**
