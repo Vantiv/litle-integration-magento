@@ -47,7 +47,6 @@
 			<litleecheck>
 				<active>1</active>
 				<timeout>65</timeout>
-				<url>https://www.testlitle.com/sandbox/communicator/online</url>
 				<debug>0</debug>
 				<email_customer>0</email_customer>
 				<cctypes>AE,VI,MC,DI</cctypes>
