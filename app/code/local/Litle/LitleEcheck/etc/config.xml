@@ -47,8 +47,7 @@
 			<litleecheck>
 				<active>1</active>
 				<timeout>65</timeout>
-				<debug>0</debug>
-				<email_customer>0</email_customer>
+				<url>https://www.testlitle.com/sandbox/communicator/online</url>
 				<cctypes>AE,VI,MC,DI</cctypes>
 				<model>litleecheck/paymentLogic</model>
 				<order_status>1</order_status>

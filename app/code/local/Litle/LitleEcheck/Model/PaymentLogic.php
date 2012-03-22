@@ -165,7 +165,7 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 		$hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
 					'merchantId'=>$this->getConfigData("merchant_id"),
-					'version'=>$this->getConfigData("version"),
+					'version'=>'8.10',
 					'reportGroup'=>$this->getConfigData("reportGroup"),
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),
