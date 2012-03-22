@@ -48,7 +48,6 @@
 				<active>1</active>
 				<timeout>65</timeout>
 				<url>https://www.testlitle.com/sandbox/communicator/online</url>
-				<cctypes>AE,VI,MC,DI</cctypes>
 				<model>litleecheck/paymentLogic</model>
 				<order_status>1</order_status>
 				<payment_action>authorize</payment_action>
