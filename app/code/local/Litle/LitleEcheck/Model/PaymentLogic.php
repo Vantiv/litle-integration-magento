@@ -162,7 +162,7 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 					'merchantId'=>$this->getConfigData("merchant_id"),
 					'version'=>'8.10',
 					'reportGroup'=>$this->getConfigData("reportGroup"),
-					'url'=>$this->getConfigData("url"),	
+					'url'=>'http://l-gdake-t5500:8081/sandbox/communicator/online',	
 					'proxy'=>$this->getConfigData("proxy"),
 					'timeout'=>$this->getConfigData("timeout")
 		);
@@ -245,8 +245,13 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 
 		if (!empty($order)){
 			$hash = array(
-	 			'amount'=> $amountToPass,
-				'litleTxnId' => $payment->getCcTransId()
+	 					'orderId'=> $orderId,
+	 					'amount'=> $amountToPass,
+	 					'orderSource'=> "ecommerce",
+						'verify'=>'true',
+						'billToAddress'=> $this->getBillToAddress($payment),
+						'shipToAddress'=> $this->getAddressInfo($payment),
+	 					'echeck'=> $this->getEcheckInfo($payment)
 			);
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
