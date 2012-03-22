@@ -224,16 +224,38 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function capture (Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
+		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
 		$amountToPass = ($amount* 100);
+		$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
 		if (!empty($order)){
-			$hash = array(
-				'litleTxnId' => $payment->getCcTransId(),
-				'amount' => $amountToPass
-			);
+			
+			if( !$isSale )
+			{
+				$hash = array(
+								'litleTxnId' => $payment->getCcTransId(),
+								'amount' => $amountToPass
+				);
+			} else {
+				$hash = array(
+			 					'orderId'=> $orderId,
+			 					'amount'=> $amountToPass,
+			 					'orderSource'=> "ecommerce",
+								'billToAddress'=> $this->getBillToAddress($payment),
+								'shipToAddress'=> $this->getAddressInfo($payment),
+			 					'card'=> $this->getCreditCardInfo($payment)
+				);
+			}
+			
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
-			$litleResponse = $litleRequest->captureRequest($hash_in);
+			
+			if( $isSale )
+			{
+				$litleResponse = $litleRequest->saleRequest($hash_in);
+			} else {
+				$litleResponse = $litleRequest->captureRequest($hash_in);
+			}
 		}
 		$this->processResponse($payment,$litleResponse);
 	}

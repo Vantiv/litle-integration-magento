@@ -24,6 +24,5 @@ class Litle_LitleEcheck_Model_Accounttypes
         }
 
         return $options;
-        
     }
 }
