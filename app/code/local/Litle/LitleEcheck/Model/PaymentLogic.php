@@ -150,7 +150,7 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 					'merchantId'=>$this->getConfigData("merchant_id"),
 					'version'=>'8.10',
 					'reportGroup'=>$this->getConfigData("reportGroup"),
-					'url'=>'http://l-gdake-t5500:8081/sandbox/communicator/online',	
+					'url'=>$this->getConfigData("url"),
 					'proxy'=>$this->getConfigData("proxy"),
 					'timeout'=>$this->getConfigData("timeout")
 		);
