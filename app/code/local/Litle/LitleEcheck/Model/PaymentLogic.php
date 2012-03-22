@@ -92,15 +92,10 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	{
 		$info = $this->getInfoInstance();
 		$retArray = array();
-
 		$retArray["accNum"] = $info->getAdditionalInformation('echeck_bank_acc_num');
-
-		$retArray["accType"] = "Checking";//$info->getAdditionalInformation('echeck_acc_type');
-
+		$retArray["accType"] = $info->getAdditionalInformation('echeck_acc_type');
 		$retArray["routingNum"] = $info->getAdditionalInformation('echeck_routing_num');
-
 		return $retArray;
-
 	}
 
 	public function getContactInformation($contactInfo)
