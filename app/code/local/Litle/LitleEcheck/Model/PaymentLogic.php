@@ -194,9 +194,6 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setIsTransactionClosed(0)
 					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
-					//->setCcApproval("Approved")
-					//->setAddressResult(XmlParser::getNode($litleResponse,'avsResult'))
-					//->setCv2Result(XmlParser::getNode($litleResponse,'cardValidationResult'));
 				}
 				return $this;
 			}
