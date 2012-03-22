@@ -36,7 +36,7 @@
         <payment>
             <creditcard>
                 <active>1</active>
-                <model>creditCard/paymentLogic</model>
+                <model>creditcard/paymentLogic</model>
                 <order_status>pending</order_status>
                 <title>Credit Card (Litle Payment)</title>
                 <cctypes>AE,VI,MC,DI,SS</cctypes>
