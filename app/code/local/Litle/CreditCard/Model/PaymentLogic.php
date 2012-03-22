@@ -61,7 +61,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	protected $_canSaveCc = false;
 
-	protected $dummy_fail = false;
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
@@ -81,14 +80,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$retArray["expDate"] = sprintf('%02d%02d', $payment->getCcExpMonth(), $expYear[1]);
 		$retArray["cardValidationNum"] = $payment->getCcCid();
 
-		if($this->dummy_fail)
-		{
-			$retArray["type"] = "VI";
-			$retArray["number"] = "4457010100000008";
-			$retArray["expDate"] = "0612";
-			$retArray["cardValidationNum"] = "992";
-		}
-
 		return $retArray;
 	}
 
@@ -96,29 +87,18 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		if(!empty($contactInfo)){
 			$retArray = array();
-			if($this->dummy_fail)
-			{
-				$retArray["name"] = "Joe Green";
-				$retArray["addressLine1"] = "6 Main St.";
-				$retArray["city"] = "Derry";
-				$retArray["state"] = "NH";
-				$retArray["zip"] = "03038";
-				$retArray["country"] = "US";
-			}
-			else{
-				$retArray["firstName"] =$contactInfo->getFirstname();
-				$retArray["lastName"] = $contactInfo->getLastname();
-				$retArray["companyName"] = $contactInfo->getCompany();
-				$retArray["addressLine1"] = $contactInfo->getStreet(1);
-				$retArray["addressLine2"] = $contactInfo->getStreet(2);
-				$retArray["addressLine3"] = $contactInfo->getStreet(3);
-				$retArray["city"] = $contactInfo->getCity();
-				$retArray["state"] = $contactInfo->getRegion();
-				$retArray["zip"] = $contactInfo->getPostcode();
-				$retArray["country"] = $contactInfo->getCountry();
-				$retArray["email"] = $contactInfo->getCustomerEmail();
-				$retArray["phone"] = $contactInfo->getTelephone();
-			}
+			$retArray["firstName"] =$contactInfo->getFirstname();
+			$retArray["lastName"] = $contactInfo->getLastname();
+			$retArray["companyName"] = $contactInfo->getCompany();
+			$retArray["addressLine1"] = $contactInfo->getStreet(1);
+			$retArray["addressLine2"] = $contactInfo->getStreet(2);
+			$retArray["addressLine3"] = $contactInfo->getStreet(3);
+			$retArray["city"] = $contactInfo->getCity();
+			$retArray["state"] = $contactInfo->getRegion();
+			$retArray["zip"] = $contactInfo->getPostcode();
+			$retArray["country"] = $contactInfo->getCountry();
+			$retArray["email"] = $contactInfo->getCustomerEmail();
+			$retArray["phone"] = $contactInfo->getTelephone();
 			return $retArray;
 		}
 		return NULL;
@@ -163,31 +143,37 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $hash;
 	}
 
-	public function processResponse(Varien_Object $payment,$litleResponse){
-		if( isset($litleResponse))
-		{
-			$litleResponseCode = XMLParser::getNode($litleResponse,'response');
-			if($litleResponseCode != "000")
+public function processResponse(Varien_Object $payment,$litleResponse){
+		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
+		if ($message == "Valid Format"){
+			if( isset($litleResponse))
 			{
-				$payment
-				->setStatus("Rejected")
-				->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setIsTransactionClosed(0)
-				->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
+				if($litleResponseCode != "000")
+				{
+					$payment
+					->setStatus("Rejected")
+					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setIsTransactionClosed(0)
+					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+				}
+				else
+				{
+					$payment
+					->setStatus("Approved")
+					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
+					->setIsTransactionClosed(0)
+					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+				}
+				return $this;
 			}
-			else
-			{
-				$payment
-				->setStatus("Approved")
-				->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
-				->setIsTransactionClosed(0)
-				->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
-			}
-			return $this;
+		}
+		else{
+			Mage::throwException($message);
 		}
 	}
 	/**
@@ -197,8 +183,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function authorize(Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
-		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
-		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);
+		$orderId =  $order->getIncrementId();
+		$amountToPass = ($amount* 100);
 
 		if (!empty($order)){
 			$hash = array(
@@ -224,11 +210,11 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function capture (Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
-		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
+		$orderId =$order->getIncrementId();
 		$amountToPass = ($amount* 100);
 		$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
 		if (!empty($order)){
-			
+				
 			if( !$isSale )
 			{
 				$hash = array(
@@ -245,11 +231,11 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			 					'card'=> $this->getCreditCardInfo($payment)
 				);
 			}
-			
+				
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
-			
+				
 			if( $isSale )
 			{
 				$litleResponse = $litleRequest->saleRequest($hash_in);

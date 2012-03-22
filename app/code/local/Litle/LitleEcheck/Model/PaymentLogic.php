@@ -63,7 +63,6 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	 */
 	protected $_canSaveCc = false;
 
-	protected $dummy_fail = false;
 
 	public function assignData($data)
 	{
@@ -102,16 +101,6 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	{
 		if(!empty($contactInfo)){
 			$retArray = array();
-			if($this->dummy_fail)
-			{
-				$retArray["name"] = "Joe Green";
-				$retArray["addressLine1"] = "6 Main St.";
-				$retArray["city"] = "Derry";
-				$retArray["state"] = "NH";
-				$retArray["zip"] = "03038";
-				$retArray["country"] = "US";
-			}
-			else{
 				$retArray["firstName"] =$contactInfo->getFirstname();
 				$retArray["lastName"] = $contactInfo->getLastname();
 				$retArray["companyName"] = $contactInfo->getCompany();
@@ -124,7 +113,6 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 				$retArray["country"] = $contactInfo->getCountry();
 				$retArray["email"] = $contactInfo->getCustomerEmail();
 				$retArray["phone"] = $contactInfo->getTelephone();
-			}
 			return $retArray;
 		}
 		return NULL;
@@ -209,8 +197,8 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	public function authorize(Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
-		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
-		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);
+		$orderId = $order->getIncrementId();
+		$amountToPass = ($amount* 100);
 
 		if (!empty($order)){
 			$hash = array(
@@ -237,8 +225,8 @@ class Litle_LitleEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abs
 	public function capture (Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
-		$orderId = $this->dummy_fail ? "6" : $order->getIncrementId();
-		$amountToPass = $this->dummy_fail ? "60060" : ($amount* 100);
+		$orderId =$order->getIncrementId();
+		$amountToPass = ($amount* 100);
 
 		if (!empty($order)){
 			$hash = array(
