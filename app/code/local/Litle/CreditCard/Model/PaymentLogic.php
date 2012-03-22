@@ -33,7 +33,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 * can this method refund?
 	 */
 	protected $_canRefund               = true;
-	
+
 	protected $_canRefundInvoicePartial		= true;
 
 	/**
@@ -65,9 +65,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
-		$returnFromThisModel = Mage::getStoreConfig('payment/LitleCreditCard/' . $fieldToLookFor);
+		$returnFromThisModel = Mage::getStoreConfig('payment/CreditCard/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
-			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 
 		return $returnFromThisModel;
 	}
@@ -153,10 +153,16 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
-					'merchantId'=>$this->getConfigData("merchantId"));
+					'merchantId'=>$this->getConfigData("merchant_id"),
+					'version'=>$this->getConfigData("version"),
+					'reportGroup'=>$this->getConfigData("reportGroup"),
+					'url'=>$this->getConfigData("url"),	
+					'proxy'=>$this->getConfigData("proxy"),
+					'timeout'=>$this->getConfigData("timeout")
+		);
 		return $hash;
 	}
-	
+
 	public function processResponse(Varien_Object $payment,$litleResponse){
 		if( isset($litleResponse))
 		{

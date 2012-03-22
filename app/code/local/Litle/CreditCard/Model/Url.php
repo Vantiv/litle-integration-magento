@@ -1,11 +1,11 @@
 <?php
 
-class  Litle_LitleEcheck_Model_URL
+class  Litle_CreditCard_Model_URL
 {
 	public function toOptionArray()
 	{
 		return array(
-		
+
 		array(
                 'value' => "https://www.testlitle.com/sandbox/communicator/online",
                 'label' => 'Sandbox'
