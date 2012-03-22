@@ -3,10 +3,10 @@
     <sections>
         <payment>
             <groups>
-                <LitlePayment translate="label" module="paygate">
-                    <label>Litle Payment</label>
+                <CreditCard translate="label" module="paygate">
+                    <label>Litle - Credit Card</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>10</sort_order>
+                    <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -63,7 +63,7 @@
                             <show_in_store>0</show_in_store>
                         </order_status>
                     </fields>
-                </LitlePayment>
+                </CreditCard>
             </groups>
         </payment>
     </sections>

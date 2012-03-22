@@ -1,12 +1,12 @@
 <?php
 require_once('Litle/LitleSDK/LitleOnline.php');
 
-class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
+class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 {
 	/**
 	 * unique internal payment method identifier
 	 */
-	protected $_code = 'litlepayment';
+	protected $_code = 'creditcard';
 
 	/**
 	 * this should probably be true if you're using this
@@ -65,7 +65,7 @@ class Litle_LitlePayment_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
-		$returnFromThisModel = Mage::getStoreConfig('payment/LitlePayment/' . $fieldToLookFor);
+		$returnFromThisModel = Mage::getStoreConfig('payment/LitleCreditCard/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
 			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 

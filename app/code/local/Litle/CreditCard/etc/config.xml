@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<modules>
-		<Litle_LitlePayment>
+		<Litle_CreditCard>
 			<version>0.1.0</version>
-		</Litle_LitlePayment>
+		</Litle_CreditCard>
 	</modules>
 	<global>
 		<models>
-			<litlepayment>
-				<class>Litle_LitlePayment_Model</class>
-			</litlepayment>
+			<creditcard>
+				<class>Litle_CreditCard_Model</class>
+			</creditcard>
 		</models>
 		<resources>
-			<litlepayment_setup>
+			<creditcard_setup>
 				<setup>
-					<module>Litle_LitlePayment</module>
+					<module>Litle_CreditCard</module>
 				</setup>
 				<connection>
 					<use>core_setup</use>
 				</connection>
-			</litlepayment_setup>
-			<litlepayment_write>
+			</creditcard_setup>
+			<creditcard_write>
 				<connection>
 					<use>core_write</use>
 				</connection>
-			</litlepayment_write>
-			<litlepayment_read>
+			</creditcard_write>
+			<creditcard_read>
 				<connection>
 					<use>core_read</use>
 				</connection>
-			</litlepayment_read>
+			</creditcard_read>
 		</resources>
 	</global>
 	<default>
         <payment>
-            <litlepayment>
+            <creditcard>
                 <active>1</active>
-                <model>litlepayment/paymentLogic</model>
+                <model>creditCard/paymentLogic</model>
                 <order_status>pending</order_status>
                 <title>Credit Card (Litle Payment)</title>
                 <cctypes>AE,VI,MC,DI,SS</cctypes>
                 <payment_action>authorize</payment_action>
                 <allowspecific>0</allowspecific>
-            </litlepayment>
+            </creditcard>
         </payment>
     </default>
 </config>
