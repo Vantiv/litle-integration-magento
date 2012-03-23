@@ -1,5 +1,5 @@
 <?php
-class Litle_LitleEcheck_Block_Form_LitleEcheck extends Mage_Payment_Block_Form
+class Litle_LEcheck_Block_Form_LEcheck extends Mage_Payment_Block_Form
 {
 	protected function _construct()
 	{

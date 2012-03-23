@@ -7,9 +7,9 @@
 		</Litle_CreditCard>
 	</modules>
 	<modules>
-		<Litle_LitleEcheck>
+		<Litle_LEcheck>
 			<active>true</active>
 			<codePool>local</codePool>
-		</Litle_LitleEcheck>
+		</Litle_LEcheck>
 	</modules>
 </config>

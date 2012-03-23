@@ -1,5 +1,5 @@
 <?php
-class Litle_LitleEcheck_Model_Config
+class Litle_LEcheck_Model_Config
 {
     public function getAccountTypes()
     {

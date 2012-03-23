@@ -1,6 +1,6 @@
 <?php
 
-class  Litle_LitleEcheck_Model_URL
+class  Litle_LEcheck_Model_URL
 {
 	public function toOptionArray()
 	{

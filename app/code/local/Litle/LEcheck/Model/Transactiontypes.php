@@ -1,6 +1,6 @@
 <?php
 
-class  Litle_LitleEcheck_Model_Transactiontypes
+class  Litle_LEcheck_Model_Transactiontypes
 {
     public function toOptionArray()
     {

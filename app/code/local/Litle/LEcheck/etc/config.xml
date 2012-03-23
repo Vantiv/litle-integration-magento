@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<modules>
-		<Litle_LitleEcheck>
+		<Litle_LEcheck>
 			<version>0.1.0</version>
-		</Litle_LitleEcheck>
+		</Litle_LEcheck>
 	</modules>
 	<global>
 		<blocks>
-			<litleecheck>
-				<class>Litle_LitleEcheck_Block</class>
-			</litleecheck>
+			<lecheck>
+				<class>Litle_LEcheck_Block</class>
+			</lecheck>
 		</blocks>
 		<helpers>
-	    	<echeck>
-				<class>Litle_LitleEcheck_Helper</class>
-			</echeck>
+	    	<lecheck>
+				<class>Litle_LEcheck_Helper</class>
+			</lecheck>
 		</helpers>
 		<models>
-			<litleecheck>
-				<class>Litle_LitleEcheck_Model</class>
-			</litleecheck>
+			<lecheck>
+				<class>Litle_LEcheck_Model</class>
+			</lecheck>
 		</models>
 		<resources>
-			<litleecheck_setup>
+			<lecheck_setup>
 				<setup>
-					<module>Litle_LitleEcheck</module>
+					<module>Litle_LEcheck</module>
 				</setup>
 				<connection>
 					<use>core_setup</use>
 				</connection>
-			</litleecheck_setup>
-			<litleecheck_write>
+			</lecheck_setup>
+			<lecheck_write>
 				<connection>
 					<use>core_write</use>
 				</connection>
-			</litleecheck_write>
-			<litleecheck_read>
+			</lecheck_write>
+			<lecheck_read>
 				<connection>
 					<use>core_read</use>
 				</connection>
-			</litleecheck_read>
+			</lecheck_read>
 		</resources>
 	</global>
 	<default>
 		<payment>
-			<litleecheck>
+			<lecheck>
 				<active>1</active>
 				<timeout>65</timeout>
 				<url>https://www.testlitle.com/sandbox/communicator/online</url>
-				<model>litleecheck/paymentLogic</model>
+				<model>lecheck/paymentLogic</model>
 				<order_status>1</order_status>
 				<payment_action>authorize</payment_action>
 				<test>1</test>
 				<title>Litle Echeck</title>
 				<allowspecific>0</allowspecific>
-			</litleecheck>
+			</lecheck>
 		</payment>
 	</default>
 </config>

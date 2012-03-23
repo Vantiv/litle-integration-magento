@@ -1,5 +1,5 @@
 <?php
-class Litle_LitleEcheck_Model_Accounttypes
+class Litle_LEcheck_Model_Accounttypes
 {
     public function getAllowedTypes()
     {
@@ -14,7 +14,7 @@ class Litle_LitleEcheck_Model_Accounttypes
         $allowed = $this->getAllowedTypes();
         $options = array();
 
-        foreach (Mage::getSingleton('litleecheck/config')->getAccountTypes() as $code => $name) {
+        foreach (Mage::getSingleton('lecheck/config')->getAccountTypes() as $code => $name) {
             if (in_array($code, $allowed) || !count($allowed)) {
                 $options[] = array(
                    'value' => $code,
