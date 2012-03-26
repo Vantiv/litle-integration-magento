@@ -158,6 +158,8 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setIsTransactionClosed(0)
 					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+					
+					throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact us or try again later."));
 				}
 				else
 				{
@@ -182,6 +184,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 	 */
 	public function authorize(Varien_Object $payment, $amount)
 	{
+		echo Mage::printDebugBacktrace(); exit;
 		$order = $payment->getOrder();
 		$orderId =  $order->getIncrementId();
 		$amountToPass = ($amount* 100);
