@@ -146,6 +146,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 public function processResponse(Varien_Object $payment,$litleResponse){
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
+			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
 			if( isset($litleResponse))
 			{
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
@@ -159,7 +160,10 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					->setIsTransactionClosed(0)
 					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
 					
-					throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact us or try again later."));
+					if($isSale)
+						throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact us or try again later."));
+					else
+						throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact Litle or try again later."));
 				}
 				else
 				{
@@ -184,7 +188,6 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 	 */
 	public function authorize(Varien_Object $payment, $amount)
 	{
-		echo Mage::printDebugBacktrace(); exit;
 		$order = $payment->getOrder();
 		$orderId =  $order->getIncrementId();
 		$amountToPass = ($amount* 100);
@@ -213,16 +216,19 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 	public function capture (Varien_Object $payment, $amount)
 	{
 		$order = $payment->getOrder();
-		$orderId =$order->getIncrementId();
-		$amountToPass = ($amount* 100);
-		$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
 		if (!empty($order)){
-				
+			
+			$orderId =$order->getIncrementId();
+			$amountToPass = ($amount* 100);
+			$isPartialCapture = ($amount < $order->getGrandTotal()) ? TRUE : FALSE;
+			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
+			
 			if( !$isSale )
 			{
 				$hash = array(
-								'litleTxnId' => $payment->getCcTransId(),
-								'amount' => $amountToPass
+								'litleTxnId' => $payment->getParentTransactionId(),//getCcTransId(),
+								'amount' => $amountToPass,
+								'partial' => $isPartialCapture
 				);
 			} else {
 				$hash = array(
@@ -237,6 +243,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 				
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
+			//echo $payment->getParentTransactionId(); exit;
 			$litleRequest = new LitleOnlineRequest();
 				
 			if( $isSale )
