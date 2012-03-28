@@ -22,7 +22,7 @@ class Litle_LEcheck_Model_Validatehttp extends Mage_Core_Model_Config_Data
 			$output = curl_exec($ch);
 
 			if (! $output){
-				Mage::throwException('Error Connecting to Litle System, Please Make sure your HTTP configuration settings are correct');
+				Mage::throwException('Error connecting to Litle. Make sure your HTTP configuration settings are correct.');
 			}
 			else
 			{

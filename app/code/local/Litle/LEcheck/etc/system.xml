@@ -63,7 +63,7 @@
                             <show_in_store>0</show_in_store>
                         </merchant_id>
                           <reportGroup translate="label">
-                            <label>reportGroup</label>
+                            <label>Report Group</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
@@ -107,7 +107,7 @@
 							<show_in_store>0</show_in_store>
 						</payment_action>
 						<order_status translate="label">
-							<label>New order status</label>
+							<label>New Order Status</label>
 							<frontend_type>select</frontend_type>
 							<source_model>adminhtml/system_config_source_order_status_processing
 							</source_model>

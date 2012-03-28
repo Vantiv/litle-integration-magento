@@ -41,7 +41,7 @@
                 <model>creditcard/paymentLogic</model>
                 <order_status>pending</order_status>
                 <title>Credit Card (Litle Payment)</title>
-                <cctypes>AE,VI,MC,DI,SS</cctypes>
+                <cctypes>AE,VI,MC,DI</cctypes>
                 <payment_action>authorize</payment_action>
                 <allowspecific>0</allowspecific>
             </creditcard>
