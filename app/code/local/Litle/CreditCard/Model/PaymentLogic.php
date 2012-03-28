@@ -220,7 +220,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 			
 			$orderId =$order->getIncrementId();
 			$amountToPass = ($amount* 100);
-			$isPartialCapture = ($amount < $order->getGrandTotal()) ? TRUE : FALSE;
+			$isPartialCapture = ($amount < $order->getGrandTotal()) ? "true" : "false";
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
 			
 			if( !$isSale )
@@ -241,9 +241,9 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 				);
 			}
 				
+			echo $isPartialCapture;exit;
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
-			//echo $payment->getParentTransactionId(); exit;
 			$litleRequest = new LitleOnlineRequest();
 				
 			if( $isSale )
