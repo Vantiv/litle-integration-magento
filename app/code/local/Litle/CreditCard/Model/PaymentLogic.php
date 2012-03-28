@@ -241,7 +241,6 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 				);
 			}
 				
-			echo $isPartialCapture;exit;
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
