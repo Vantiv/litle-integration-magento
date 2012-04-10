@@ -158,7 +158,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setIsTransactionClosed(0)
-					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
 					
 					if($isSale)
 						throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact us or try again later."));
@@ -173,7 +173,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setIsTransactionClosed(0)
-					->setTransactionAdditionalInfo(XMLParser::getNode($litleResponse,'message'));
+					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
 				}
 				return $this;
 			}
