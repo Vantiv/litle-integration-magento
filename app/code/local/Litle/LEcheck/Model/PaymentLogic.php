@@ -80,7 +80,7 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
-		$returnFromThisModel = Mage::getStoreConfig('payment/LitleEcheck/' . $fieldToLookFor);
+		$returnFromThisModel = Mage::getStoreConfig('payment/LEcheck/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
 		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 
