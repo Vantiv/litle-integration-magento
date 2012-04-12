@@ -74,7 +74,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function getCreditCardInfo(Varien_Object $payment)
 	{
 		$retArray = array();
-		$retArray["type"] = $payment->getCcType();
+		$retArray["type"] = ($payment->getCcType() == "AE")? "AX" : $payment->getCcType();
 		$retArray["number"] = $payment->getCcNumber();
 		preg_match("/\d\d(\d\d)/", $payment->getCcExpYear(), $expYear);
 		$retArray["expDate"] = sprintf('%02d%02d', $payment->getCcExpMonth(), $expYear[1]);
