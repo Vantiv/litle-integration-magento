@@ -7,7 +7,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 * unique internal payment method identifier
 	 */
 	protected $_code = 'creditcard';
-
+	
+	protected $_formBlockType = 'creditcard/form_creditCard';
 	/**
 	 * this should probably be true if you're using this
 	 * method to take payments

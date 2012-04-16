@@ -6,6 +6,11 @@
 		</Litle_CreditCard>
 	</modules>
 	<global>
+	<blocks>
+		<creditcard>
+				<class>Litle_CreditCard_Block</class>
+			</creditcard>
+		</blocks>
 		<models>
 			<creditcard>
 				<class>Litle_CreditCard_Model</class>
