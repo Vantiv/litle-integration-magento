@@ -290,7 +290,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
-			$litleResponse = $litleRequest->voidRequest($hash_in);
+			$litleResponse = $litleRequest->authReversalRequest($hash_in);
 		}
 		$this->processResponse($payment,$litleResponse);
 	}

@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Litle_Editable>
+            <version>0.2.2</version>
+        </Litle_Editable>
+    </modules>
+    <admin>
+        <routers>
+			<editable>
+				<use>admin</use>
+				<args>
+					<module>Litle_Editable</module>
+					<frontName>editable</frontName>
+				</args>
+			</editable>
+        </routers>
+    </admin>
+    <global>
+ 
+        <blocks>
+            <editable>
+                <class>Litle_Editable_Block</class>
+            </editable>
+			<adminhtml>
+	    	 	<rewrite>
+                    <!-- <sales_order_view_info>Litle_Editable_Block_Adminhtml_Info</sales_order_view_info> -->
+                      <sales_transactions_detail>Litle_Editable_Block_Adminhtml_Transaction</sales_transactions_detail>
+				</rewrite>
+	    	</adminhtml>
+        </blocks>
+
+        <helpers>
+            <editable>
+                <class>Litle_Editable_Helper</class>
+            </editable>
+        </helpers>
+
+        <customer>
+            <address>
+                <formats>
+                    <editable translate="title" module="editable">
+                        <title>Editable</title>
+                        <htmlEscape>true</htmlEscape>
+                        <defaultFormat></defaultFormat>
+                    </editable>
+                </formats>
+            </address>
+        </customer>
+
+
+    </global>
+
+</config>

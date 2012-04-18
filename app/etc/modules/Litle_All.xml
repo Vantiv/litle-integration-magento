@@ -12,4 +12,11 @@
 			<codePool>local</codePool>
 		</Litle_LEcheck>
 	</modules>
+	<modules>
+        <Litle_Editable>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Litle_Editable>
+    </modules>
+	
 </config>
