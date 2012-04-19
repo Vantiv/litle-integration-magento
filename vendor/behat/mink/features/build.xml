@@ -33,7 +33,7 @@
 				<pathelement location="extlib/license/truelicense.jar" />
 				<pathelement location="extlib/license/truexml.jar" />
 				<pathelement location="extlib/db/h2.jar" />
-				<fileset dir="${sahi.home}/extlib" includes="*.jar" />
+				<fileset dir="extlib" includes="*.jar" />
 			</classpath>
 			<arg value="." id="basePath" />
 			<arg value="userdata" id="userdataPath" />
