@@ -12,6 +12,7 @@ use Behat\Gherkin\Node\PyStringNode,
  */
 class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 {
+	
     /**
      * @Then /^I wait for the suggestion box to appear$/
      */
@@ -25,41 +26,122 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
      */
     public function iAmLoggedInAsWithThePassword($username, $password)
     {
-	$driver = new \Behat\Mink\Driver\SahiDriver('firefox');
-	$session = new \Behat\Mink\Session($driver);
+		//$driver = new \Behat\Mink\Driver\SahiDriver('firefox');
+ 		//$session = new \Behat\Mink\Session($driver);
+		$session = $this->getMink()->getSession('sahi');    	//var_dump($session);
 
-	// start session:
-	$session->start();
-	$session->visit('http://localhost/magento/index.php/');
-
-	//Get to login screen
-	$page = $session->getPage();
-	$loginLink = $page->findLink("Log In");
-	$loginLink->click();
-
-	//Login 
-	$page = $session->getPage();
-	$page->findField("Email Address")->setValue($username);
-	$page->findField("Password")->setValue($password);
-	$page->findButton("Login")->click();
+// 		// start session:
+// 		$session->start();
+ 		$session->visit('http://localhost/magento/index.php/');
 	
-        throw new PendingException();
+// 		//Get to login screen
+ 		$page = $session->getPage();
+ 		$loginLink = $page->findLink("Log In");
+ 		$loginLink->click();
+	
+// 		//Login 
+ 		//$page = $session->getPage();
+ 		$page->findField("Email Address")->setValue($username);
+ 		$page->findField("Password")->setValue($password);
+ 		$page->findButton("Login")->click();		
     }
 
     /**
      * @Given /^I have "([^"]*)" in my cart$/
      */
-    public function iHaveInMyCart($argument1)
-    {
-        throw new PendingException();
+    public function iHaveInMyCart($product)
+    {      	    	
+    	$session = $this->getMink()->getSession('sahi');
+    	
+    	//Find the item
+     	$page = $session->getPage();
+     	$page->findField("search")->setValue($product);
+     	$page->findButton("Search")->click();
+     	
+     	//Add to cart
+     	$page->findButton("Add to Cart")->click();     	     
+     	
+     	//Proceed to checkout
+      	//$page->findButton("Proceed to Checkout")->click();
+     	
+//     	$session->wait(5000);    	 
     }
 
     /**
      * @When /^I press "([^"]*)" at "([^"]*)"$/
      */
-    public function iPressAt($argument1, $argument2)
+    public function iPressAt($button, $parentDiv)
     {
-        throw new PendingException();
+    	$session = $this->getMink()->getSession('sahi');
+    	 
+    	//Find the item
+    	$page = $session->getPage();
+    	$parent = $page->findById($parentDiv);
+    	$parent->findButton($button)->click();
+    	
+    	
+    	//echo $page->getContent();
+    	//$page->findButton($button)->click();
+    	    	
+    	//$session->wait(2000);        
     }
-
+    
+    
+    /**
+    * @Given /^I sleep for (\d+) milliseconds$/
+    */
+    public function iSleepForMilliseconds($time)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$session->wait($time);
+    }
+    
+    /**
+    * @Given /^I execute the javascript method "([^"]*)"$/
+    */
+    public function iExecuteTheJavascriptMethod($script)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$session->evaluateScript($script);
+    }
+    
+    /**
+    * @Given /^I choose "([^"]*)" from "([^"]*)"$/
+    */
+    public function iChooseFrom($choice, $parent)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	//$parent = $page->findById($parent);
+    	$page->findById($choice)->click();    	 
+    }
+    
+    /**
+    * @Given /^I select "([^"]*)" from the dropbox "([^"]*)"$/
+    */
+    public function iSelectFromTheDropbox($choice, $dropbox)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	$select = $page->findById($dropbox);
+    	$select->selectOption($choice);
+    }
+    
+    /**
+    * @When /^I press "([^"]*)" "([^"]*)"$/
+    */
+    public function iPress($button, $times)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	$fieldElements = $page->findAll('named',
+    	array('field', 'id|name|value|label')
+    	);
+    	$elementsByCss = $page->findAll('css', $button);
+    	var_dump($elementsByCss);
+    	$elementsByCss[intval($times)]->click();
+    	
+    }
+    
+    
 }
