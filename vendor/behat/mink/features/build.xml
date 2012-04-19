@@ -1,8 +1,9 @@
 <project name="jenkins-sample" default="ff">
-	<property name="userdata.dir" value="${basedir}/userdata" />
+	<property name="sahi.home" value="/usr/local/litle-home/gdake/sahi"/>
+	<property name="userdata.dir" value="${sahi.home}/userdata" />	
 	<property environment="env" />
 	<property name="urlbase" value="localhost" />
-	<taskdef name="sahi" classname="net.sf.sahi.ant.RunSahiTask" classpath="lib/ant-sahi.jar" />
+	<taskdef name="sahi" classname="net.sf.sahi.ant.RunSahiTask" classpath="${sahi.home}/lib/ant-sahi.jar" />
 	<target name="ff" description="start the server and run sahi tests">
 		<parallel>
 			<sequential>
