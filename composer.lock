@@ -1,0 +1,131 @@
+{
+    "hash": "c706392aff385ddf853e81dbb46564fe",
+    "packages": [
+        {
+            "package": "alexandresalome/php-selenium",
+            "version": "master-dev",
+            "source-reference": "master"
+        },
+        {
+            "package": "behat/behat",
+            "version": "dev-master",
+            "source-reference": "v2.3.5"
+        },
+        {
+            "package": "behat/gherkin",
+            "version": "v2.1.1"
+        },
+        {
+            "package": "behat/mink",
+            "version": "v1.3.2"
+        },
+        {
+            "package": "behat/sahi-client",
+            "version": "dev-master",
+            "source-reference": "v1.0.1"
+        },
+        {
+            "package": "fabpot/goutte",
+            "version": "master-dev",
+            "source-reference": "master"
+        },
+        {
+            "package": "facebook/php-webdriver",
+            "version": "master-dev",
+            "source-reference": "master"
+        },
+        {
+            "package": "kriswallsmith/buzz",
+            "version": "dev-master",
+            "source-reference": "83147864bfac8d47a56ac26b901b8f39ef078489"
+        },
+        {
+            "package": "symfony/browser-kit",
+            "version": "dev-master",
+            "source-reference": "f91ab705dc8f4fdfdc5baad0082a1263d77e147e"
+        },
+        {
+            "package": "symfony/config",
+            "version": "dev-master",
+            "source-reference": "94a0501a51791f845225186ad03ce586a7c73339",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/console",
+            "version": "dev-master",
+            "source-reference": "8e3c42aa976f18a9bfcb0694553e5f99def3309c",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/css-selector",
+            "version": "dev-master",
+            "source-reference": "dd695aadd80d8e6e726a7a050535c04325cefa02"
+        },
+        {
+            "package": "symfony/dependency-injection",
+            "version": "dev-master",
+            "source-reference": "f5e5c32235fd687cf892abcb443e920fad7b4221",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/dom-crawler",
+            "version": "dev-master",
+            "source-reference": "9b4694da9a1239771468096c574d8309992a8454"
+        },
+        {
+            "package": "symfony/event-dispatcher",
+            "version": "dev-master",
+            "source-reference": "07e1d0174f3a0ec36bbe04b3850270df7a86271d",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/finder",
+            "version": "dev-master",
+            "source-reference": "57ec7198a70e6c40e450ba66cc2f8ecab98746c8",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/process",
+            "version": "dev-master",
+            "source-reference": "2e4da8c8076744bafed97451bb1574c96cda0e68"
+        },
+        {
+            "package": "symfony/translation",
+            "version": "dev-master",
+            "source-reference": "996c638a7bc7427290c140bec1fab62a0db1044c",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/yaml",
+            "version": "dev-master",
+            "source-reference": "0647ee4ca69b60f9043256e89f8dbaa0cedd854c",
+            "alias": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "zendframework/zend-http",
+            "version": "2.0.0beta3"
+        },
+        {
+            "package": "zendframework/zend-loader",
+            "version": "2.0.0beta3"
+        },
+        {
+            "package": "zendframework/zend-registry",
+            "version": "2.0.0beta3"
+        },
+        {
+            "package": "zendframework/zend-stdlib",
+            "version": "2.0.0beta3"
+        },
+        {
+            "package": "zendframework/zend-uri",
+            "version": "2.0.0beta3"
+        },
+        {
+            "package": "zendframework/zend-validator",
+            "version": "2.0.0beta3"
+        }
+    ],
+    "packages-dev": null,
+    "aliases": []
+}
