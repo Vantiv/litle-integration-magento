@@ -18,7 +18,7 @@
 	</target>
 
 	<target name="runfftests">
-		<sahi suite="/usr/local/litle-home/gdake/sahi/userdata/scripts/Try2.sah" browserType="firefox" baseurl="http://localhost/magento/" sahihost="localhost" sahiport="9999" failureproperty="sahi.failed" haltonfailure="false" userDefinedId="sahi.co.in_firefox_english" threads="6">
+		<sahi suite="/usr/local/litle-home/gdake/sahi/userdata/scripts/Try2.sah" browserType="firefox" baseurl="http://localhost/magento/" sahihost="localhost" sahiport="9999" failureproperty="sahi.failed" haltonfailure="false" threads="6">
 			<customfield key="language" value="english" />
 			<report type="junit" logdir="${userdata.dir}/temp/junit/tests" />
 		</sahi>
