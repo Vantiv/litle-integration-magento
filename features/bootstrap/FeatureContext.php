@@ -13,14 +13,14 @@ use Behat\Gherkin\Node\PyStringNode,
 class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 {
 	
-    /**
-     * @Then /^I wait for the suggestion box to appear$/
-     */
-    public function iWaitForTheSuggestionBoxToAppear()
-    {
-        $this->getSession()->wait(5000, "$('.suggestions-results').children().length > 0");
-    }
-
+	/**
+	* @BeforeSuite
+	*/
+	public static function setup(Behat\Behat\Event\SuiteEvent $event)
+	{
+		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupLocalhost.sql");		
+	}
+	
     /**
      * @Given /^I am logged in as "([^"]*)" with the password "([^"]*)"$/
      */
@@ -81,22 +81,24 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     }
     
     /**
-    * @Given /^I execute the javascript method "([^"]*)"$/
+    * @Given /^I sleep for "([^"]*)" milliseconds$/
     */
-    public function iExecuteTheJavascriptMethod($script)
+    public function iSleepForMilliseconds2($time)
     {
     	$session = $this->getMink()->getSession('sahi');
-    	$session->evaluateScript($script);
-    }
+    	$session->wait($time);
+   	}    
     
     /**
-    * @Given /^I choose "([^"]*)" from "([^"]*)"$/
+    * @Given /^I choose "([^"]*)"$/
     */
-    public function iChooseFrom($choice, $parent)
+    public function iChoose($choice)
     {
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
-    	$page->findById($choice)->click();    	 
+    	if($choice === 'CreditCard') {
+    		$page->findById("p_method_creditcard")->click();
+    	}
     }
     
     /**
@@ -111,16 +113,96 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     }
     
     /**
-    * @When /^I press "([^"]*)" "([^"]*)"$/
+    * @Given /^I press the "([^"]*)" continue button$/
     */
-    public function iPress($button, $times)
+    public function iPressTheRdContinue($times)
+    {
+    	if($times == "3rd") {
+    		$session = $this->getMink()->getSession('sahi');
+    		$page = $session->getPage();
+    		$fieldElements = $page->findAll('named',array('field', 'id|name|value|label'));
+    		$elementsByCss = $page->findAll('css', "button");
+    		$elementsByCss[3]->click();
+    	}
+        else if($times == "4th") {
+    		$session = $this->getMink()->getSession('sahi');
+    		$page = $session->getPage();
+    		$fieldElements = $page->findAll('named',array('field', 'id|name|value|label'));
+    		$elementsByCss = $page->findAll('css', "button");
+    		$elementsByCss[4]->click();
+      	}
+    	else {
+    		throw new PendingException();
+    	}
+    }
+    
+    
+    /**
+    * @Given /^I am logged in as an administrator$/
+    */
+    public function iAmLoggedInAsAnAdministrator()
+    {
+    	$session = $this->getMink()->getSession('sahi'); 
+
+ 		$session->visit('http://127.0.0.1/magento/index.php/admin/');
+	
+ 		//Get to login screen
+ 		$page = $session->getPage();
+ 		$page->findField("User Name:")->setValue("admin");
+ 		$page->findField("Password:")->setValue("LocalMagentoAdmin1");
+ 		$page->findButton("Login")->click();    	
+    }
+    
+    /**
+     * @When /^I view "([^"]*)" "([^"]*)"$/
+     */
+    public function iView($menu1, $menu2)
     {
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
-    	$fieldElements = $page->findAll('named',array('field', 'id|name|value|label'));
-    	$elementsByCss = $page->findAll('css', $button);
-    	$elementsByCss[intval($times)]->click();
     	
+    	$page->findLink($menu1)->mouseOver();
+    	$page->findLink($menu2)->click();
+    }
+    
+    /**
+    * @Given /^I click on the top row in Transactions$/
+    */
+    public function iClickOnTheTopRowInTransactions()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	 
+    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div/div/table/tbody/tr[1]');
+    	$session->visit($topRow[0]->getAttribute("title"));
+    }
+    
+    /**
+    * @Given /^I click on the Transaction ID link$/
+    */
+    public function iClickOnTheTransactionIdLink()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	 
+    	$tmp = $session->getDriver()->find("/html/body/div/div[3]/div/div[3]/div/div[2]/table/tbody/tr/td/a[1]");
+    	$link = $tmp[0];
+    	$link->click();
+    }
+    
+    /**
+    * @Then /^I should see "([^"]*)" in the "([^"]*)"$/
+    */
+    public function iShouldSeeInThe($specific, $section)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	 
+    	$parent = $page->findById($section);
+    	$text = $parent->getText();
+    	if(preg_match("/.*" . $specific . ".*/", $text) == 0) {
+    		throw new ResponseTextException("Could not find $specific in $section", $session);
+    	}
     }
     
     

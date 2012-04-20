@@ -6,18 +6,33 @@ Feature: TransactionDetail
   I need to be able to see the link
   
   @javascript
-  Scenario: Buying an item with credit card
+  Scenario: Buying an item with a visa credit card
     Given I am logged in as "gdake@litle.com" with the password "password"
-      And I have "This is my product" in my cart
+    When I have "This is my product" in my cart
       And I press "Proceed to Checkout"
-    When I press "Continue"
-      And I press "button" "3"
-      And I choose "p_method_creditcard" from "checkout-payment-method-load"
-      And I select "Visa" from the dropbox "creditcard_cc_type"
-      And I fill in "creditcard_cc_number" with "4100000000000001"
-      And I select "1" from the dropbox "creditcard_expiration"
-      And I select "2017" from the dropbox "creditcard_expiration_yr"
-      And I fill in "creditcard_cc_cid" with "123"
-      And I press "button" "4"
+      And I press "Continue"
+      And I press the "3rd" continue button
+      And I choose "CreditCard"
+      And I select "Visa" from "Credit Card Type"
+      And I fill in "Credit Card Number" with "4100000000000001"
+      And I select "1" from "Expiration Date"
+      And I select "2017" from "creditcard_expiration_yr"
+      And I fill in "Card Verification Number" with "123"
+      And I press the "4th" continue button
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
+    
+  @javascript
+  Scenario: An administrator views the authorized transaction and sees the link to the Litle UI for the payment id
+    Given I am logged in as an administrator
+    When I view "Sales" "Transactions"
+      Then I should see "Transaction ID"
+      And I click on the top row in Transactions
+        Then I should see "Child Transactions"
+      And I click on the Transaction ID link
+        Then I should see "Merchant Accounting System Login"
+      And I fill in "j_username" with "admin"
+      And I fill in "j_password" with "noface2face"
+      And I press "Login"
+    Then I should see "Authorization" in the "summary"
+      And I should see "VISA" in the "summary"
