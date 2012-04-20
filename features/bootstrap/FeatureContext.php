@@ -26,12 +26,8 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
      */
     public function iAmLoggedInAsWithThePassword($username, $password)
     {
-		//$driver = new \Behat\Mink\Driver\SahiDriver('firefox');
- 		//$session = new \Behat\Mink\Session($driver);
-		$session = $this->getMink()->getSession('sahi');    	//var_dump($session);
+		$session = $this->getMink()->getSession('sahi'); 
 
-// 		// start session:
-// 		$session->start();
  		$session->visit('http://localhost/magento/index.php/');
 	
 // 		//Get to login screen
@@ -40,7 +36,6 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
  		$loginLink->click();
 	
 // 		//Login 
- 		//$page = $session->getPage();
  		$page->findField("Email Address")->setValue($username);
  		$page->findField("Password")->setValue($password);
  		$page->findButton("Login")->click();		
@@ -60,11 +55,6 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
      	
      	//Add to cart
      	$page->findButton("Add to Cart")->click();     	     
-     	
-     	//Proceed to checkout
-      	//$page->findButton("Proceed to Checkout")->click();
-     	
-//     	$session->wait(5000);    	 
     }
 
     /**
@@ -78,12 +68,6 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$page = $session->getPage();
     	$parent = $page->findById($parentDiv);
     	$parent->findButton($button)->click();
-    	
-    	
-    	//echo $page->getContent();
-    	//$page->findButton($button)->click();
-    	    	
-    	//$session->wait(2000);        
     }
     
     
@@ -112,7 +96,6 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     {
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
-    	//$parent = $page->findById($parent);
     	$page->findById($choice)->click();    	 
     }
     
@@ -134,11 +117,8 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     {
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
-    	$fieldElements = $page->findAll('named',
-    	array('field', 'id|name|value|label')
-    	);
+    	$fieldElements = $page->findAll('named',array('field', 'id|name|value|label'));
     	$elementsByCss = $page->findAll('css', $button);
-    	var_dump($elementsByCss);
     	$elementsByCss[intval($times)]->click();
     	
     }
