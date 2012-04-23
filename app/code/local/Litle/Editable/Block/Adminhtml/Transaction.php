@@ -46,6 +46,7 @@ class Litle_Editable_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sa
 		$txnType = $this->_txn->getTxnType();
 		$method = $this->_txn->getOrderPaymentObject()->getMethod();
 		
+		Mage::log("Litle_Editable_Block_Adminhtml_Transaction:getTxnIdHtml - method: $method; txnType: $txnType; url: $url; litleTxnId: $litleTxnId", Zend_Log::DEBUG);		
 		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml($txnType, $method, $url, $litleTxnId);
 		if($html == NULL) {
 			return parent::getTxnIdHtml();
@@ -56,10 +57,6 @@ class Litle_Editable_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sa
 	}
 	
 	static function _getTxnIdHtml($txnType, $method, $url, $litleTxnId) {
-		//var_dump($txnType);
-		//var_dump($method);
-		//var_dump($url);
-		//var_dump($litleTxnId);
 		$litleTxnIdOrig = $litleTxnId;
 		if($method != 'creditcard' && $method != 'lecheck') {
 			return null;
