@@ -44,18 +44,28 @@ class Litle_Editable_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sa
 		$url = $litle->getConfigData("url");
 		$litleTxnId = $this->_txn->getTxnId();
 		$txnType = $this->_txn->getTxnType();
-		preg_match("/(\w+):\/\/([A-Za-z0-9.:]+).*?/",$url,$matches);
-		$protocol = $matches[1];
-		$base_url = $matches[2];
-		$base_url = str_replace("2180","2190", $base_url);
 		$method = $this->_txn->getOrderPaymentObject()->getMethod();
 		
+		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml($txnType, $method, $url, $litleTxnId);
+		if($html == NULL) {
+			return parent::getTxnIdHtml();
+		}
+		else {
+			return $html;
+		}
+	}
+	
+	static function _getTxnIdHtml($txnType, $method, $url, $litleTxnId) {
+		$litleTxnIdOrig = $litleTxnId;
+		if($method != 'CreditCard' && $method != 'lecheck') {
+			return null;
+		}
 		if($txnType == 'authorization') {
 			if($method == 'lecheck'){
 				$litleTxnType = 'echeck/verification';
 			}
 			else{
-			$litleTxnType = 'authorization';
+				$litleTxnType = 'authorization';
 			}
 		}
 		else if($txnType == 'capture') {
@@ -63,7 +73,7 @@ class Litle_Editable_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sa
 				$litleTxnType = 'echeck/deposit';
 			}
 			else{
-			$litleTxnType = 'deposit';
+				$litleTxnType = 'deposit';
 			}
 		}
 		else if($txnType == 'refund') {
@@ -71,27 +81,36 @@ class Litle_Editable_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sa
 				$litleTxnType = 'echeck/refund';
 			}
 			else{
-			$litleTxnType = 'refund';
+				$litleTxnType = 'refund';
 			}
 		}
 		else if($txnType == 'void') {
-			if(preg_match("/\d{18}-void/",$litleTxnId) == 0) {
-				$litleTxnType = 'authorization/reversal';				
+			if(preg_match("/(\d{18})-void/",$litleTxnId,$matches)) {
+				$litleTxnId = $matches[1];
+				$litleTxnType = 'authorization/reversal';
 			}
 			else {
-				return parent::getTxnIdHtml();
+				return null;
 			}
 		}
-		else {
-			return parent::getTxnIdHtml();
+		
+		if(preg_match("/payments/",$url)) {
+			$baseUrl = "https://reports.litle.com";
 		}
-				
-		$reports = "";
-		if($base_url == 'payments' || $base_url == 'cert' || $base_url == 'precert') {
-			$reports = "reports.";
+		else if(preg_match("/sandbox/",$url)) {
+			$baseUrl = "https://www.testlitle.com/sandbox";
+		}
+		else if(preg_match("/precert/",$url)) {
+			$baseUrl = "https://reports.precert.litle.com";
+		}
+		else if(preg_match("/cert/",$url)) {
+			$baseUrl = "https://reports.cert.litle.com";
+		}
+		else  {
+			$baseUrl = "http://localhost:2190";
 		}
 		
-		return "<a href='$protocol://$reports$base_url/ui/reports/payments/$litleTxnType/$litleTxnId'>$litleTxnId</a>";
+		return "<a href='$baseUrl/ui/reports/payments/$litleTxnType/$litleTxnId'>$litleTxnIdOrig</a>";
 	}
 
 }
