@@ -34,7 +34,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 {
 	public function testProductionAuth()
 	{		
- 		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','CreditCard','https://payments.litle.com/vap/communicator/online',123);
+ 		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://payments.litle.com/vap/communicator/online',123);
  		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 	
@@ -46,7 +46,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 	
 	public function testProductionCapture()
 	{
-		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('capture','CreditCard','https://payments.litle.com/vap/communicator/online',123);
+		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('capture','creditcard','https://payments.litle.com/vap/communicator/online',123);
 		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/deposit/123'>123</a>",$html);
 	}
 	
@@ -58,7 +58,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 	
 	public function testProductionRefund()
 	{
-		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('refund','CreditCard','https://payments.litle.com/vap/communicator/online',123);
+		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('refund','creditcard','https://payments.litle.com/vap/communicator/online',123);
 		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/refund/123'>123</a>",$html);
 	}
 	
@@ -70,7 +70,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 	
 	public function testProductionVoid()
 	{
-		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('void','CreditCard','https://payments.litle.com/vap/communicator/online',"123456789012345678-void");
+		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('void','creditcard','https://payments.litle.com/vap/communicator/online',"123456789012345678-void");
 		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/authorization/reversal/123456789012345678'>123456789012345678-void</a>",$html);
 	}
 	
@@ -82,31 +82,31 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 	
 	public function testNotALitleTxn()
 	{
-		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','Authorize.netCreditCard','https://payments.litle.com/vap/communicator/online',123);
+		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','Authorize.netcreditcard','https://payments.litle.com/vap/communicator/online',123);
 		$this->assertEquals(null,$html);
 	}
 	
 	public function testCert()
 	{
-		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','CreditCard','https://cert.litle.com/vap/communicator/online',123);
+		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://cert.litle.com/vap/communicator/online',123);
 		$this->assertEquals("<a href='https://reports.cert.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 
 	public function testPrecert()
 	{
-		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','CreditCard','https://precert.litle.com/vap/communicator/online',123);
+		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://precert.litle.com/vap/communicator/online',123);
 		$this->assertEquals("<a href='https://reports.precert.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 	
 	public function testSandbox()
 	{
-		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','CreditCard','https://www.testlitle.com/sandbox/communicator/online',123);
+		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://www.testlitle.com/sandbox/communicator/online',123);
 		$this->assertEquals("<a href='https://www.testlitle.com/sandbox/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 	
 	public function testLocal()
 	{
-		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','CreditCard','http://localhost:2180/vap/communicator/online',123);
+		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','http://localhost:2180/vap/communicator/online',123);
 		$this->assertEquals("<a href='http://localhost:2190/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 	

@@ -56,8 +56,12 @@ class Litle_Editable_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sa
 	}
 	
 	static function _getTxnIdHtml($txnType, $method, $url, $litleTxnId) {
+		//var_dump($txnType);
+		//var_dump($method);
+		//var_dump($url);
+		//var_dump($litleTxnId);
 		$litleTxnIdOrig = $litleTxnId;
-		if($method != 'CreditCard' && $method != 'lecheck') {
+		if($method != 'creditcard' && $method != 'lecheck') {
 			return null;
 		}
 		if($txnType == 'authorization') {
