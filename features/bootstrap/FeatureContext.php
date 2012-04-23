@@ -18,7 +18,7 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	*/
 	public static function setup(Behat\Behat\Event\SuiteEvent $event)
 	{
-		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupLocalhost.sql");		
+		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupMagento.sql");
 	}
 	
     /**
