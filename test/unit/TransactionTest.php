@@ -22,19 +22,12 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-require_once("/var/www/html/magento/lib/Varien/Object.php");
-require_once("/var/www/html/magento/app/code/core/Mage/Payment/Model/Method/Abstract.php");
-require_once("/var/www/html/magento/app/code/core/Mage/Core/Model/Abstract.php");
-require_once("/var/www/html/magento/app/code/core/Mage/Payment/Model/Info.php");
-require_once("/var/www/html/magento/app/code/core/Mage/Payment/Model/Method/Cc.php");
-require_once("/usr/local/litle-home/gdake/git/litle-integration-magento/app/code/local/Litle/CreditCard/Model/PaymentLogic.php");
-
-require_once("/var/www/html/magento/app/Mage.php");
-require_once("/var/www/html/magento/app/code/core/Mage/Core/Block/Abstract.php");
-require_once("/var/www/html/magento/app/code/core/Mage/Core/Block/Template.php");
-require_once("/var/www/html/magento/app/code/core/Mage/Adminhtml/Block/Template.php");
-require_once("/var/www/html/magento/app/code/core/Mage/Adminhtml/Block/Widget/Container.php");
-require_once("/var/www/html/magento/app/code/core/Mage/Adminhtml/Block/Sales/Transactions/Detail.php");
+require_once(getenv('MAGENTO_HOME')."/app/Mage.php");
+require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Core/Block/Abstract.php");
+require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Core/Block/Template.php");
+require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Template.php");
+require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Widget/Container.php");
+require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Sales/Transactions/Detail.php");
 require_once("../../app/code/local/Litle/Editable/Block/Adminhtml/Transaction.php");
 
 class TransactionTest extends PHPUnit_Framework_TestCase
