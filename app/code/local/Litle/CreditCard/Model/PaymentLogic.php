@@ -148,6 +148,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	}
 
 public function processResponse(Varien_Object $payment,$litleResponse){
+	Mage::log("processResponse");
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
@@ -180,7 +181,9 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
 					Mage::log("about to construct model");
 					$points = Mage::getModel("editable/account");
-					
+					$points->customerId = 3;
+					$points->orderId = 4;
+					$points->affluence = 'AFFLUENT';
 					//$points->setCustomerId(1);
 					//$points->setStoreId(1);
 					
@@ -204,7 +207,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 // 						->setTitle("foo")
 // 						->setStatus("bar")
 // 						->save();
-					Mage::log("model saved");
+					//Mage::log("model saved");
 				}
 				return $this;
 			}
