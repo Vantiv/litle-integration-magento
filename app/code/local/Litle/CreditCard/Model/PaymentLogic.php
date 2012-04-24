@@ -178,6 +178,33 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setIsTransactionClosed(0)
 					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
+					Mage::log("about to construct model");
+					$points = Mage::getModel("editable/account");
+					
+					//$points->setCustomerId(1);
+					//$points->setStoreId(1);
+					
+					$points->saveIt();
+						
+					
+					
+// 					$editableModel = Mage::getModel("editable/insight");
+// 					//$editableModel = new Litle_Editable_Model_Editable();
+// 					Mage::log("class for model is " . get_class($editableModel));
+// 					Mage::log("filling in model");
+// 					//Mage::log(var_dump($editableModel));
+// 					$editableModel = $editableModel->setTitle('foo');
+// 					Mage::log("Editable model's title is :" . $editableModel->getTitle() . ":");
+// 					$editableModel = $editableModel->setStatus(2);
+// 					Mage::log("Editable model's status is :" . $editableModel->getStatus() . ":");
+// 					$editableModel->save();
+					//					$editableModel = $editableModel->setCustomerInsightId(1);
+//					Mage::log("Editable model's id is :" . $editableModel->getId() . ":");
+					// 					$editableModel->setCustomerInsightId(1)
+// 						->setTitle("foo")
+// 						->setStatus("bar")
+// 						->save();
+					Mage::log("model saved");
 				}
 				return $this;
 			}

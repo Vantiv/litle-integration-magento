@@ -14,22 +14,20 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 {
 	
 	/**
-	* @BeforeSuite
+	* @BeforeFeature
 	*/
-	public static function setup(Behat\Behat\Event\SuiteEvent $event)
+	public static function setupFeature(Behat\Behat\Event\FeatureEvent $event)
 	{
-		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupMagento.sql");
-		system("runSql " . dirname(__FILE__) . "/setupVap.sql");
+		$featureName = $event->getFeature()->getTitle();
+		switch($featureName) {
+			case "TransactionDetail":
+				system("mysql -u magento magento < " . dirname(__FILE__) . "/setupTransactionDetail.sql");
+				break;
+			case "CustomerInformation":
+				system("mysql -u magento magento < " . dirname(__FILE__) . "/setupCustomerInformation.sql");
+				break;
+		}
 	}
-	
-	/**
-	* @AfterSuite
-	*/
-	public static function tearDown(Behat\Behat\Event\SuiteEvent $event)
-	{
-		system("runSql " . dirname(__FILE__) . "/tearDownVap.sql");
-	}
-	
 	
     /**
      * @Given /^I am logged in as "([^"]*)" with the password "([^"]*)"$/
