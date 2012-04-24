@@ -19,7 +19,17 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	public static function setup(Behat\Behat\Event\SuiteEvent $event)
 	{
 		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupMagento.sql");
+		system("runSql " . dirname(__FILE__) . "/setupVap.sql");
 	}
+	
+	/**
+	* @AfterSuite
+	*/
+	public static function tearDown(Behat\Behat\Event\SuiteEvent $event)
+	{
+		system("runSql " . dirname(__FILE__) . "/tearDownVap.sql");
+	}
+	
 	
     /**
      * @Given /^I am logged in as "([^"]*)" with the password "([^"]*)"$/

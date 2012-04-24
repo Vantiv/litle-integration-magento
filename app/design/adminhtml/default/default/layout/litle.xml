@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_customer_edit>
+        <reference name="customer_edit_tabs">
+            <action method="addTab">
+                <name>my_custom_tab</name>
+                <block>editable/adminhtml_catalog_product_tab</block>
+            </action>
+        </reference>
+    </adminhtml_customer_edit>
+</layout>

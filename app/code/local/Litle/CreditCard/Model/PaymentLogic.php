@@ -132,11 +132,14 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 	public function merchantData(Varien_Object $payment)
 	{
+		$order = $payment->getOrder();
 		$hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
 					'merchantId'=>$this->getConfigData("merchant_id"),
 					'version'=>'8.10',
+					'merchantSdk'=>'Magento;8.12.1-pre',
 					'reportGroup'=>$this->getConfigData("reportGroup"),
+					'customerId'=> $order->getCustomerEmail(),
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),
 					'timeout'=>$this->getConfigData("timeout")
@@ -192,7 +195,6 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 		$order = $payment->getOrder();
 		$orderId =  $order->getIncrementId();
 		$amountToPass = ($amount* 100);
-
 		if (!empty($order)){
 			$hash = array(
 	 					'orderId'=> $orderId,

@@ -24,10 +24,10 @@
             </editable>
 			<adminhtml>
 	    	 	<rewrite>
-                    <!-- <sales_order_view_info>Litle_Editable_Block_Adminhtml_Info</sales_order_view_info> -->
                       <sales_transactions_detail>Litle_Editable_Block_Adminhtml_Transaction</sales_transactions_detail>
 				</rewrite>
 	    	</adminhtml>
+	    	
         </blocks>
 
         <helpers>
@@ -47,8 +47,20 @@
                 </formats>
             </address>
         </customer>
+        
+        
 
 
     </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <customtabs>
+                    <file>litle.xml</file>
+                </customtabs>
+            </updates>
+        </layout>
+    </adminhtml>
+
 
 </config>
