@@ -220,7 +220,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 				'last' => $last4,
 				'prepaid'=> XMLParser::getNode($litleResponse, 'type'),
 				'reloadable' => XMLParser::getNode($litleResponse, 'reloadable'),
-				'available_balance' => XMLParser::getNode($litleResponse, 'availableBalance'),
+				'available_balance' => Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance(XMLParser::getNode($litleResponse, 'availableBalance')),
 				'issuing_country' => XMLParser::getNode($litleResponse, 'issuerCountry')
 			);
 			Mage::log("Saving to model: " . implode(",", $data));
@@ -313,5 +313,15 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 			$litleResponse = $litleRequest->authReversalRequest($hash_in);
 		}
 		$this->processResponse($payment,$litleResponse);
+	}
+	
+	
+	static public function formatAvailableBalance ($balance)
+	{
+		$balance = str_pad($balance, 3, '0', STR_PAD_LEFT);
+		$available_balance = substr_replace($balance, '.', -2, 0);
+		$available_balance = '$' . $available_balance;
+		
+		return $available_balance;
 	}
 }
