@@ -180,13 +180,18 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					->setIsTransactionClosed(0)
 					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
 					Mage::log("about to construct model");
-					$points = Mage::getModel("editable/account");
-					$points->customerId = 3;
-					$points->orderId = 4;
-					$points->affluence = 'AFFLUENT';
-					//$points->setCustomerId(1);
-					//$points->setStoreId(1);
 					
+					$orderId = $payment->getOrder()->getId();
+					Mage::log("Order id: " . $orderId);
+					$customerId = $payment->getOrder()->getCustomerId();
+					Mage::log("Customer id: " . $customerId);
+					$affluence = XMLParser::getNode($litleResponse,"affluence");					
+					Mage::log("Affluence: " . $affluence);
+										
+					$points = Mage::getModel("editable/account");
+					$points->customerId = $customerId;
+					$points->orderId = $orderId;
+					$points->affluence = $affluence;					
 					$points->saveIt();
 						
 					

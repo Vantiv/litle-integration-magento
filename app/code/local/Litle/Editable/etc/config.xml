@@ -29,8 +29,7 @@
 			</editable>
 			<adminhtml>
 				<rewrite>
-					<sales_transactions_detail>Litle_Editable_Block_Adminhtml_Transaction
-					</sales_transactions_detail>
+					<sales_transactions_detail>Litle_Editable_Block_Adminhtml_Transaction</sales_transactions_detail>
 				</rewrite>
 			</adminhtml>
 		</blocks>
