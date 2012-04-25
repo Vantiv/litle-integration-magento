@@ -47,13 +47,13 @@ class PaymentLogicTest extends PHPUnit_Framework_TestCase
 	public function testFormatAvailableBalance3()
 	{
 		$balance = Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance('');
-		$this->assertEquals("$0.00",$balance);
+		$this->assertEquals("",$balance);
 	}
 	
 	public function testFormatAvailableBalance4()
 	{
 		$balance = Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance(NULL);
-		$this->assertEquals("$0.00",$balance);
+		$this->assertEquals("",$balance);
 	}
 	
 	public function testFormatAvailableBalance5()
