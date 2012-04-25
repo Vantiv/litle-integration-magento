@@ -26,6 +26,10 @@ var_dump($feedOutput); //TODO - delete me
 		    <th>Order Id</th>
                     <th>Last 4</th>
                     <th>Affluence</th>
+                    <th>prepaid</th>
+                    <th>reloadable</th>
+                    <th>available_balance</th>
+                    <th>issuing_country</th>
                 </tr>
             </thead>
         <?php foreach($feedOutput as $feed) { ?>
@@ -33,6 +37,10 @@ var_dump($feedOutput); //TODO - delete me
 			<td><?php echo $feed['order_id']; ?></td>
 			<td><?php echo $feed['last'] ?></td>
 			<td><?php echo $feed['affluence']; ?></td>
+			<td><?php echo $feed['prepaid']; ?></td>
+			<td><?php echo $feed['reloadable'] ?></td>
+			<td><?php echo $feed['available_balance']; ?></td>
+			<td><?php echo $feed['issuing_country']; ?></td>
 		</tr>
 	<?php } ?>
 

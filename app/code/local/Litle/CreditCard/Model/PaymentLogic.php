@@ -217,11 +217,16 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 				'customer_id' => $payment->getOrder()->getCustomerId(), 
 				'order_id' => $payment->getOrder()->getId(), 
 				'affluence' => XMLParser::getNode($litleResponse,"affluence"),
-				'last' => $last4
+				'last' => $last4,
+				'prepaid'=> XMLParser::getNode($litleResponse, 'type'),
+				'reloadable' => XMLParser::getNode($litleResponse, 'reloadable'),
+				'available_balance' => XMLParser::getNode($litleResponse, 'availableBalance'),
+				'issuing_country' => XMLParser::getNode($litleResponse, 'issuerCountry')
 			);
 			Mage::log("Saving to model: " . implode(",", $data));
 			Mage::log("Model is " . implode(",", Mage::getModel('palorus/insight')->setData($data)->getData()));
 			Mage::getModel('palorus/insight')->setData($data)->save();
+			
 		}
 	}
 
