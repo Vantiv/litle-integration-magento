@@ -202,7 +202,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					//Mage::log("Data is " . $data);
 					//$points->setData($args);
 					//$points->save();
-					Mage::getModel('editable/account')->setData($data)->save();
+					Mage::getModel('editable/insight')->setData($data)->save();
 						
 					
 					

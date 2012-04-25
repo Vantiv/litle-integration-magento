@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Litle_Editable>
-			<version>0.2.2</version>
+			<version>0.2.3</version>
 		</Litle_Editable>
 	</modules>
 	<admin>
@@ -25,9 +25,9 @@
 			<editable_mysql4>
 				<class>Litle_Editable_Model_Mysql4</class>
 				<entities>
-					<account>
-						<table>editable_account</table>
-					</account>
+					<insight>
+						<table>customer_insight</table>
+					</insight>
 				</entities>
 			</editable_mysql4>
 		</models>
