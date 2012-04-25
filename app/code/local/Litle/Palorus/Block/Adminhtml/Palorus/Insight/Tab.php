@@ -1,6 +1,6 @@
 <?php
  
-class Litle_Palorus_Block_Adminhtml_Catalog_Product_Tab
+class Litle_Palorus_Block_Adminhtml_Palorus_Insight_Tab
 extends Mage_Adminhtml_Block_Template
 implements Mage_Adminhtml_Block_Widget_Tab_Interface {
  
@@ -12,7 +12,7 @@ implements Mage_Adminhtml_Block_Widget_Tab_Interface {
     {
         parent::_construct();
  
-        $this->setTemplate('litle/catalog/product/tab.phtml');
+        $this->setTemplate('palorus/insight/tab.phtml');
     }
  
     /**
