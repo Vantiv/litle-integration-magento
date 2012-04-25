@@ -29,7 +29,7 @@
 */
 
 
-class Litle_Editable_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sales_Transactions_Detail {
+class Litle_Palorus_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sales_Transactions_Detail {
 	public function __construct() {
 		parent::__construct();		
 	}
@@ -46,8 +46,8 @@ class Litle_Editable_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sa
 		$txnType = $this->_txn->getTxnType();
 		$method = $this->_txn->getOrderPaymentObject()->getMethod();
 		
-		Mage::log("Litle_Editable_Block_Adminhtml_Transaction:getTxnIdHtml - method: $method; txnType: $txnType; url: $url; litleTxnId: $litleTxnId", Zend_Log::DEBUG);		
-		$html = Litle_Editable_Block_Adminhtml_Transaction::_getTxnIdHtml($txnType, $method, $url, $litleTxnId);
+		Mage::log("Litle_Palorus_Block_Adminhtml_Transaction:getTxnIdHtml - method: $method; txnType: $txnType; url: $url; litleTxnId: $litleTxnId", Zend_Log::DEBUG);		
+		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml($txnType, $method, $url, $litleTxnId);
 		if($html == NULL) {
 			return parent::getTxnIdHtml();
 		}

@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Litle_Palorus>
+			<version>0.2.3</version>
+		</Litle_Palorus>
+	</modules>
+	<admin>
+		<routers>
+			<palorus>
+				<use>admin</use>
+				<args>
+					<module>Litle_Palorus</module>
+					<frontName>palorus</frontName>
+				</args>
+			</palorus>
+		</routers>
+	</admin>
+	<global>
+		<models>
+			<palorus>
+				<class>Litle_Palorus_Model</class>
+				<resourceModel>palorus_mysql4</resourceModel>
+			</palorus>
+			<palorus_mysql4>
+				<class>Litle_Palorus_Model_Mysql4</class>
+				<entities>
+					<insight>
+						<table>customer_insight</table>
+					</insight>
+				</entities>
+			</palorus_mysql4>
+		</models>
+
+		<blocks>
+			<palorus>
+				<class>Litle_Palorus_Block</class>
+			</palorus>
+			<adminhtml>
+				<rewrite>
+					<sales_transactions_detail>Litle_Palorus_Block_Adminhtml_Transaction</sales_transactions_detail>
+				</rewrite>
+			</adminhtml>
+		</blocks>
+		<!-- turn on database connections -->
+		<resources>
+			<!-- setup is needed for automatic installation -->
+			<resources>
+				<palorus_setup>
+					<setup>
+						<module>Litle_Palorus</module>
+						<class>Mage_Core_Model_Resource_Setup</class>
+					</setup>
+					<connection>
+						<use>core_setup</use>
+					</connection>
+				</palorus_setup>
+				<palorus_write>
+					<connection>
+						<use>core_write</use>
+					</connection>
+				</palorus_write>
+				<palorus_read>
+					<connection>
+						<use>core_read</use>
+					</connection>
+				</palorus_read>
+			</resources>
+		</resources>
+
+		<helpers>
+			<palorus>
+				<class>Litle_Palorus_Helper</class>
+			</palorus>
+		</helpers>	
+
+
+	</global>
+	<adminhtml>
+		<layout>
+			<updates>
+				<customtabs>
+					<file>litle.xml</file>
+				</customtabs>
+			</updates>
+		</layout>
+	</adminhtml>
+
+
+</config>

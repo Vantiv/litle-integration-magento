@@ -28,6 +28,6 @@
  * @date       18.12.2009
 */
 
-class Litle_Editable_Adminhtml_EditableController extends Mage_Adminhtml_Controller_action
+class Litle_Palorus_Adminhtml_EditableController extends Mage_Adminhtml_Controller_action
 {
 }

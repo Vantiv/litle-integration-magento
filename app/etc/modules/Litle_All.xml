@@ -13,10 +13,10 @@
 		</Litle_LEcheck>
 	</modules>
 	<modules>
-        <Litle_Editable>
+        <Litle_Palorus>
             <active>true</active>
             <codePool>local</codePool>
-        </Litle_Editable>
+        </Litle_Palorus>
     </modules>
 	
 </config>

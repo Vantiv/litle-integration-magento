@@ -1,6 +1,6 @@
 <?php
  
-class Litle_Editable_Block_Adminhtml_Catalog_Product_Tab
+class Litle_Palorus_Block_Adminhtml_Catalog_Product_Tab
 extends Mage_Adminhtml_Block_Template
 implements Mage_Adminhtml_Block_Widget_Tab_Interface {
  

@@ -181,48 +181,19 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
 					Mage::log("about to construct model");
 					
-					$orderId = $payment->getOrder()->getId();
+					$orderId = $payment->getOrder()->getId(); //TODO - this doesn't match
 					Mage::log("Order id: " . $orderId);
 					$customerId = $payment->getOrder()->getCustomerId();
 					Mage::log("Customer id: " . $customerId);
 					$affluence = XMLParser::getNode($litleResponse,"affluence");					
 					Mage::log("Affluence: " . $affluence);
 										
-					//$points = Mage::getModel("editable/account");
-// 					$points->customerId = $customerId;
-// 					$points->orderId = $orderId;
-// 					$points->affluence = $affluence;					
-// 					$points->saveIt();
-
 					$data = array(
 						'customer_id' => $customerId, 
 						'order_id' => $orderId, 
 						'affluence' => $affluence
 					);
-					//Mage::log("Data is " . $data);
-					//$points->setData($args);
-					//$points->save();
-					Mage::getModel('editable/insight')->setData($data)->save();
-						
-					
-					
-// 					$editableModel = Mage::getModel("editable/insight");
-// 					//$editableModel = new Litle_Editable_Model_Editable();
-// 					Mage::log("class for model is " . get_class($editableModel));
-// 					Mage::log("filling in model");
-// 					//Mage::log(var_dump($editableModel));
-// 					$editableModel = $editableModel->setTitle('foo');
-// 					Mage::log("Editable model's title is :" . $editableModel->getTitle() . ":");
-// 					$editableModel = $editableModel->setStatus(2);
-// 					Mage::log("Editable model's status is :" . $editableModel->getStatus() . ":");
-// 					$editableModel->save();
-					//					$editableModel = $editableModel->setCustomerInsightId(1);
-//					Mage::log("Editable model's id is :" . $editableModel->getId() . ":");
-					// 					$editableModel->setCustomerInsightId(1)
-// 						->setTitle("foo")
-// 						->setStatus("bar")
-// 						->save();
-					//Mage::log("model saved");
+					Mage::getModel('palorus/insight')->setData($data)->save();
 				}
 				return $this;
 			}

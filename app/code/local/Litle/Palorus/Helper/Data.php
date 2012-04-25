@@ -28,7 +28,7 @@
  * @date       18.12.2009
 */
 
-class Litle_Editable_Helper_Data extends Mage_Core_Helper_Abstract
+class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
 }
