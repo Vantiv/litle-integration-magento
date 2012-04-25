@@ -3,7 +3,39 @@
  * Custom tab template
  */
 ?>
-<div class="input-field">
- <label for="custom_field">Custom Field</label>
- <input type="text" class="input-text" name="custom_field" id="custom_field" />
+
+<div class="grid"/>
+
+<?php
+$collection = Mage::getModel('palorus/insight')->getCollection();
+if ($collection->count() >= 1) {
+    // store the retrieved feeds
+    $feedOutput = array();
+    // iterate over the retrieved retrieved collection
+    foreach ($collection as $flickrFeedItem) {
+        $feedOutput[] = $flickrFeedItem->getData();
+    }
+}
+var_dump($feedOutput); //TODO - delete me
+?>
+
+
+<table cellspacing="0" class="data">
+            <thead>
+                <tr class="headings">
+		    <th>Order Id</th>
+                    <th>Last 4</th>
+                    <th>Affluence</th>
+                </tr>
+            </thead>
+        <?php foreach($feedOutput as $feed) { ?>
+		<tr>
+			<td><?php echo $feed['order_id']; ?></td>
+			<td><?php echo $feed['last'] ?></td>
+			<td><?php echo $feed['affluence']; ?></td>
+		</tr>
+	<?php } ?>
+
+
+</table>
 </div>
