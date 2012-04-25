@@ -20,7 +20,16 @@
 		<models>
 			<editable>
 				<class>Litle_Editable_Model</class>
+				<resourceModel>editable_mysql4</resourceModel>
 			</editable>
+			<editable_mysql4>
+				<class>Litle_Editable_Model_Mysql4</class>
+				<entities>
+					<account>
+						<table>editable_account</table>
+					</account>
+				</entities>
+			</editable_mysql4>
 		</models>
 
 		<blocks>

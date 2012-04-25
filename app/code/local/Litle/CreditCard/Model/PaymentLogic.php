@@ -188,11 +188,21 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					$affluence = XMLParser::getNode($litleResponse,"affluence");					
 					Mage::log("Affluence: " . $affluence);
 										
-					$points = Mage::getModel("editable/account");
-					$points->customerId = $customerId;
-					$points->orderId = $orderId;
-					$points->affluence = $affluence;					
-					$points->saveIt();
+					//$points = Mage::getModel("editable/account");
+// 					$points->customerId = $customerId;
+// 					$points->orderId = $orderId;
+// 					$points->affluence = $affluence;					
+// 					$points->saveIt();
+
+					$data = array(
+						'customer_id' => $customerId, 
+						'order_id' => $orderId, 
+						'affluence' => $affluence
+					);
+					//Mage::log("Data is " . $data);
+					//$points->setData($args);
+					//$points->save();
+					Mage::getModel('editable/account')->setData($data)->save();
 						
 					
 					
