@@ -45,27 +45,25 @@
 		<!-- turn on database connections -->
 		<resources>
 			<!-- setup is needed for automatic installation -->
-			<resources>
-				<palorus_setup>
-					<setup>
-						<module>Litle_Palorus</module>
-						<class>Mage_Core_Model_Resource_Setup</class>
-					</setup>
-					<connection>
-						<use>core_setup</use>
-					</connection>
-				</palorus_setup>
-				<palorus_write>
-					<connection>
-						<use>core_write</use>
-					</connection>
-				</palorus_write>
-				<palorus_read>
-					<connection>
-						<use>core_read</use>
-					</connection>
-				</palorus_read>
-			</resources>
+			<palorus_setup>
+				<setup>
+					<module>Litle_Palorus</module>
+					<class>Mage_Core_Model_Resource_Setup</class>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</palorus_setup>
+			<palorus_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</palorus_write>
+			<palorus_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</palorus_read>
 		</resources>
 
 		<helpers>

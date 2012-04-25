@@ -148,7 +148,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	}
 
 public function processResponse(Varien_Object $payment,$litleResponse){
-	Mage::log("processResponse");
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
@@ -179,21 +178,6 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setIsTransactionClosed(0)
 					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
-					Mage::log("about to construct model");
-					
-					$orderId = $payment->getOrder()->getId(); //TODO - this doesn't match
-					Mage::log("Order id: " . $orderId);
-					$customerId = $payment->getOrder()->getCustomerId();
-					Mage::log("Customer id: " . $customerId);
-					$affluence = XMLParser::getNode($litleResponse,"affluence");					
-					Mage::log("Affluence: " . $affluence);
-										
-					$data = array(
-						'customer_id' => $customerId, 
-						'order_id' => $orderId, 
-						'affluence' => $affluence
-					);
-					Mage::getModel('palorus/insight')->setData($data)->save();
 				}
 				return $this;
 			}
@@ -225,6 +209,19 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 			$litleRequest = new LitleOnlineRequest();
 			$litleResponse = $litleRequest->authorizationRequest($hash_in);
 			$this->processResponse($payment,$litleResponse);
+			
+			preg_match('/.*(\d\d\d\d)/', $payment->getCcNumber(), $matches);
+			$last4 = $matches[1];
+			Mage::log("Last 4 is : " . $last4);
+			$data = array(
+				'customer_id' => $payment->getOrder()->getCustomerId(), 
+				'order_id' => $payment->getOrder()->getId(), 
+				'affluence' => XMLParser::getNode($litleResponse,"affluence"),
+				'last' => $last4
+			);
+			Mage::log("Saving to model: " . implode(",", $data));
+			Mage::log("Model is " . implode(",", Mage::getModel('palorus/insight')->setData($data)->getData()));
+			Mage::getModel('palorus/insight')->setData($data)->save();
 		}
 	}
 
