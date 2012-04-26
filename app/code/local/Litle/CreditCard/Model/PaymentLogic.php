@@ -210,6 +210,8 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 	 */
 	public function authorize(Varien_Object $payment, $amount)
 	{
+		$info = $this->getInfoInstance();
+		
 		$order = $payment->getOrder();
 		$orderId =  $order->getIncrementId();
 		$amountToPass = ($amount* 100);
