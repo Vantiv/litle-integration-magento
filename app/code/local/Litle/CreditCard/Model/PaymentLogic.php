@@ -61,6 +61,20 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 * can this method save cc info for later use?
 	 */
 	protected $_canSaveCc = false;
+	
+	public function assignData($data)
+	{
+		if (!($data instanceof Varien_Object)) {
+			$data = new Varien_Object($data);
+		}
+	
+		$info = $this->getInfoInstance();
+		$info->setAdditionalInformation('paypage_registration_id', $data->getEcheckRoutingNumber());
+		$info->setAdditionalInformation('echeck_bank_acc_num', $data->getEcheckBankAcctNum());
+		$info->setAdditionalInformation('echeck_acc_type', $data->getEcheckAccountType());
+	
+		return $this;
+	}
 
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
@@ -70,6 +84,12 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 
 		return $returnFromThisModel;
+	}
+	
+	public function validate()
+	{
+		//no cc validation required.
+		return $this;
 	}
 
 	public function getCreditCardInfo(Varien_Object $payment)
