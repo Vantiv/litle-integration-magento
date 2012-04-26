@@ -170,7 +170,25 @@ $_id = $_time . substr($_session,13);
 
 
 <script type="text/javascript">
+Payment.prototype.save2 = function() {
+	var request = new Ajax.Request(
+			this.saveUrl,
+			{
+				method:'post',
+				onComplete: this.onComplete,
+				onSuccess: this.onSave,
+				onFailure: checkout.ajaxFailure.bind(checkout),
+				parameters: Form.serialize(document.forms['co-payment-form'])
+			}
+	);
+}
+
 Payment.prototype.save = function() {
+
+	var _saveUrl = this.saveUrl;
+	var _onComplete = this.onComplete;
+	var _onSave = this.onSave;
+	
 	if (checkout.loadWaiting!=false) return;
 	var validator = new Validation(this.form);
 	if (this.validate() && validator.validate()) {
@@ -179,41 +197,32 @@ Payment.prototype.save = function() {
 
 
 		// Litle Page Stuff//
-		 
-		/*
-		function getPayPageUrl5 {
-			return ('https://' + document.getElementById("request$paypageUrlId").value + '.securepaypage.litle.com');
-		//return ('https://.securepaypage.litle.com');
-		}*/
-
 		function setLitleResponseFields(response) {
-			alert("in setLitleResponseFields");
 			document.getElementById(<?php echo "'" . $_code . "_code" . "'" ?>).value = response.response;
 			document.getElementById(<?php echo "'" . $_code . "_message" . "'" ?>).value = response.message;
 			document.getElementById(<?php echo "'" . $_code . "_response_time" . "'" ?>).value = response.responseTime;
 			document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value = response.litleTxnId;
 			document.getElementById(<?php echo "'" . $_code . "_type" . "'" ?>).value = response.type;
-			alert(document.getElementById(<?php echo "'" . $_code . "_paypage_registration_id" . "'" ?>).value);
-			alert(document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value);
 		}
+
 
 		function submitAfterLitle(response) {
 			setLitleResponseFields(response);
 			var params = Form.serialize(document.forms['co-payment-form']);
+			//params += '&' + Form.serialize(this.form);
 			//if (review.agreementsForm) {
 			//	params += '&' + Form.serialize(review.agreementsForm);
 			//}
-
 			var request = new Ajax.Request(
-					this.saveUrl,
+					_saveUrl,
 					{
 						method:'post',
-						onComplete: this.onComplete,
-						onSuccess: this.onSave,
+						onComplete: _onComplete,
+						onSuccess: _onSave,
 						onFailure: checkout.ajaxFailure.bind(checkout),
 						parameters: params//Form.serialize(this.form)
 					}
-					);
+			);
 		}
 
 		function timeoutOnLitle() {
@@ -251,6 +260,16 @@ Payment.prototype.save = function() {
 		// End of Paypage
 
 		*/
+		/*var request = new Ajax.Request(
+				this.saveUrl,
+				{
+					method:'post',
+					onComplete: this.onComplete,
+					onSuccess: this.onSave,
+					onFailure: checkout.ajaxFailure.bind(checkout),
+					parameters: Form.serialize(this.form)
+				}
+		);*/
 	}
 }
 </script>
