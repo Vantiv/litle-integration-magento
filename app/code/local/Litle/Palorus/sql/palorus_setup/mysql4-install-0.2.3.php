@@ -9,6 +9,7 @@
 CREATE TABLE {$installer->getTable('palorus/insight')} (
 customer_insight_id integer(10) unsigned NOT NULL auto_increment,
 customer_id integer(10) unsigned NOT NULL default 0,
+order_number integer(10) unsigned NOT NULL default 0,
 order_id integer(10) unsigned NOT NULL default 0,
 last varchar(20) NULL,
 order_amount varchar(20) NULL,

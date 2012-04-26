@@ -31,7 +31,7 @@ foreach ($collection as $purchase) {
 <table id="orders" cellspacing="0" class="data">
 	<thead>
     	<tr class="headings">
-			<th>Order Id</th>
+			<th>Order #</th>
             <th>Last 4</th>
             <th>Order Amount</th>
             <th>Affluence</th>
@@ -49,7 +49,7 @@ foreach ($collection as $purchase) {
         <?php $lookup = '*/sales_order/view/order_id/' . $purchase['order_id']; ?>
         <?php $linkUrl = $this->getUrl($lookup); ?>
 	    <tr class="<?php if($i%2 == 0) echo "even "; ?>pointer" onclick="followLink('<?php echo $linkUrl;?>')" title="<?php echo $linkUrl; ?>">
-    		<td id="OrderId_<?php echo $i;?>"><?php echo $purchase['order_id']; ?></td>
+    		<td id="OrderNumber_<?php echo $i;?>"><?php echo $purchase['order_number']; ?></td>
 	    	<td id="Last4_<?php echo $i;?>"><?php echo $purchase['last']; ?></td>
 	    	<td id="OrderAmount_<?php echo $i;?>"><?php echo $purchase['order_amount']; ?></td>
 		    <td id="Affluence_<?php echo $i;?>"><?php echo $purchase['affluence']; ?></td>

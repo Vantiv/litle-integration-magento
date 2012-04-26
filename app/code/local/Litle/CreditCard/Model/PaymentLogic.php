@@ -235,7 +235,8 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 			Mage::log("Last 4 is : " . $last4);
 			$data = array(
 				'customer_id' => $payment->getOrder()->getCustomerId(), 
-				'order_id' => XMLParser::getNode($litleResponse, 'orderId'), 
+				'order_number' => XMLParser::getNode($litleResponse, 'orderId'),
+				'order_id' => $payment->getOrder()->getId(),
 				'affluence' => Litle_CreditCard_Model_PaymentLogic::formatAffluence(XMLParser::getNode($litleResponse,"affluence")),
 				'last' => $last4,
 				'order_amount' => Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance($amountToPass),
