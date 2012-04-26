@@ -28,7 +28,7 @@ require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Core/Block/Template.php
 require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Template.php");
 require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Widget/Container.php");
 require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Sales/Transactions/Detail.php");
-require_once("../../app/code/local/Litle/Palorus/Block/Adminhtml/Transaction.php");
+require_once(getenv('MAGENTO_HOME')."/app/code/local/Litle/Palorus/Block/Adminhtml/Transaction.php");
 
 class TransactionTest extends PHPUnit_Framework_TestCase
 {

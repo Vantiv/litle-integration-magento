@@ -1,6 +1,6 @@
 
-update core_config_data set value='http://localhost:8081/sandbox/communicator/online' where path='payment/CreditCard/url';
-update core_config_data set value='http://localhost:8081/sandbox/communicator/online' where path='payment/LEcheck/url';
+update core_config_data set value='http://l-gdake-t5500:8081/sandbox/communicator/online' where path='payment/CreditCard/url';
+update core_config_data set value='http://l-gdake-t5500:8081/sandbox/communicator/online' where path='payment/LEcheck/url';
 
 update core_config_data set value=NULL where path='payment/CreditCard/proxy';
 update core_config_data set value=NULL where path='payment/LEcheck/proxy';

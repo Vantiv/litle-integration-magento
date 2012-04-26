@@ -19,7 +19,7 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	* @BeforeSuite
 	*/
 	public static function setupSuite(Behat\Behat\Event\SuiteEvent $event)
-	{
+	{		
 		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupSuite.sql");
 		system("rm -rf /var/www/html/magento/var/cache/*");
 	}
@@ -257,7 +257,11 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
     	 
-    	$value = $page->findById($columnName . "_1")->getText();
+    	$element = $page->findById($columnName . "_1");
+    	if($element == NULL) {
+    		throw new Exception ("Column not found");
+    	}
+    	$value = $element->getText();
     	if($value !== $expectedText) {
     		throw new ResponseTextException("Could not find $expectedText in $columnName  Instead found $value", $session);
     	}

@@ -4,49 +4,63 @@
  */
 ?>
 
-<div class="grid"/>
+<script type="text/javascript">
+function followLink(link) {
+	window.location = link;
+}
+
+</script>
+<style>
+#orders tr:hover {background: #FCF5DD; }
+</style>
+
+<div class="grid">
 
 <?php
-$collection = Mage::getModel('palorus/insight')->getCollection();
-if ($collection->count() >= 1) {
-    // store the retrieved feeds
-    $purchases = array();
-    // iterate over the retrieved retrieved collection
-    foreach ($collection as $purchase) {
-        $purchases[] = $purchase->getData();
-    }
+$customerId = Mage::registry('current_customer')->getId();
+$collection = Mage::getModel('palorus/insight')->
+	getCollection()->
+	addFieldToFilter('customer_id',$customerId);
+$purchases = array();
+foreach ($collection as $purchase) {
+    $purchases[] = $purchase->getData();
 }
 ?>
 
-<?php echo $this->getUrl('*/sales_order/view/order_id/206') ?>
-<table cellspacing="0" class="data">
-            <thead>
-                <tr class="headings">
-		    <th>Order Id</th>
-                    <th>Last 4</th>
-                    <th>Affluence</th>
-                    <th>prepaid</th>
-                    <th>reloadable</th>
-                    <th>available_balance</th>
-                    <th>issuing_country</th>
-                </tr>
-            </thead>
-            
+
+<table id="orders" cellspacing="0" class="data">
+	<thead>
+    	<tr class="headings">
+			<th>Order Id</th>
+            <th>Last 4</th>
+            <th>Order Amount</th>
+            <th>Affluence</th>
+            <th>Issuing Country</th>
+            <th>Prepaid Card Type</th>
+            <th>Funding Source</th>
+            <th>Available Balance</th>
+            <th>Reloadable</th>
+        </tr>
+    </thead>            
 
          
-        <?php $i = 1; ?>
-        <?php foreach($purchases as $purchase) { ?>
-		<tr titl>
-			<td id="OrderId_<?php echo $i;?>"><?php echo $purchase['order_id']; ?></td>
-			<td id="Last4_<?php echo $i;?>"><?php echo $purchase['last']; ?></td>
-			<td id="Affluence_<?php echo $i;?>"><?php echo $purchase['affluence']; ?></td>
-			<td id="Prepaid_<?php echo $i;?>"><?php echo $purchase['prepaid']; ?></td>
-			<td id="Reloadable_<?php echo $i;?>"><?php echo $purchase['reloadable']; ?></td>
-			<td id="AvailableBalance_<?php echo $i;?>"><?php echo $purchase['available_balance']; ?></td>
-			<td id="IssuingCountry_<?php echo $i;?>"><?php echo $purchase['issuing_country']; ?></td>
-		</tr>
-		<?php $i++; ?> 
-		<?php } ?>
+    <?php $i = 1; ?>
+    <?php foreach($purchases as $purchase) { ?>
+        <?php $lookup = '*/sales_order/view/order_id/' . $purchase['order_id']; ?>
+        <?php $linkUrl = $this->getUrl($lookup); ?>
+	    <tr class="<?php if($i%2 == 0) echo "even "; ?>pointer" onclick="followLink('<?php echo $linkUrl;?>')" title="<?php echo $linkUrl; ?>">
+    		<td id="OrderId_<?php echo $i;?>"><?php echo $purchase['order_id']; ?></td>
+	    	<td id="Last4_<?php echo $i;?>"><?php echo $purchase['last']; ?></td>
+	    	<td id="OrderAmount_<?php echo $i;?>"><?php echo $purchase['order_amount']; ?></td>
+		    <td id="Affluence_<?php echo $i;?>"><?php echo $purchase['affluence']; ?></td>
+		    <td id="IssuingCountry_<?php echo $i;?>"><?php echo $purchase['issuing_country']; ?></td>
+		    <td id="PrepaidCardType_<?php echo $i;?>"><?php echo $purchase['prepaid_card_type']; ?></td>
+		    <td id="FundingSource_<?php echo $i;?>"><?php echo $purchase['funding_source']; ?></td>
+		    <td id="AvailableBalance_<?php echo $i;?>"><?php echo $purchase['available_balance']; ?></td>
+		    <td id="Reloadable_<?php echo $i;?>"><?php echo $purchase['reloadable']; ?></td>
+	    </tr>
+	    <?php $i++; ?> 
+	<?php } ?>
 
 
 </table>
