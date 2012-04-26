@@ -216,7 +216,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 			$data = array(
 				'customer_id' => $payment->getOrder()->getCustomerId(), 
 				'order_id' => $payment->getOrder()->getId(), 
-				'affluence' => XMLParser::getNode($litleResponse,"affluence"),
+				'affluence' => Litle_CreditCard_Model_PaymentLogic::formatAffluence(XMLParser::getNode($litleResponse,"affluence")),
 				'last' => $last4,
 				'prepaid'=> XMLParser::getNode($litleResponse, 'type'),
 				'reloadable' => XMLParser::getNode($litleResponse, 'reloadable'),
@@ -328,5 +328,17 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 		}
 		
 		return $available_balance;
+	}
+	
+	static public function formatAffluence($affluence) {
+		if($affluence == 'AFFLUENT') {
+			return 'Affluent';
+		}
+		else if($affluence == 'MASS AFFLUENT') {
+			return 'Mass Affluent';			
+		}
+		else {
+			return '';
+		}
 	}
 }
