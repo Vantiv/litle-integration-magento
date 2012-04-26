@@ -10,15 +10,15 @@
 $collection = Mage::getModel('palorus/insight')->getCollection();
 if ($collection->count() >= 1) {
     // store the retrieved feeds
-    $feedOutput = array();
+    $purchases = array();
     // iterate over the retrieved retrieved collection
-    foreach ($collection as $flickrFeedItem) {
-        $feedOutput[] = $flickrFeedItem->getData();
+    foreach ($collection as $purchase) {
+        $purchases[] = $purchase->getData();
     }
 }
 ?>
 
-
+<?php echo $this->getUrl('*/sales_order/view/order_id/206') ?>
 <table cellspacing="0" class="data">
             <thead>
                 <tr class="headings">
@@ -31,17 +31,22 @@ if ($collection->count() >= 1) {
                     <th>issuing_country</th>
                 </tr>
             </thead>
-        <?php foreach($feedOutput as $feed) { ?>
-		<tr>
-			<td><?php echo $feed['order_id']; ?></td>
-			<td><?php echo $feed['last'] ?></td>
-			<td><?php echo $feed['affluence']; ?></td>
-			<td><?php echo $feed['prepaid']; ?></td>
-			<td><?php echo $feed['reloadable'] ?></td>
-			<td><?php echo $feed['available_balance']; ?></td>
-			<td><?php echo $feed['issuing_country']; ?></td>
+            
+
+         
+        <?php $i = 1; ?>
+        <?php foreach($purchases as $purchase) { ?>
+		<tr titl>
+			<td id="OrderId_<?php echo $i;?>"><?php echo $purchase['order_id']; ?></td>
+			<td id="Last4_<?php echo $i;?>"><?php echo $purchase['last']; ?></td>
+			<td id="Affluence_<?php echo $i;?>"><?php echo $purchase['affluence']; ?></td>
+			<td id="Prepaid_<?php echo $i;?>"><?php echo $purchase['prepaid']; ?></td>
+			<td id="Reloadable_<?php echo $i;?>"><?php echo $purchase['reloadable']; ?></td>
+			<td id="AvailableBalance_<?php echo $i;?>"><?php echo $purchase['available_balance']; ?></td>
+			<td id="IssuingCountry_<?php echo $i;?>"><?php echo $purchase['issuing_country']; ?></td>
 		</tr>
-	<?php } ?>
+		<?php $i++; ?> 
+		<?php } ?>
 
 
 </table>

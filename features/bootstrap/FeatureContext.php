@@ -2,16 +2,27 @@
 
 use Behat\Behat\Context\ClosuredContextInterface,
     Behat\Behat\Context\BehatContext,
+    Behat\Behat\Exception\Exception,
     Behat\Behat\Exception\PendingException;
 
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
+
+use Behat\Mink\Exception\ResponseTextException;
 
 /**
  * Features context.
  */
 class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 {
+	/**
+	* @BeforeSuite
+	*/
+	public static function setupSuite(Behat\Behat\Event\SuiteEvent $event)
+	{
+		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupSuite.sql");
+		system("rm -rf /var/www/html/magento/var/cache/*");
+	}
 	
 	/**
 	* @BeforeFeature
@@ -29,6 +40,16 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 		}
 	}
 	
+	/**
+	* @Given /^There are no rows in the database table "([^"]*)"$/
+	*/
+	public function thereAreNoRowsInTheDatabaseTable($tableName)
+	{
+		$mysql = "mysql -u magento magento -e 'delete from $tableName'";
+		system($mysql);
+	}
+	
+	
     /**
      * @Given /^I am logged in as "([^"]*)" with the password "([^"]*)"$/
      */
@@ -41,6 +62,9 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 // 		//Get to login screen
  		$page = $session->getPage();
  		$loginLink = $page->findLink("Log In");
+ 		if($loginLink == NULL) {
+			throw new Exception("Could not find login link"); 			
+ 		}
  		$loginLink->click();
 	
 // 		//Login 
@@ -155,7 +179,7 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
  		$session->visit('http://127.0.0.1/magento/index.php/admin/');
 	
  		//Get to login screen
- 		$page = $session->getPage();
+ 		$page = $session->getPage(); 		
  		$page->findField("User Name:")->setValue("admin");
  		$page->findField("Password:")->setValue("LocalMagentoAdmin1");
  		$page->findButton("Login")->click();    	
@@ -212,6 +236,49 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     		throw new ResponseTextException("Could not find $specific in $section", $session);
     	}
     }
+    
+    /**
+    * @Given /^I click on the top row in Customers$/
+    */
+    public function iClickOnTheTopRowInCustomers()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	 
+    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[1]');
+    	$session->visit($topRow[0]->getAttribute("title"));
+    }
+    
+    /**
+     * @Then /^I should see "([^"]*)" in the column "([^"]*)"$/
+     */
+    public function iShouldSeeInTheColumn($expectedText, $columnName)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	 
+    	$value = $page->findById($columnName . "_1")->getText();
+    	if($value !== $expectedText) {
+    		throw new ResponseTextException("Could not find $expectedText in $columnName  Instead found $value", $session);
+    	}
+    }
+    
+    /**
+     * @Given /^I click on the top row in Customer Insight$/
+     */
+    public function iClickOnTheTopRowInCustomerInsight()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	 
+    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div/div[2]/div/div[3]/form/div[3]/div/table/tbody/tr[1]');
+    	$title = $topRow[0]->getAttribute("title");
+    	if($title == NULL) {
+    		throw new ResponseTextException("Could not find an attribute title for top row", $session);
+    	}
+    	$session->visit($topRow[0]->getAttribute("title"));
+    }
+    
     
     
 }

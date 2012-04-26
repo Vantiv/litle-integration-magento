@@ -32,35 +32,37 @@ require_once("../../app/code/local/Litle/CreditCard/Model/PaymentLogic.php");
 
 class PaymentLogicTest extends PHPUnit_Framework_TestCase
 {
-	public function testFormatAvailableBalance1()
-	{		
- 		$balance = Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance('2000');
- 		$this->assertEquals("$20.00",$balance);
+	
+	/**
+	 * @dataProvider providerFormatAvailableBalance
+	 */
+	public function testFormatAvailableBalance($input, $expected) {
+		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance($input));
 	}
 	
-	public function testFormatAvailableBalance2()
-	{
-		$balance = Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance('0');
-		$this->assertEquals("$0.00",$balance);
+	public function providerFormatAvailableBalance() {
+		return array(
+			array('2000','$20.00'),
+			array('0','$0.00'),
+			array('',''),
+			array(NULL,""),
+			array('10',"$0.10")						
+		);
 	}
 	
-	public function testFormatAvailableBalance3()
-	{
-		$balance = Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance('');
-		$this->assertEquals("",$balance);
+	/**
+	 * @dataProvider providerFormatAffluence
+	 */
+	public function testFormatAffluence($input, $expected) {
+		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatAffluence($input));
 	}
 	
-	public function testFormatAvailableBalance4()
-	{
-		$balance = Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance(NULL);
-		$this->assertEquals("",$balance);
+	public function providerFormatAffluence() {
+		return array(
+			array('AFFLUENT',"Affluent"),
+			array('MASS AFFLUENT',"Mass Affluent"),
+			array('',''),
+			array(NULL,'')
+		);
 	}
-	
-	public function testFormatAvailableBalance5()
-	{
-		$balance = Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance('10');
-		$this->assertEquals("$0.10",$balance);
-	}
-	
-	
 }
