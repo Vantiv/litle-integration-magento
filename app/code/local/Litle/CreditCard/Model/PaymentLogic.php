@@ -71,8 +71,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$info = $this->getInfoInstance();
 		$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
 		$info->setAdditionalInformation('paypage_order_id', $data->getOrderId());
-
-		echo $data->getPaypageRegistrationId() . "                " . $data->getOrderId(); exit;
 		return $this;
 	}
 
@@ -81,7 +79,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/CreditCard/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
-			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 
 		return $returnFromThisModel;
 	}

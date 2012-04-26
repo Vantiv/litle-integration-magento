@@ -24,7 +24,6 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-
 <?php
 // $_reportGroup = Mage::getModel('Litle_CreditCard_Model_Paypage')->getConfigData("reportGroup");
 // $_paypageId = Mage::getModel('Litle_CreditCard_Model_Paypage')->getConfigData("paypage_id");
@@ -42,98 +41,6 @@ $_id = $_time . substr($_session,13);
 
 ?>
 <?php $_code=$this->getMethodCode() ?>
-
-
-
-
-
-<script type="text/javascript">
-Payment.prototype.save = function() {
-	if (checkout.loadWaiting!=false) return;
-	var validator = new Validation(this.form);
-	if (this.validate() && validator.validate()) {
-		checkout.setLoadWaiting('payment');
-
-
-
-		// Litle Page Stuff//
-		 
-		/*
-		function getPayPageUrl5 {
-			return ('https://' + document.getElementById("request$paypageUrlId").value + '.securepaypage.litle.com');
-		//return ('https://.securepaypage.litle.com');
-		}*/
-
-		function setLitleResponseFields(response) {
-		document.getElementById('<?php echo $_code . "_code" ?>').value = response.response;
-		document.getElementById('<?php echo $_code . "_message" ?>').value = response.message;
-		document.getElementById('<?php echo $_code . "_response_time" ?>').value = response.responseTime;
-		document.getElementById('<?php echo $_code . "_litle_txn_id" ?>').value = response.litleTxnId;
-		document.getElementById('<?php echo $_code . "_type" ?>').value = response.type;
-		}
-
-		function submitAfterLitle(response) {
-			setLitleResponseFields(response);
-			var params = Form.serialize(document.forms['co-payment-form']);
-			//if (review.agreementsForm) {
-			//	params += '&' + Form.serialize(review.agreementsForm);
-			//}
-		}
-
-		function timeoutOnLitle() {
-			setLitleResponseFields();
-			alert('timeout error');
-		// alert("Timeout"):
-		return false;
-		}
-
-		function onErrorAfterLitle(response) {
-			setLitleResponseFields(response);
-			alert(response.message);
-			// alert("Error: " + response.message):
-			return false;
-		}
-
-		var formFields = {
-			"accountNum" : document.getElementById('<?php echo $_code . "_cc_number" ?>'),
-			"paypageRegistrationId" : document.getElementById('<?php echo $_code . "_paypage_registration_id" ?>'),
-			"bin" : document.getElementById('<?php echo $_code . "_bin" ?>')
-		};
-
-		var litleRequest = {
-			"paypageId" : document.getElementById('<?php echo $_code . "_paypage_id" ?>').value,
-			"reportGroup" : document.getElementById('<?php echo $_code . "_report_group" ?>').value,
-			"orderId" : document.getElementById('<?php echo $_code . "_order_id" ?>').value,
-			"id" : document.getElementById('<?php echo $_code . "_merchant_txn_id" ?>').value,
-			"url" : ('https://' + document.getElementById('<?php echo $_code . "_paypage_url_id" ?>').value + '.securepaypage.litle.com')
-		};
-
-		//if (document.getElementById("request$paypageEnabled").value == '1')
-		sendToLitle(litleRequest, formFields, submitAfterLitle, onErrorAfterLitle);
-
-		/*
-		// End of Paypage
-
-		*/
-
-
-
-
-		alert("ding dong");
-
-		var request = new Ajax.Request(
-		this.saveUrl,
-		{
-			method:'post',
-			onComplete: this.onComplete,
-			onSuccess: this.onSave,
-			onFailure: checkout.ajaxFailure.bind(checkout),
-			parameters: Form.serialize(this.form)
-		}
-		);
-	}
-}
-</script>
 
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
 <?php /*
@@ -260,3 +167,90 @@ Payment.prototype.save = function() {
         <input type="hidden" id="<?php echo $_code ?>_type" name="payment[type]"/>
         <input type="hidden" id="<?php echo $_code ?>_litle_txn_id" name="payment[litle_txn_id]"/>
 </ul>
+
+
+<script type="text/javascript">
+Payment.prototype.save = function() {
+	if (checkout.loadWaiting!=false) return;
+	var validator = new Validation(this.form);
+	if (this.validate() && validator.validate()) {
+		checkout.setLoadWaiting('payment');
+
+
+
+		// Litle Page Stuff//
+		 
+		/*
+		function getPayPageUrl5 {
+			return ('https://' + document.getElementById("request$paypageUrlId").value + '.securepaypage.litle.com');
+		//return ('https://.securepaypage.litle.com');
+		}*/
+
+		function setLitleResponseFields(response) {
+			alert("in setLitleResponseFields");
+			document.getElementById(<?php echo "'" . $_code . "_code" . "'" ?>).value = response.response;
+			document.getElementById(<?php echo "'" . $_code . "_message" . "'" ?>).value = response.message;
+			document.getElementById(<?php echo "'" . $_code . "_response_time" . "'" ?>).value = response.responseTime;
+			document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value = response.litleTxnId;
+			document.getElementById(<?php echo "'" . $_code . "_type" . "'" ?>).value = response.type;
+			alert(document.getElementById(<?php echo "'" . $_code . "_paypage_registration_id" . "'" ?>).value);
+			alert(document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value);
+		}
+
+		function submitAfterLitle(response) {
+			setLitleResponseFields(response);
+			var params = Form.serialize(document.forms['co-payment-form']);
+			//if (review.agreementsForm) {
+			//	params += '&' + Form.serialize(review.agreementsForm);
+			//}
+
+			var request = new Ajax.Request(
+					this.saveUrl,
+					{
+						method:'post',
+						onComplete: this.onComplete,
+						onSuccess: this.onSave,
+						onFailure: checkout.ajaxFailure.bind(checkout),
+						parameters: params//Form.serialize(this.form)
+					}
+					);
+		}
+
+		function timeoutOnLitle() {
+			setLitleResponseFields();
+			alert('timeout error');
+		// alert("Timeout"):
+		return false;
+		}
+
+		function onErrorAfterLitle(response) {
+			setLitleResponseFields(response);
+			alert(response.message);
+			// alert("Error: " + response.message):
+			return false;
+		}
+
+		var formFields = {
+			"accountNum" : document.getElementById(<?php echo "'" . $_code . "_cc_number" . "'" ?>),
+			"paypageRegistrationId" : document.getElementById(<?php echo "'" . $_code . "_paypage_registration_id" . "'" ?>),
+			"bin" : document.getElementById(<?php echo "'" . $_code . "_bin" . "'" ?>)
+		};
+
+		var litleRequest = {
+			"paypageId" : document.getElementById(<?php echo "'" . $_code . "_paypage_id" . "'" ?>).value,
+			"reportGroup" : document.getElementById(<?php echo "'" . $_code . "_report_group" . "'" ?>).value,
+			"orderId" : document.getElementById(<?php echo "'" . $_code . "_order_id" . "'" ?>).value,
+			"id" : document.getElementById(<?php echo "'" . $_code . "_merchant_txn_id" . "'" ?>).value,
+			"url" : ('https://' + document.getElementById(<?php echo "'" . $_code . "_paypage_url_id" . "'" ?>).value + '.securepaypage.litle.com')
+		};
+
+		//if (document.getElementById("request$paypageEnabled").value == '1')
+		sendToLitle(litleRequest, formFields, submitAfterLitle, onErrorAfterLitle);
+
+		/*
+		// End of Paypage
+
+		*/
+	}
+}
+</script>
