@@ -24,6 +24,125 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+
+<?php
+// $_reportGroup = Mage::getModel('Litle_CreditCard_Model_Paypage')->getConfigData("reportGroup");
+// $_paypageId = Mage::getModel('Litle_CreditCard_Model_Paypage')->getConfigData("paypage_id");
+// $_paypageUrlId = Mage::getModel('Litle_CreditCard_Model_Paypage')->getConfigData("paypage_url");
+// $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_Paypage')->getConfigData("paypage_enable");
+$_reportGroup = "dsaf";
+$_paypageId = "a2y4o6m8k0";
+$_paypageUrlId = "precert01";
+$_paypageEnabled = "1";
+?>
+<?php
+$_time =  date('ymdHis');
+$_session =  Mage::getModel("core/session")->getEncryptedSessionId();
+$_id = $_time . substr($_session,13);
+
+?>
+
+<script type="text/javascript">
+Payment.prototype.save = function() {
+	if (checkout.loadWaiting!=false) return;
+	var validator = new Validation(this.form);
+	if (this.validate() && validator.validate()) {
+		checkout.setLoadWaiting('payment');
+
+
+
+
+
+
+		// Litle Page Stuff//
+		 
+		/*
+		function getPayPageUrl5 {
+			return ('https://' + document.getElementById("request$paypageUrlId").value + '.securepaypage.litle.com');
+		//return ('https://.securepaypage.litle.com');
+		}*/
+
+		function setLitleResponseFields(response) {
+		document.getElementById('response$code').value = response.response;
+		document.getElementById('response$message').value = response.message;
+		document.getElementById('response$responseTime').value = response.responseTime;
+		document.getElementById('response$litleTxnId').value = response.litleTxnId;
+		document.getElementById('response$type').value = response.type;
+		}
+
+		function submitAfterLitle(response) {
+			setLitleResponseFields(response);
+			var params = Form.serialize(document.forms['co-payment-form']);
+			if (review.agreementsForm) {
+				params += '&' + Form.serialize(review.agreementsForm);
+			}
+		}
+
+		function timeoutOnLitle() {
+			setLitleResponseFields();
+			alert('timeout error');
+		// alert("Timeout"):
+		return false;
+		}
+
+		function onErrorAfterLitle(response) {
+			setLitleResponseFields(response);
+			alert(response.message);
+			// alert("Error: " + response.message):
+			return false;
+		}
+
+		function onAfterLitle(response) {
+			document.getElementById('response$code').value = response.response;
+			document.getElementById('response$message').value = response.message;
+			document.getElementById('response$responseTime').value = response.responseTime;
+			document.getElementById('response$litleTxnId').value = response.litleTxnId;
+			document.getElementById('response$type').value = response.type;
+		}
+
+		var formFields = {
+			"accountNum" : document
+			.getElementById('creditcard_cc_number'),
+			"paypageRegistrationId" : document
+			.getElementById('response$paypageRegistrationId'),
+			"bin" : document.getElementById('response$bin')
+		};
+
+		var litleRequest = {
+			"paypageId" : document.getElementById("request$paypageId").value,
+			"reportGroup" : document.getElementById("request$reportGroup").value,
+			"orderId" : document.getElementById("request$orderId").value,
+			"id" : document.getElementById("request$merchantTxnId").value,
+			"url" : ('https://' + document.getElementById("request$paypageUrlId").value + '.securepaypage.litle.com')
+		};
+
+		//if (document.getElementById("request$paypageEnabled").value == '1')
+		sendToLitle(litleRequest, formFields, onAfterLitle, onErrorAfterLitle);
+
+		/*
+		// End of Paypage
+
+		*/
+
+
+
+
+		alert("ding dong");
+
+		var request = new Ajax.Request(
+		this.saveUrl,
+		{
+			method:'post',
+			onComplete: this.onComplete,
+			onSuccess: this.onSave,
+			onFailure: checkout.ajaxFailure.bind(checkout),
+			parameters: Form.serialize(this.form)
+		}
+		);
+	}
+}
+</script>
+
 <?php $_code=$this->getMethodCode() ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
 <?php /*
@@ -136,7 +255,13 @@
     </li>
     <?php endif; ?>
 
-   	<input type="hidden" id="response$paypageRegistrationId" name="response$paypageRegistrationId" readOnly="true" value=""/>
+   	<input type="hidden" id="request$paypageId" name="request$paypageId" value="<?php echo $_paypageId; ?>"/>
+        <input type="hidden" id="request$merchantTxnId" name="request$merchantTxnId" value="<?php echo $_id; ?>"/>
+	<input type="hidden" id="request$paypageUrlId" name="request$paypageUrlId" value="<?php echo $_paypageUrlId; ?>"/>
+        <input type="hidden" id="request$orderId" name="request$orderId" value="<?php echo $_id; ?>"/>
+        <input type="hidden" id="request$reportGroup" name="request$reportGroup" value="<?php echo $_reportGroup; ?>"/>
+ 	<input type="hidden" id="request$paypageEnabled" name="request$paypageEnabled" value="<?php echo $_paypageEnabled; ?>"/>
+       	<input type="hidden" id="response$paypageRegistrationId" name="response$paypageRegistrationId" readOnly="true" value=""/>
         <input type="hidden" id="response$bin" name="response$bin" readOnly="true"/>
         <input type="hidden" id="response$code" name="response$code" readOnly="true"/>
         <input type="hidden" id="response$message" name="response$message" readOnly="true"/>
