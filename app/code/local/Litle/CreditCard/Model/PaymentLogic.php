@@ -238,7 +238,7 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 				'order_id' => XMLParser::getNode($litleResponse, 'orderId'), 
 				'affluence' => Litle_CreditCard_Model_PaymentLogic::formatAffluence(XMLParser::getNode($litleResponse,"affluence")),
 				'last' => $last4,
-				'order_amount' => Litle_CreditCard_Model_PaymentLogic::formatBalance($amountToPass),
+				'order_amount' => Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance($amountToPass),
 				'affluence' => Litle_CreditCard_Model_PaymentLogic::formatAffluence(XMLParser::getNode($litleResponse,"affluence")),
 				'issuing_country' => XMLParser::getNode($litleResponse, 'issuerCountry'),
 				'prepaid_card_type' => Litle_CreditCard_Model_PaymentLogic::formatPrepaidCardType(XMLParser::getNode($litleResponse, 'prepaidCardType')),
