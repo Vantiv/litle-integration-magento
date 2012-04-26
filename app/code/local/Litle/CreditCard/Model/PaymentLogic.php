@@ -62,26 +62,26 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	protected $_canSaveCc = false;
 	
-	public function assignData($data)
-	{
-		if (!($data instanceof Varien_Object)) {
-			$data = new Varien_Object($data);
-		}
+// 	public function assignData($data)
+// 	{
+// 		if (!($data instanceof Varien_Object)) {
+// 			$data = new Varien_Object($data);
+// 		}
 	
-		$info = $this->getInfoInstance();
-		$info->setAdditionalInformation('paypage_registration_id', $data->getEcheckRoutingNumber());
-		$info->setAdditionalInformation('echeck_bank_acc_num', $data->getEcheckBankAcctNum());
-		$info->setAdditionalInformation('echeck_acc_type', $data->getEcheckAccountType());
-	
-		return $this;
-	}
+// 		$info = $this->getInfoInstance();
+// 		$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
+// 		$info->setAdditionalInformation('paypage_order_id', $data->getOrderId());
+
+// 		echo $data->getPaypageRegistrationId() . "                " . $data->getOrderId(); exit;
+// 		return $this;
+// 	}
 
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/CreditCard/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
-		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 
 		return $returnFromThisModel;
 	}
