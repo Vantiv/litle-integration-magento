@@ -62,19 +62,19 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	protected $_canSaveCc = false;
 	
-// 	public function assignData($data)
-// 	{
-// 		if (!($data instanceof Varien_Object)) {
-// 			$data = new Varien_Object($data);
-// 		}
+	public function assignData($data)
+	{
+		if (!($data instanceof Varien_Object)) {
+			$data = new Varien_Object($data);
+		}
 	
-// 		$info = $this->getInfoInstance();
-// 		$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
-// 		$info->setAdditionalInformation('paypage_order_id', $data->getOrderId());
+		$info = $this->getInfoInstance();
+		$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
+		$info->setAdditionalInformation('paypage_order_id', $data->getOrderId());
 
-// 		echo $data->getPaypageRegistrationId() . "                " . $data->getOrderId(); exit;
-// 		return $this;
-// 	}
+		echo $data->getPaypageRegistrationId() . "                " . $data->getOrderId(); exit;
+		return $this;
+	}
 
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
