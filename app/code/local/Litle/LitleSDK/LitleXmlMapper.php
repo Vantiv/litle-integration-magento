@@ -32,7 +32,6 @@ class LitleXmlMapper
 	
 	public function request($request,$hash_config=NULL)
 	{
-
 	    $response = Communication::httpRequest($request,$hash_config);
 	    $respOb = XmlParser::domParser($response);
 	    return $respOb;
