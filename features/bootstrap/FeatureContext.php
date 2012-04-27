@@ -20,8 +20,11 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	*/
 	public static function setupSuite(Behat\Behat\Event\SuiteEvent $event)
 	{		
-		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupSuite.sql");
-		system("rm -rf /var/www/html/magento/var/cache/*");		
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupSuite.sql");
+		system("rm -rf $magentoHome/var/cache/*");		
 	}
 	
 	/**
@@ -29,7 +32,10 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	*/
 	public function iAmUsingTheSandbox()
 	{
-		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupSandbox.sql");
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupSandbox.sql");
 	}
 	
 	/**
@@ -37,7 +43,10 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	*/
 	public function iAmUsingLocalVap()
 	{
-		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupVap.sql");
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupVap.sql");
 	}
 	
 	
@@ -46,7 +55,10 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	*/
 	public function thereAreNoRowsInTheDatabaseTable($tableName)
 	{
-		$mysql = "mysql -u magento magento -e 'delete from $tableName' &> /dev/null";
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		$mysql = "mysql -u $dbUser $dbName -e 'delete from $tableName' &> /dev/null";
 		system($mysql);
 	}
 	
@@ -289,7 +301,10 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     */
     public function theTableShouldHaveARowWithInTheColumn($table, $expectedValue, $column)
     {
-    	$request = "mysql -u magento magento -e \"select count(*) from $table where $column = '$expectedValue'\"";
+    	$dbName = getenv('MAGENTO_DB_NAME');
+    	$dbUser = getenv('MAGENTO_DB_USER');
+    	$magentoHome = getenv('MAGENTO_HOME');
+    	$request = "mysql -u $dbUser $dbName -e \"select count(*) from $table where $column = '$expectedValue'\"";
     	$response = exec($request);
     	if($response !== '1') {
     		throw new Exception("Table did not have expected value");
@@ -301,7 +316,10 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     */
     public function theShouldHaveRows($table, $expectedRows)
     {
-    	$request = "mysql -u magento magento -e 'select count(*) from $table'";
+    	$dbName = getenv('MAGENTO_DB_NAME');
+    	$dbUser = getenv('MAGENTO_DB_USER');
+    	$magentoHome = getenv('MAGENTO_HOME');
+    	$request = "mysql -u $dbUser $dbName -e 'select count(*) from $table'";
     	$response = exec($request);
     	if($response !== $expectedRows) {
     		throw new Exception("Table did not have expected number of rows.  Found $response rows");
