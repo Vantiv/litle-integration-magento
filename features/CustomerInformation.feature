@@ -57,7 +57,7 @@ Feature: CustomerInformation
       Then I should see "Manage Customers"
       And I click on the top row in Customers
         Then I should see "Personal Information"
-      And I press "Litle & Co. Customer Insight"
+      And I follow "Litle & Co. Customer Insight"
     Then I should see "Mass Affluent" in the column "Affluence"
     And I follow "Log Out"
 
@@ -83,16 +83,17 @@ Feature: CustomerInformation
       Then I should see "Manage Customers"
       And I click on the top row in Customers
         Then I should see "Personal Information"
-      And I press "Litle & Co. Customer Insight"
-    Then I should see "Gift" in the column "Prepaid"
-      And I should see "$20.00" in the column "Available Balance"
+      And I follow "Litle & Co. Customer Insight"
+    Then I should see "Gift" in the column "PrepaidCardType"
+      And I should see "Prepaid" in the column "FundingSource"
+      And I should see "$20.00" in the column "AvailableBalance"
       And I should see "No" in the column "Reloadable"
     And I follow "Log Out"
       
   @javascript
   Scenario: buy with issuing country card
     Given I am logged in as "gdake@litle.com" with the password "password"
-    When I have "affluentproduct" in my cart
+    When I have "affluentvisa" in my cart
       And I press "Proceed to Checkout"
       And I press "Continue"
       And I press the "3rd" continue button
@@ -111,6 +112,6 @@ Feature: CustomerInformation
       Then I should see "Manage Customers"
       And I click on the top row in Customers
         Then I should see "Personal Information"
-      And I press "Litle & Co. Customer Insight"
-    Then I should see "BRA" in the column "Issuing Country"
+      And I follow "Litle & Co. Customer Insight"
+    Then I should see "BRA" in the column "IssuingCountry"
     And I follow "Log Out"

@@ -28,7 +28,7 @@ require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Core/Block/Template.php
 require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Template.php");
 require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Widget/Container.php");
 require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Sales/Transactions/Detail.php");
-require_once("../../app/code/local/Litle/CreditCard/Model/PaymentLogic.php");
+require_once(getenv('MAGENTO_HOME')."/app/code/local/Litle/CreditCard/Model/PaymentLogic.php");
 
 class PaymentLogicTest extends PHPUnit_Framework_TestCase
 {
@@ -63,6 +63,57 @@ class PaymentLogicTest extends PHPUnit_Framework_TestCase
 			array('MASS AFFLUENT',"Mass Affluent"),
 			array('',''),
 			array(NULL,'')
+		);
+	}
+	
+	/**
+	* @dataProvider providerFormatFundingSource
+	*/
+	public function testFormatPrepaid($input, $expected) {
+		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatFundingSource($input));
+	}
+	
+	public function providerFormatFundingSource() {
+		return array(
+		array('UNKNOWN',"Unknown"),
+		array('PREPAID',"Prepaid"),
+		array('FSA',"FSA"),
+		array('CREDIT',"Credit"),
+		array('DEBIT',"Debit"),
+		array('',''),
+		array(NULL,'')
+		);
+	}
+	
+	/**
+	* @dataProvider providerFormatPrepaidCardType
+	*/
+	public function testFormatPrepaidCardType($input, $expected) {
+		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatPrepaidCardType($input));
+	}
+	
+	public function providerFormatPrepaidCardType() {
+		return array(
+		array('GIFT',"Gift"),
+		array('',''),
+		array(NULL,'')
+		);
+	}
+	
+	/**
+	* @dataProvider providerFormatReloadable
+	*/
+	public function testFormatReloadable($input, $expected) {
+		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatReloadable($input));
+	}
+	
+	public function providerFormatReloadable() {
+		return array(
+		array('NO',"No"),
+		array('YES',"Yes"),
+		array('UNKNOWN',"Unknown"),
+		array('',''),
+		array(NULL,'')
 		);
 	}
 }

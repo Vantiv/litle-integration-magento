@@ -32,8 +32,10 @@ class LitleXmlMapper
 	
 	public function request($request,$hash_config=NULL)
 	{
+		//Mage::throwException($request);
 	    $response = Communication::httpRequest($request,$hash_config);
 	    $respOb = XmlParser::domParser($response);
+	    //Mage::throwException($respOb->saveXML());
 	    return $respOb;
 	}
 
