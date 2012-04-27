@@ -3,7 +3,7 @@
 
 class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 {
-	
+
 	public function saveCustomerInsight($payment, $litleResponse) {
 		Mage::log("Begin saveCustomerInsight");
 		preg_match('/.*(\d\d\d\d)/', $payment->getCcNumber(), $matches);
@@ -26,8 +26,8 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		Mage::log("Model is " . implode(",", Mage::getModel('palorus/insight')->setData($data)->getData()));
 		Mage::getModel('palorus/insight')->setData($data)->save();
 	}
-	
-	public function saveVault($payment, $litleResponse) {		
+
+	public function saveVault($payment, $litleResponse) {
 		Mage::log("Begin saveVault");
 		preg_match('/.*(\d\d\d\d)/', $payment->getCcNumber(), $matches);
 		$last4 = $matches[1];
@@ -47,26 +47,13 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		Mage::log("Model is " . implode(",", Mage::getModel('palorus/vault')->setData($data)->getData()));
 		Mage::getModel('palorus/vault')->setData($data)->save();
 	}
-	
-	static private function formatAvailableBalance ($balance)
+
+	static public function formatAvailableBalance ($balance)
 	{
 		return Litle_Palorus_Helper_Data::formatMoney($balance);
 	}
-	
-	static private function formatMoney($balance) {
-		if ($balance === '' || $balance === NULL){
-			$available_balance = '';
-		}
-		else{
-			$balance = str_pad($balance, 3, '0', STR_PAD_LEFT);
-			$available_balance = substr_replace($balance, '.', -2, 0);
-			$available_balance = '$' . $available_balance;
-		}
-	
-		return $available_balance;
-	}
-	
-	static private function formatAffluence($affluence) {
+
+	static public function formatAffluence($affluence) {
 		if($affluence === '' || $affluence === NULL) {
 			return '';
 		}
@@ -80,22 +67,22 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 			return $affluence;
 		}
 	}
-	
-	static private function formatFundingSource($prepaid) {
+
+	static public function formatFundingSource($prepaid) {
 		if($prepaid == 'FSA') {
 			return "FSA";
 		}
 		return Litle_Palorus_Helper_Data::capitalize($prepaid);
 	}
-	
-	static private function formatPrepaidCardType($prepaidCardType) {
+
+	static public function formatPrepaidCardType($prepaidCardType) {
 		return Litle_Palorus_Helper_Data::capitalize($prepaidCardType);
 	}
-	
-	static private function formatReloadable($reloadable) {
+
+	static public function formatReloadable($reloadable) {
 		return Litle_Palorus_Helper_Data::capitalize($reloadable);
 	}
-	
+
 	static private function capitalize($original) {
 		if($original === '' || $original === NULL) {
 			return '';
@@ -103,4 +90,19 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		$lower = strtolower($original);
 		return ucfirst($lower);
 	}
+
+	static private function formatMoney($balance) {
+		if ($balance === '' || $balance === NULL){
+			$available_balance = '';
+		}
+		else{
+			$balance = str_pad($balance, 3, '0', STR_PAD_LEFT);
+			$available_balance = substr_replace($balance, '.', -2, 0);
+			$available_balance = '$' . $available_balance;
+		}
+
+		return $available_balance;
+	}
+
+
 }

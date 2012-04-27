@@ -30,14 +30,14 @@ require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Widget/
 require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Sales/Transactions/Detail.php");
 require_once(getenv('MAGENTO_HOME')."/app/code/local/Litle/CreditCard/Model/PaymentLogic.php");
 
-class PaymentLogicTest extends PHPUnit_Framework_TestCase
+class HelperDataTest extends PHPUnit_Framework_TestCase
 {
 	
 	/**
 	 * @dataProvider providerFormatAvailableBalance
 	 */
 	public function testFormatAvailableBalance($input, $expected) {
-		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatAvailableBalance($input));
+		$this->assertEquals($expected, Litle_Palorus_Helper_Data::formatAvailableBalance($input));
 	}
 	
 	public function providerFormatAvailableBalance() {
@@ -54,7 +54,7 @@ class PaymentLogicTest extends PHPUnit_Framework_TestCase
 	 * @dataProvider providerFormatAffluence
 	 */
 	public function testFormatAffluence($input, $expected) {
-		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatAffluence($input));
+		$this->assertEquals($expected, Litle_Palorus_Helper_Data::formatAffluence($input));
 	}
 	
 	public function providerFormatAffluence() {
@@ -70,7 +70,7 @@ class PaymentLogicTest extends PHPUnit_Framework_TestCase
 	* @dataProvider providerFormatFundingSource
 	*/
 	public function testFormatPrepaid($input, $expected) {
-		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatFundingSource($input));
+		$this->assertEquals($expected, Litle_Palorus_Helper_Data::formatFundingSource($input));
 	}
 	
 	public function providerFormatFundingSource() {
@@ -89,7 +89,7 @@ class PaymentLogicTest extends PHPUnit_Framework_TestCase
 	* @dataProvider providerFormatPrepaidCardType
 	*/
 	public function testFormatPrepaidCardType($input, $expected) {
-		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatPrepaidCardType($input));
+		$this->assertEquals($expected, Litle_Palorus_Helper_Data::formatPrepaidCardType($input));
 	}
 	
 	public function providerFormatPrepaidCardType() {
@@ -104,7 +104,7 @@ class PaymentLogicTest extends PHPUnit_Framework_TestCase
 	* @dataProvider providerFormatReloadable
 	*/
 	public function testFormatReloadable($input, $expected) {
-		$this->assertEquals($expected, Litle_CreditCard_Model_PaymentLogic::formatReloadable($input));
+		$this->assertEquals($expected, Litle_Palorus_Helper_Data::formatReloadable($input));
 	}
 	
 	public function providerFormatReloadable() {
