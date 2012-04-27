@@ -103,7 +103,7 @@ $_id = $_time . substr($_session,13);
     <?php endif; ?>
 
 
-
+	<?php if($_paypageEnabled == 1):?>
    		<input type="hidden" id="<?php echo $_code ?>_paypage_id" name="payment[paypage_id]" value="<?php echo $_paypageId; ?>"/>
         <input type="hidden" id="<?php echo $_code ?>_merchant_txn_id" name="payment[merchant_txn_id]" value="<?php echo $_id; ?>"/>
 		<input type="hidden" id="<?php echo $_code ?>_paypage_url_id" name="payment[paypage_url_id]" value="<?php echo $_paypageUrlId; ?>"/>
@@ -117,8 +117,9 @@ $_id = $_time . substr($_session,13);
         <input type="hidden" id="<?php echo $_code ?>_response_time" name="payment[response_time]"/>
         <input type="hidden" id="<?php echo $_code ?>_type" name="payment[type]"/>
         <input type="hidden" id="<?php echo $_code ?>_litle_txn_id" name="payment[litle_txn_id]"/>
+	<?php endif; ?>
 </ul>
-
+<?php if($_paypageEnabled == 1):?>
 <script type="text/javascript">
 
 Payment.prototype.save = function() {
@@ -216,3 +217,4 @@ Payment.prototype.save = function() {
 	}
 }
 </script>
+<?php endif; ?>
