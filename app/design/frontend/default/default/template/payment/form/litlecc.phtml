@@ -189,6 +189,9 @@ Payment.prototype.save = function() {
 			document.getElementById(<?php echo "'" . $_code . "_response_time" . "'" ?>).value = response.responseTime;
 			document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value = response.litleTxnId;
 			document.getElementById(<?php echo "'" . $_code . "_type" . "'" ?>).value = response.type;
+
+
+			//alert(document.getElementById('creditcard_cc_number').value);
 		}
 
 

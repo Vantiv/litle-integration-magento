@@ -72,7 +72,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$info->setAdditionalInformation('paypage_enabled', $data->getPaypageEnabled());
 		$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
 		$info->setAdditionalInformation('paypage_order_id', $data->getOrderId());
-		return $this;
+		//Mage::throwException($data->getCcNumber());
+		//return $this;
+		return parent::assignData($data);
 	}
 
 
@@ -193,7 +195,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $hash;
 	}
 
-public function processResponse(Varien_Object $payment,$litleResponse){
+	public function processResponse(Varien_Object $payment,$litleResponse){
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
@@ -301,14 +303,15 @@ public function processResponse(Varien_Object $payment,$litleResponse){
 								'partial' => $isPartialCapture
 				);
 			} else {
-				$hash = array(
+				$hash_temp = array(
 			 					'orderId'=> $orderId,
 			 					'amount'=> $amountToPass,
 			 					'orderSource'=> "ecommerce",
 								'billToAddress'=> $this->getBillToAddress($payment),
 								'shipToAddress'=> $this->getAddressInfo($payment),
-			 					'card'=> $this->getCreditCardInfo($payment)
 				);
+				$payment_hash = $this->creditCardOrPaypage($payment);
+				$hash = array_merge($hash_temp,$payment_hash);
 			}
 				
 			$merchantData = $this->merchantData($payment);
