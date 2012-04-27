@@ -49,6 +49,15 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	}
 	
 	/**
+	* @Given /^I am using local vap$/
+	*/
+	public function iAmUsingLocalVap()
+	{
+		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupVap.sql");
+	}
+	
+	
+	/**
 	* @Given /^There are no rows in the database table "([^"]*)"$/
 	*/
 	public function thereAreNoRowsInTheDatabaseTable($tableName)

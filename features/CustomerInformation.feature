@@ -6,6 +6,8 @@ Feature: CustomerInformation
 
   Background:
     Given There are no rows in the database table "customer_insight"
+    And I am using the sandbox
+
     
   @javascript
   Scenario: buy with visa affluent credit card

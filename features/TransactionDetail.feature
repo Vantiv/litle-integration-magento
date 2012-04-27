@@ -5,6 +5,10 @@ Feature: TransactionDetail
   And As an admin
   I need to be able to see the link
   
+  Background:
+    And I am using local vap
+
+  
   @javascript
   Scenario: Buying an item with a visa credit card
     Given I am logged in as "gdake@litle.com" with the password "password"
