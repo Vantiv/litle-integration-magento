@@ -24,22 +24,6 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 		system("rm -rf /var/www/html/magento/var/cache/*");		
 	}
 	
-// 	/**
-// 	* @BeforeFeature
-// 	*/
-// 	public static function setupFeature(Behat\Behat\Event\FeatureEvent $event)
-// 	{
-// 		$featureName = $event->getFeature()->getTitle();
-// 		switch($featureName) {
-// 			case "TransactionDetail":
-// 				system("mysql -u magento magento < " . dirname(__FILE__) . "/setupVap.sql");
-// 				break;
-// 			case "CustomerInformation":
-// 				system("mysql -u magento magento < " . dirname(__FILE__) . "/setupSandbox.sql");
-// 				break;
-// 		}
-// 	}
-
 	/**
 	* @Given /^I am using the sandbox$/
 	*/

@@ -25,6 +25,7 @@ Feature: TransactionDetail
       And I press the "4th" continue button
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
+      And I follow "Log Out"
     
   @javascript
   Scenario: An administrator views the authorized transaction and sees the link to the Litle UI for the payment id
@@ -40,3 +41,6 @@ Feature: TransactionDetail
       And I press "Login"
     Then I should see "Authorization" in the "summary"
       And I should see "VISA" in the "summary"
+      And I move backward one page
+      And I move backward one page
+      And I follow "Log Out"
