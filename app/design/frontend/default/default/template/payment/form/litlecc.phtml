@@ -1,78 +1,141 @@
 <?php
 /**
-* Magento
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE_AFL.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@magentocommerce.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade Magento to newer
-* versions in the future. If you wish to customize Magento for your
-* needs please refer to http://www.magentocommerce.com for more information.
-*
-* @category design
-* @package base_default
-* @copyright Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
-* @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
-*/
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+$_reportGroup = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("reportGroup");
+$_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
+$_paypageUrlId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
+$_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
+// $_reportGroup = "dsaf";
+//$_paypageId = "a2y4o6m8k0";
+//$_paypageUrlId = "precert01";
+//$_paypageEnabled = "1";
+?>
+<?php
+$_time =  date('ymdHis');
+$_session =  Mage::getModel("core/session")->getEncryptedSessionId();
+$_id = $_time . substr($_session,13);
+
 ?>
 <?php $_code=$this->getMethodCode() ?>
-<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
-<?php /*
-<li>
-<div class="input-box">
-<label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label>
-<input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_owner')) ?>" />
-</div>
-</li>
-*/ ?>
-    <li>
-        <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
-        <div class="input-box">
-            <select id="<?php echo $_code ?>_cc_type" name="payment[cc_type]" class="required-entry validate-cc-type-select">
-                <option value=""><?php echo $this->__('--Please Select--')?></option>
+
+<ul class="form-list" id="payment_form_<?php echo $_code ?>"
+	style="display: none;">
+
+
+	<?php /*
+	<li>
+	<div class="input-box">
+	<label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label>
+	<input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_owner')) ?>" />
+	</div>
+	</li>
+	*/ ?>
+	<li><label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em>
+		
+		
+		
+		<?php echo $this->__('Credit Card Type') ?></label>
+		<div class="input-box">
+			<select id="<?php echo $_code ?>_cc_type" name="payment[cc_type]"
+				class="required-entry validate-cc-type-select">
+				<option value="">
+					
+				<?php echo $this->__('--Please Select--')?></option>
+				
+				
+				
+				
             <?php $_ccType = $this->getInfoData('cc_type') ?>
             <?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
                 <option value="<?php echo $_typeCode ?>"<?php if($_typeCode==$_ccType): ?> selected="selected"<?php endif ?>><?php echo $_typeName ?></option>
             <?php endforeach ?>
             </select>
-        </div>
-    </li>
-    <li>
-        <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
-        <div class="input-box">
-            <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="" />
-        </div>
-    </li>
-    <li id="<?php echo $_code ?>_cc_type_exp_div">
-        <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
-        <div class="input-box">
-            <div class="v-fix">
-                <select id="<?php echo $_code ?>_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp required-entry">
-                <?php $_ccExpMonth = $this->getInfoData('cc_exp_month') ?>
-                <?php foreach ($this->getCcMonths() as $k=>$v): ?>
-                    <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpMonth): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
+		</div>
+	</li>
+	<li><label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em>
+		
+		
+		
+		<?php echo $this->__('Credit Card Number') ?></label>
+		<div class="input-box">
+			<input type="text" id="<?php echo $_code ?>_cc_number"
+				name="payment[cc_number]"
+				title="<?php echo $this->__('Credit Card Number') ?>"
+				class="input-text validate-cc-number validate-cc-type" value="" />
+		</div>
+	</li>
+	<li id="<?php echo $_code ?>_cc_type_exp_div"><label
+		for="<?php echo $_code ?>_expiration" class="required"><em>*</em>
+		
+		
+		
+		<?php echo $this->__('Expiration Date') ?></label>
+		<div class="input-box">
+			<div class="v-fix">
+				<select id="<?php echo $_code ?>_expiration"
+					name="payment[cc_exp_month]"
+					class="month validate-cc-exp required-entry">
+					<?php $_ccExpMonth = $this->getInfoData('cc_exp_month') ?>
+					
+					<?php foreach ($this->getCcMonths() as $k=>$v): ?>
+					<option value="<?php echo $k?$k:'' ?>"
+					<?php if($k==$_ccExpMonth): ?> selected="selected" <?php endif ?>>
+					<?php echo $v ?></option>
+					
+					
                 <?php endforeach ?>
                 </select>
-            </div>
-            <div class="v-fix">
-                <?php $_ccExpYear = $this->getInfoData('cc_exp_year') ?>
-                <select id="<?php echo $_code ?>_expiration_yr" name="payment[cc_exp_year]" class="year required-entry">
-                <?php foreach ($this->getCcYears() as $k=>$v): ?>
-                    <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpYear): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
+			</div>
+			<div class="v-fix">
+
+
+			<?php $_ccExpYear = $this->getInfoData('cc_exp_year') ?>
+				<select id="<?php echo $_code ?>_expiration_yr"
+					name="payment[cc_exp_year]" class="year required-entry">
+					<?php foreach ($this->getCcYears() as $k=>$v): ?>
+					<option value="<?php echo $k?$k:'' ?>"
+
+					<?php if($k==$_ccExpYear): ?> selected="selected"
+					<?php endif ?>>
+
+					<?php echo $v ?></option>
+					
+					
+					
+					
                 <?php endforeach ?>
                 </select>
-            </div>
-        </div>
-    </li>
+			</div>
+		</div>
+	</li>
+	
+	
+	
+	
     <?php echo $this->getChildHtml() ?>
     <?php if($this->hasVerification()): ?>
     <li id="<?php echo $_code ?>_cc_type_cvv_div">
@@ -86,61 +149,117 @@
     </li>
     <?php endif; ?>
 
-    <?php if ($this->hasSsCardType()): ?>
-    <li id="<?php echo $_code ?>_cc_type_ss_div">
-        <ul class="inner-form">
-            <li class="form-alt"><label for="<?php echo $_code ?>_cc_issue" class="required"><em>*</em><?php echo $this->__('Switch/Solo/Maestro Only') ?></label></li>
-            <li>
-                <label for="<?php echo $_code ?>_cc_issue"><?php echo $this->__('Issue Number') ?>:</label>
-                <span class="input-box">
-                    <input type="text" title="<?php echo $this->__('Issue Number') ?>" class="input-text validate-cc-ukss cvv" id="<?php echo $_code ?>_cc_issue" name="payment[cc_ss_issue]" value="" />
-                </span>
-            </li>
 
-            <li>
-                <label for="<?php echo $_code ?>_start_month"><?php echo $this->__('Start Date') ?>:</label>
-                <div class="input-box">
-                    <div class="v-fix">
-                        <select id="<?php echo $_code ?>_start_month" name="payment[cc_ss_start_month]" class="validate-cc-ukss month">
-                        <?php foreach ($this->getCcMonths() as $k=>$v): ?>
-                            <option value="<?php echo $k?$k:'' ?>"<?php if($k==$this->getInfoData('cc_ss_start_month')): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
-                        <?php endforeach ?>
-                        </select>
-                    </div>
-                    <div class="v-fix">
-                        <select id="<?php echo $_code ?>_start_year" name="payment[cc_ss_start_year]" class="validate-cc-ukss year">
-                        <?php foreach ($this->getSsStartYears() as $k=>$v): ?>
-                            <option value="<?php echo $k?$k:'' ?>"<?php if($k==$this->getInfoData('cc_ss_start_year')): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
-                        <?php endforeach ?>
-                        </select>
-                    </div>
-                </div>
-            </li>
-            <li class="adv-container">&nbsp;</li>
-        </ul>
-        <script type="text/javascript">
-        //<![CDATA[
-        var SSChecked<?php echo $_code ?> = function() {
-            var elm = $('<?php echo $_code ?>_cc_type');
-            if (['SS','SM','SO'].indexOf(elm.value) != -1) {
-                $('<?php echo $_code ?>_cc_type_ss_div').show();
-            } else {
-                $('<?php echo $_code ?>_cc_type_ss_div').hide();
-            }
-        };
 
-        Event.observe($('<?php echo $_code ?>_cc_type'), 'change', SSChecked<?php echo $_code ?>);
-        SSChecked<?php echo $_code ?>();
-        //]]>
-        </script>
-    </li>
-    <?php endif; ?>
-
-    <input type="hidden" id="response$paypageRegistrationId" name="response$paypageRegistrationId" readOnly="true" value=""/>
-        <input type="hidden" id="response$bin" name="response$bin" readOnly="true"/>
-        <input type="hidden" id="response$code" name="response$code" readOnly="true"/>
-        <input type="hidden" id="response$message" name="response$message" readOnly="true"/>
-        <input type="hidden" id="response$responseTime" name="response$responseTime" readOnly="true"/>
-        <input type="hidden" id="response$type" name="response$type" readOnly="true"/>
-        <input type="hidden" id="response$litleTxnId" name="response$litleTxnId" readOnly="true"/>
+   		<input type="hidden" id="<?php echo $_code ?>_paypage_id" name="payment[paypage_id]" value="<?php echo $_paypageId; ?>"/>
+        <input type="hidden" id="<?php echo $_code ?>_merchant_txn_id" name="payment[merchant_txn_id]" value="<?php echo $_id; ?>"/>
+		<input type="hidden" id="<?php echo $_code ?>_paypage_url_id" name="payment[paypage_url_id]" value="<?php echo $_paypageUrlId; ?>"/>
+        <input type="hidden" id="<?php echo $_code ?>_order_id" name="payment[order_id]" value="<?php echo $_id; ?>"/>
+        <input type="hidden" id="<?php echo $_code ?>_report_group" name="payment[report_group]" value="<?php echo $_reportGroup; ?>"/>
+ 		<input type="hidden" id="<?php echo $_code ?>_paypage_enabled" name="payment[paypage_enabled]" value="<?php echo $_paypageEnabled; ?>"/>
+       	<input type="hidden" id="<?php echo $_code ?>_paypage_registration_id" name="payment[paypage_registration_id]" value=""/>
+        <input type="hidden" id="<?php echo $_code ?>_bin" name="payment[bin]"/>
+        <input type="hidden" id="<?php echo $_code ?>_code" name="payment[code]"/>
+        <input type="hidden" id="<?php echo $_code ?>_message" name="payment[message]"/>
+        <input type="hidden" id="<?php echo $_code ?>_response_time" name="payment[response_time]"/>
+        <input type="hidden" id="<?php echo $_code ?>_type" name="payment[type]"/>
+        <input type="hidden" id="<?php echo $_code ?>_litle_txn_id" name="payment[litle_txn_id]"/>
 </ul>
+
+<script type="text/javascript">
+
+Payment.prototype.save = function() {
+
+	var _saveUrl = this.saveUrl;
+	var _onComplete = this.onComplete;
+	var _onSave = this.onSave;
+	
+	if (checkout.loadWaiting!=false) return;
+	var validator = new Validation(this.form);
+	if (this.validate() && validator.validate()) {
+		checkout.setLoadWaiting('payment');
+
+
+
+		// Litle Page Stuff//
+		function setLitleResponseFields(response) {
+			document.getElementById(<?php echo "'" . $_code . "_code" . "'" ?>).value = response.response;
+			document.getElementById(<?php echo "'" . $_code . "_message" . "'" ?>).value = response.message;
+			document.getElementById(<?php echo "'" . $_code . "_response_time" . "'" ?>).value = response.responseTime;
+			document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value = response.litleTxnId;
+			document.getElementById(<?php echo "'" . $_code . "_type" . "'" ?>).value = response.type;
+
+
+			//alert(document.getElementById('creditcard_cc_number').value);
+		}
+
+
+		function submitAfterLitle(response) {
+			setLitleResponseFields(response);
+			var params = Form.serialize(document.forms['co-payment-form']);
+			
+			var request = new Ajax.Request(
+					_saveUrl,
+					{
+						method:'post',
+						onComplete: _onComplete,
+						onSuccess: _onSave,
+						onFailure: checkout.ajaxFailure.bind(checkout),
+						parameters: params
+					}
+			);
+		}
+
+		function timeoutOnLitle() {
+			setLitleResponseFields();
+			alert('timeout error');
+		// alert("Timeout"):
+		return false;
+		}
+
+		function onErrorAfterLitle(response) {
+			setLitleResponseFields(response);
+			alert(response.message);
+			// alert("Error: " + response.message):
+			return false;
+		}
+
+		var formFields = {
+			"accountNum" : document.getElementById(<?php echo "'" . $_code . "_cc_number" . "'" ?>),
+			"paypageRegistrationId" : document.getElementById(<?php echo "'" . $_code . "_paypage_registration_id" . "'" ?>),
+			"bin" : document.getElementById(<?php echo "'" . $_code . "_bin" . "'" ?>)
+		};
+
+		var litleRequest = {
+			"paypageId" : document.getElementById(<?php echo "'" . $_code . "_paypage_id" . "'" ?>).value,
+			"reportGroup" : document.getElementById(<?php echo "'" . $_code . "_report_group" . "'" ?>).value,
+			"orderId" : document.getElementById(<?php echo "'" . $_code . "_order_id" . "'" ?>).value,
+			"id" : document.getElementById(<?php echo "'" . $_code . "_merchant_txn_id" . "'" ?>).value,
+			"url" : ('https://' + document.getElementById(<?php echo "'" . $_code . "_paypage_url_id" . "'" ?>).value + '.securepaypage.litle.com')
+		};
+
+		if (document.getElementById(<?php echo "'" . $_code . "_paypage_enabled" . "'" ?>).value == '1'){
+			sendToLitle(litleRequest, formFields, submitAfterLitle, onErrorAfterLitle);
+		}
+		else{
+			submitAfterLitle(response)
+			//return true;
+		}
+		
+		/*
+		// End of Paypage
+
+		*/
+		/*var request = new Ajax.Request(
+				this.saveUrl,
+				{
+					method:'post',
+					onComplete: this.onComplete,
+					onSuccess: this.onSave,
+					onFailure: checkout.ajaxFailure.bind(checkout),
+					parameters: Form.serialize(this.form)
+				}
+		);*/
+	}
+}
+</script>
