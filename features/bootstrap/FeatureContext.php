@@ -21,7 +21,7 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	public static function setupSuite(Behat\Behat\Event\SuiteEvent $event)
 	{		
 		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupSuite.sql");
-		system("rm -rf /var/www/html/magento/var/cache/*");
+		system("rm -rf /var/www/html/magento/var/cache/*");		
 	}
 	
 	/**
@@ -45,7 +45,7 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	*/
 	public function thereAreNoRowsInTheDatabaseTable($tableName)
 	{
-		$mysql = "mysql -u magento magento -e 'delete from $tableName'";
+		$mysql = "mysql -u magento magento -e 'delete from $tableName' &> /dev/null";
 		system($mysql);
 	}
 	

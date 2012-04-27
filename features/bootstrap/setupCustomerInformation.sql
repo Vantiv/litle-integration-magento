@@ -13,3 +13,4 @@ update core_config_data set value='01602' where path='payment/CreditCard/merchan
 update core_config_data set value='01602' where path='payment/LEcheck/merchant_id';
 
 delete from sales_flat_order;
+delete from sales_flat_quote;
