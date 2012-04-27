@@ -28,6 +28,9 @@
 					<insight>
 						<table>customer_insight</table>
 					</insight>
+					<vault>
+						<table>vault</table>
+					</vault>
 				</entities>
 			</palorus_mysql4>
 		</models>

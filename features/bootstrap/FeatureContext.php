@@ -24,20 +24,28 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 		system("rm -rf /var/www/html/magento/var/cache/*");		
 	}
 	
+// 	/**
+// 	* @BeforeFeature
+// 	*/
+// 	public static function setupFeature(Behat\Behat\Event\FeatureEvent $event)
+// 	{
+// 		$featureName = $event->getFeature()->getTitle();
+// 		switch($featureName) {
+// 			case "TransactionDetail":
+// 				system("mysql -u magento magento < " . dirname(__FILE__) . "/setupVap.sql");
+// 				break;
+// 			case "CustomerInformation":
+// 				system("mysql -u magento magento < " . dirname(__FILE__) . "/setupSandbox.sql");
+// 				break;
+// 		}
+// 	}
+
 	/**
-	* @BeforeFeature
+	* @Given /^I am using the sandbox$/
 	*/
-	public static function setupFeature(Behat\Behat\Event\FeatureEvent $event)
+	public function iAmUsingTheSandbox()
 	{
-		$featureName = $event->getFeature()->getTitle();
-		switch($featureName) {
-			case "TransactionDetail":
-				system("mysql -u magento magento < " . dirname(__FILE__) . "/setupTransactionDetail.sql");
-				break;
-			case "CustomerInformation":
-				system("mysql -u magento magento < " . dirname(__FILE__) . "/setupCustomerInformation.sql");
-				break;
-		}
+		system("mysql -u magento magento < " . dirname(__FILE__) . "/setupSandbox.sql");
 	}
 	
 	/**
@@ -283,6 +291,29 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$session->visit($topRow[0]->getAttribute("title"));
     }
     
+    /**
+    * @Given /^the "([^"]*)" table should have a row with "([^"]*)" in the "([^"]*)" column$/
+    */
+    public function theTableShouldHaveARowWithInTheColumn($table, $expectedValue, $column)
+    {
+    	$request = "mysql -u magento magento -e \"select count(*) from $table where $column = '$expectedValue'\"";
+    	$response = exec($request);
+    	if($response !== '1') {
+    		throw new Exception("Table did not have expected value");
+    	}    	
+    }
+    
+    /**
+    * @Given /^the "([^"]*)" should have "([^"]*)" rows$/
+    */
+    public function theShouldHaveRows($table, $expectedRows)
+    {
+    	$request = "mysql -u magento magento -e 'select count(*) from $table'";
+    	$response = exec($request);
+    	if($response !== $expectedRows) {
+    		throw new Exception("Table did not have expected number of rows.  Found $response rows");
+    	}    	    	
+    }
     
     
 }

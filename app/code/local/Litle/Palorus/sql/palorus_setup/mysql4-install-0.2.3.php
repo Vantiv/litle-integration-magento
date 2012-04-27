@@ -5,7 +5,6 @@
     $installer->startSetup();
      
     $installer->run("
-     
 CREATE TABLE {$installer->getTable('palorus/insight')} (
 customer_insight_id integer(10) unsigned NOT NULL auto_increment,
 customer_id integer(10) unsigned NOT NULL default 0,
@@ -22,5 +21,19 @@ reloadable varchar(20) NULL,
 PRIMARY KEY (customer_insight_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Litle customer insight for an account';
 ");
+    
+    $installer->run("
+    CREATE TABLE {$installer->getTable('palorus/vault')} (
+    vault_id integer(10) unsigned NOT NULL auto_increment,
+    order_id integer(10) unsigned NOT NULL default 0,
+    customer_id integer(10) unsigned NOT NULL default 0,
+    last4 varchar(4) NULL,
+    token varchar(25) NULL,
+    type varchar(2) NULL,
+    bin varchar(6) NULL,
+    PRIMARY KEY (vault_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Litle customer insight for an account';
+    ");
+    
      
     $installer->endSetup();
