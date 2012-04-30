@@ -71,6 +71,15 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $returnFromThisModel;
 	}
 	
+	public function isFromVT($payment, $txnType)
+	{
+		$parentTxnId = $payment->getParentTransactionId();
+		if( $parentTxnId == "Litle VT" )
+		{
+			Mage::throwException("This order was placed using Litle Virtual Terminal. Please process the $txnType by logging into Litle Virtual Terminal (https://vt.litle.com).");
+		}
+	}
+	
 	public function assignData($data)
 	{
 		if( $this->getConfigData('paypage_enabled') == "1")
@@ -244,6 +253,13 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		if (preg_match("/admin\/sales_order_create/i", $_SERVER['REQUEST_URI']))
 		{
+			$payment
+			->setStatus("N/A")
+			->setCcTransId("Litle VT")
+			->setLastTransId("Litle VT")
+			->setTransactionId("Litle VT")
+			->setIsTransactionClosed(0)
+			->setCcType("Litle VT");
 		}
 		else{
 			$order = $payment->getOrder();
@@ -279,6 +295,21 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function capture (Varien_Object $payment, $amount)
 	{
+		if (preg_match("/admin\/sales_order_create/i", $_SERVER['REQUEST_URI']))
+		{
+			$payment
+			->setStatus("N/A")
+			->setCcTransId("Litle VT")
+			->setLastTransId("Litle VT")
+			->setTransactionId("Litle VT")
+			->setIsTransactionClosed(0)
+			->setCcType("Litle VT");
+			
+			return;
+		}
+		
+		$this->isFromVT($payment, "capture");
+		
 		$order = $payment->getOrder();
 		if (!empty($order)){
 			
@@ -290,7 +321,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			if( !$isSale )
 			{
 				$hash = array(
-								'litleTxnId' => $payment->getParentTransactionId(),//getCcTransId(),
+								'litleTxnId' => $parentTxnId,//getCcTransId(),
 								'amount' => $amountToPass,
 								'partial' => $isPartialCapture
 				);
@@ -325,6 +356,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function refund (Varien_Object $payment, $amount)
 	{
+		$this->isFromVT($payment, "refund");
+		
 		$order = $payment->getOrder();
 		$amountToPass = ($amount* 100);
 		if (!empty($order)){
@@ -346,6 +379,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function void (Varien_Object $payment)
 	{
+		$this->isFromVT($payment, "void");
+		
 		$order = $payment->getOrder();
 		if (!empty($order)){
 			$hash = array(
