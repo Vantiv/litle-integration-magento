@@ -62,22 +62,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	protected $_canSaveCc = false;
 	
-	public function assignData($data)
-	{
-		if (!($data instanceof Varien_Object)) {
-			$data = new Varien_Object($data);
-		}
-	
-		$info = $this->getInfoInstance();
-		$info->setAdditionalInformation('paypage_enabled', $data->getPaypageEnabled());
-		$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
-		$info->setAdditionalInformation('paypage_order_id', $data->getOrderId());
-		//Mage::throwException($data->getCcNumber());
-		//return $this;
-		return parent::assignData($data);
-	}
-
-
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/CreditCard/' . $fieldToLookFor);
@@ -86,6 +70,24 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 		return $returnFromThisModel;
 	}
+	
+	public function assignData($data)
+	{
+		if( $this->getConfigData('paypage_enabled') == "1")
+		{
+			if (!($data instanceof Varien_Object)) {
+				$data = new Varien_Object($data);
+			}
+			
+			$info = $this->getInfoInstance();
+			$info->setAdditionalInformation('paypage_enabled', $data->getPaypageEnabled());
+			$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
+			$info->setAdditionalInformation('paypage_order_id', $data->getOrderId());
+		}
+		return parent::assignData($data);
+	}
+
+
 	
 	public function validate()
 	{
@@ -240,32 +242,34 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function authorize(Varien_Object $payment, $amount)
 	{
-		$info = $this->getInfoInstance();
-		
-		$order = $payment->getOrder();
-		$orderId =  $order->getIncrementId();
-		$amountToPass = ($amount* 100);
-		if (!empty($order)){
-			$hash = array(
-	 					'orderId'=> $orderId,
-	 					'amount'=> $amountToPass,
-	 					'orderSource'=> "ecommerce",
-						'billToAddress'=> $this->getBillToAddress($payment),
-						'shipToAddress'=> $this->getAddressInfo($payment)
-			);
-			$payment_hash = $this->creditCardOrPaypage($payment);
-			$hash_temp = array_merge($hash,$payment_hash);
-			$merchantData = $this->merchantData($payment);
-			$hash_in = array_merge($hash_temp,$merchantData);
-			$litleRequest = new LitleOnlineRequest();
-			$litleResponse = $litleRequest->authorizationRequest($hash_in);
-			$this->processResponse($payment,$litleResponse);
-			
-			Mage::log("About to call helper");
-			Mage::helper("palorus")->saveCustomerInsight($payment, $litleResponse);
-			Mage::helper("palorus")->saveVault($payment, $litleResponse);
-			Mage::log("Back from helper");
-			
+		if (preg_match("/admin\/sales_order_create/i", $_SERVER['REQUEST_URI']))
+		{
+		}
+		else{
+			$order = $payment->getOrder();
+			$orderId =  $order->getIncrementId();
+			$amountToPass = ($amount* 100);
+			if (!empty($order)){
+				$hash = array(
+				 					'orderId'=> $orderId,
+				 					'amount'=> $amountToPass,
+				 					'orderSource'=> "ecommerce",
+									'billToAddress'=> $this->getBillToAddress($payment),
+									'shipToAddress'=> $this->getAddressInfo($payment)
+				);
+				$payment_hash = $this->creditCardOrPaypage($payment);
+				$hash_temp = array_merge($hash,$payment_hash);
+				$merchantData = $this->merchantData($payment);
+				$hash_in = array_merge($hash_temp,$merchantData);
+				$litleRequest = new LitleOnlineRequest();
+				$litleResponse = $litleRequest->authorizationRequest($hash_in);
+				$this->processResponse($payment,$litleResponse);
+					
+				Mage::log("About to call helper");
+				Mage::helper("palorus")->saveCustomerInsight($payment, $litleResponse);
+				Mage::helper("palorus")->saveVault($payment, $litleResponse);
+				Mage::log("Back from helper");
+			}	
 		}
 	}
 
