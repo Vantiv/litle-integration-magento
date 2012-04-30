@@ -189,7 +189,7 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     {
     	$session = $this->getMink()->getSession('sahi'); 
 
- 		$session->visit('http://127.0.0.1/magento/index.php/admin/');
+ 		$session->visit('http://localhost/magento/index.php/admin/');
 	
  		//Get to login screen
  		$page = $session->getPage(); 		
