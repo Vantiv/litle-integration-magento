@@ -12,7 +12,7 @@ Feature: TransactionDetail
   @javascript
   Scenario: Buying an item with a visa credit card
     Given I am logged in as "gdake@litle.com" with the password "password"
-    When I have "This is my product" in my cart
+    When I have "vault" in my cart
       And I press "Proceed to Checkout"
       And I press "Continue"
       And I press the "3rd" continue button
