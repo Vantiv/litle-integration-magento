@@ -312,6 +312,22 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     }
     
     /**
+    * @Given /^the "([^"]*)" table should have a row like "([^"]*)" in the "([^"]*)" column$/
+    */
+    public function theTableShouldHaveARowLikeInTheColumn($table, $expectedValue, $column)
+    {
+    	$dbName = getenv('MAGENTO_DB_NAME');
+    	$dbUser = getenv('MAGENTO_DB_USER');
+    	$magentoHome = getenv('MAGENTO_HOME');
+    	$request = "mysql -u $dbUser $dbName -e \"select count(*) from $table where $column like '$expectedValue'\"";
+    	$response = exec($request);
+    	if($response !== '1') {
+    		throw new Exception("Table did not have expected value");
+    	}
+    }
+    
+    
+    /**
     * @Given /^the "([^"]*)" should have "([^"]*)" rows$/
     */
     public function theShouldHaveRows($table, $expectedRows)
