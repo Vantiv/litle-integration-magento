@@ -43,7 +43,9 @@ $_id = $_time . substr($_session,13);
 <?php $_code=$this->getMethodCode() ?>
 
 	<?php if($_paypageEnabled == 1):?>
-   		
+   		<ul id="payment_form_<?php echo $_code ?>" style="display:none;">
+			<a href="https://vt.litle.com" target="_blank">Litle Virtual Terminal</a>
+		</ul>
 	<?php endif; ?>
 	<?php if($_paypageEnabled != 1):?>
    		<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
