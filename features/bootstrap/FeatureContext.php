@@ -39,6 +39,17 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	}
 	
 	/**
+	* @Given /^I am doing paypage transaction tests$/
+	*/
+	public function iAmDoingPaypageTransactionTests()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageTransactionTest.sql");
+	}
+	
+	/**
 	* @Given /^I am using local vap$/
 	*/
 	public function iAmUsingLocalVap()
@@ -258,6 +269,18 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
     	 
+    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[1]');
+    	$session->visit($topRow[0]->getAttribute("title"));
+    }
+    
+    /**
+    * @Given /^I click on the top row in Orders$/
+    */
+    public function iClickOnTheTopRowInOrders()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
     	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[1]');
     	$session->visit($topRow[0]->getAttribute("title"));
     }
