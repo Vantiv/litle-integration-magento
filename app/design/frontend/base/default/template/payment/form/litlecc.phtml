@@ -114,6 +114,8 @@ Payment.prototype.save = function() {
 	var _saveUrl = this.saveUrl;
 	var _onComplete = this.onComplete;
 	var _onSave = this.onSave;
+	var _currentMethod = this.currentMethod;
+	var _form = this.form;
 	
 	if (checkout.loadWaiting!=false) return;
 	var validator = new Validation(this.form);
@@ -130,10 +132,7 @@ Payment.prototype.save = function() {
 		}
 
 
-		function submitAfterLitle(response) {
-			setLitleResponseFields(response);
-			var params = Form.serialize(document.forms['co-payment-form']);
-			
+		function submitAfterLitle() {
 			var request = new Ajax.Request(
 					_saveUrl,
 					{
@@ -141,7 +140,7 @@ Payment.prototype.save = function() {
 						onComplete: _onComplete,
 						onSuccess: _onSave,
 						onFailure: checkout.ajaxFailure.bind(checkout),
-						parameters: params
+						parameters: Form.serialize(_form)
 					}
 			);
 		}
@@ -172,8 +171,11 @@ Payment.prototype.save = function() {
 			"url" : ('https://' + document.getElementById(<?php echo "'" . $_code . "_paypage_url_id" . "'" ?>).value + '.securepaypage.litle.com')
 		};
 
-		sendToLitle(litleRequest, formFields, submitAfterLitle, onErrorAfterLitle);
-
+		if( _currentMethod == "creditcard" ){
+			//sendToLitle(litleRequest, formFields, submitAfterLitle, onErrorAfterLitle);
+			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+		}
+		submitAfterLitle();
 
 		// End of Paypage
 	}
