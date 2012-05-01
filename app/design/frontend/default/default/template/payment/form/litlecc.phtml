@@ -29,10 +29,6 @@ $_reportGroup = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfig
 $_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
 $_paypageUrlId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
-// $_reportGroup = "dsaf";
-//$_paypageId = "a2y4o6m8k0";
-//$_paypageUrlId = "precert01";
-//$_paypageEnabled = "1";
 ?>
 <?php
 $_time =  date('ymdHis');
@@ -42,14 +38,6 @@ $_id = $_time . substr($_session,13);
 ?>
 <?php $_code=$this->getMethodCode() ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
-<?php /*
-<li>
-<div class="input-box">
-<label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label>
-<input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_owner')) ?>" />
-</div>
-</li>
-*/ ?>
     <li>
         <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
         <div class="input-box">
@@ -101,8 +89,6 @@ $_id = $_time . substr($_session,13);
         </div>
     </li>
     <?php endif; ?>
-
-
 	<?php if($_paypageEnabled == 1):?>
    		<input type="hidden" id="<?php echo $_code ?>_paypage_id" name="payment[paypage_id]" value="<?php echo $_paypageId; ?>"/>
         <input type="hidden" id="<?php echo $_code ?>_merchant_txn_id" name="payment[merchant_txn_id]" value="<?php echo $_id; ?>"/>
@@ -119,6 +105,7 @@ $_id = $_time . substr($_session,13);
         <input type="hidden" id="<?php echo $_code ?>_litle_txn_id" name="payment[litle_txn_id]"/>
 	<?php endif; ?>
 </ul>
+
 <?php if($_paypageEnabled == 1):?>
 <script type="text/javascript">
 
@@ -133,8 +120,6 @@ Payment.prototype.save = function() {
 	if (this.validate() && validator.validate()) {
 		checkout.setLoadWaiting('payment');
 
-
-
 		// Litle Page Stuff//
 		function setLitleResponseFields(response) {
 			document.getElementById(<?php echo "'" . $_code . "_code" . "'" ?>).value = response.response;
@@ -142,9 +127,6 @@ Payment.prototype.save = function() {
 			document.getElementById(<?php echo "'" . $_code . "_response_time" . "'" ?>).value = response.responseTime;
 			document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value = response.litleTxnId;
 			document.getElementById(<?php echo "'" . $_code . "_type" . "'" ?>).value = response.type;
-
-
-			//alert(document.getElementById('creditcard_cc_number').value);
 		}
 
 
@@ -167,14 +149,12 @@ Payment.prototype.save = function() {
 		function timeoutOnLitle() {
 			setLitleResponseFields();
 			alert('timeout error');
-		// alert("Timeout"):
 		return false;
 		}
 
 		function onErrorAfterLitle(response) {
 			setLitleResponseFields(response);
 			alert(response.message);
-			// alert("Error: " + response.message):
 			return false;
 		}
 
@@ -192,28 +172,10 @@ Payment.prototype.save = function() {
 			"url" : ('https://' + document.getElementById(<?php echo "'" . $_code . "_paypage_url_id" . "'" ?>).value + '.securepaypage.litle.com')
 		};
 
-		if (document.getElementById(<?php echo "'" . $_code . "_paypage_enabled" . "'" ?>).value == '1'){
-			sendToLitle(litleRequest, formFields, submitAfterLitle, onErrorAfterLitle);
-		}
-		else{
-			submitAfterLitle(response)
-			//return true;
-		}
-		
-		/*
-		// End of Paypage
+		sendToLitle(litleRequest, formFields, submitAfterLitle, onErrorAfterLitle);
 
-		*/
-		/*var request = new Ajax.Request(
-				this.saveUrl,
-				{
-					method:'post',
-					onComplete: this.onComplete,
-					onSuccess: this.onSave,
-					onFailure: checkout.ajaxFailure.bind(checkout),
-					parameters: Form.serialize(this.form)
-				}
-		);*/
+
+		// End of Paypage
 	}
 }
 </script>
