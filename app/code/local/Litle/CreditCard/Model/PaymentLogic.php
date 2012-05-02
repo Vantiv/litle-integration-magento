@@ -321,7 +321,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			if( !$isSale )
 			{
 				$hash = array(
-								'litleTxnId' => $parentTxnId,//getCcTransId(),
+								'litleTxnId' => $payment->getParentTransactionId(),
 								'amount' => $amountToPass,
 								'partial' => $isPartialCapture
 				);
@@ -336,7 +336,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$payment_hash = $this->creditCardOrPaypage($payment);
 				$hash = array_merge($hash_temp,$payment_hash);
 			}
-				
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
