@@ -143,7 +143,17 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     {
     	$session = $this->getMink()->getSession('sahi');
     	$session->wait($time);
-   	}    
+   	}
+
+   	/**
+   	* @Then /^I wait for the payments to appear$/
+   	*/
+   	public function iWaitForThePaymentsToAppear()
+   	{
+   		$this->getSession()->wait(5000,
+   	        "(document.getElementById('p_method_creditcard') != null)"
+   		);
+   	}
     
     /**
     * @Given /^I choose "([^"]*)"$/
@@ -154,6 +164,12 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$page = $session->getPage();
     	if($choice === 'CreditCard') {
     		$page->findById("p_method_creditcard")->click();
+    	}
+    	if($choice === 'English') {
+    		$page->findById("store_1")->click();
+    	}
+    	if($choice === 'Fixed Shipping') {
+			$page->findById("s_method_flatrate_flatrate")->click();
     	}
     }
     
@@ -234,6 +250,18 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     }
     
     /**
+    * @Given /^I click on the Invoice button on top$/
+    */
+    public function iClickOnTheInvoiceButtonOnTop()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	$fieldElements = $page->findAll('named',array('field', 'id|name|value|label'));
+    	$elementsByCss = $page->findAll('css', "button");
+    	$elementsByCss[3]->click();
+    }
+    
+    /**
     * @Given /^I click on the Transaction ID link$/
     */
     public function iClickOnTheTransactionIdLink()
@@ -274,6 +302,30 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     }
     
     /**
+    * @Given /^I click on the top row in CustomersList$/
+    */
+    public function iClickOnTheTopRowInCustomersList()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[3]/div/div[2]/div/div/div/table/tbody/tr/td[2]');
+    	$topRow[0]->click();
+    }
+    
+    /**
+    * @Given /^I click on the top row in Product Table$/
+    */
+    public function iClickOnTheTopRowInProductTable()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div/div/div[2]/div/div/div/table/tbody/tr/td[2]');
+    	$topRow[0]->click();
+    }
+    
+    /**
     * @Given /^I click on the top row in Orders$/
     */
     public function iClickOnTheTopRowInOrders()
@@ -284,6 +336,7 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[1]');
     	$session->visit($topRow[0]->getAttribute("title"));
     }
+    
     
     /**
      * @Then /^I should see "([^"]*)" in the column "([^"]*)"$/
