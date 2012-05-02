@@ -25,23 +25,9 @@
 */
 ?>
 <?php
-$_reportGroup = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("reportGroup");
-$_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
-$_paypageUrlId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
-// $_reportGroup = "dsaf";
-//$_paypageId = "a2y4o6m8k0";
-//$_paypageUrlId = "precert01";
-//$_paypageEnabled = "1";
+$_code=$this->getMethodCode();
 ?>
-<?php
-$_time =  date('ymdHis');
-$_session =  Mage::getModel("core/session")->getEncryptedSessionId();
-$_id = $_time . substr($_session,13);
-
-?>
-<?php $_code=$this->getMethodCode() ?>
-
 	<?php if($_paypageEnabled == 1):?>
    		<ul id="payment_form_<?php echo $_code ?>" style="display:none;">
 			<a href="https://vt.litle.com" target="_blank">Litle Virtual Terminal</a>

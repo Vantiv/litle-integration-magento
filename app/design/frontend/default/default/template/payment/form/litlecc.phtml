@@ -24,12 +24,17 @@
 * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
 */
 ?>
+
 <?php
 $_reportGroup = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("reportGroup");
 $_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
-$_paypageUrlId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
+$_paypageUrl = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
 ?>
+
+<script type="text/javascript" src="<?php echo $_paypageUrl;?>/LitlePayPage/litle-api.js"></script>
+<script type="text/javascript"> $.noConflict();</script>
+
 <?php
 $_time =  date('ymdHis');
 $_session =  Mage::getModel("core/session")->getEncryptedSessionId();
@@ -92,7 +97,7 @@ $_id = $_time . substr($_session,13);
 	<?php if($_paypageEnabled == 1):?>
    		<input type="hidden" id="<?php echo $_code ?>_paypage_id" name="payment[paypage_id]" value="<?php echo $_paypageId; ?>"/>
         <input type="hidden" id="<?php echo $_code ?>_merchant_txn_id" name="payment[merchant_txn_id]" value="<?php echo $_id; ?>"/>
-		<input type="hidden" id="<?php echo $_code ?>_paypage_url_id" name="payment[paypage_url_id]" value="<?php echo $_paypageUrlId; ?>"/>
+		<input type="hidden" id="<?php echo $_code ?>_paypage_url" name="payment[paypage_url]" value="<?php echo $_paypageUrl; ?>"/>
         <input type="hidden" id="<?php echo $_code ?>_order_id" name="payment[order_id]" value="<?php echo $_id; ?>"/>
         <input type="hidden" id="<?php echo $_code ?>_report_group" name="payment[report_group]" value="<?php echo $_reportGroup; ?>"/>
  		<input type="hidden" id="<?php echo $_code ?>_paypage_enabled" name="payment[paypage_enabled]" value="<?php echo $_paypageEnabled; ?>"/>
@@ -168,7 +173,7 @@ Payment.prototype.save = function() {
 			"reportGroup" : document.getElementById(<?php echo "'" . $_code . "_report_group" . "'" ?>).value,
 			"orderId" : document.getElementById(<?php echo "'" . $_code . "_order_id" . "'" ?>).value,
 			"id" : document.getElementById(<?php echo "'" . $_code . "_merchant_txn_id" . "'" ?>).value,
-			"url" : ('https://' + document.getElementById(<?php echo "'" . $_code . "_paypage_url_id" . "'" ?>).value + '.securepaypage.litle.com')
+			"url" : (document.getElementById(<?php echo "'" . $_code . "_paypage_url" . "'" ?>).value)
 		};
 
 		if( _currentMethod == "creditcard" ){

@@ -37,24 +37,6 @@
 			</creditcard_read>
 		</resources>
 	</global>
- 	<frontend>
-         <layout>
-             <updates>
-                 <creditcard>
-                     <file>litlecreditcard.xml</file>
-                 </creditcard>
-             </updates>
-         </layout>
-     </frontend>
-     <adminhtml>
-         <layout>
-             <updates>
-                 <creditcard>
-                     <file>litlecreditcard.xml</file>
-                 </creditcard>
-             </updates>
-         </layout>
-    </adminhtml>
 	<default>
         <payment>
             <creditcard>
