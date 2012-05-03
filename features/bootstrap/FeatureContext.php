@@ -39,14 +39,25 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	}
 	
 	/**
-	* @Given /^I am doing paypage transaction tests$/
+	* @Given /^I am doing paypage Auth transaction tests$/
 	*/
-	public function iAmDoingPaypageTransactionTests()
+	public function iAmDoingPaypageAuthTransactionTests()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageTransactionTest.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageAuthTransactionTest.sql");
+	}
+	
+	/**
+	* @Given /^I am doing paypage Sale transaction tests$/
+	*/
+	public function iAmDoingPaypageSaleTransactionTests()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageSaleTransactionTest.sql");
 	}
 	
 	/**
