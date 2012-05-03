@@ -5,17 +5,6 @@
 			<version>0.2.3</version>
 		</Litle_Palorus>
 	</modules>
-	<admin>
-		<routers>
-			<palorus>
-				<use>admin</use>
-				<args>
-					<module>Litle_Palorus</module>
-					<frontName>palorus</frontName>
-				</args>
-			</palorus>
-		</routers>
-	</admin>
 	<global>
 		<models>
 			<palorus>
@@ -74,10 +63,72 @@
 				<class>Litle_Palorus_Helper</class>
 			</palorus>
 		</helpers>	
-
-
 	</global>
+	
+	<admin>
+		<routers>
+			<palorus>
+				<use>admin</use>
+				<args>
+					<module>Litle_Palorus</module>
+					<frontName>palorus</frontName>
+				</args>
+			</palorus>
+		</routers>
+	</admin>
+	
 	<adminhtml>
+       <menu>
+            <report>
+                <children>
+                    <palorus_adminform translate="title" module="palorus">
+                        <title>Litle &amp; Co</title>
+                        <children>
+		                    <activity translate="title" module="palorus">
+        		                <title>Activity</title>
+        		                <action>palorus/adminhtml_myform/activity</action>
+        		            </activity>
+		                    <authorization translate="title" module="palorus">
+        		                <title>Authorization</title>
+        		                <action>palorus/adminhtml_myform/authorization</action>
+        		            </authorization>
+		                    <exchange translate="title" module="palorus">
+        		                <title>Exchange</title>
+        		                <action>palorus/adminhtml_myform/exchange</action>
+        		            </exchange>
+		                    <binlookup translate="title" module="palorus">
+        		                <title>BIN Lookup</title>
+        		                <action>palorus/adminhtml_myform/binlookup</action>
+        		            </binlookup>
+		                    <session translate="title" module="palorus">
+        		                <title>Session</title>
+        		                <action>palorus/adminhtml_myform/session</action>
+        		            </session>
+		                    <settlement translate="title" module="palorus">
+        		                <title>Settlement</title>
+        		                <action>palorus/adminhtml_myform/settlement</action>
+        		            </settlement>
+                        </children>
+                    </palorus_adminform>
+                </children>
+            </report>
+        </menu>
+        
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <catalog>
+                            <children>
+                                <sintax_adminform>
+                                    <title>My Form</title>
+                                </sintax_adminform>
+                            </children>
+                        </catalog>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
 		<layout>
 			<updates>
 				<customtabs>
