@@ -238,6 +238,20 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     }
     
     /**
+    * @When /^I view "([^"]*)" "([^"]*)" "([^"]*)"$/
+    */
+    public function iView2($menu1, $menu2, $menu3)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	
+    	$page->findLink($menu1)->mouseOver();
+    	$page->findLink($menu2)->mouseOver();
+    	$page->findLink($menu3)->click();
+    }
+    
+    
+    /**
     * @Given /^I click on the top row in Transactions$/
     */
     public function iClickOnTheTopRowInTransactions()

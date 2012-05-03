@@ -47,6 +47,27 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		Mage::log("Model is " . implode(",", Mage::getModel('palorus/vault')->setData($data)->getData()));
 		Mage::getModel('palorus/vault')->setData($data)->save();
 	}
+	
+	public function getBaseUrl() {
+		$litle = new Litle_CreditCard_Model_PaymentLogic();
+		$url = $litle->getConfigData("url");		
+		if(preg_match("/payments/",$url)) {
+			$baseUrl = "https://reports.litle.com";
+		}
+		else if(preg_match("/sandbox/",$url)) {
+			$baseUrl = "https://www.testlitle.com/sandbox";
+		}
+		else if(preg_match("/precert/",$url)) {
+			$baseUrl = "https://reports.precert.litle.com";
+		}
+		else if(preg_match("/cert/",$url)) {
+			$baseUrl = "https://reports.cert.litle.com";
+		}
+		else  {
+			$baseUrl = "http://localhost:2190";
+		}
+		return $baseUrl;
+	}
 
 	static public function formatAvailableBalance ($balance)
 	{
