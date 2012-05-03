@@ -32,8 +32,9 @@ $_paypageUrl = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigD
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
 ?>
 
-
-
+<script type="text/javascript">
+Validation.creditCartTypes.set('DC', [new RegExp('^3(?:0[0-5]|[68][0-9])[0-9]{11}$'), new RegExp('^[0-9]{3}$'), true]);
+</script>
 
 <?php
 $_time =  date('ymdHis');
