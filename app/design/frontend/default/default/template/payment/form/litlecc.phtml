@@ -32,8 +32,11 @@ $_paypageUrl = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigD
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
 ?>
 
-<script type="text/javascript" src="<?php echo $_paypageUrl;?>/LitlePayPage/litle-api.js"></script>
-<script type="text/javascript"> $.noConflict();</script>
+<?php if($_paypageEnabled == 1):?>
+	<script type="text/javascript" src="<?php echo $_paypageUrl;?>/LitlePayPage/litle-api.js"></script>
+	<script type="text/javascript"> $.noConflict();</script>
+<?php endif; ?>
+
 
 <?php
 $_time =  date('ymdHis');
@@ -130,6 +133,7 @@ Payment.prototype.save = function() {
 		// Litle Page Stuff//
 		function setLitleResponseFields(response) {
 			document.getElementById(<?php echo "'" . $_code . "_code" . "'" ?>).value = response.response;
+			alert(response.message);
 			document.getElementById(<?php echo "'" . $_code . "_message" . "'" ?>).value = response.message;
 			document.getElementById(<?php echo "'" . $_code . "_response_time" . "'" ?>).value = response.responseTime;
 			document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value = response.litleTxnId;
