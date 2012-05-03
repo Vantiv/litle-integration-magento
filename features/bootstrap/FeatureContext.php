@@ -308,6 +308,9 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$page = $session->getPage();
     	 
     	$parent = $page->findById($section);
+    	if($parent === NULL) {
+    		throw new Exception("Could not find section with the id $section");
+    	}
     	$text = $parent->getText();
     	if(preg_match("/.*" . $specific . ".*/", $text) == 0) {
     		throw new ResponseTextException("Could not find $specific in $section", $session);
@@ -442,6 +445,4 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     		throw new Exception("Table did not have expected number of rows.  Found $response rows");
     	}    	    	
     }
-    
-    
 }
