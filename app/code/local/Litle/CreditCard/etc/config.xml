@@ -14,16 +14,6 @@
                         <name>Diners Club</name>
                         <order>1</order>
                     </DC>
-                    <JC>
-                        <code>JC</code>
-                        <name>JCB</name>
-                        <order>2</order>
-                    </JC>
-<!--                     <AX> -->
-<!--                         <code>AX</code> -->
-<!--                         <name>American Express</name> -->
-<!--                         <order>2</order> -->
-<!--                     </AX> -->
                 </types>
             </cc>
         </payment>

@@ -35,7 +35,7 @@ class  Litle_CreditCard_Model_Cctypes extends Mage_Payment_Model_Source_Cctype
 {
     public function getAllowedTypes()
     {
-        return array('AE','MC','DI','JC','DC','VI');
+        return array('AE','MC','DI','JCB','DC','VI');
     }
 
     

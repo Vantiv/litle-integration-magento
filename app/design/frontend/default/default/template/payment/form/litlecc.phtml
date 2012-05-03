@@ -33,9 +33,7 @@ $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getCon
 ?>
 
 <script type="text/javascript">
-
-Validation.creditCartTypes.set('DC',[new RegExp('^9[0-9]{12}([0-9]{3})?$'), new RegExp('^[0-9]{3}$'), true]);
-Validation.creditCartTypes.set('JC',[new RegExp('^(3[0-9]{15}|(2131|1800)[0-9]{11})$'), new RegExp('^[0-9]{4}$'), true]);
+Validation.creditCartTypes.set('DC', [new RegExp('^3(?:0[0-5]|[68][0-9])[0-9]{11}$'), new RegExp('^[0-9]{3}$'), true]);
 </script>
 
 <?php
