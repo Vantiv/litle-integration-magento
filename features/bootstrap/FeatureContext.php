@@ -27,6 +27,21 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 		system("rm -rf $magentoHome/var/cache/*");		
 	}
 	
+	/** @AfterStep */
+	public function after(Behat\Behat\Event\StepEvent $event)
+	{
+		if($event->getResult() == 4) { //Failure
+			$dbName = getenv('MAGENTO_DB_NAME');
+			$dbUser = getenv('MAGENTO_DB_USER');
+			$magentoHome = getenv('MAGENTO_HOME');
+			$sql = <<<EOD
+mysql -u magento magento -e "select path,value from core_config_data where path like 'payment/CreditCard/%'"
+EOD;
+			system($sql);				
+		}
+		
+	}
+	
 	/**
 	* @Given /^I am using the sandbox$/
 	*/

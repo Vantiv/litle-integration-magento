@@ -12,6 +12,7 @@ update core_config_data set value='CustomerInformation' where path='payment/LEch
 update core_config_data set value='01602' where path='payment/CreditCard/merchant_id';
 update core_config_data set value='01602' where path='payment/LEcheck/merchant_id';
 update core_config_data set value='authorize' where path='payment/CreditCard/payment_action';
+update core_config_data set value=0 where path='payment/CreditCard/paypage_enable';
 
 delete from sales_flat_order;
 delete from sales_flat_quote;
