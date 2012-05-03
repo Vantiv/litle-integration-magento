@@ -2,7 +2,7 @@ Feature: FrontEndTransactionTests
   Tests to verify transactions are taking place successfully via ECheck.
 
   Background:
-    Given I am using the sandbox
+Given I am doing paypage Auth transaction tests
 
     
   @javascript
@@ -17,9 +17,6 @@ Feature: FrontEndTransactionTests
       And I fill in "Bank account number" with "123456000"
       And I select "Checking" from "Account type"
       And I press the "4th" continue button
-#    Then I should see "Success" in the "creditcard_message"
-#    Then I click on the Place Order button
-      And I sleep for 10000 milliseconds
     Then I press "Place Order"
     Then I should see "Thank you for your purchase"
       And I follow "Log Out"
@@ -28,10 +25,11 @@ Feature: FrontEndTransactionTests
       Then I should see "Orders"
       And I click on the top row in Orders
         Then I should see "Order #"
-      And I follow "Litle & Co. Customer Insight"
-    Then I should see "Affluent" in the column "Affluence"
-    And I click on the top row in Customer Insight
-      Then I should see "Order was placed using USD"
+        Then I should see "Litle ECheck"
+      And I press "Invoice"
+      And I select "Capture Online" from "invoice[capture_case]"
+      And I press "Submit Invoice"
+    Then I should see "The invoice has been created."
     And I follow "Log Out"
 
 #  @javascript
