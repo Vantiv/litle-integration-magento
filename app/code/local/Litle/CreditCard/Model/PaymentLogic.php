@@ -104,10 +104,25 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $this;
 	}
 
+	public function litleCcTypeEnum(Varien_Object $payment)
+	{
+		$typeEnum = "";
+		if ($payment->getCcType() == "AE"){
+			$typeEnum = "AX";
+		}
+		elseif ($payment->getCcType() == "JCB"){
+			$typeEnum = "JC";
+		}
+		else{
+			$typeEnum =$payment->getCcType();
+		}
+		return $typeEnum;
+	}
+	
 	public function getCreditCardInfo(Varien_Object $payment)
 	{
 		$retArray = array();
-		$retArray["type"] = ($payment->getCcType() == "AE")? "AX" : $payment->getCcType();
+		$retArray["type"] = $this->litleCcTypeEnum($payment);
 		$retArray["number"] = $payment->getCcNumber();
 		preg_match("/\d\d(\d\d)/", $payment->getCcExpYear(), $expYear);
 		$retArray["expDate"] = sprintf('%02d%02d', $payment->getCcExpMonth(), $expYear[1]);
