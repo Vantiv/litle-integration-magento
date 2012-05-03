@@ -8,4 +8,11 @@
             </action>
         </reference>
     </adminhtml_customer_edit>
+    
+    <palorus_adminhtml_myform_index>
+        <update handle="palorus_myform_index"/>
+        <reference name="content">
+            <block type="adminhtml/template" name="myform" template="palorus/myform.phtml"/>
+        </reference>
+    </palorus_adminhtml_myform_index>
 </layout>

@@ -95,22 +95,7 @@ class Litle_Palorus_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sal
 			}
 		}
 		
-		if(preg_match("/payments/",$url)) {
-			$baseUrl = "https://reports.litle.com";
-		}
-		else if(preg_match("/sandbox/",$url)) {
-			$baseUrl = "https://www.testlitle.com/sandbox";
-		}
-		else if(preg_match("/precert/",$url)) {
-			$baseUrl = "https://reports.precert.litle.com";
-		}
-		else if(preg_match("/cert/",$url)) {
-			$baseUrl = "https://reports.cert.litle.com";
-		}
-		else  {
-			$baseUrl = "http://localhost:2190";
-		}
-		
+		$baseUrl = Mage::helper("palorus")->getBaseUrl($url);
 		return "<a href='$baseUrl/ui/reports/payments/$litleTxnType/$litleTxnId'>$litleTxnIdOrig</a>";
 	}
 
