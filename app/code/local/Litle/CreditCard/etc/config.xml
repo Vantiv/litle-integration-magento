@@ -6,6 +6,27 @@
 		</Litle_CreditCard>
 	</modules>
 	<global>
+	<payment>
+            <cc>
+                <types>
+              	  	 <DC>
+                        <code>DC</code>
+                        <name>Diners Club</name>
+                        <order>1</order>
+                    </DC>
+                    <JC>
+                        <code>JC</code>
+                        <name>JCB</name>
+                        <order>2</order>
+                    </JC>
+<!--                     <AX> -->
+<!--                         <code>AX</code> -->
+<!--                         <name>American Express</name> -->
+<!--                         <order>2</order> -->
+<!--                     </AX> -->
+                </types>
+            </cc>
+        </payment>
 	<blocks>
 		<creditcard>
 				<class>Litle_CreditCard_Block</class>
