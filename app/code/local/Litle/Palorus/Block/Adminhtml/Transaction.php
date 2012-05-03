@@ -95,7 +95,9 @@ class Litle_Palorus_Block_Adminhtml_Transaction extends Mage_Adminhtml_Block_Sal
 			}
 		}
 		
-		$baseUrl = Mage::helper("palorus")->getBaseUrl($url);
+		//$baseUrl = Mage::helper("palorus")->getBaseUrl($url);
+		$helper = new Litle_Palorus_Helper_Data();
+		$baseUrl = $helper->getBaseUrlFrom($url);
 		return "<a href='$baseUrl/ui/reports/payments/$litleTxnType/$litleTxnId'>$litleTxnIdOrig</a>";
 	}
 

@@ -39,14 +39,36 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	}
 	
 	/**
-	* @Given /^I am doing paypage Auth transaction tests$/
+	* @Given /^I am doing paypage transactions$/
 	*/
-	public function iAmDoingPaypageAuthTransactionTests()
+	public function iAmDoingPaypageTransaction()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageAuthTransactionTest.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageTransaction.sql");
+	}
+	
+	/**
+	* @Given /^I am doing paypage auth$/
+	*/
+	public function iAmDoingPaypageAuth()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageForAuth.sql");
+	}
+	
+	/**
+	* @Given /^I am doing paypage sale$/
+	*/
+	public function iAmDoingPaypageSale()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageForSale.sql");
 	}
 	
 	/**
@@ -175,6 +197,9 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$page = $session->getPage();
     	if($choice === 'CreditCard') {
     		$page->findById("p_method_creditcard")->click();
+    	}
+    	if($choice === 'LEcheck') {
+    		$page->findById("p_method_lecheck")->click();
     	}
     	if($choice === 'English') {
     		$page->findById("store_1")->click();
@@ -308,6 +333,9 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$page = $session->getPage();
     	 
     	$parent = $page->findById($section);
+    	if($parent === NULL) {
+    		throw new Exception("Could not find section with the id $section");
+    	}
     	$text = $parent->getText();
     	if(preg_match("/.*" . $specific . ".*/", $text) == 0) {
     		throw new ResponseTextException("Could not find $specific in $section", $session);
@@ -442,6 +470,4 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     		throw new Exception("Table did not have expected number of rows.  Found $response rows");
     	}    	    	
     }
-    
-    
 }
