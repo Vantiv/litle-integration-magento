@@ -8,3 +8,4 @@ update core_config_data set value='1' where path='payment/CreditCard/active';
 update core_config_data set value='JENKINS' where path='payment/CreditCard/user';
 update core_config_data set value='PayPageTransactions' where path='payment/CreditCard/password';
 update core_config_data set value='("USD"=>"101","GBP"=>"102")' where path='payment/CreditCard/merchant_id';
+update core_config_data set value='AE,DC,VI,MC,DI,JCB' where path='payment/CreditCard/cctypes';

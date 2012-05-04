@@ -5,7 +5,7 @@ Background:
   Given I am doing cc or echeck transactions
 
     
-  @javascript @wip @echeck
+  @javascript @ready @echeck
   Scenario: Do a verify and then sale
   Given I am doing Litle auth
   And I am logged in as "gdake@litle.com" with the password "password"
@@ -33,7 +33,7 @@ Background:
     Then I should see "The invoice has been created."
     And I follow "Log Out"
     
-  @javascript @wip @echeck
+  @javascript @ready @echeck
   Scenario: Do a unsuccessful checkout
   Given I am doing Litle auth
   And I am logged in as "gdake@litle.com" with the password "password"
@@ -50,7 +50,7 @@ Background:
     Then I should not see "Thank you for your purchase"
       And I follow "Log Out"
 
-@javascript @wip @echeck
+@javascript @ready @echeck
 Scenario: Backend ECheck verify, then attempt to sale
    Given I am doing Litle auth
    And I am logged in as an administrator

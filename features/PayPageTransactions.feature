@@ -6,7 +6,7 @@ Feature: PayPageTransactions
     And I am doing paypage transaction
 
 
-  @javascript @paypage @wip
+  @javascript @paypage @ready
   Scenario: Do a successful checkout and then capture the auth
     Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
@@ -36,7 +36,7 @@ Feature: PayPageTransactions
     Then I should see "The invoice has been created."
     And I follow "Log Out"
 
- @javascript @paypage @wip
+ @javascript @paypage @ready
  Scenario: Backend Paypage auth checkout, then attempt to capture
     Given I am doing Litle auth
     And I am logged in as an administrator
@@ -64,7 +64,7 @@ Feature: PayPageTransactions
     Then I should see "This order was placed using Litle Virtual Terminal. Please process the capture by logging into Litle Virtual Terminal (https://vt.litle.com)."
     And I follow "Log Out"
 
-  @javascript @paypage @wip
+  @javascript @paypage @ready
   Scenario: Do a successful checkout
     Given I am doing Litle sale 
     And I am logged in as "gdake@litle.com" with the password "password"
@@ -81,4 +81,23 @@ Feature: PayPageTransactions
       And I press the "4th" continue button
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
+      And I follow "Log Out"
+      
+  @javascript @paypage @ready
+  Scenario: Do a failed checkout
+    Given I am doing Litle sale 
+    And I am logged in as "gdake@litle.com" with the password "password"
+    When I have "affluentvisa" in my cart
+      And I press "Proceed to Checkout"
+      And I press "Continue"
+      And I press the "3rd" continue button
+      And I choose "CreditCard"
+      And I select "Diners Club" from "Credit Card Type"
+      And I fill in "Credit Card Number" with "30569309025904"
+      And I select "9" from "Expiration Date"
+      And I select "2012" from "creditcard_expiration_yr"
+      And I fill in "Card Verification Number" with "123"
+      And I press the "4th" continue button
+      And I press "Place Order"
+    Then I should not see "Thank you for your purchase"
       And I follow "Log Out"
