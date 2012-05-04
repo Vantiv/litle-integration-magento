@@ -51,10 +51,10 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 	public function getBaseUrl() {
 		$litle = new Litle_CreditCard_Model_PaymentLogic();
 		$url = $litle->getConfigData("url");
-		return getBaseUrlFrom($url);		
+		return Litle_Palorus_Helper_Data::getBaseUrlFrom($url);		
 	}
 	
-	public function getBaseUrlFrom($url) {
+	static public function getBaseUrlFrom($url) {
 		if(preg_match("/payments/",$url)) {
 			$baseUrl = "https://reports.litle.com";
 		}
