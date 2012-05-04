@@ -343,7 +343,6 @@ class LitleOnlineRequest
 		Checker::choice($choice1);
 		Checker::choice($choice2);
 		$request = Obj2xml::toXml($hash,$hash_config, $type);
-	
 		$litleOnlineResponse = $this->newXML->request($request,$hash_config);
 		return $litleOnlineResponse;
 	}
