@@ -80,10 +80,19 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
-		$returnFromThisModel = Mage::getStoreConfig('payment/CreditCard/' . $fieldToLookFor);
-		if( $returnFromThisModel == NULL )
-		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+		$returnFromThisModel = "";
+		
+		if( $fieldToLookFor == "title" || $fieldToLookFor == "active" || $fieldToLookFor == "accounttypes"
+			|| $fieldToLookFor == "payment_action" || $fieldToLookFor == "order_status"){
+			$returnFromThisModel = Mage::getStoreConfig('payment/LEcheck/' . $fieldToLookFor);
+		}
+		else{
+			$returnFromThisModel = Mage::getStoreConfig('payment/CreditCard/' . $fieldToLookFor);
+		}
 
+		if( $returnFromThisModel == NULL )
+			$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
+		
 		return $returnFromThisModel;
 	}
 
