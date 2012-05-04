@@ -38,6 +38,10 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 mysql -u magento magento -e "select path,value from core_config_data where path like 'payment/CreditCard/%'"
 EOD;
 			system($sql);				
+			$sql = <<<EOD
+mysql -u magento magento -e "select path,value from core_config_data where path like 'payment/LEcheck/%'"
+EOD;
+			system($sql);				
 		}
 		
 	}
@@ -54,36 +58,58 @@ EOD;
 	}
 	
 	/**
-	* @Given /^I am doing paypage transactions$/
+	* @Given /^I am doing paypage transaction$/
 	*/
 	public function iAmDoingPaypageTransaction()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageTransaction.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/enablePayPageTransaction.sql");
 	}
 	
 	/**
-	* @Given /^I am doing paypage auth$/
+	* @Given /^I am doing cc or echeck transactions$/
 	*/
-	public function iAmDoingPaypageAuth()
+	public function iAmDoingCCOrEcheckTransaction()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageForAuth.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupCCandEcheck.sql");
 	}
 	
 	/**
-	* @Given /^I am doing paypage sale$/
+	* @Given /^I am doing non paypage transactions$/
 	*/
-	public function iAmDoingPaypageSale()
+	public function iAmDoingNonPaypageTransaction()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageForSale.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/disablePayPageTransaction.sql");
+	}
+	
+	/**
+	* @Given /^I am doing Litle auth$/
+	*/
+	public function iAmDoingLitleAuth()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForAuth.sql");
+	}
+	
+	/**
+	* @Given /^I am doing Litle sale$/
+	*/
+	public function iAmDoingLitleSale()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForSale.sql");
 	}
 	
 	/**
