@@ -10,7 +10,7 @@ class Litle_CreditCard_Model_ValidateMerchantId extends Mage_Core_Model_Config_D
 	function save(){
 		if ($this->getFieldsetDataValue('active'))
 		{
-			$currency = "USD";
+			$currency = "USD";//assumed that the base currency is USD
 			$string2Eval = 'return array' . $this->getFieldsetDataValue("merchant_id") . ';';
 			$merchant_map = eval($string2Eval);
 

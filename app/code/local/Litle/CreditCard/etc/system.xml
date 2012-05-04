@@ -38,7 +38,7 @@
 						</user>
 						<password translate="label">
 							<label>Password</label>
-							<frontend_type>text</frontend_type>
+							<frontend_type>Password</frontend_type>
 							<sort_order>4</sort_order>
 							<show_in_default>1</show_in_default>
 							<show_in_website>1</show_in_website>
