@@ -204,6 +204,18 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return NULL;
 	}
 	
+
+	public function getIpAddress(Varien_Object $payment)
+	{
+		$order = $payment->getOrder();
+		if(!empty($order)){
+			return $order->getRemoteIp();
+		}
+		return NULL;
+	}
+	
+
+
 	public function getMerchantId(Varien_Object $payment){
 		$order = $payment->getOrder();
 		$currency = $order->getOrderCurrencyCode();
@@ -214,6 +226,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $merchantId;
 	}
 	
+
 	public function merchantData(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
@@ -227,6 +240,28 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),
 					'timeout'=>$this->getConfigData("timeout")
+		);
+		return $hash;
+	}
+	
+	public function getEnhancedData(Varien_Object $payment)
+	{
+		$order = $payment->getOrder();
+		$product = $order->getProduct();
+		$billing = $order->getBillingAddress();
+		$hash = array('salesTax'=> $order->getTaxAmount()*100,
+			'shippingAmount'=>$order->getShippingAmount(),
+			'lineItemData' => array(
+				'taxAmount'=>$order->getTaxAmount()*100
+			)
+		);
+		return $hash;
+	}
+	
+	public function getFraudCheck(Varien_Object $payment)
+	{
+		$order = $payment->getOrder();
+		$hash = array('customerIpAddress'=> $order->getRemoteIp()
 		);
 		return $hash;
 	}
@@ -296,7 +331,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				 					'amount'=> $amountToPass,
 				 					'orderSource'=> "ecommerce",
 									'billToAddress'=> $this->getBillToAddress($payment),
-									'shipToAddress'=> $this->getAddressInfo($payment)
+									'shipToAddress'=> $this->getAddressInfo($payment),
+									'cardholderAuthentication'=> $this->getFraudCheck($payment),
+									'enhancedData'=>$this->getEnhancedData($payment)
 				);
 				$payment_hash = $this->creditCardOrPaypage($payment);
 				$hash_temp = array_merge($hash,$payment_hash);
