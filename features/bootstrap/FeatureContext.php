@@ -327,19 +327,6 @@ EOD;
     	$page->findLink($menu3)->click();
     }
     
-    
-    /**
-    * @Given /^I update quantity to two$/
-    */
-    public function iUpdateQuantityToTwo()
-    {
-    	$session = $this->getMink()->getSession('sahi');
-    	$page = $session->getPage();
-    
-    	//$topRow = $session->getDriver()->find('/html/body/div[2]/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div[2]/div/div/div[2]/div/table/tbody/tr/td[4]/input');
-    	$session->getDriver()->setValue('/html/body/div[2]/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div[2]/div/div/div[2]/div/table/tbody/tr/td[4]/input', '2');
-    }
-    
     /**
     * @Given /^I click on the top row in Transactions$/
     */
@@ -445,6 +432,42 @@ EOD;
     	}
     }
     
+    /**
+    * @Given /^I click on the top row in CustomersList$/
+    */
+    public function iClickOnTheTopRowInCustomersList()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[3]/div/div[2]/div/div/div/table/tbody/tr/td[2]');
+    	$topRow[0]->click();
+    }
+    
+    /**
+    * @Given /^I click on the product "([^"]*)"$/
+    */
+    public function iClickOnTheProduct($expectedName)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	 
+    	$rows = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div/div/div[2]/div/div/div/table/tbody/tr');
+    	$rowToClick = NULL;
+    	for($i = 1; $i <= count($rows); $i++) {
+    		$row = $session->getDriver()->find("/html/body/div/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div/div/div[2]/div/div/div/table/tbody/tr[$i]/td[2]");
+    		$actualName = $row[0]->getText();
+    		if( preg_match("/.*?".$expectedName.".*?/", $actualName) ) {
+    			$rowToClick = $row[0];
+    		}
+    	}
+    	if($rowToClick !== NULL) {
+    		$rowToClick->click();
+    	}
+    	else {
+    		throw new Exception("Could not find product named " . $expectedName);
+    	}
+    }
     
     /**
     * @Given /^I click on the top row in Product Table$/
