@@ -80,7 +80,7 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
-		$returnFromThisModel = Mage::getStoreConfig('payment/LEcheck/' . $fieldToLookFor);
+		$returnFromThisModel = Mage::getStoreConfig('payment/CreditCard/' . $fieldToLookFor);
 		if( $returnFromThisModel == NULL )
 		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
 
@@ -142,14 +142,24 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 		}
 		return NULL;
 	}
+	
+	public function getMerchantId(Varien_Object $payment){
+		$order = $payment->getOrder();
+		$currency = $order->getOrderCurrencyCode();
+		$string2Eval = 'return array' . $this->getConfigData("merchant_id") . ';';
+		$merchant_map = eval($string2Eval);
+		$merchantId = $merchant_map[$currency];
+		return $merchantId;
+	}
+	
 
 	public function merchantData(Varien_Object $payment)
 	{
 		$hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
-					'merchantId'=>$this->getConfigData("merchant_id"),
+					'merchantId'=>$this->getMerchantId($payment),
 					'version'=>'8.10',
-					'reportGroup'=>$this->getConfigData("reportGroup"),
+					'reportGroup'=>$this->getMerchantId($payment),
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),
 					'timeout'=>$this->getConfigData("timeout")
