@@ -396,19 +396,6 @@ EOD;
     }
     
     /**
-    * @Given /^I click on the top row in CustomersList"$/
-    */
-    public function iClickOnTheTopRowInCustomersList()
-    {
-    	$session = $this->getMink()->getSession('sahi');
-    	$page = $session->getPage();
-    	
-    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[3]/div/div[2]/div/div/div/table/tbody/tr/td[2]');    	
-    	$topRow[0]->click();    	 
-    }
-    
-    
-    /**
     * @Given /^I click on the customer "([^"]*) in manage customers"$/
     */
     public function iClickOnTheCustomerInManageCustomers($expectedName)
