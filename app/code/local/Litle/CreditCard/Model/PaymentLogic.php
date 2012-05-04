@@ -104,10 +104,25 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $this;
 	}
 
+	public function litleCcTypeEnum(Varien_Object $payment)
+	{
+		$typeEnum = "";
+		if ($payment->getCcType() == "AE"){
+			$typeEnum = "AX";
+		}
+		elseif ($payment->getCcType() == "JCB"){
+			$typeEnum = "JC";
+		}
+		else{
+			$typeEnum =$payment->getCcType();
+		}
+		return $typeEnum;
+	}
+	
 	public function getCreditCardInfo(Varien_Object $payment)
 	{
 		$retArray = array();
-		$retArray["type"] = ($payment->getCcType() == "AE")? "AX" : $payment->getCcType();
+		$retArray["type"] = $this->litleCcTypeEnum($payment);
 		$retArray["number"] = $payment->getCcNumber();
 		preg_match("/\d\d(\d\d)/", $payment->getCcExpYear(), $expYear);
 		$retArray["expDate"] = sprintf('%02d%02d', $payment->getCcExpMonth(), $expYear[1]);
@@ -189,6 +204,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return NULL;
 	}
 	
+
 	public function getIpAddress(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
@@ -199,15 +215,27 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	}
 	
 
+
+	public function getMerchantId(Varien_Object $payment){
+		$order = $payment->getOrder();
+		$currency = $order->getOrderCurrencyCode();
+		$string2Eval = 'return array' . $this->getConfigData("merchant_id") . ';';
+		$merchant_map = eval($string2Eval);
+		$merchantId = $merchant_map[$currency];
+		//Mage::throwException($merchantId);
+		return $merchantId;
+	}
+	
+
 	public function merchantData(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
 		$hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
-					'merchantId'=>$this->getConfigData("merchant_id"),
+					'merchantId'=> $this->getMerchantId($payment),
 					'version'=>'8.10',
 					'merchantSdk'=>'Magento;8.12.1-pre',
-					'reportGroup'=>$this->getConfigData("reportGroup"),
+					'reportGroup'=>$this->getMerchantId($payment),
 					'customerId'=> $order->getCustomerEmail(),
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),
@@ -283,7 +311,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function authorize(Varien_Object $payment, $amount)
 	{
-		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']))
+		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']) && ($this->getConfigData('paypage_enable') == "1") )
 		{
 			$payment
 			->setStatus("N/A")
@@ -329,7 +357,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function capture (Varien_Object $payment, $amount)
 	{
-		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']))
+		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']) && ($this->getConfigData('paypage_enable') == "1") )
 		{
 			$payment
 			->setStatus("N/A")

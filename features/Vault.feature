@@ -7,7 +7,7 @@ Feature: Vault
     Given There are no rows in the database table "vault"
     And I am using the sandbox
     
-  @javascript
+  @javascript @ready @creditcard
   Scenario: Tokens are stored in the vault
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "vault" in my cart
@@ -29,7 +29,7 @@ Feature: Vault
       And the "vault" table should have a row with "MC" in the "type" column
       And the "vault" table should have a row with "540028" in the "bin" column
       
-  @javascript
+  @javascript @ready @creditcard
   Scenario: Non token transactions are not stored in the vault
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "this is my product" in my cart

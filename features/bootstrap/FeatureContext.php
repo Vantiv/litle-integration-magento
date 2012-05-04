@@ -27,6 +27,25 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 		system("rm -rf $magentoHome/var/cache/*");		
 	}
 	
+	/** @AfterStep */
+	public function after(Behat\Behat\Event\StepEvent $event)
+	{
+		if($event->getResult() == 4) { //Failure
+			$dbName = getenv('MAGENTO_DB_NAME');
+			$dbUser = getenv('MAGENTO_DB_USER');
+			$magentoHome = getenv('MAGENTO_HOME');
+			$sql = <<<EOD
+mysql -u magento magento -e "select path,value from core_config_data where path like 'payment/CreditCard/%'"
+EOD;
+			system($sql);				
+			$sql = <<<EOD
+mysql -u magento magento -e "select path,value from core_config_data where path like 'payment/LEcheck/%'"
+EOD;
+			system($sql);				
+		}
+		
+	}
+	
 	/**
 	* @Given /^I am using the sandbox$/
 	*/
@@ -39,36 +58,58 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 	}
 	
 	/**
-	* @Given /^I am doing paypage transactions$/
+	* @Given /^I am doing paypage transaction$/
 	*/
 	public function iAmDoingPaypageTransaction()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageTransaction.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/enablePayPageTransaction.sql");
 	}
 	
 	/**
-	* @Given /^I am doing paypage auth$/
+	* @Given /^I am doing cc or echeck transactions$/
 	*/
-	public function iAmDoingPaypageAuth()
+	public function iAmDoingCCOrEcheckTransaction()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageForAuth.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupCCandEcheck.sql");
 	}
 	
 	/**
-	* @Given /^I am doing paypage sale$/
+	* @Given /^I am doing non paypage transactions$/
 	*/
-	public function iAmDoingPaypageSale()
+	public function iAmDoingNonPaypageTransaction()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageForSale.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/disablePayPageTransaction.sql");
+	}
+	
+	/**
+	* @Given /^I am doing Litle auth$/
+	*/
+	public function iAmDoingLitleAuth()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForAuth.sql");
+	}
+	
+	/**
+	* @Given /^I am doing Litle sale$/
+	*/
+	public function iAmDoingLitleSale()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForSale.sql");
 	}
 	
 	/**
@@ -286,7 +327,6 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     	$page->findLink($menu3)->click();
     }
     
-    
     /**
     * @Given /^I click on the top row in Transactions$/
     */
@@ -325,6 +365,19 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     }
     
     /**
+    * @Given /^I click on the Update Items And Qtys Button$/
+    */
+    public function iClickOnTheUpdateItemsAndQtysButton()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	
+    	$tmp = $session->getDriver()->find("/html/body/div[2]/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div[2]/div/div/div[2]/table/tbody/tr/td[2]/button");
+    	$link = $tmp[0];
+    	$link->click();
+    }
+    
+    /**
     * @Then /^I should see "([^"]*)" in the "([^"]*)"$/
     */
     public function iShouldSeeInThe($specific, $section)
@@ -343,15 +396,33 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     }
     
     /**
-    * @Given /^I click on the top row in Customers$/
+    * @Given /^I click on the customer "([^"]*)" in "([^"]*)"$/
     */
-    public function iClickOnTheTopRowInCustomers()
+    public function iClickOnTheCustomerIn($expectedName, $location)
     {
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
-    	 
-    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[1]');
-    	$session->visit($topRow[0]->getAttribute("title"));
+    	
+    	if($location==='Manage Customers') {
+	    	$rows = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr');
+	    	$rowToClick = NULL;
+	    	for($i = 1; $i <= count($rows); $i++) {
+	    		$row = $session->getDriver()->find("/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[$i]/td[3]");
+				$actualName = $row[0]->getText();
+				if($expectedName === $actualName) {
+					$rowToClick = $row[0];
+				}
+	    	}
+	    	if($rowToClick !== NULL) {
+	    		$rowToClick->click();
+	    	}
+	    	else {
+	    		throw new Exception("Could not find customer named " . $expectedName);
+	    	}
+    	}
+    	else {
+    		throw new Exception ("Don't know how to find customers for the location " . $location);
+    	}
     }
     
     /**
@@ -364,6 +435,31 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
     
     	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[3]/div/div[2]/div/div/div/table/tbody/tr/td[2]');
     	$topRow[0]->click();
+    }
+    
+    /**
+    * @Given /^I click on the product "([^"]*)"$/
+    */
+    public function iClickOnTheProduct($expectedName)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	 
+    	$rows = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div/div/div[2]/div/div/div/table/tbody/tr');
+    	$rowToClick = NULL;
+    	for($i = 1; $i <= count($rows); $i++) {
+    		$row = $session->getDriver()->find("/html/body/div/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div/div/div[2]/div/div/div/table/tbody/tr[$i]/td[2]");
+    		$actualName = $row[0]->getText();
+    		if( preg_match("/.*?".$expectedName.".*?/", $actualName) ) {
+    			$rowToClick = $row[0];
+    		}
+    	}
+    	if($rowToClick !== NULL) {
+    		$rowToClick->click();
+    	}
+    	else {
+    		throw new Exception("Could not find product named " . $expectedName);
+    	}
     }
     
     /**

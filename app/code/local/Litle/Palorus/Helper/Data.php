@@ -50,7 +50,11 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 	
 	public function getBaseUrl() {
 		$litle = new Litle_CreditCard_Model_PaymentLogic();
-		$url = $litle->getConfigData("url");		
+		$url = $litle->getConfigData("url");
+		return Litle_Palorus_Helper_Data::getBaseUrlFrom($url);		
+	}
+	
+	static public function getBaseUrlFrom($url) {
 		if(preg_match("/payments/",$url)) {
 			$baseUrl = "https://reports.litle.com";
 		}
@@ -68,6 +72,7 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return $baseUrl;
 	}
+	
 
 	static public function formatAvailableBalance ($balance)
 	{
