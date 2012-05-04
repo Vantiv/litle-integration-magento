@@ -60,7 +60,7 @@ Scenario: Backend ECheck verify, then attempt to sale
      And I click on the top row in CustomersList
      And I choose "English"
      And I press "Add Products"
-     And I click on the top row in Product Table
+     And I click on the product "affluentvisa"
      And I press "Add Selected Product(s) to Order"
      And I wait for the payments to appear
      And I follow "Get shipping methods and rates"
