@@ -329,6 +329,18 @@ EOD;
     
     
     /**
+    * @Given /^I update quantity to two$/
+    */
+    public function iUpdateQuantityToTwo()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	//$topRow = $session->getDriver()->find('/html/body/div[2]/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div[2]/div/div/div[2]/div/table/tbody/tr/td[4]/input');
+    	$session->getDriver()->setValue('/html/body/div[2]/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div[2]/div/div/div[2]/div/table/tbody/tr/td[4]/input', '2');
+    }
+    
+    /**
     * @Given /^I click on the top row in Transactions$/
     */
     public function iClickOnTheTopRowInTransactions()
@@ -361,6 +373,19 @@ EOD;
     	$page = $session->getPage();
     	 
     	$tmp = $session->getDriver()->find("/html/body/div/div[3]/div/div[3]/div/div[2]/table/tbody/tr/td/a[1]");
+    	$link = $tmp[0];
+    	$link->click();
+    }
+    
+    /**
+    * @Given /^I click on the Update Items And Qtys Button$/
+    */
+    public function iClickOnTheUpdateItemsAndQtysButton()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	
+    	$tmp = $session->getDriver()->find("/html/body/div[2]/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div[2]/div/div/div[2]/table/tbody/tr/td[2]/button");
     	$link = $tmp[0];
     	$link->click();
     }
