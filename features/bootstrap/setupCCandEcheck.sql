@@ -11,5 +11,5 @@ update core_config_data set value='JENKINS' where path='payment/CreditCard/user'
 update core_config_data set value='JENKINS' where path='payment/LEcheck/user';
 update core_config_data set value='PayPageTransactions' where path='payment/CreditCard/password';
 update core_config_data set value='PayPageTransactions' where path='payment/LEcheck/password';
-update core_config_data set value='101' where path='payment/CreditCard/merchant_id';
+update core_config_data set value='("USD"=>"101","GBP"=>"102")' where path='payment/CreditCard/merchant_id';
 update core_config_data set value='101' where path='payment/LEcheck/merchant_id';

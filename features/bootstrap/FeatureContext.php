@@ -396,21 +396,22 @@ EOD;
     }
     
     /**
-    * @Given /^I click on the top row in Customers$/
+    * @Given /^I click on the top row in CustomersList"$/
     */
-    public function iClickOnTheTopRowInCustomers()
+    public function iClickOnTheTopRowInCustomersList()
     {
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
-    	 
-    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[1]');
-    	$session->visit($topRow[0]->getAttribute("title"));
+    	
+    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[3]/div/div[2]/div/div/div/table/tbody/tr/td[2]');    	
+    	$topRow[0]->click();    	 
     }
     
+    
     /**
-    * @Given /^I click on the customer "([^"]*)"$/
+    * @Given /^I click on the customer "([^"]*) in manage customers"$/
     */
-    public function iClickOnTheCustomer($expectedName)
+    public function iClickOnTheCustomerInManageCustomers($expectedName)
     {
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();

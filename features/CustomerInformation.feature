@@ -28,7 +28,7 @@ Feature: CustomerInformation
     Given I am logged in as an administrator
     When I view "Customers" "Manage Customers"
       Then I should see "Manage Customers"
-      And I click on the customer "Greg Dake" 
+      And I click on the customer "Greg Dake" in manage customers
         Then I should see "Personal Information"
       And I follow "Litle & Co. Customer Insight"
     Then I should see "Affluent" in the column "Affluence"
@@ -56,7 +56,7 @@ Feature: CustomerInformation
     Given I am logged in as an administrator
     When I view "Customers" "Manage Customers"
       Then I should see "Manage Customers"
-        And I click on the customer "Greg Dake"
+        And I click on the customer "Greg Dake" in manage customers
         Then I should see "Personal Information"
       And I follow "Litle & Co. Customer Insight"
     Then I should see "Mass Affluent" in the column "Affluence"
@@ -82,7 +82,7 @@ Feature: CustomerInformation
     Given I am logged in as an administrator
     When I view "Customers" "Manage Customers"
       Then I should see "Manage Customers"
-        And I click on the customer "Greg Dake"
+        And I click on the customer "Greg Dake" in manage customers
         Then I should see "Personal Information"
       And I follow "Litle & Co. Customer Insight"
     Then I should see "Gift" in the column "PrepaidCardType"
@@ -111,7 +111,7 @@ Feature: CustomerInformation
     Given I am logged in as an administrator
     When I view "Customers" "Manage Customers"
       Then I should see "Manage Customers"
-        And I click on the customer "Greg Dake"
+        And I click on the customer "Greg Dake" in manage customers
         Then I should see "Personal Information"
       And I follow "Litle & Co. Customer Insight"
     Then I should see "BRA" in the column "IssuingCountry"
