@@ -396,27 +396,32 @@ EOD;
     }
     
     /**
-    * @Given /^I click on the customer "([^"]*) in manage customers"$/
+    * @Given /^I click on the customer "([^"]*)" in "([^"]*)"$/
     */
-    public function iClickOnTheCustomerInManageCustomers($expectedName)
+    public function iClickOnTheCustomerIn($expectedName, $location)
     {
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
     	
-    	$rows = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr');
-    	$rowToClick = NULL;
-    	for($i = 1; $i <= count($rows); $i++) {
-    		$row = $session->getDriver()->find("/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[$i]/td[3]");
-			$actualName = $row[0]->getText();
-			if($expectedName === $actualName) {
-				$rowToClick = $row[0];
-			}
-    	}
-    	if($rowToClick !== NULL) {
-    		$rowToClick->click();
+    	if($location==='Manage Customers') {
+	    	$rows = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr');
+	    	$rowToClick = NULL;
+	    	for($i = 1; $i <= count($rows); $i++) {
+	    		$row = $session->getDriver()->find("/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[$i]/td[3]");
+				$actualName = $row[0]->getText();
+				if($expectedName === $actualName) {
+					$rowToClick = $row[0];
+				}
+	    	}
+	    	if($rowToClick !== NULL) {
+	    		$rowToClick->click();
+	    	}
+	    	else {
+	    		throw new Exception("Could not find customer named " . $expectedName);
+	    	}
     	}
     	else {
-    		throw new Exception("Could not find customer named " . $expectedName);
+    		throw new Exception ("Don't know how to find customers for the location " . $location);
     	}
     }
     
