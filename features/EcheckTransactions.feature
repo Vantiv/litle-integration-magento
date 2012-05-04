@@ -2,7 +2,7 @@ Feature: EcheckTransactions
   Tests to verify transactions are taking place successfully via ECheck.
 
 Background:
-  Given I am doing paypage transactions
+  Given I am doing cc or echeck transactions
 
     
   @javascript

@@ -54,14 +54,25 @@ EOD;
 	}
 	
 	/**
-	* @Given /^I am doing paypage transactions$/
+	* @Given /^I am doing paypage transaction$/
 	*/
 	public function iAmDoingPaypageTransaction()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageTransaction.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/enablePayPageTransaction.sql");
+	}
+	
+	/**
+	* @Given /^I am doing cc or echeck transactions$/
+	*/
+	public function iAmDoingCCOrEcheckTransaction()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupCCandEcheck.sql");
 	}
 	
 	/**
