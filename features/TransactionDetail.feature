@@ -9,7 +9,7 @@ Feature: TransactionDetail
     And I am using local vap
 
   
-  @javascript
+  @javascript @ready @creditcard
   Scenario: Buying an item with a visa credit card
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "vault" in my cart
@@ -26,9 +26,6 @@ Feature: TransactionDetail
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
       And I follow "Log Out"
-    
-  @javascript
-  Scenario: An administrator views the authorized transaction and sees the link to the Litle UI for the payment id
     Given I am logged in as an administrator
     When I view "Sales" "Transactions"
       Then I should see "Transaction ID"
@@ -41,6 +38,7 @@ Feature: TransactionDetail
       And I press "Login"
     Then I should see "Authorization" in the "summary"
       And I should see "VISA" in the "summary"
+      And I follow "logout"
       And I move backward one page
       And I move backward one page
       And I follow "Log Out"

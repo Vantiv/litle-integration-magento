@@ -1,11 +1,10 @@
 Feature: NonPayPageTransactions
-  Tests to verify transactions are taking place successfully via PayPage.
+  Tests to verify transactions are taking place successfully via CreditCards.
 
   Background:
     Given I am doing non paypage transactions
 
-
-  @javascript
+  @javascript @creditcard @wip
   Scenario: Do a successful checkout and then capture the auth
     Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
@@ -35,7 +34,7 @@ Feature: NonPayPageTransactions
     Then I should see "The invoice has been created."
     And I follow "Log Out"
     
-  @javascript
+  @javascript @creditcard @wip
   Scenario: Do a unsuccessful checkout
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart
@@ -53,7 +52,7 @@ Feature: NonPayPageTransactions
         Then I should not see "Thank you for your purchase"
       And I follow "Log Out"
     
- @javascript
+ @javascript @creditcard @wip
  Scenario: Backend auth checkout, then capture
     Given I am doing Litle auth
     And I am logged in as an administrator
@@ -86,7 +85,7 @@ Feature: NonPayPageTransactions
     Then I should see "The invoice has been created."
     And I follow "Log Out"
 
-  @javascript
+  @javascript @creditcard @wip
   Scenario: Do a successful checkout
     Given I am doing Litle sale 
     And I am logged in as "gdake@litle.com" with the password "password"
