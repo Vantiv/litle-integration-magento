@@ -33,8 +33,7 @@ $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getCon
 ?>
 
 <script type="text/javascript">
-Validation.creditCartTypes.set('DC', [new RegExp('^36[0-9]{12}$'), new RegExp('^[0-9]{3}$'), true]);
-//Validation.creditCartTypes.set('DC', [new RegExp('.*'), new RegExp('^[0-9]{3}$'), true]);
+Validation.creditCartTypes.set('DC', [new RegExp('^3(?:0[0-5]|[68][0-9])[0-9]{11}$'), new RegExp('^[0-9]{3}$'), true]);
 </script>
 
 <?php
@@ -155,12 +154,12 @@ Payment.prototype.save = function() {
 		function timeoutOnLitle() {
 			setLitleResponseFields();
 			alert('timeout error');
-		return false;
+			return false;
 		}
 
 		function onErrorAfterLitle(response) {
 			setLitleResponseFields(response);
-			alert(response.message);
+			alert('There was an error. Re-enter your payment information, or contact us for further assistance.');
 			return false;
 		}
 
@@ -179,7 +178,6 @@ Payment.prototype.save = function() {
 		};
 
 		if( _currentMethod == "creditcard" ){
-			//sendToLitle(litleRequest, formFields, submitAfterLitle, onErrorAfterLitle);
 			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
 		}
 		submitAfterLitle();
