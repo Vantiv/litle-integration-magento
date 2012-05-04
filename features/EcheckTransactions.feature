@@ -1,4 +1,4 @@
-Feature: FrontEndTransactionTests
+Feature: EcheckTransactions
   Tests to verify transactions are taking place successfully via ECheck.
 
 Background:
@@ -6,8 +6,8 @@ Background:
 
     
   @javascript
-  Scenario: Do a successful checkout and then capture the auth
-  Given I am doing paypage auth
+  Scenario: Do a verify and then sale
+  Given I am doing Litle auth
   And I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart
       And I press "Proceed to Checkout"
@@ -32,11 +32,27 @@ Background:
       And I press "Submit Invoice"
     Then I should see "The invoice has been created."
     And I follow "Log Out"
-
+    
+  @javascript
+  Scenario: Do a unsuccessful checkout
+  Given I am doing Litle auth
+  And I am logged in as "gdake@litle.com" with the password "password"
+    When I have "echeckdecline" in my cart
+      And I press "Proceed to Checkout"
+      And I press "Continue"
+      And I press the "3rd" continue button
+      And I choose "LEcheck"
+      And I fill in "Bank routing number" with "123456000"
+      And I fill in "Bank account number" with "123456000"
+      And I select "Checking" from "Account type"
+      And I press the "4th" continue button
+    Then I press "Place Order"
+    Then I should not see "Thank you for your purchase"
+      And I follow "Log Out"
 
 @javascript
-Scenario: Backend ECheck auth checkout, then attempt to capture
-   Given I am doing paypage auth
+Scenario: Backend ECheck verify, then attempt to sale
+   Given I am doing Litle auth
    And I am logged in as an administrator
    When I view "Sales" "Orders"
      Then I should see "Orders"

@@ -65,25 +65,36 @@ EOD;
 	}
 	
 	/**
-	* @Given /^I am doing paypage auth$/
+	* @Given /^I am doing non paypage transactions$/
 	*/
-	public function iAmDoingPaypageAuth()
+	public function iAmDoingNonPaypageTransaction()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageForAuth.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/disablePayPageTransaction.sql");
 	}
 	
 	/**
-	* @Given /^I am doing paypage sale$/
+	* @Given /^I am doing Litle auth$/
 	*/
-	public function iAmDoingPaypageSale()
+	public function iAmDoingLitleAuth()
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
 		$magentoHome = getenv('MAGENTO_HOME');
-		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageForSale.sql");
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForAuth.sql");
+	}
+	
+	/**
+	* @Given /^I am doing Litle sale$/
+	*/
+	public function iAmDoingLitleSale()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		$magentoHome = getenv('MAGENTO_HOME');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForSale.sql");
 	}
 	
 	/**
