@@ -28,6 +28,7 @@ class Litle_CreditCard_Model_Validatehttp extends Mage_Core_Model_Config_Data
 			{
 				curl_close($ch);
 			}
+			
 			return parent::save();
 		}
 	}

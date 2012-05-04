@@ -2,7 +2,8 @@ Feature: NonPayPageTransactions
   Tests to verify transactions are taking place successfully via CreditCards.
 
   Background:
-    Given I am doing non paypage transactions
+    Given I am doing cc or echeck transactions
+    And I am doing non paypage transactions
 
   @javascript @creditcard @wip
   Scenario: Do a successful checkout and then capture the auth
