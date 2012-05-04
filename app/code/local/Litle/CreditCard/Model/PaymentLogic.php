@@ -210,7 +210,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$string2Eval = 'return array' . $this->getConfigData("merchant_id") . ';';
 		$merchant_map = eval($string2Eval);
 		$merchantId = $merchant_map[$currency];
-		Mage::throwException($merchantId);
+		//Mage::throwException($merchantId);
 		return $merchantId;
 	}
 	
@@ -222,7 +222,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					'merchantId'=> $this->getMerchantId($payment),
 					'version'=>'8.10',
 					'merchantSdk'=>'Magento;8.12.1-pre',
-					'reportGroup'=>$this->getConfigData("reportGroup"),
+					'reportGroup'=>$this->getMerchantId($payment),
 					'customerId'=> $order->getCustomerEmail(),
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),
