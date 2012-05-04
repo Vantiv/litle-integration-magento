@@ -154,12 +154,12 @@ Payment.prototype.save = function() {
 		function timeoutOnLitle() {
 			setLitleResponseFields();
 			alert('timeout error');
-		return false;
+			return false;
 		}
 
 		function onErrorAfterLitle(response) {
 			setLitleResponseFields(response);
-			alert(response.message);
+			alert('There was an error. Re-enter your payment information, or contact us for further assistance.');
 			return false;
 		}
 
@@ -178,7 +178,6 @@ Payment.prototype.save = function() {
 		};
 
 		if( _currentMethod == "creditcard" ){
-			//sendToLitle(litleRequest, formFields, submitAfterLitle, onErrorAfterLitle);
 			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
 		}
 		submitAfterLitle();
