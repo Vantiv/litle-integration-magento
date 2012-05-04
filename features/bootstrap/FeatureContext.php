@@ -38,6 +38,10 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 mysql -u magento magento -e "select path,value from core_config_data where path like 'payment/CreditCard/%'"
 EOD;
 			system($sql);				
+			$sql = <<<EOD
+mysql -u magento magento -e "select path,value from core_config_data where path like 'payment/LEcheck/%'"
+EOD;
+			system($sql);				
 		}
 		
 	}
