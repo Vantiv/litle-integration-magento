@@ -1,22 +1,13 @@
 <?php
-class Litle_CreditCard_Model_Validatehttp extends Mage_Core_Model_Config_Data
+class Litle_LEcheck_Model_Validatehttp extends Mage_Core_Model_Config_Data
 {
 	public function getFieldsetDataValue($key)
 	{
 		$data = $this->_getData('fieldset_data');
 		return (is_array($data) && isset($data[$key])) ? $data[$key] : null;
 	}
-	
-	public function getEcheckConfigData($fieldToLookFor, $store = NULL)
-	{
-		$returnFromThisModel = Mage::getStoreConfig('payment/LEcheck/' . $fieldToLookFor);
-		if( $returnFromThisModel == NULL )
-		$returnFromThisModel = parent::getConfigData($fieldToLookFor, $store);
-	
-		return $returnFromThisModel;
-	}
 	function save(){
-		if ($this->getFieldsetDataValue('active') || $this->getEcheckConfigData('active'))
+		if ($this->getFieldsetDataValue('active'))
 		{
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_PROXY, $this->getFieldsetDataValue('proxy'));
@@ -37,7 +28,6 @@ class Litle_CreditCard_Model_Validatehttp extends Mage_Core_Model_Config_Data
 			{
 				curl_close($ch);
 			}
-			
 			return parent::save();
 		}
 	}
