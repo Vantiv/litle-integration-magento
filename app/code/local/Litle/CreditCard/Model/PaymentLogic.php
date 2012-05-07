@@ -136,7 +136,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$info = $this->getInfoInstance();
 
 		$retArray = array();
-		$retArray["type"] = ($payment->getCcType() == "AE")? "AX" : $payment->getCcType();
+		$retArray["type"] = $this->litleCcTypeEnum($payment);
 		$retArray["paypageRegistrationId"] = $info->getAdditionalInformation('paypage_registration_id');
 		preg_match("/\d\d(\d\d)/", $payment->getCcExpYear(), $expYear);
 		$retArray["expDate"] = sprintf('%02d%02d', $payment->getCcExpMonth(), $expYear[1]);
@@ -244,16 +244,44 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $hash;
 	}
 	
+// 	public function getEachItem(Varien_Object $payment){
+// 		$order = $payment->getOrder();
+// 		$items = $order->getAllItems();
+// 		foreach ($items as $itemId => $item)
+// 		{
+// 			$name[] = $item->getName();
+// 			$unitPrice[]=$item->getPrice();
+// 			$sku[]=$item->getSku();
+// 			$ids[]=$item->getProductId();
+// 			$qty[]=$item->getQtyToInvoice();
+// 		}
+// 		while(){
+			
+// 		}
+// 	}
+	
+	
 	public function getEnhancedData(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
-		$product = $order->getProduct();
+		$items = $order->getAllItems();
+		foreach ($items as $itemId => $item)
+		{
+			$name[] = $item->getName();
+			$unitPrice[]=$item->getPrice();
+			$sku[]=$item->getSku();
+			$ids[]=$item->getProductId();
+			$qty[]=$item->getQtyToInvoice();
+	
+		}
+	
 		$billing = $order->getBillingAddress();
+		$i = 0;
 		$hash = array('salesTax'=> $order->getTaxAmount()*100,
-			'shippingAmount'=>$order->getShippingAmount()
-// 			'lineItemData' => array( //GD Commenting out because tax amount needs to be after itemDescription in line item data
-// 				'taxAmount'=>$order->getTaxAmount()*100
-// 			)
+			'shippingAmount'=>$order->getShippingAmount(),
+			'detailTax'=>array('taxAmount'=>$order->getTaxAmount()*100),
+			'lineItemData' => array('itemsSequenceNumber' => $i,'itemDescription'=>'desc','productCode'=>$ids[$i],'quantity'=>$qty[$i],//GD Commenting out because tax amount needs to be after itemDescription in line item data
+			)
 		);
 		return $hash;
 	}
