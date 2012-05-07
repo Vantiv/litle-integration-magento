@@ -43,7 +43,7 @@ Feature: PayPageTransactions
     When I view "Sales" "Orders"
       Then I should see "Orders"
       And I press "Create New Order"
-      And I click on the top row in CustomersList
+      And I click on the customer "Greg Dake" in "Create New Order"
       And I choose "English"
       And I press "Add Products"
       And I click on the top row in Product Table

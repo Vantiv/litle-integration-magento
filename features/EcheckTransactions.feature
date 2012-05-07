@@ -50,14 +50,14 @@ Background:
     Then I should not see "Thank you for your purchase"
       And I follow "Log Out"
 
-@javascript @ready @echeck
+@javascript @wip @echeck #GD Marking this wip because of "choose English" - I don't have this - how do I need to configure my store in order to get it?
 Scenario: Backend ECheck verify, then attempt to sale
    Given I am doing Litle auth
    And I am logged in as an administrator
    When I view "Sales" "Orders"
      Then I should see "Orders"
      And I press "Create New Order"
-     And I click on the top row in CustomersList
+     And I click on the customer "Greg Dake" in "Create New Order"
      And I choose "English"
      And I press "Add Products"
      And I click on the product "affluentvisa"
