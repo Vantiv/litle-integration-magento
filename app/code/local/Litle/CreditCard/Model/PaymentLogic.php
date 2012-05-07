@@ -250,10 +250,10 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$product = $order->getProduct();
 		$billing = $order->getBillingAddress();
 		$hash = array('salesTax'=> $order->getTaxAmount()*100,
-			'shippingAmount'=>$order->getShippingAmount(),
-			'lineItemData' => array(
-				'taxAmount'=>$order->getTaxAmount()*100
-			)
+			'shippingAmount'=>$order->getShippingAmount()
+// 			'lineItemData' => array( //GD Commenting out because tax amount needs to be after itemDescription in line item data
+// 				'taxAmount'=>$order->getTaxAmount()*100
+// 			)
 		);
 		return $hash;
 	}
