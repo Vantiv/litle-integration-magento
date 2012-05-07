@@ -281,6 +281,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			'discountAmount'=>$order->getDiscountAmount(),
 			'shippingAmount'=>$order->getShippingAmount(),
 			'orderDate'=>$order->getCreatedAtFormated(long),
+
 			'detailTax'=>array('taxAmount'=>$order->getTaxAmount()*100),
 			'lineItemData' => $this->getLineItemData($payment)
 		);
