@@ -281,9 +281,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			'discountAmount'=>$order->getDiscountAmount(),
 			'shippingAmount'=>$order->getShippingAmount(),
 			'orderDate'=>$order->getCreatedAtFormated(long),
-			'detailTax'=>array('taxAmount'=>$order->getTaxAmount()*100),
-			'lineItemData' => array('itemsSequenceNumber' => $i,'itemDescription'=>'desc','productCode'=>$ids[$i],'quantity'=>$qty[$i],//GD Commenting out because tax amount needs to be after itemDescription in line item data
-			)
+			'detailTax'=>array(array('taxAmount'=>$order->getTaxAmount()*100)),
+			'lineItemData' => array(array('itemsSequenceNumber' => $i,'itemDescription'=>'desc','productCode'=>$ids[$i],'quantity'=>$qty[$i],//GD Commenting out because tax amount needs to be after itemDescription in line item data
+			))
 		);
 		return $hash;
 	}
