@@ -251,36 +251,29 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		//Mage::app()->getStore()->getName(); //gets store name
 	}
 	
-	// 	public function getEachItem(Varien_Object $payment){
-	// 		$order = $payment->getOrder();
-	// 		$items = $order->getAllItems();
-	// 		foreach ($items as $itemId => $item)
-	// 		{
-	// 			$name[] = $item->getName();
-	// 			$unitPrice[]=$item->getPrice();
-	// 			$sku[]=$item->getSku();
-	// 			$ids[]=$item->getProductId();
-	// 			$qty[]=$item->getQtyToInvoice();
-	// 		}
-	// 		while(){
-		
-	// 		}
-	// 	}
+	public function getLineItemData(Varien_Object $payment){
+			$order = $payment->getOrder();
+			$items = $order->getAllItems();
+			$i = 0;
+			$lineItemArray = array();
+			foreach ($items as $itemId => $item)
+			{
+				$name[$i] = $item->getName();
+				$unitPrice[$i]=$item->getPrice();
+				$sku[$i]=$item->getSku();
+				$ids[$i]=$item->getProductId();
+				$qty[$i]=$item->getQtyToInvoice();
+ 				$lineItemArray[$i] = array('itemSequenceNumber'=>$i,'itemDescription'=>'desc','productCode'=>$ids[$i],'quantity'=>$qty[$i]);
+				$i++;
+			}
+			return $lineItemArray;
+		}
 
 
 	public function getEnhancedData(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
-		$items = $order->getAllItems();
-		foreach ($items as $itemId => $item)
-		{
-			$name[] = $item->getName();
-			$unitPrice[]=$item->getPrice();
-			$sku[]=$item->getSku();
-			$ids[]=$item->getProductId();
-			$qty[]=$item->getQtyToInvoice();
 
-		}
 
 		$billing = $order->getBillingAddress();
 		$i = 0;
@@ -289,8 +282,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			'shippingAmount'=>$order->getShippingAmount(),
 			'orderDate'=>$order->getCreatedAtFormated(long),
 			'detailTax'=>array('taxAmount'=>$order->getTaxAmount()*100),
-			'lineItemData' => array('itemsSequenceNumber' => $i,'itemDescription'=>'desc','productCode'=>$ids[$i],'quantity'=>$qty[$i],//GD Commenting out because tax amount needs to be after itemDescription in line item data
-		)
+			'lineItemData' => $this->getLineItemData($payment)
 		);
 		return $hash;
 	}
