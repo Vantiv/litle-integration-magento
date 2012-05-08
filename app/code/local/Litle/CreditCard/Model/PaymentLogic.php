@@ -301,8 +301,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			'itemDescription'=>$name[$i],
 			'productCode'=>$ids[$i],
 			'quantity'=>$qty[$i],
-			'lineItemTotal'=>($unitPrice[$i]*$qty[$i]),
-			'unitCost'=>$unitPrice[$i]);
+			'lineItemTotal'=>(($unitPrice[$i]*$qty[$i])*100),
+			'unitCost'=>($unitPrice[$i] * 100));
 			$i++;
 		}
 		return $lineItemArray;
