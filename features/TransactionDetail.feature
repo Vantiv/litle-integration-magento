@@ -9,7 +9,7 @@ Feature: TransactionDetail
     And I am using local vap
 
   
-  @javascript @ready @creditcard
+  @javascript @wip @creditcard
   Scenario: Buying an item with a visa credit card
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "vault" in my cart

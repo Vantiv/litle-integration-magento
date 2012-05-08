@@ -8,4 +8,4 @@ update core_config_data set value='password' where path='payment/CreditCard/pass
 update core_config_data set value='("USD"=>"01602","GBP"=>"102")' where path='payment/CreditCard/merchant_id';
 update core_config_data set value=0 where path='payment/CreditCard/paypage_enable';
 
-delete from sales_flat_quote
+delete from sales_flat_quote;

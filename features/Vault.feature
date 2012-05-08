@@ -29,7 +29,7 @@ Feature: Vault
       And the "vault" table should have a row with "MC" in the "type" column
       And the "vault" table should have a row with "540028" in the "bin" column
       
-  @javascript @ready @creditcard
+  @javascript @wip @creditcard
   Scenario: Non token transactions are not stored in the vault
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "this is my product" in my cart
