@@ -31,7 +31,7 @@ Feature: CustomerInformation
         And I click on the customer "Greg Dake" in "Manage Customers"
         Then I should see "Personal Information"
       And I follow "Litle & Co. Customer Insight"
-    Then I should see "Affluent" in the column "Affluence"
+    Then I should see "Affluent" in the column "Affluence" on the "Customer Insight" screen
     And I click on the top row in Customer Insight
       Then I should see "Order was placed using USD"
     And I follow "Log Out"
@@ -59,7 +59,7 @@ Feature: CustomerInformation
         And I click on the customer "Greg Dake" in "Manage Customers"
         Then I should see "Personal Information"
       And I follow "Litle & Co. Customer Insight"
-    Then I should see "Mass Affluent" in the column "Affluence"
+    Then I should see "Mass Affluent" in the column "Affluence" on the "Customer Insight" screen
     And I follow "Log Out"
 
   @javascript @ready @creditcard
@@ -85,10 +85,10 @@ Feature: CustomerInformation
         And I click on the customer "Greg Dake" in "Manage Customers"
         Then I should see "Personal Information"
       And I follow "Litle & Co. Customer Insight"
-    Then I should see "Gift" in the column "PrepaidCardType"
-      And I should see "Prepaid" in the column "FundingSource"
-      And I should see "$15.00" in the column "AvailableBalance"
-      And I should see "No" in the column "Reloadable"
+    Then I should see "Gift" in the column "Prepaid Card Type" on the "Customer Insight" screen
+      And I should see "Prepaid" in the column "Funding Source" on the "Customer Insight" screen
+      And I should see "$15.00" in the column "Available Balance" on the "Customer Insight" screen
+      And I should see "No" in the column "Reloadable" on the "Customer Insight" screen
     And I follow "Log Out"
       
   @javascript @ready @creditcard
@@ -114,5 +114,5 @@ Feature: CustomerInformation
         And I click on the customer "Greg Dake" in "Manage Customers"
         Then I should see "Personal Information"
       And I follow "Litle & Co. Customer Insight"
-    Then I should see "BRA" in the column "IssuingCountry"
+    Then I should see "BRA" in the column "Issuing Country" on the "Customer Insight" screen
     And I follow "Log Out"
