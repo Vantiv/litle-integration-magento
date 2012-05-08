@@ -257,6 +257,7 @@ class XmlFields
 				if ($key == 'lineItemData' && $key != NULL){
 					$lineItem = array();
 					for($j=0; $j<count($value); $j++){
+
 						$hash_out[('lineItemData' . (string)$j)] = XmlFields::lineItemData($value[$j]);
 					}
 				}

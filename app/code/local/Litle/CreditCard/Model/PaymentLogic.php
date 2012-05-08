@@ -87,7 +87,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			if (!($data instanceof Varien_Object)) {
 				$data = new Varien_Object($data);
 			}
-				
+
 			$info = $this->getInfoInstance();
 			$info->setAdditionalInformation('paypage_enabled', $data->getPaypageEnabled());
 			$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
@@ -243,55 +243,69 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		);
 		return $hash;
 	}
-	
+
 	public function getCustomBilling(){
 		$retArray = array();
-		$retArray['url'] = Mage::app()->getStore()-> getBaseUrl();
+		$url = Mage::app()->getStore()-> getBaseUrl();
+		
+		$url = str_replace('http://','',$url);
+		$url = str_replace('https://','',$url);
+		$url = str_replace('www.','',$url);
+		$url_temp = explode('/',$url);
+		$url = $url_temp['0'];
+		if (count($url)>13){
+			$url = str_replace('.com','',$url);
+			$url = str_replace('.org','',$url);
+			$url = str_replace('.gov','',$url);
+			$url = str_replace('.net','',$url);
+		}
+		$url = substr($url,0,12);
+		$retArray['url'] = $url;
+		
 		return $retArray;
 		//Mage::app()->getStore()->getName(); //gets store name
 	}
-	
-	// 	public function getEachItem(Varien_Object $payment){
-	// 		$order = $payment->getOrder();
-	// 		$items = $order->getAllItems();
-	// 		foreach ($items as $itemId => $item)
-	// 		{
-	// 			$name[] = $item->getName();
-	// 			$unitPrice[]=$item->getPrice();
-	// 			$sku[]=$item->getSku();
-	// 			$ids[]=$item->getProductId();
-	// 			$qty[]=$item->getQtyToInvoice();
-	// 		}
-	// 		while(){
-		
-	// 		}
-	// 	}
+
+	public function getLineItemData(Varien_Object $payment){
+		$order = $payment->getOrder();
+		$items = $order->getAllItems();
+		$i = 0;
+		$lineItemArray = array();
+		foreach ($items as $itemId => $item)
+		{
+			$name[$i] = $item->getName();
+			$unitPrice[$i]=$item->getPrice();
+			$sku[$i]=$item->getSku();
+			$ids[$i]=$item->getProductId();
+			$qty[$i]=$item->getQtyToInvoice();
+			
+			$lineItemArray[$i] = array(
+			'itemSequenceNumber'=>($i+1),
+			'itemDescription'=>$name[$i],
+			'productCode'=>$ids[$i],
+			'quantity'=>$qty[$i],
+			'lineItemTotal'=>($unitPrice[$i]*$qty[$i]),
+			'unitCost'=>$unitPrice[$i]);
+			$i++;
+		}
+		return $lineItemArray;
+	}
 
 
 	public function getEnhancedData(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
-		$items = $order->getAllItems();
-		foreach ($items as $itemId => $item)
-		{
-			$name[] = $item->getName();
-			$unitPrice[]=$item->getPrice();
-			$sku[]=$item->getSku();
-			$ids[]=$item->getProductId();
-			$qty[]=$item->getQtyToInvoice();
 
-		}
 
 		$billing = $order->getBillingAddress();
 		$i = 0;
 		$hash = array('salesTax'=> $order->getTaxAmount()*100,
 			'discountAmount'=>$order->getDiscountAmount(),
 			'shippingAmount'=>$order->getShippingAmount(),
-			'orderDate'=>$order->getCreatedAtFormated(long),
+			//'orderDate'=>$order->getCreatedAtFormated(long),/*Incorrect date type*/
 
-			'detailTax'=>array(array('taxAmount'=>$order->getTaxAmount()*100)),
-			'lineItemData' => array(array('itemsSequenceNumber' => $i,'itemDescription'=>'desc','productCode'=>$ids[$i],'quantity'=>$qty[$i],//GD Commenting out because tax amount needs to be after itemDescription in line item data
-			))
+			//'detailTax'=>array('taxAmount'=>$order->getTaxAmount()*100),/*uncomplete content model need tax included in total*/
+			'lineItemData' => $this->getLineItemData($payment)
 		);
 		return $hash;
 	}
@@ -320,7 +334,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setIsTransactionClosed(0)
 					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
-						
+
 					if($isSale)
 					throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact us or try again later."));
 					else
@@ -405,7 +419,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			->setTransactionId("Litle VT")
 			->setIsTransactionClosed(0)
 			->setCcType("Litle VT");
-				
+
 			return;
 		}
 
@@ -413,12 +427,12 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 		$order = $payment->getOrder();
 		if (!empty($order)){
-				
+
 			$orderId =$order->getIncrementId();
 			$amountToPass = ($amount* 100);
 			$isPartialCapture = ($amount < $order->getGrandTotal()) ? "true" : "false";
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
-				
+
 			if( !$isSale )
 			{
 				$hash = array(
