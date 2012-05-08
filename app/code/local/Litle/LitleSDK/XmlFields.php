@@ -257,7 +257,6 @@ class XmlFields
 				if ($key == 'lineItemData' && $key != NULL){
 					$lineItem = array();
 					for($j=0; $j<count($value); $j++){
-
 						$hash_out[('lineItemData' . (string)$j)] = XmlFields::lineItemData($value[$j]);
 					}
 				}
@@ -353,6 +352,22 @@ class XmlFields
 			return $hash_out;
 		}
 	}
+	
+	public static function shortenUrl($url){
+		$url = str_replace('http://','',$url);
+		$url = str_replace('https://','',$url);
+		$url = str_replace('www.','',$url);
+		$url_temp = explode('/',$url);
+		$url = $url_temp['0'];
+		if (count($url)>13){
+			$url = str_replace('.com','',$url);
+			$url = str_replace('.org','',$url);
+			$url = str_replace('.gov','',$url);
+			$url = str_replace('.net','',$url);
+		}
+		$url = substr($url,0,12);
+		return $url;
+	}
 
 	public static function customBilling($hash_in)
 	{
@@ -361,7 +376,7 @@ class XmlFields
 			$hash_out = array(
 						"phone"=>XmlFields::returnArrayValue($hash_in, "phone"),
 						"city" =>XmlFields::returnArrayValue($hash_in, "city"),
-						"url" =>XmlFields::returnArrayValue($hash_in, "url"),
+						"url" =>XmlFields::shortenUrl(XmlFields::returnArrayValue($hash_in, "url")),
 						"descriptor" =>XmlFields::returnArrayValue($hash_in, "descriptor")
 			);
 			return $hash_out;

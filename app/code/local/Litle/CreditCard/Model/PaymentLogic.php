@@ -248,18 +248,18 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$retArray = array();
 		$url = Mage::app()->getStore()-> getBaseUrl();
 		
-		$url = str_replace('http://','',$url);
-		$url = str_replace('https://','',$url);
-		$url = str_replace('www.','',$url);
-		$url_temp = explode('/',$url);
-		$url = $url_temp['0'];
-		if (count($url)>13){
-			$url = str_replace('.com','',$url);
-			$url = str_replace('.org','',$url);
-			$url = str_replace('.gov','',$url);
-			$url = str_replace('.net','',$url);
-		}
-		$url = substr($url,0,12);
+// 		$url = str_replace('http://','',$url);
+// 		$url = str_replace('https://','',$url);
+// 		$url = str_replace('www.','',$url);
+// 		$url_temp = explode('/',$url);
+// 		$url = $url_temp['0'];
+// 		if (count($url)>13){
+// 			$url = str_replace('.com','',$url);
+// 			$url = str_replace('.org','',$url);
+// 			$url = str_replace('.gov','',$url);
+// 			$url = str_replace('.net','',$url);
+// 		}
+// 		$url = substr($url,0,12);
 		$retArray['url'] = $url;
 		
 		return $retArray;
