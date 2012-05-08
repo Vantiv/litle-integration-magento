@@ -507,6 +507,45 @@ EOD;
     }
     
     /**
+    * @Then /^I should see "([^"]*)" in the column "([^"]*)" on the "([^"]*)" screen$/
+    */
+    public function iShouldSeeInTheColumnOnTheScreen($expectedText, $columnName, $screen)
+    {    	
+        $session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	
+		$screenFound = false;
+		$columnFound = false;
+		$valueFound = false;
+		$actualValueFound = NULL;
+    	if($screen === 'Customer Insight') {
+    		$screenFound = true;
+    		$columns = $session->getDriver()->find('/html/body/div/div[3]/div/div/div[2]/div/div[3]/form/div[3]/div/div/div/table/thead/tr/th');
+    		for($i = 1; $i <= count($columns); $i++) {
+    			$column = $session->getDriver()->find("/html/body/div/div[3]/div/div/div[2]/div/div[3]/form/div[3]/div/div/div/table/thead/tr/th[$i]");    			
+    			$actualColumnName = $column[0]->getText();
+    			if($actualColumnName === $columnName) {
+    				$columnFound = true;
+    				$rowColumn = $session->getDriver()->find("/html/body/div/div[3]/div/div/div[2]/div/div[3]/form/div[3]/div/div/div/table/tbody/tr/td[$i]");
+    				$actualValueFound = $rowColumn[0]->getText();
+    				if($actualValueFound === $expectedText) {
+    					$valueFound = true;
+    				}
+    			}
+    		}
+    	}
+    	if(!$screenFound) {
+    		throw new Exception ("Don't know how to find for the screen $screen");
+    	}
+    	else if(!$columnFound) {
+    		throw new Exception ("Could not find for column $columnName for the screen $screen");
+    	}
+    	else if(!$valueFound) {
+    		throw new Exception("Wrong value found for column $columnName for the screen $screen.  Expected $expectedText.  Got $actualValueFound");
+    	}
+    }
+    
+    /**
      * @Given /^I click on the top row in Customer Insight$/
      */
     public function iClickOnTheTopRowInCustomerInsight()
@@ -514,7 +553,7 @@ EOD;
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
     	 
-    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div/div[2]/div/div[3]/form/div[3]/div/table/tbody/tr[1]');
+    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/div/div[2]/div/div[3]/form/div[3]/div/div/div/table/tbody/tr[1]');
     	$title = $topRow[0]->getAttribute("title");
     	if($title == NULL) {
     		throw new ResponseTextException("Could not find an attribute title for top row", $session);
