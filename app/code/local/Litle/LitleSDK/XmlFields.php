@@ -1,6 +1,6 @@
 <?php
 /*
-* Copyright (c) 2011 Litle & Co.
+ * Copyright (c) 2011 Litle & Co.
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -128,8 +128,8 @@ class XmlFields
 			return $hash_out;
 		}
 	}
-	
-	
+
+
 	public static function authInformation($hash_in)
 	{
 		if (isset($hash_in))
@@ -267,7 +267,7 @@ class XmlFields
 					}
 				}
 			}
-			
+				
 			return $hash_out;
 		}
 	}
@@ -352,20 +352,22 @@ class XmlFields
 			return $hash_out;
 		}
 	}
-	
+
 	public static function shortenUrl($url){
-		$url = str_replace('http://','',$url);
-		$url = str_replace('https://','',$url);
-		$url = str_replace('www.','',$url);
-		$url_temp = explode('/',$url);
-		$url = $url_temp['0'];
-		if (count($url)>13){
-			$url = str_replace('.com','',$url);
-			$url = str_replace('.org','',$url);
-			$url = str_replace('.gov','',$url);
-			$url = str_replace('.net','',$url);
+		if (strlen($url)>13){
+			$url = str_replace('http://','',$url);
+			$url = str_replace('https://','',$url);
+			$url = str_replace('www.','',$url);
+			$url_temp = explode('/',$url);
+			$url = $url_temp['0'];
+			if (strlen($url)>13){
+				$url = str_replace('.com','',$url);
+				$url = str_replace('.org','',$url);
+				$url = str_replace('.gov','',$url);
+				$url = str_replace('.net','',$url);
+			}
+			$url = substr($url,0,12);
 		}
-		$url = substr($url,0,12);
 		return $url;
 	}
 
