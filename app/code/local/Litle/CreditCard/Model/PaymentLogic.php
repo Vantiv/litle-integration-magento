@@ -247,25 +247,33 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function getCustomBilling(){
 		$retArray = array();
 		$url = Mage::app()->getStore()-> getBaseUrl();
-		
-// 		$url = str_replace('http://','',$url);
-// 		$url = str_replace('https://','',$url);
-// 		$url = str_replace('www.','',$url);
-// 		$url_temp = explode('/',$url);
-// 		$url = $url_temp['0'];
-// 		if (count($url)>13){
-// 			$url = str_replace('.com','',$url);
-// 			$url = str_replace('.org','',$url);
-// 			$url = str_replace('.gov','',$url);
-// 			$url = str_replace('.net','',$url);
-// 		}
-// 		$url = substr($url,0,12);
+
+		if (strlen($url)>13){
+			$url = str_replace('http://','',$url);
+			$url = str_replace('https://','',$url);
+			$url_temp = explode('/',$url);
+			$url = $url_temp['0'];
+			if (strlen($url)>13){
+				$url = str_replace('www.','',$url);
+				if (strlen($url)>13){
+					$url_temp2 = explode('.',$url);
+					$count = count($url_temp2);
+				}if($count < 3){
+					if (strlen($url_temp2['0'] . '.' . $url_temp2['1']) > 13){
+						$url = $url_temp2['0'];
+					}else{
+						$url = $url_temp2['0'] . '.' . $url_temp2['1'];
+					}
+				}
+			}
+		}
+			
+		$url = substr($url,0,12);
 		$retArray['url'] = $url;
-		
+
 		return $retArray;
-		//Mage::app()->getStore()->getName(); //gets store name
 	}
-	
+
 	public function getOrderDate(Varien_Object $payment){
 		$order = $payment->getOrder();
 		$date = $order->getCreatedAtFormated(short);
@@ -295,7 +303,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$sku[$i]=$item->getSku();
 			$ids[$i]=$item->getProductId();
 			$qty[$i]=$item->getQtyToInvoice();
-			
+				
 			$lineItemArray[$i] = array(
 			'itemSequenceNumber'=>($i+1),
 			'itemDescription'=>$name[$i],
