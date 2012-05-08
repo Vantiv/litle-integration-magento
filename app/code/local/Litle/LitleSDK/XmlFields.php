@@ -254,19 +254,17 @@ class XmlFields
 						"orderDate"=>XmlFields::returnArrayValue($hash_in, "orderDate")
 			);
 			foreach ($hash_in as $key => $value){
-				if ($key == 'lineItemData'){
+				if ($key == 'lineItemData' && $key != NULL){
 					$lineItem = array();
 					for($j=0; $j<count($value); $j++){
-						$lineItem[('lineItemData' . (string)$j)] = XmlFields::lineItemData($value[$j]);
+						$hash_out[('lineItemData' . (string)$j)] = XmlFields::lineItemData($value[$j]);
 					}
-					$hash_out = array_merge($lineItem,$hash_out);
 				}
-				elseif ($key == 'detailTax'){
+				elseif ($key == 'detailTax' & $key != NULL){
 					$detailtax = array();
 					for($j=0; $j<count($value); $j++){
-					$detailtax[('detailTax' . (string)$j)] = XmlFields::detailTax($value[$j]);
+						$hash_out[('detailTax' . (string)$j)] = XmlFields::detailTax($value[$j]);
 					}
-					$hash_out = array_merge($detailtax,$hash_out);
 				}
 			}
 			
