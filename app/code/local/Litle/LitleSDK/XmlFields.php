@@ -258,15 +258,16 @@ class XmlFields
 					$lineItem = array();
 					for($j=0; $j<count($value); $j++){
 						$lineItem[('lineItemData' . (string)$j)] = XmlFields::lineItemData($value[$j]);
+						$hash_out[('lineItemData' . (string)$j)] = XmlFields::lineItemData($value[$j]);
 					}
-					$hash_out = array_merge($lineItem,$hash_out);
+					//$hash_out[] = $lineItem;
 				}
 				elseif ($key == 'detailTax'){
 					$detailtax = array();
 					for($j=0; $j<count($value); $j++){
 					$detailtax[('detailTax' . (string)$j)] = XmlFields::detailTax($value[$j]);
 					}
-					$hash_out = array_merge($detailtax,$hash_out);
+					$hash_out[] = $detailtax;
 				}
 			}
 			
