@@ -248,22 +248,39 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$retArray = array();
 		$url = Mage::app()->getStore()-> getBaseUrl();
 		
-		$url = str_replace('http://','',$url);
-		$url = str_replace('https://','',$url);
-		$url = str_replace('www.','',$url);
-		$url_temp = explode('/',$url);
-		$url = $url_temp['0'];
-		if (count($url)>13){
-			$url = str_replace('.com','',$url);
-			$url = str_replace('.org','',$url);
-			$url = str_replace('.gov','',$url);
-			$url = str_replace('.net','',$url);
-		}
-		$url = substr($url,0,12);
+// 		$url = str_replace('http://','',$url);
+// 		$url = str_replace('https://','',$url);
+// 		$url = str_replace('www.','',$url);
+// 		$url_temp = explode('/',$url);
+// 		$url = $url_temp['0'];
+// 		if (count($url)>13){
+// 			$url = str_replace('.com','',$url);
+// 			$url = str_replace('.org','',$url);
+// 			$url = str_replace('.gov','',$url);
+// 			$url = str_replace('.net','',$url);
+// 		}
+// 		$url = substr($url,0,12);
 		$retArray['url'] = $url;
 		
 		return $retArray;
 		//Mage::app()->getStore()->getName(); //gets store name
+	}
+	
+	public function getOrderDate(Varien_Object $payment){
+		$order = $payment->getOrder();
+		$date = $order->getCreatedAtFormated(short);
+		$date_temp = explode('/',$date);
+		$month = $date_temp['0'];
+		if ((int)$month < 10){
+			$month = '0' . $month;
+		}
+		$day=$date_temp['1'];
+		if ((int)$day < 10){
+			$day = '0' . $day;
+		}
+		$year_temp = explode(' ',$date_temp['2']);
+		$year = '20' . $year_temp['0'];
+		return $year . '-' . $month . '-' . $day;
 	}
 
 	public function getLineItemData(Varien_Object $payment){
@@ -295,16 +312,15 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function getEnhancedData(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
-
-
 		$billing = $order->getBillingAddress();
 		$i = 0;
 		$hash = array('salesTax'=> $order->getTaxAmount()*100,
 			'discountAmount'=>$order->getDiscountAmount(),
 			'shippingAmount'=>$order->getShippingAmount(),
-			//'orderDate'=>$order->getCreatedAtFormated(long),/*Incorrect date type*/
-
-			//'detailTax'=>array('taxAmount'=>$order->getTaxAmount()*100),/*uncomplete content model need tax included in total*/
+			'destinationPostalCode'=>$billing->getPostcode(),
+			'destinationCountryCode'=>$billing->getCountry(),
+			'orderDate'=>$this->getOrderDate($payment),
+			'detailTax'=>array(array('taxAmount'=>$order->getTaxAmount()*100)),
 			'lineItemData' => $this->getLineItemData($payment)
 		);
 		return $hash;
