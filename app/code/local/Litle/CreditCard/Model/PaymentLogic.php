@@ -278,8 +278,14 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$sku[$i]=$item->getSku();
 			$ids[$i]=$item->getProductId();
 			$qty[$i]=$item->getQtyToInvoice();
-			//,'productCode'=>$ids[$i],'quantity'=>$qty[$i]'itemSequenceNumber'=>$i,
-			$lineItemArray[$i] = array('itemDescription'=>'3','productCode'=>$ids[$i],'quantity'=>$qty[$i],'itemSequenceNumber'=>($i+1));
+			
+			$lineItemArray[$i] = array(
+			'itemSequenceNumber'=>($i+1),
+			'itemDescription'=>$name[$i],
+			'productCode'=>$ids[$i],
+			'quantity'=>$qty[$i],
+			'lineItemTotal'=>($unitPrice[$i]*$qty[$i]),
+			'unitCost'=>$unitPrice[$i]);
 			$i++;
 		}
 		return $lineItemArray;
