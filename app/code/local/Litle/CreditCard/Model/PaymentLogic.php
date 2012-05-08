@@ -317,6 +317,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$hash = array('salesTax'=> $order->getTaxAmount()*100,
 			'discountAmount'=>$order->getDiscountAmount(),
 			'shippingAmount'=>$order->getShippingAmount(),
+			'destinationPostalCode'=>$billing->getPostcode(),
+			'destinationCountryCode'=>$billing->getCountry(),
 			'orderDate'=>$this->getOrderDate($payment),
 			'detailTax'=>array(array('taxAmount'=>$order->getTaxAmount()*100)),
 			'lineItemData' => $this->getLineItemData($payment)
