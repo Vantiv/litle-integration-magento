@@ -26,7 +26,7 @@
 ?>
 
 <?php
-$_reportGroup = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("reportGroup");
+$_reportGroup = $this->getReportGroup();
 $_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
 $_paypageUrl = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");

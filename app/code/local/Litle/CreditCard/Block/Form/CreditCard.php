@@ -42,6 +42,24 @@ class Litle_CreditCard_Block_Form_CreditCard extends Mage_Payment_Block_Form
     {
         return Mage::getSingleton('payment/config');
     }
+    
+    public function getCurrency()
+    {
+    	return Mage::app()->getStore()->getCurrentCurrencyCode();
+    }
+    
+    public function getMerchantIdMap()
+    {
+    	return Mage::getStoreConfig('payment/CreditCard/merchant_id');
+    }
+    
+    public function getReportGroup()
+    {
+    	$string2Eval = 'return array' . $this->getMerchantIdMap() . ";";
+    	$merchant_map = eval($string2Eval);
+    	$reportGroup = $merchant_map[$this->getCurrency()];
+    	return $reportGroup;
+    }
 
     /**
      * Retrieve availables credit card types
