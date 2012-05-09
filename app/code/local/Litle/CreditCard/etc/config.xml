@@ -23,8 +23,7 @@
 			</creditcard>
 			<adminhtml>
 				<rewrite>
-					<sales_order_view>Litle_CreditCard_Block_Adminhtml_Orderview
-					</sales_order_view>
+					<sales_order_view>Litle_CreditCard_Block_Adminhtml_Orderview</sales_order_view>
 				</rewrite>
 			</adminhtml>
 		</blocks>
@@ -32,6 +31,11 @@
 			<creditcard>
 				<class>Litle_CreditCard_Model</class>
 			</creditcard>
+			<sales>
+				<rewrite>
+					<order_payment>Litle_CreditCard_Model_Order_Payment</order_payment>
+				</rewrite>
+			</sales>
 		</models>
 		<resources>
 			<creditcard_setup>
