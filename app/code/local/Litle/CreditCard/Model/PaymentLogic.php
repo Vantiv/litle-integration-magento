@@ -351,65 +351,34 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	}
 
 	
-	public function accountUpdater(Varien_Object $payment,$litleResponse){		
+// 	public function accountUpdater(Varien_Object $payment,$litleResponse){		
 		
-		@$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
-		@$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
-		@$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
-		if($newCardInfo){
-			/*
-			 * get old data
-			 */
-// 			$old_type = XmlParser::getAttribute($litleResponse,'originalCardInfo','type');
-// 			$old_number = XmlParser::getAttribute($litleResponse,'originalCardInfo','number');
-// 			$old_expDate = XmlParser::getAttribute($litleResponse,'originalCardInfo','expDate');
-			
-			/*
-			* get new data
-			*/			
-			$new_type = XmlParser::getAttribute($litleResponse,'newCardInfo','type');
-			$new_number = XmlParser::getAttribute($litleResponse,'newCardInfo','number');
-			$new_expDate = XmlParser::getAttribute($litleResponse,'newCardInfo','expDate');
-			
-			/*
-			 * set new credit card data
-			 * or go into db and look up instances and replace all
-			 */
-			$payment->setCcNumber($new_number);//will not work at this point, ran into this problem with archit
-			$payment->setCcType($new_type);//will not work at this point, ran into this problem with archit
-			$payment->setCcExpDate($new_type);
-			/* or an awsome sql statement*/
-			
-// 		}elseif($originalCardTokenInfo && $newCardTokenInfo){
-			
-// 			/*
-// 			* update Token info - how do we use tokens, paypage?
-// 			* either set current credit card  number or
-// 			* replace in db
-// 			*/
-			
-// 			$old_type = XmlParser::getAttribute($litleResponse,'originalCardInfo','type');
-// 			$old_token = XmlParser::getAttribute($litleResponse,'originalCardInfo','litleToken');
-// 			$old_expDate = XmlParser::getAttribute($litleResponse,'originalCardInfo','expDate');
-// 			@$old_expDate = XmlParser::getAttribute($litleResponse,'originalCardInfo','bin');
+// 		@$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
+// 		@$newTokenInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
+		
+// 		if($newCardInfo){
 				
-				
-// 			$new_type = XmlParser::getAttribute($litleResponse,'newCardInfo','type');
-// 			$new_token = XmlParser::getAttribute($litleResponse,'newCardInfo','litleToken');
-// 			$new_expDate = XmlParser::getAttribute($litleResponse,'newCardInfo','expDate');
-// 			@$new_expDate = XmlParser::getAttribute($litleResponse,'originalCardInfo','bin');
+// 			$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
+// 			$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
 			
-// 		}else{
-// 			/*
-// 			 * dont do anything
-// 			 * return nicely
-// 			 */
- 		}
-	}
+// 			$payment->setCcNumber($new_card_number);
+// 			$payment->setCcType($new_card_type);
+// 			$payment->setCcExpDate($new_card_expDate);
+		
+			
+// 		}elseif($newTokenInfo){
+			
+// 			$newCardInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
+// 			$newCardInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
+
+// 			$payment->setCcNumber($new_token_number);
+// 			$payment->setCcType($new_token_type);
+// 			$payment->setCcExpDate($new_token_expDate);
+// 		}
+// 	}
 	
 	public function processResponse(Varien_Object $payment,$litleResponse){
-		//Mage::throwException('before');
-		$this->accountUpdater($payment,$litleResponse);
+		//$this->accountUpdater($payment,$litleResponse);
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
