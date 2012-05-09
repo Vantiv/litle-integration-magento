@@ -347,7 +347,71 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $hash;
 	}
 
+	
+// 	public function accountUpdater(Varien_Object $payment,$litleResponse){		
+		
+// 		@$originalCardInfo = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','originalAccountInfo');
+// 		@$newCardInfo = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','newCardInfo');
+		
+// 		@$originalCardTokenInfo = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','originalCardTokenInfo');
+// 		@$newCardTokenInfo = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','newCardTokenInfo');
+		
+// 		@$extended_message = XmlParser::getAttribute($litleResponse,'extendedCardResponse','message');
+// 		@$extended_code = XmlParser::getAttribute($litleResponse,'extendedCardResponse','code');
+		
+// 		if($originalCardInfo && $newCardInfo){
+// 			/*
+// 			 * get old data
+// 			 */
+// 			$old_type = XmlParser::getAttribute($litleResponse,'originalCardInfo','type');
+// 			$old_number = XmlParser::getAttribute($litleResponse,'originalCardInfo','number');
+// 			$old_expDate = XmlParser::getAttribute($litleResponse,'originalCardInfo','expDate');
+			
+// 			/*
+// 			* get new data
+// 			*/			
+// 			$new_type = XmlParser::getAttribute($litleResponse,'newCardInfo','type');
+// 			$new_number = XmlParser::getAttribute($litleResponse,'newCardInfo','number');
+// 			$new_expDate = XmlParser::getAttribute($litleResponse,'newCardInfo','expDate');
+			
+// 			/*
+// 			 * set new credit card data
+// 			 * or go into db and look up instances and replace all
+// 			 */
+// 			$payment->setCcNumber($new_number);//will not work at this point, ran into this problem with archit
+// 			$payment->setCcType($new_type);//will not work at this point, ran into this problem with archit
+// 			$payment->setCcExpDate($new_type);
+// 			/* or an awsome sql statement*/
+			
+// 		}elseif($originalCardTokenInfo && $newCardTokenInfo){
+			
+// 			/*
+// 			* update Token info - how do we use tokens, paypage?
+// 			* either set current credit card  number or
+// 			* replace in db
+// 			*/
+			
+// 			$old_type = XmlParser::getAttribute($litleResponse,'originalCardInfo','type');
+// 			$old_token = XmlParser::getAttribute($litleResponse,'originalCardInfo','litleToken');
+// 			$old_expDate = XmlParser::getAttribute($litleResponse,'originalCardInfo','expDate');
+// 			@$old_expDate = XmlParser::getAttribute($litleResponse,'originalCardInfo','bin');
+				
+				
+// 			$new_type = XmlParser::getAttribute($litleResponse,'newCardInfo','type');
+// 			$new_token = XmlParser::getAttribute($litleResponse,'newCardInfo','litleToken');
+// 			$new_expDate = XmlParser::getAttribute($litleResponse,'newCardInfo','expDate');
+// 			@$new_expDate = XmlParser::getAttribute($litleResponse,'originalCardInfo','bin');
+			
+// 		}else{
+// 			/*
+// 			 * dont do anything
+// 			 * return nicely
+// 			 */
+// 		}
+// 	}
+	
 	public function processResponse(Varien_Object $payment,$litleResponse){
+	//	$this->accountUpdater($payment,$litleResponse);
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
