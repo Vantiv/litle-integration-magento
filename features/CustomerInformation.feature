@@ -8,7 +8,7 @@ Feature: CustomerInformation
     Given There are no rows in the database table "customer_insight"
     And I am using the sandbox
     
-  @javascript @wip @creditcard
+  @javascript @ready @creditcard
   Scenario: buy with visa affluent credit card
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart
@@ -36,7 +36,7 @@ Feature: CustomerInformation
       Then I should see "Order was placed using USD"
     And I follow "Log Out"
 
-  @javascript @wip @creditcard
+  @javascript @ready @creditcard
   Scenario: buy with visa mass affluent credit card
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart
@@ -62,7 +62,7 @@ Feature: CustomerInformation
     Then I should see "Mass Affluent" in the column "Affluence" on the "Customer Insight" screen
     And I follow "Log Out"
 
-  @javascript @wip @creditcard
+  @javascript @ready @creditcard
   Scenario: buy with prepaid card
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "prepaidproduct" in my cart
@@ -91,7 +91,7 @@ Feature: CustomerInformation
       And I should see "No" in the column "Reloadable" on the "Customer Insight" screen
     And I follow "Log Out"
       
-  @javascript @wip @creditcard
+  @javascript @ready @creditcard
   Scenario: buy with issuing country card
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart
