@@ -420,10 +420,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleResponse = $litleRequest->authorizationRequest($hash_in);
 				$this->processResponse($payment,$litleResponse);
 					
-				Mage::log("About to call helper");
 				Mage::helper("palorus")->saveCustomerInsight($payment, $litleResponse);
 				Mage::helper("palorus")->saveVault($payment, $litleResponse);
-				Mage::log("Back from helper");
 			}
 		}
 	}
@@ -482,6 +480,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			if( $isSale )
 			{
 				$litleResponse = $litleRequest->saleRequest($hash_in);
+				Mage::helper("palorus")->saveCustomerInsight($payment, $litleResponse);
+				Mage::helper("palorus")->saveVault($payment, $litleResponse);
 			} else {
 				$litleResponse = $litleRequest->captureRequest($hash_in);
 			}
