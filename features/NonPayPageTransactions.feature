@@ -5,7 +5,7 @@ Feature: NonPayPageTransactions
     Given I am doing cc or echeck transactions
     And I am doing non paypage transactions
 
-  @javascript @creditcard @ready
+  @javascript @creditcard @wip
   Scenario: Do a successful checkout and then capture the auth
     Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
@@ -35,7 +35,7 @@ Feature: NonPayPageTransactions
     Then I should see "The invoice has been created."
     And I follow "Log Out"
     
-  @javascript @creditcard @ready
+  @javascript @creditcard @wip
   Scenario: Do a unsuccessful checkout
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart
@@ -86,7 +86,7 @@ Feature: NonPayPageTransactions
     Then I should see "The invoice has been created."
     And I follow "Log Out"
 
-  @javascript @creditcard @ready
+  @javascript @creditcard @wip
   Scenario: Do a successful checkout
     Given I am doing Litle sale 
     And I am logged in as "gdake@litle.com" with the password "password"

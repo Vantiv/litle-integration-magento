@@ -7,7 +7,7 @@ Feature: Vault
     Given There are no rows in the database table "vault"
     And I am using the sandbox
     
-  @javascript @ready @creditcard
+  @javascript @wip @creditcard
   Scenario: Tokens are stored in the vault
     Given I am logged in as "gdake@litle.com" with the password "password"
     When I have "vault" in my cart
