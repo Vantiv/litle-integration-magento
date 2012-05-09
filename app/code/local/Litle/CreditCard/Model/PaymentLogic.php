@@ -61,6 +61,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 * can this method save cc info for later use?
 	 */
 	protected $_canSaveCc = false;
+	
+	protected $currentTxnType = "";
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
@@ -410,7 +412,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 // 		}
 // 	}
 	
-	public function processResponse(Varien_Object $payment,$litleResponse){
+	public function processResponse(Varien_Object $payment,$litleResponse, $ordersource = ""){
 	//	$this->accountUpdater($payment,$litleResponse);
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
@@ -420,18 +422,25 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
-					$payment
-					->setStatus("Rejected")
-					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setIsTransactionClosed(0)
-					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
-
-					if($isSale)
-					throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact us or try again later."));
+					if( $orderSource === "refund" &&  $litleResponseCode === "360")
+					{
+						return false;
+					}
 					else
-					throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact Litle or try again later."));
+					{
+						$payment
+						->setStatus("Rejected")
+						->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+						->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+						->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
+						->setIsTransactionClosed(0)
+						->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
+						
+						if($isSale)
+							throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact us or try again later."));
+						else
+							throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact Litle or try again later."));
+					}
 				}
 				else
 				{
@@ -443,7 +452,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					->setIsTransactionClosed(0)
 					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
 				}
-				return $this;
+				return true;
 			}
 		}
 		else{
@@ -456,6 +465,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function authorize(Varien_Object $payment, $amount)
 	{
+		if( $this->currentTxnType === "" )
+			$this->currentTxnType = "authorize";
+		
 		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']) && ($this->getConfigData('paypage_enable') == "1") )
 		{
 			$payment
@@ -493,6 +505,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				Mage::helper("palorus")->saveVault($payment, $litleResponse);
 			}
 		}
+		if( $this->currentTxnType === "authorize" )
+			$this->currentTxnType = "";
 	}
 
 	/**
@@ -501,6 +515,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function capture (Varien_Object $payment, $amount)
 	{
+		if( $this->currentTxnType === "" )
+			$this->currentTxnType = "capture";
+		
 		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']) && ($this->getConfigData('paypage_enable') == "1") )
 		{
 			$payment
@@ -511,6 +528,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			->setIsTransactionClosed(0)
 			->setCcType("Litle VT");
 
+			if($this->currentTxnType === "capture")
+				$this->currentTxnType = "";
+			
 			return;
 		}
 
@@ -556,6 +576,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			}
 		}
 		$this->processResponse($payment,$litleResponse);
+		
+		if($this->currentTxnType === "capture")
+			$this->currentTxnType = "";
 	}
 
 	/**
@@ -564,7 +587,15 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function refund (Varien_Object $payment, $amount)
 	{
 		$this->isFromVT($payment, "refund");
-
+		
+		if( $this->currentTxnType === "" )
+			$this->currentTxnType = "refund";
+		
+		$isPartialRefund = ($amount < $order->getGrandTotal()) ? "true" : "false";
+		
+		if( empty($amount) || $amount === NULL || !$isPartialRefund )
+			$this->void($payment);
+		
 		$order = $payment->getOrder();
 		$amountToPass = ($amount* 100);
 		if (!empty($order)){
@@ -578,6 +609,10 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$litleResponse = $litleRequest->creditRequest($hash_in);
 		}
 		$this->processResponse($payment,$litleResponse);
+		
+		if( $this->currentTxnType === "refund" )
+			$this->currentTxnType = "";
+		
 		return $this;
 	}
 
@@ -588,6 +623,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$this->isFromVT($payment, "void");
 
+		if( $this->currentTxnType === "" )
+			$this->currentTxnType = "void";
+		
 		$order = $payment->getOrder();
 		if (!empty($order)){
 			$hash = array(
@@ -599,9 +637,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$litleResponse = $litleRequest->authReversalRequest($hash_in);
 		}
 		$this->processResponse($payment,$litleResponse);
+		
+		if( $this->currentTxnType === "void" )
+			$this->currentTxnType = "";
 	}
-
-
-
 
 }
