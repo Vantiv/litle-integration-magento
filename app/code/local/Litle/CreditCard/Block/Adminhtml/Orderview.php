@@ -30,17 +30,12 @@
 
 
 class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sales_Order_View {
-	protected $_order;
-	protected $_payment;
-	protected $lastTxnId;
-	protected $lastTxn;
-	
+		
 	public function __construct() {
 		parent::__construct();
 		//$this->removeButton('void_payment');
 		
-		// TODO:: Check if Payment method is Litle -- do the following only if true.
-		if( true )
+	    if(Mage::helper("creditcard")->isMOPLitle())
 		{
 			$this->order = $this->getOrder();
 			$this->payment = $this->order->getPayment();
