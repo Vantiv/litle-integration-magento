@@ -243,7 +243,9 @@ EOD;
     		$page->findById("p_method_lecheck")->click();
     	}
     	if($choice === 'English') {
-    		$page->findById("store_1")->click();
+    		if(getenv('USER') === 'aagarwal') { //TODO Only Archit has this option, and we aren't sure how he got it
+    			$page->findById("store_1")->click();
+    		}
     	}
     	if($choice === 'Fixed Shipping') {
 			$page->findById("s_method_flatrate_flatrate")->click();
