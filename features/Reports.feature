@@ -7,7 +7,7 @@ Feature: Reports
   Background:
     Given I am using local vap
     
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Activity Report from Magento Admin
     Given I am logged in as an administrator
     When I view "Reports" "Litle & Co" "Activity"
@@ -21,7 +21,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Authorization Report from Magento Admin
     Given I am logged in as an administrator
     When I view "Reports" "Litle & Co" "Authorization Report"
@@ -35,7 +35,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to BIN Lookup Report from Magento Admin
     Given I am logged in as an administrator
     When I view "Reports" "Litle & Co" "BIN Lookup"
@@ -49,7 +49,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Activity Report from Magento Admin
     Given I am logged in as an administrator
     When I view "Reports" "Litle & Co" "Activity"
@@ -63,7 +63,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Session Report from Magento Admin
     Given I am logged in as an administrator
     When I view "Reports" "Litle & Co" "Session"
@@ -77,7 +77,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Settlement Report from Magento Admin
     Given I am logged in as an administrator
     When I view "Reports" "Litle & Co" "Settlement"
@@ -91,7 +91,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Transaction Search from Magento Admin
     Given I am logged in as an administrator
     When I view "Sales" "Litle & Co" "Transaction Search"
@@ -105,7 +105,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Transaction Search from Magento Admin
     Given I am logged in as an administrator
     When I view "Sales" "Litle & Co" "Transaction Summary"
@@ -119,7 +119,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
     
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Chargebacks Report from Magento Admin
     Given I am logged in as an administrator
     When I view "Sales" "Litle & Co" "Chargebacks"
@@ -133,7 +133,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Chargebacks from Magento Admin
     Given I am logged in as an administrator
     When I view "Reports" "Litle & Co" "Chargeback Report"
@@ -147,7 +147,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Authorization Dashboard from Magento Admin
     Given I am logged in as an administrator
     When I view "Dashboard" "Litle & Co" "Authorization Dashboard"
@@ -161,7 +161,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
       
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Fraud Detection Dashboard from Magento Admin
     Given I am logged in as an administrator
     When I view "Dashboard" "Litle & Co" "Fraud Detection"
@@ -175,7 +175,7 @@ Feature: Reports
       And I move backward one page
       And I follow "Log Out"
 
-  @javascript @wip
+  @javascript @ready
   Scenario: Go to Post-Deposit Fraud Impact Dashboard from Magento Admin
     Given I am logged in as an administrator
     When I view "Dashboard" "Litle & Co" "Post-Deposit Fraud Impact"
