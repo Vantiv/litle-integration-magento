@@ -30,14 +30,53 @@
 
 
 class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sales_Order_View {
+	protected $_order;
+	protected $_payment;
+	protected $lastTxnId;
+	protected $lastTxn;
+	
 	public function __construct() {
 		parent::__construct();
 		//$this->removeButton('void_payment');
-		$this->_updateButton('void_payment', 'label','Auth-Reversal');
+		
+		// TODO:: Check if Payment method is Litle -- do the following only if true.
+		if( true )
+		{
+			$this->order = $this->getOrder();
+			$this->payment = $this->order->getPayment();
+			$this->lastTxnId = $this->payment->getLastTransId();
+			$this->lastTxn = $this->payment->getTransaction($this->lastTxnId);
+			// check if Auth-Reversal needs to be shown
+			if( $this->canDo(Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH) )
+			{
+				$message = 'Are you sure you want to reverse the authorization?';
+				$this->_updateButton('void_payment', 'label','Auth-Reversal');
+				$this->_updateButton('void_payment', 'onclick', "confirmSetLocation('{$message}', '{$this->getVoidPaymentUrl()}')");
+			}
+			// check if Void-Refund needs to be shown
+			else if( $this->canDo(Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND) )
+			{
+				$onclickJs = 'deleteConfirm(\''
+				. Mage::helper('sales')->__('Are you sure? The refund request will be canceled.')
+				. '\', \'' . $this->getVoidPaymentUrl() . '\');';
+				
+				$this->_addButton('void_refund', array(
+				                'label'    => 'Void Refund',
+				                'onclick'  => $onclickJs,
+				));
+			}
+		}
 	}
 
 	protected function _beforeToHtml() {
 		parent::_beforeToHtml();
+	}
+	
+	public function canDo($typeToDo){
+		if( $this->lastTxn->getTxnType() === $typeToDo )
+			return true;
+		else
+			return false;
 	}
 		
 }
