@@ -244,9 +244,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $hash;
 	}
 
-	public function getCustomBilling(){
+	public function getCustomBilling($url){
 		$retArray = array();
-		$url = Mage::app()->getStore()-> getBaseUrl();
 
 		if (strlen($url)>13){
 			$url = str_replace('http://','',$url);
@@ -267,8 +266,14 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				}
 			}
 		}
-			
-		$url = substr($url,0,12);
+	
+		$url = substr($url,0,13);
+		if(substr($url,12) === '.'){
+			$url = substr($url,0,12);
+		}
+		elseif (substr($url,0) === '.'){
+			$url = substr($url,1,12);
+		}
 		$retArray['url'] = $url;
 
 		return $retArray;
@@ -410,7 +415,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 									'shipToAddress'=> $this->getAddressInfo($payment),
 									'cardholderAuthentication'=> $this->getFraudCheck($payment),
 									'enhancedData'=>$this->getEnhancedData($payment),
-									'customBilling'=>$this->getCustomBilling()
+									'customBilling'=>$this->getCustomBilling(Mage::app()->getStore()-> getBaseUrl())
 				);
 				$payment_hash = $this->creditCardOrPaypage($payment);
 				$hash_temp = array_merge($hash,$payment_hash);

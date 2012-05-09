@@ -34,10 +34,38 @@ class CustomBillingTest extends PHPUnit_Framework_TestCase
 {
 	public function testCustomBilling1()
 	{		
-		$this->assertEquals(0,1);
-//  		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://payments.litle.com/vap/communicator/online',123);
-//  		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
+		$url = Litle_CreditCard_Model_PaymentLogic::getCustomBilling('https://www.testing123.org');
+		$this->assertEquals('testing123', $url['url']);
 	}
 	
+	public function testCustomBilling2()
+	{
+		$url = Litle_CreditCard_Model_PaymentLogic::getCustomBilling('http://www.othertesturl.orders.tw/payments');
+		$this->assertEquals('othertesturl', $url['url']);
+	}
 	
+	public function testCustomBilling3()
+	{
+		$url = Litle_CreditCard_Model_PaymentLogic::getCustomBilling('http://www.othertesturl.orders.tw/payments/index.html');
+		$this->assertEquals('othertesturl', $url['url']);
+	}
+	
+	public function testCustomBilling4()
+	{
+		$url = Litle_CreditCard_Model_PaymentLogic::getCustomBilling('12345678912345');
+		$this->assertEquals('1234567891234', $url['url']);
+	}
+	
+	public function testCustomBilling5()
+	{
+		$url = Litle_CreditCard_Model_PaymentLogic::getCustomBilling('www.test.com/payments');
+		$this->assertEquals('www.test.com', $url['url']);
+	}
+	
+	public function testCustomBilling6()
+	{
+		$url = Litle_CreditCard_Model_PaymentLogic::getCustomBilling('www.longerlongerlonlonger.tv');
+		$this->assertEquals('longerlongerl', $url['url']);
+	}
+
 }
