@@ -243,6 +243,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		);
 		return $hash;
 	}
+// 4000162019882000
+// 4100182015707000
+// 4100118010071000
 
 	public function getCustomBilling($url){
 		$retArray = array();
@@ -348,40 +351,34 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	}
 
 	
-// 	public function accountUpdater(Varien_Object $payment,$litleResponse){		
+	public function accountUpdater(Varien_Object $payment,$litleResponse){		
 		
-// 		@$originalCardInfo = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','originalAccountInfo');
-// 		@$newCardInfo = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','newCardInfo');
-		
-// 		@$originalCardTokenInfo = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','originalCardTokenInfo');
-// 		@$newCardTokenInfo = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','newCardTokenInfo');
-		
-// 		@$extended_message = XmlParser::getAttribute($litleResponse,'extendedCardResponse','message');
-// 		@$extended_code = XmlParser::getAttribute($litleResponse,'extendedCardResponse','code');
-		
-// 		if($originalCardInfo && $newCardInfo){
-// 			/*
-// 			 * get old data
-// 			 */
+		@$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
+		@$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
+		@$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
+		if($newCardInfo){
+			/*
+			 * get old data
+			 */
 // 			$old_type = XmlParser::getAttribute($litleResponse,'originalCardInfo','type');
 // 			$old_number = XmlParser::getAttribute($litleResponse,'originalCardInfo','number');
 // 			$old_expDate = XmlParser::getAttribute($litleResponse,'originalCardInfo','expDate');
 			
-// 			/*
-// 			* get new data
-// 			*/			
-// 			$new_type = XmlParser::getAttribute($litleResponse,'newCardInfo','type');
-// 			$new_number = XmlParser::getAttribute($litleResponse,'newCardInfo','number');
-// 			$new_expDate = XmlParser::getAttribute($litleResponse,'newCardInfo','expDate');
+			/*
+			* get new data
+			*/			
+			$new_type = XmlParser::getAttribute($litleResponse,'newCardInfo','type');
+			$new_number = XmlParser::getAttribute($litleResponse,'newCardInfo','number');
+			$new_expDate = XmlParser::getAttribute($litleResponse,'newCardInfo','expDate');
 			
-// 			/*
-// 			 * set new credit card data
-// 			 * or go into db and look up instances and replace all
-// 			 */
-// 			$payment->setCcNumber($new_number);//will not work at this point, ran into this problem with archit
-// 			$payment->setCcType($new_type);//will not work at this point, ran into this problem with archit
-// 			$payment->setCcExpDate($new_type);
-// 			/* or an awsome sql statement*/
+			/*
+			 * set new credit card data
+			 * or go into db and look up instances and replace all
+			 */
+			$payment->setCcNumber($new_number);//will not work at this point, ran into this problem with archit
+			$payment->setCcType($new_type);//will not work at this point, ran into this problem with archit
+			$payment->setCcExpDate($new_type);
+			/* or an awsome sql statement*/
 			
 // 		}elseif($originalCardTokenInfo && $newCardTokenInfo){
 			
@@ -407,11 +404,12 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 // 			 * dont do anything
 // 			 * return nicely
 // 			 */
-// 		}
-// 	}
+ 		}
+	}
 	
 	public function processResponse(Varien_Object $payment,$litleResponse){
-	//	$this->accountUpdater($payment,$litleResponse);
+		//Mage::throwException('before');
+		$this->accountUpdater($payment,$litleResponse);
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
@@ -442,6 +440,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
 					->setIsTransactionClosed(0)
 					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
+					
 				}
 				return $this;
 			}
@@ -488,7 +487,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleRequest = new LitleOnlineRequest();
 				$litleResponse = $litleRequest->authorizationRequest($hash_in);
 				$this->processResponse($payment,$litleResponse);
-					
 				Mage::helper("palorus")->saveCustomerInsight($payment, $litleResponse);
 				Mage::helper("palorus")->saveVault($payment, $litleResponse);
 			}
