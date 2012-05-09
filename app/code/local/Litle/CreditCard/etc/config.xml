@@ -57,6 +57,11 @@
 				</connection>
 			</creditcard_read>
 		</resources>
+		<helpers>
+			<creditcard>
+				<class>Litle_CreditCard_Helper</class>
+			</creditcard>
+		</helpers>
 	</global>
 	<frontend>
 		<layout>
