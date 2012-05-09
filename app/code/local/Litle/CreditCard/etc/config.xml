@@ -6,31 +6,36 @@
 		</Litle_CreditCard>
 	</modules>
 	<global>
-	<payment>
-            <cc>
-                <types>
-              	  	 <DC>
-                        <code>DC</code>
-                        <name>Diners Club</name>
-                        <order>1</order>
-                    </DC>
-                </types>
-            </cc>
-        </payment>
-	<blocks>
-		<creditcard>
+		<payment>
+			<cc>
+				<types>
+					<DC>
+						<code>DC</code>
+						<name>Diners Club</name>
+						<order>1</order>
+					</DC>
+				</types>
+			</cc>
+		</payment>
+		<blocks>
+			<creditcard>
 				<class>Litle_CreditCard_Block</class>
-		</creditcard>
-		<adminhtml>
-			<rewrite>
-				<sales_order_view>Litle_CreditCard_Block_Adminhtml_Orderview</sales_order_view>
-			</rewrite>
-		</adminhtml>
-	</blocks>
+			</creditcard>
+			<adminhtml>
+				<rewrite>
+					<sales_order_view>Litle_CreditCard_Block_Adminhtml_Orderview</sales_order_view>
+				</rewrite>
+			</adminhtml>
+		</blocks>
 		<models>
 			<creditcard>
 				<class>Litle_CreditCard_Model</class>
 			</creditcard>
+			<sales>
+				<rewrite>
+					<order_payment>Litle_CreditCard_Model_Order_Payment</order_payment>
+				</rewrite>
+			</sales>
 		</models>
 		<resources>
 			<creditcard_setup>
@@ -52,30 +57,35 @@
 				</connection>
 			</creditcard_read>
 		</resources>
+		<helpers>
+			<creditcard>
+				<class>Litle_CreditCard_Helper</class>
+			</creditcard>
+		</helpers>
 	</global>
-	 <frontend>
-         <layout>
-             <updates>
-                 <creditcard>
-                     <file>litlecreditcard.xml</file>
-                 </creditcard>
-             </updates>
-         </layout>
-     </frontend>
+	<frontend>
+		<layout>
+			<updates>
+				<creditcard>
+					<file>litlecreditcard.xml</file>
+				</creditcard>
+			</updates>
+		</layout>
+	</frontend>
 	<default>
-        <payment>
-            <creditcard>
-                <active>1</active>
-                <timeout>65</timeout>
-                <url>https://www.testlitle.com/sandbox/communicator/online</url>
-                <model>creditcard/paymentLogic</model>
-                <order_status>pending</order_status>
-                <title>Credit Card (Litle Payment)</title>
-                <cctypes>AE,VI,MC,DI</cctypes>
-                <payment_action>authorize</payment_action>
-                <allowspecific>0</allowspecific>
-                <paypage_enabled>1</paypage_enabled>
-            </creditcard>
-        </payment>
-    </default>
+		<payment>
+			<creditcard>
+				<active>1</active>
+				<timeout>65</timeout>
+				<url>https://www.testlitle.com/sandbox/communicator/online</url>
+				<model>creditcard/paymentLogic</model>
+				<order_status>pending</order_status>
+				<title>Credit Card (Litle Payment)</title>
+				<cctypes>AE,VI,MC,DI</cctypes>
+				<payment_action>authorize</payment_action>
+				<allowspecific>0</allowspecific>
+				<paypage_enabled>1</paypage_enabled>
+			</creditcard>
+		</payment>
+	</default>
 </config>
