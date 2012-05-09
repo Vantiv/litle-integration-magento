@@ -48,7 +48,7 @@ Feature: Vault
       And I follow "Log Out"
       And the "vault" should have "0" rows
       
-@javascript @wip @creditcard
+@javascript @ready @creditcard
 Scenario: Tokens are stored in the vault when doing sales
   Given I am logged in as "gdake@litle.com" with the password "password"
     And I am doing Litle sale
