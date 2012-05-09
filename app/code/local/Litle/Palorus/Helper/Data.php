@@ -5,7 +5,6 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
 	public function saveCustomerInsight($payment, $litleResponse) {
-		Mage::log("Begin saveCustomerInsight");
 		preg_match('/.*(\d\d\d\d)/', $payment->getCcNumber(), $matches);
 		$last4 = $matches[1];
 		$data = array(
@@ -22,13 +21,10 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 						'available_balance' => Litle_Palorus_Helper_Data::formatAvailableBalance(XMLParser::getNode($litleResponse, 'availableBalance')),
 						'reloadable' => Litle_Palorus_Helper_Data::formatReloadable(XMLParser::getNode($litleResponse, 'reloadable')),
 		);
-		Mage::log("Saving to model: " . implode(",", $data));
-		Mage::log("Model is " . implode(",", Mage::getModel('palorus/insight')->setData($data)->getData()));
 		Mage::getModel('palorus/insight')->setData($data)->save();
 	}
 
 	public function saveVault($payment, $litleResponse) {
-		Mage::log("Begin saveVault");
 		preg_match('/.*(\d\d\d\d)/', $payment->getCcNumber(), $matches);
 		$last4 = $matches[1];
 		$token = XMLParser::getNode($litleResponse, 'litleToken');
@@ -43,8 +39,6 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 			'type' => XMLParser::getNode($litleResponse, 'type'),
 			'bin' => XMLParser::getNode($litleResponse, 'bin')
 		);
-		Mage::log("Saving to model: " . implode(",", $data));
-		Mage::log("Model is " . implode(",", Mage::getModel('palorus/vault')->setData($data)->getData()));
 		Mage::getModel('palorus/vault')->setData($data)->save();
 	}
 	

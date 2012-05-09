@@ -9,9 +9,10 @@ Feature: TransactionDetail
     And I am using local vap
 
   
-  @javascript @wip @creditcard
+  @javascript @ready @creditcard
   Scenario: Buying an item with a visa credit card
     Given I am logged in as "gdake@litle.com" with the password "password"
+      And I am doing Litle auth
     When I have "vault" in my cart
       And I press "Proceed to Checkout"
       And I press "Continue"

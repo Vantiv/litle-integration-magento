@@ -33,13 +33,12 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 		if($event->getResult() == 4) { //Failure
 			$dbName = getenv('MAGENTO_DB_NAME');
 			$dbUser = getenv('MAGENTO_DB_USER');
-			$magentoHome = getenv('MAGENTO_HOME');
 			$sql = <<<EOD
-mysql -u magento magento -e "select path,value from core_config_data where path like 'payment/CreditCard/%'"
+mysql -u $dbUser $dbUser -e "select path,value from core_config_data where path like 'payment/CreditCard/%'"
 EOD;
 			system($sql);				
 			$sql = <<<EOD
-mysql -u magento magento -e "select path,value from core_config_data where path like 'payment/LEcheck/%'"
+mysql -u $dbUser $dbName -e "select path,value from core_config_data where path like 'payment/LEcheck/%'"
 EOD;
 			system($sql);				
 		}
@@ -53,7 +52,6 @@ EOD;
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
-		$magentoHome = getenv('MAGENTO_HOME');
 		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupSandbox.sql");
 	}
 	
@@ -64,7 +62,6 @@ EOD;
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
-		$magentoHome = getenv('MAGENTO_HOME');
 		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/enablePayPageTransaction.sql");
 	}
 	
@@ -75,7 +72,6 @@ EOD;
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
-		$magentoHome = getenv('MAGENTO_HOME');
 		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupCCandEcheck.sql");
 	}
 	
@@ -86,7 +82,6 @@ EOD;
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
-		$magentoHome = getenv('MAGENTO_HOME');
 		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/disablePayPageTransaction.sql");
 	}
 	
@@ -97,7 +92,6 @@ EOD;
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
-		$magentoHome = getenv('MAGENTO_HOME');
 		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForAuth.sql");
 	}
 	
@@ -108,7 +102,6 @@ EOD;
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
-		$magentoHome = getenv('MAGENTO_HOME');
 		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForSale.sql");
 	}
 	
@@ -119,7 +112,6 @@ EOD;
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
-		$magentoHome = getenv('MAGENTO_HOME');
 		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupPayPageSaleTransactionTest.sql");
 	}
 	
@@ -130,7 +122,6 @@ EOD;
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
-		$magentoHome = getenv('MAGENTO_HOME');
 		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupVap.sql");
 	}
 	
@@ -142,7 +133,6 @@ EOD;
 	{
 		$dbName = getenv('MAGENTO_DB_NAME');
 		$dbUser = getenv('MAGENTO_DB_USER');
-		$magentoHome = getenv('MAGENTO_HOME');
 		$mysql = "mysql -u $dbUser $dbName -e 'delete from $tableName' &> /dev/null";
 		system($mysql);
 	}
@@ -243,7 +233,9 @@ EOD;
     		$page->findById("p_method_lecheck")->click();
     	}
     	if($choice === 'English') {
-    		$page->findById("store_1")->click();
+    		if(getenv('USER') === 'aagarwal') { //TODO Only Archit has this option, and we aren't sure how he got it
+    			$page->findById("store_1")->click();
+    		}
     	}
     	if($choice === 'Fixed Shipping') {
 			$page->findById("s_method_flatrate_flatrate")->click();
@@ -568,7 +560,6 @@ EOD;
     {
     	$dbName = getenv('MAGENTO_DB_NAME');
     	$dbUser = getenv('MAGENTO_DB_USER');
-    	$magentoHome = getenv('MAGENTO_HOME');
     	$request = "mysql -u $dbUser $dbName -e \"select count(*) from $table where $column = '$expectedValue'\"";
     	$response = exec($request);
     	if($response !== '1') {
@@ -583,7 +574,6 @@ EOD;
     {
     	$dbName = getenv('MAGENTO_DB_NAME');
     	$dbUser = getenv('MAGENTO_DB_USER');
-    	$magentoHome = getenv('MAGENTO_HOME');
     	$request = "mysql -u $dbUser $dbName -e \"select count(*) from $table where $column like '$expectedValue'\"";
     	$response = exec($request);
     	if($response !== '1') {
@@ -599,7 +589,6 @@ EOD;
     {
     	$dbName = getenv('MAGENTO_DB_NAME');
     	$dbUser = getenv('MAGENTO_DB_USER');
-    	$magentoHome = getenv('MAGENTO_HOME');
     	$request = "mysql -u $dbUser $dbName -e 'select count(*) from $table'";
     	$response = exec($request);
     	if($response !== $expectedRows) {

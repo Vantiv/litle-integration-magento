@@ -53,7 +53,7 @@ Feature: NonPayPageTransactions
         Then I should not see "Thank you for your purchase"
       And I follow "Log Out"
     
- @javascript @creditcard @wip #GD Marking wip because it asks for "English" which only Archit's machine has
+ @javascript @creditcard @ready
  Scenario: Backend auth checkout, then capture
     Given I am doing Litle auth
     And I am logged in as an administrator

@@ -50,7 +50,7 @@ Background:
     Then I should not see "Thank you for your purchase"
       And I follow "Log Out"
 
-@javascript @wip @echeck #GD Marking this wip because of "choose English" - I don't have this - how do I need to configure my store in order to get it?
+@javascript @ready @echeck
 Scenario: Backend ECheck verify, then attempt to sale
    Given I am doing Litle auth
    And I am logged in as an administrator
