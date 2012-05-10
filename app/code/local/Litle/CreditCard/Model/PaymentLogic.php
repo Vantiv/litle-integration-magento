@@ -237,8 +237,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					'merchantSdk'=>'Magento;8.12.1-pre',
 					'reportGroup'=>$this->getMerchantId($payment),
 					'customerId'=> $order->getCustomerEmail(),
-					'url'=>$this->getConfigData("url"),	
-					'proxy'=>$this->getConfigData("proxy"),
+					'url'=>'http://l-gdake-t5500:8081/sandbox/communicator/online',//$this->getConfigData("url"),	
+					//'proxy'=>$this->getConfigData("proxy"),
 					'timeout'=>$this->getConfigData("timeout")
 		);
 		return $hash;
@@ -359,6 +359,19 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		
 		return $new;
 	}
+	
+	public function saveToken(Varien_Object $payment,$litleResponse){
+
+		if($litleResponse->getElementsByTagName('tokenResponse')->item(0) !==  NULL){
+			$token_number = $litleResponse->getElementsByTagName('token')->item(0)->getElementsByTagName('ccAccountNumberType')->item(0)->nodeValue;
+			$token_type = $litleResponse->getElementsByTagName('token')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
+			$payment->setCcNumber($new_token_number);
+			$payment->setCcLast4(substr($new_token_number, -4));
+			$payment->setCcType($new_token_type);
+		}
+
+	}
+	
 
 	
 	public function accountUpdater(Varien_Object $payment,$litleResponse){
@@ -382,6 +395,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	
 
 	public function processResponse(Varien_Object $payment,$litleResponse, $ordersource = ""){
+		$this->saveToken($payment, $litleResponse);
+		//Mage::throwException($payment->getCcNumber());
 		$this->accountUpdater($payment,$litleResponse);
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
