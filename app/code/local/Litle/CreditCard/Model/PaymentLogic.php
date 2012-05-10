@@ -372,8 +372,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
  		}
  		elseif($this->getUpdater($litleResponse, 'newCardTokenInfo') !==  NULL){
  			
- 			$payment->setCcNumber($this->getUpdater($litleResponse, 'newCardTokenInfo','number'));
-			$payment->setCcLast4(substr($this->getUpdater($litleResponse, 'newCardTokenInfo', 'number'), -4));
+ 			$payment->setCcNumber($this->getUpdater($litleResponse, 'newCardTokenInfo','litleToken'));
+			$payment->setCcLast4(substr($this->getUpdater($litleResponse, 'newCardTokenInfo', 'litleToken'), -4));
 			$payment->setCcType($this->getUpdater($litleResponse, 'newCardTokenInfo','type'));
 			$payment->setCcExpDate($this->getUpdater($litleResponse, 'newCardTokenInfo','expDate'));
  		}
