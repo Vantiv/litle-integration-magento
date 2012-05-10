@@ -273,9 +273,15 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
         	if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND))
         	{	
         		$this->_reverseRefund($isOnline, $amount, $gatewayCallback);
+        	} else if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH)){
+        		parent::_void($isOnline, $amount, $gatewayCallback);
+        	} else if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE)){
+        		Mage::throwException("Order needs to be refunded prior to cancellation.");
         	}
+        } else {
+        	parent::_void($isOnline, $amount, $gatewayCallback);
         }
-//     	$order = $this->getOrder();
+        
 //         $authTransaction = $this->getAuthorizationTransaction();
 //         $this->_generateTransactionId(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, $authTransaction);
 //         $this->setShouldCloseParentTransaction(true);
