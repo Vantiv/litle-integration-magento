@@ -237,8 +237,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					'merchantSdk'=>'Magento;8.12.1-pre',
 					'reportGroup'=>$this->getMerchantId($payment),
 					'customerId'=> $order->getCustomerEmail(),
-					'url'=>'http://l-gdake-t5500:8081/sandbox/communicator/online',//$this->getConfigData("url"),	
-					//'proxy'=>$this->getConfigData("proxy"),
+					'url'=>$this->getConfigData("url"),	
+					'proxy'=>$this->getConfigData("proxy"),
 					'timeout'=>$this->getConfigData("timeout")
 		);
 		return $hash;
@@ -395,8 +395,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	
 
 	public function processResponse(Varien_Object $payment,$litleResponse, $ordersource = ""){
-		$this->saveToken($payment, $litleResponse);
-		//Mage::throwException($payment->getCcNumber());
+		//$this->saveToken($payment, $litleResponse);
 		$this->accountUpdater($payment,$litleResponse);
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
