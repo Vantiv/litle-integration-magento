@@ -560,17 +560,18 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function refund (Varien_Object $payment, $amount)
 	{
+		
 		$this->isFromVT($payment, "refund");
 		
 		if( $this->currentTxnType === "" )
 			$this->currentTxnType = "refund";
 		
+		$order = $payment->getOrder();
 		$isPartialRefund = ($amount < $order->getGrandTotal()) ? "true" : "false";
 		
 		if( empty($amount) || $amount === NULL || !$isPartialRefund )
 			$this->void($payment);
 		
-		$order = $payment->getOrder();
 		$amountToPass = ($amount* 100);
 		if (!empty($order)){
 			$hash = array(
