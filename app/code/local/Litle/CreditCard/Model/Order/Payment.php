@@ -30,7 +30,7 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
     public function void(Varien_Object $document)
     {
     	$this->_void(true);
-        Mage::dispatchEvent('sales_order_payment_void', array('payment' => $this, 'invoice' => $document));
+        //Mage::dispatchEvent('sales_order_payment_void', array('payment' => $this, 'invoice' => $document));
         return $this;
     }
 
@@ -145,6 +145,104 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
 //         return $this->_authorize($isOnline, $amount);
 //     }
 
+    protected function _reverseRefund($isOnline, $amount = null, $gatewayCallback = 'void')
+    {
+    	$order = $this->getOrder();
+    	// attempt to void
+    	if ($isOnline) {
+    		$this->getMethodInstance()->setStore($order->getStoreId())->$gatewayCallback($this);
+    	}
+    	if ($this->_isTransactionExists()) {
+    		return $this;
+    	}
+    	
+    	foreach($order->getItemsCollection() as $item){
+    		if ($item->getQtyRefunded() > 0) 
+    			$item->setQtyRefunded(0)->save();
+    	}
+    	
+    	$order
+    	->setBaseDiscountRefunded(0)
+    	->setBaseShippingRefunded(0)
+    	->setBaseSubtotalRefunded(0)
+    	->setBaseTaxRefunded(0)
+    	->setBaseShippingTaxRefunded(0)
+    	->setBaseTotalOnlineRefunded(0)
+    	->setBaseTotalOfflineRefunded(0)
+    	->setBaseTotalRefunded(0)
+    	->setTotalOnlineRefunded(0)
+    	->setTotalOfflineRefunded(0)
+    	->setDiscountRefunded(0)
+    	->setShippingRefunded(0)
+    	->setShippingTaxRefunded(0)
+    	->setSubtotalRefunded(0)
+    	->setTaxRefunded(0)
+    	->setTotalRefunded(0);
+    	//$transaction = $this->_addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, null, true);
+    	
+    	// update transactions, order state and add comments
+    	$transaction = $this->_addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, null, true);
+    	$message = $this->hasMessage() ? $this->getMessage() : "Voided Refund.";
+    	$message = $this->_prependMessage($message);
+    	$message = $this->_appendTransactionToMessage($transaction, $message);
+    	$order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, $message);
+    }
+    
+    protected function deleteCreditAction()
+    {
+    	if ($order = $this->_initOrder()) {
+    		try {
+    
+    			$collection = $this->getCollection($order, 'sales/order_creditmemo_collection');
+    			$this->deleteCollection($collection);
+    
+    			foreach($order->getItemsCollection() as $item)    {
+    
+    				if ($item->getQtyRefunded() > 0) $item->setQtyRefunded(0)->save();
+    			}
+    
+    			$order
+    			->setBaseDiscountRefunded(0)
+    			->setBaseShippingRefunded(0)
+    			->setBaseSubtotalRefunded(0)
+    			->setBaseTaxRefunded(0)
+    			->setBaseShippingTaxRefunded(0)
+    			->setBaseTotalOnlineRefunded(0)
+    			->setBaseTotalOfflineRefunded(0)
+    			->setBaseTotalRefunded(0)
+    			->setTotalOnlineRefunded(0)
+    			->setTotalOfflineRefunded(0)
+    			->setDiscountRefunded(0)
+    			->setShippingRefunded(0)
+    			->setShippingTaxRefunded(0)
+    			->setSubtotalRefunded(0)
+    			->setTaxRefunded(0)
+    			->setTotalRefunded(0);
+    
+    			$state = 'complete';
+    			$status = 'complete';
+    
+    			$order
+    			->setStatus($status)
+    			->setState($state)
+    			->save();
+    
+    			$this->_getSession()->addSuccess(
+    			$this->__('Credit Memo was successfully deleted')
+    			);
+    		}
+    		catch (Mage_Core_Exception $e) {
+    			$this->_getSession()->addError($e->getMessage());
+    		}
+    		catch (Exception $e) {
+    			$this->_getSession()->addError($this->__('Credit Memo Could Not Be Deleted'));
+    		}
+    		$this->_redirect('adminhtml/sales_order/view', array('order_id' => $order->getId()));
+    	}
+    
+    }
+    
+    
     /**
      * Void payment either online or offline (process void notification)
      * NOTE: that in some cases authorization can be voided after a capture. In such case it makes sense to use
@@ -174,21 +272,7 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
         	//			1.2.a) 
         	if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND))
         	{	
-        		// attempt to void
-        		if ($isOnline) {
-        			$this->getMethodInstance()->setStore($order->getStoreId())->$gatewayCallback($this);
-        		}
-        		if ($this->_isTransactionExists()) {
-        			return $this;
-        		}
-        		$transaction = $this->_addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, null, true);
-        		
-        		// update transactions, order state and add comments
-        		$transaction = $this->_addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, null, true);
-        		$message = $this->hasMessage() ? $this->getMessage() : "Voided Refund.";
-        		$message = $this->_prependMessage($message);
-        		$message = $this->_appendTransactionToMessage($transaction, $message);
-        		$order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, $message);
+        		$this->_reverseRefund($isOnline, $amount, $gatewayCallback);
         	}
         }
 //     	$order = $this->getOrder();
