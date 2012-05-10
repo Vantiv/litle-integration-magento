@@ -597,6 +597,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		}
 		$this->processResponse($payment,$litleResponse);
 		
+		$payment->setParentTransactionId($payment->getCcTransId());
+		
 		if( $this->currentTxnType === "refund" )
 			$this->currentTxnType = "";
 		
