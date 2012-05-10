@@ -71,7 +71,7 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
                 : Mage::helper('sales')->__('Canceled order offline.')
             );
         }
-
+        
         if ($isOnline) {
             $this->_void($isOnline, null, 'cancel');
         }
@@ -158,7 +158,7 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
      */
     protected function _void($isOnline, $amount = null, $gatewayCallback = 'void')
     {
-        parent::_void($isOnline, $amount, $gatewayCallback);
+        //parent::_void($isOnline, $amount, $gatewayCallback);
         
         if(Mage::helper("creditcard")->isMOPLitle())
         {
@@ -173,8 +173,22 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
         	//		1.2) If Un-successful:
         	//			1.2.a) 
         	if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND))
-        	{
+        	{	
+        		// attempt to void
+        		if ($isOnline) {
+        			$this->getMethodInstance()->setStore($order->getStoreId())->$gatewayCallback($this);
+        		}
+        		if ($this->_isTransactionExists()) {
+        			return $this;
+        		}
+        		$transaction = $this->_addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, null, true);
         		
+        		// update transactions, order state and add comments
+        		$transaction = $this->_addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, null, true);
+        		$message = $this->hasMessage() ? $this->getMessage() : "Voided Refund.";
+        		$message = $this->_prependMessage($message);
+        		$message = $this->_appendTransactionToMessage($transaction, $message);
+        		$order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, $message);
         	}
         }
 //     	$order = $this->getOrder();
