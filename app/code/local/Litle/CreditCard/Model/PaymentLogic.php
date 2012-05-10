@@ -150,7 +150,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function creditCardOrPaypage($payment){
 		$info = $this->getInfoInstance();
 		$payment_hash = array();
-		//Mage::throwException($info->getAdditionalInformation('paypage_registration_id'));
 		if ($info->getAdditionalInformation('paypage_enabled') == "1" ){
 			$payment_hash['paypage'] = $this->getPaypageInfo($payment);
 		}
@@ -224,7 +223,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$string2Eval = 'return array' . $this->getConfigData("merchant_id") . ';';
 		$merchant_map = eval($string2Eval);
 		$merchantId = $merchant_map[$currency];
-		//Mage::throwException($merchantId);
 		return $merchantId;
 	}
 
@@ -245,9 +243,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		);
 		return $hash;
 	}
-// 4000162019882000
-// 4100182015707000
-// 4100118010071000
+
 
 	public function getCustomBilling($url){
 		$retArray = array();
@@ -353,21 +349,22 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	}
 
 	
-	public function accountUpdater(Varien_Object $payment,$litleResponse){		
-		
-		@$new_card_number = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
+	public function accountUpdater(Varien_Object $payment,$litleResponse){
+
+ 		if($litleResponse->getElementsByTagName('newCardInfo')->item(0) !==  NULL){
+ 		$new_card_number = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
+ 		}
 		//@$newTokenInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
-		
 		if($new_card_number){
-				
-			//$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
-			//$newCardInfo = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
+			
+			$new_card_type = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
+			$new_card_expDate = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
 			
 			$payment->setCcNumber($new_card_number);
+			$payment->setCcLast4(substr($new_card_number, -4));
 			//Mage::throwException('here'. $payment->getCcNumberEnc());
-			//$payment->setCcNumberEnc($payment->encrypt($payment->getCcNumber()));
-			//$payment->setCcType($new_card_type);
-			//$payment->setCcExpDate($new_card_expDate);
+			$payment->setCcType($new_card_type);
+			$payment->setCcExpDate($new_card_expDate);
 		
 			
 // 		}elseif($newTokenInfo){
@@ -384,7 +381,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	
 
 	public function processResponse(Varien_Object $payment,$litleResponse, $ordersource = ""){
-	//	$this->accountUpdater($payment,$litleResponse);
+		$this->accountUpdater($payment,$litleResponse);
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
