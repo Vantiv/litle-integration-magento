@@ -347,36 +347,37 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		);
 		return $hash;
 	}
+	
+	public function getUpdater($litleResponse, $parentNode, $childNode=NULL){
+		
+		if($childNode === NULL){
+			$new = $litleResponse->getElementsByTagName($parentNode)->item(0);
+		}
+		else{
+			$new = $litleResponse->getElementsByTagName($parentNode)->item(0)->getElementsByTagName($childNode)->item(0)->nodeValue;
+		}
+		
+		return $new;
+	}
 
 	
 	public function accountUpdater(Varien_Object $payment,$litleResponse){
 
- 		if($litleResponse->getElementsByTagName('newCardInfo')->item(0) !==  NULL){
- 		$new_card_number = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
- 		}
-		//@$newTokenInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
-		if($new_card_number){
-			
-			$new_card_type = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
-			$new_card_expDate = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
-			
-			$payment->setCcNumber($new_card_number);
-			$payment->setCcLast4(substr($new_card_number, -4));
-			//Mage::throwException('here'. $payment->getCcNumberEnc());
-			$payment->setCcType($new_card_type);
-			$payment->setCcExpDate($new_card_expDate);
-		
-			
-// 		}elseif($newTokenInfo){
-			
-// 			$newCardInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
-// 			$newCardInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
+ 		if($this->getUpdater($litleResponse, 'newCardInfo') !==  NULL){
 
-// 			$payment->setCcNumber($new_token_number);
-// 			$payment->setCcType($new_token_type);
-// 			$payment->setCcExpDate($new_token_expDate);
-		}
-		
+			$payment->setCcLast4(substr($this->getUpdater($litleResponse, 'newCardInfo', 'number'), -4));
+			$payment->setCcType($this->getUpdater($litleResponse, 'newCardInfo','type'));
+			$payment->setCcExpDate($this->getUpdater($litleResponse, 'newCardInfo','expDate'));
+			
+ 		}
+ 		elseif($this->getUpdater($litleResponse, 'newCardTokenInfo') !==  NULL){
+ 			
+ 			$payment->setCcNumber($this->getUpdater($litleResponse, 'newCardTokenInfo','number'));
+			$payment->setCcLast4(substr($this->getUpdater($litleResponse, 'newCardTokenInfo', 'number'), -4));
+			$payment->setCcType($this->getUpdater($litleResponse, 'newCardTokenInfo','type'));
+			$payment->setCcExpDate($this->getUpdater($litleResponse, 'newCardTokenInfo','expDate'));
+ 		}
+ 		
 	}
 	
 
