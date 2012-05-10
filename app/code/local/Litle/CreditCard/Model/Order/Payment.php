@@ -162,7 +162,20 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
         
         if(Mage::helper("creditcard")->isMOPLitle())
         {
-        	
+        	$order = $this->getOrder();
+        	// if current state of order is "refund", then on Void, we want to:
+        	//	1) Void the Refund.
+        	//		1.1) If Successful:
+        	//			1.1.a) Save correct Txn ID and Status
+        	//					(Status should be grabbed from Status after Captured Txn)
+        	//			1.1.b) Change message to reflect a refund was Voided
+        	//			1.1.c) Verify on the credit memo, "Cancelled" or "Voided" is shown.
+        	//		1.2) If Un-successful:
+        	//			1.2.a) 
+        	if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND))
+        	{
+        		
+        	}
         }
 //     	$order = $this->getOrder();
 //         $authTransaction = $this->getAuthorizationTransaction();
