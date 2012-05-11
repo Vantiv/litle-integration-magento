@@ -143,9 +143,13 @@ EOD;
      */
     public function iAmLoggedInAsWithThePassword($username, $password)
     {
+    	$magentoHome = getenv('MAGENTO_HOME');
+    	$magentoHome_tmp = explode('/',$magentoHome);
+    	$magentoHome = $magentoHome_tmp[count($magentoHome_tmp) - 1];
+    	
 		$session = $this->getMink()->getSession('sahi'); 
 
- 		$session->visit('http://localhost/magento/index.php/');
+ 		$session->visit('http://localhost/' . $magentoHome . '/index.php/');
 	
 // 		//Get to login screen
  		$page = $session->getPage();
@@ -157,7 +161,9 @@ EOD;
 	
 // 		//Login 
  		$page->findField("Email Address")->setValue($username);
- 		$page->findField("Password")->setValue($password);
+ 		//$page->findField("Password")->setValue($password);
+ 		$script = 'document.getElementById("pass").value=' . '"' . $password . '"';
+ 		$session->executeScript($script);
  		$page->findButton("Login")->click();		
     }
 
@@ -170,7 +176,9 @@ EOD;
     	
     	//Find the item
      	$page = $session->getPage();
-     	$page->findField("search")->setValue($product);
+     	//$page->findField("search")->setValue($product);
+     	$script = 'document.getElementById("search").value=' . '"' . $product . '"';
+     	$session->executeScript($script);
      	$page->findButton("Search")->click();
      	
      	//Add to cart
@@ -290,7 +298,8 @@ EOD;
  		//Get to login screen
  		$page = $session->getPage(); 		
  		$page->findField("User Name:")->setValue("admin");
- 		$page->findField("Password:")->setValue("LocalMagentoAdmin1");
+ 		//$page->findField("Password:")->setValue("LocalMagentoAdmin1");
+ 		$session->executeScript('document.getElementById("login").value="LocalMagentoAdmin1"');
  		$page->findButton("Login")->click();    	
     }
     
@@ -595,4 +604,44 @@ EOD;
     		throw new Exception("Table did not have expected number of rows.  Found $response rows");
     	}    	    	
     }
+    
+    /**
+    * @Given /^I put in "([^"]*)" with "([^"]*)"$/
+    */
+    public function iPutInWith($name, $value)
+    {
+    $session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	if($name === 'Credit Card Number') {
+    		$script = 'document.getElementById("creditcard_cc_number").value=' . '"' . $value . '"';
+    		$session->executeScript($script);
+    	}
+    	
+    	if($name == 'Card Verification Number'){
+    		$script = 'document.getElementById("creditcard_cc_cid").value=' . '"' . $value . '"';
+    		$session->executeScript($script);
+    	}
+    	
+    }
+    
+    /**
+    * @Then /^I should not see "([^"]*)" in Credit Card Number$/
+    */
+    public function iShouldNotSeeInCreditCardNumber($number)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	//$parent = $page->findById($section);
+    	$parent = $session->getDriver()->find('/html/body/div[2]/div[3]/div/div/div[2]/div/div[3]/div/div/div[8]/div/fieldset/table/tbody/tr[2]/td[2]');
+    	$text = $parent[0]->getText();
+    	
+    	if(preg_match("/.*" . "xxxx-" . ".*/", $text) == 0) {
+    		throw new ResponseTextException("Could not find a credit card number", $session);
+    	}
+    	if (preg_match("/.*" . "xxxx-" . $number . ".*/", $text) !== 0){
+    		throw new ResponseTextException("Credit card number was not updated", $session);
+    	}
+    }
+    
 }
