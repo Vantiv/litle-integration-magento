@@ -437,9 +437,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function authorize(Varien_Object $payment, $amount)
 	{
-		if( $this->currentTxnType === "" )
-			$this->currentTxnType = "authorize";
-		
 		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']) && ($this->getConfigData('paypage_enable') == "1") )
 		{
 			$payment
@@ -476,9 +473,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				Mage::helper("palorus")->saveVault($payment, $litleResponse);
 			}
 		}
-
-		if( $this->currentTxnType === "authorize" )
-			$this->currentTxnType = "";
 	}
 
 	/**
@@ -487,9 +481,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function capture (Varien_Object $payment, $amount)
 	{
-		if( $this->currentTxnType === "" )
-			$this->currentTxnType = "capture";
-		
 		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']) && ($this->getConfigData('paypage_enable') == "1") )
 		{
 			$payment
@@ -500,9 +491,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			->setIsTransactionClosed(0)
 			->setCcType("Litle VT");
 
-			if($this->currentTxnType === "capture")
-				$this->currentTxnType = "";
-			
 			return;
 		}
 
@@ -548,9 +536,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			}
 		}
 		$this->processResponse($payment,$litleResponse);
-		
-		if($this->currentTxnType === "capture")
-			$this->currentTxnType = "";
 	}
 
 	/**
@@ -559,9 +544,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function refund (Varien_Object $payment, $amount)
 	{
 		$this->isFromVT($payment, "refund");
+		
 		$alreadyInRefund = false;
-		
-		
 		if($this->currentTxnType === "refund"){
 			$alreadyInRefund=true;
 		}
@@ -571,10 +555,12 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$order = $payment->getOrder();
 		$isPartialRefund = ($amount < $order->getGrandTotal()) ? true : false;
 		
-		if( (empty($amount) || $amount === NULL || !$isPartialRefund) && !$alreadyInRefund){
+		if( (empty($amount) || $amount === NULL || !$isPartialRefund) && !$alreadyInRefund)
+		{
 			$this->void($payment);
-			}
-		else{
+		}
+		else
+		{
 			$amountToPass = ($amount* 100);
 			if (!empty($order)){
 				$hash = array(
@@ -601,9 +587,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$this->isFromVT($payment, "void");
 
-		if( $this->currentTxnType === "" )
-			$this->currentTxnType = "void";
-		
 		$order = $payment->getOrder();
 		if (!empty($order)){
 			$hash = array(
@@ -620,9 +603,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
         	}	
 		}
 		$this->processResponse($payment,$litleResponse);
-		
-		if( $this->currentTxnType === "void" )
-			$this->currentTxnType = "";
 	}
 	
 	public function cancel(Varien_Object $payment)

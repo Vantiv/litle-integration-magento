@@ -38,7 +38,9 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 	    if(Mage::helper("creditcard")->isMOPLitle($order->getPayment()))
 		{
 			// check if Auth-Reversal needs to be shown
-			if( Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH) )
+			if( Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH) &&
+				!(Mage::helper("creditcard")->isMOPLitleECheck($order->getPayment()->getData('method')))
+			)
 			{
 				$message = 'Are you sure you want to reverse the authorization?';
 				$this->_updateButton('void_payment', 'label','Auth-Reversal');
