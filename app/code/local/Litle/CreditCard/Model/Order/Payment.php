@@ -258,7 +258,7 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
     {
         //parent::_void($isOnline, $amount, $gatewayCallback);
         
-        if(Mage::helper("creditcard")->isMOPLitle())
+        if(Mage::helper("creditcard")->isMOPLitle($this))
         {
         	$order = $this->getOrder();
         	// if current state of order is "refund", then on Void, we want to:

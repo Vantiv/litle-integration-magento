@@ -13,16 +13,17 @@ class Litle_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 	
 	// TODO:: Needs to be implemented.
-	public function isMOPLitleCC(){
-		return true;
+	public function isMOPLitleCC($mop){
+		return ($mop === "creditcard");
 	}
 	
 	// TODO:: Needs to be implemented.
-	public function isMOPLitleECheck(){
-		return true;
+	public function isMOPLitleECheck($mop){
+		return ($mop === "lecheck");
 	}
 	
-	public function isMOPLitle(){
-		return ($this->isMOPLitleCC() || $this->isMOPLitleECheck());
+	public function isMOPLitle($payment){
+		$mop = $payment->getData('method');
+		return ($this->isMOPLitleCC($mop) || $this->isMOPLitleECheck($mop));
 	}
 }
