@@ -62,6 +62,8 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 	 * can this method save cc info for later use?
 	 */
 	protected $_canSaveCc = false;
+	
+	protected $currentTxnType = "";
 
 
 	public function assignData($data)
@@ -184,15 +186,23 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
-					$payment
-					->setStatus("Rejected")
-					->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
-					->setIsTransactionClosed(0)
-					->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
-					
-					throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact us or try again later."));
+					if( $this->currentTxnType === "refund" &&  $litleResponseCode === "360")
+					{
+						//call a refund
+						$this->refund($payment);
+					}
+					else
+					{
+						$payment
+						->setStatus("Rejected")
+						->setCcTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+						->setLastTransId(XMLParser::getNode($litleResponse,'litleTxnId'))
+						->setTransactionId(XMLParser::getNode($litleResponse,'litleTxnId'))
+						->setIsTransactionClosed(0)
+						->setTransactionAdditionalInfo("additional_information", XMLParser::getNode($litleResponse,'message'));
+							
+						throw new Mage_Payment_Model_Info_Exception(Mage::helper('core')->__("Transaction was not approved. Contact us or try again later."));
+					}
 				}
 				else
 				{
@@ -272,21 +282,41 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 	 */
 	public function refund (Varien_Object $payment, $amount)
 	{
-		$order = $payment->getOrder();
-		$amountToPass = ($amount* 100);
-		if (!empty($order)){
-			$hash = array(
-			'litleTxnId' => $payment->getCcTransId(),
-			'amount' => $amountToPass
-			);
-
-			$merchantData = $this->merchantData($payment);
-			$hash_in = array_merge($hash,$merchantData);
-			$litleRequest = new LitleOnlineRequest();
-			$litleResponse = $litleRequest->echeckCreditRequest($hash_in);
+		$alreadyInRefund = false;
+		if($this->currentTxnType === "refund"){
+			$alreadyInRefund=true;
 		}
-
-		$this->processResponse($payment,$litleResponse);
+		else if( $this->currentTxnType === "" )
+			$this->currentTxnType = "refund";
+		
+		$order = $payment->getOrder();
+		$isPartialRefund = ($amount < $order->getGrandTotal()) ? true : false;
+		
+		if( (empty($amount) || $amount === NULL || !$isPartialRefund) && !$alreadyInRefund)
+		{
+			$this->void($payment);
+		}
+		else
+		{
+			$amountToPass = ($amount* 100);
+			if (!empty($order)){
+				$hash = array(
+						'litleTxnId' => $payment->getCcTransId(),
+						'amount' => $amountToPass
+				);
+			
+				$merchantData = $this->merchantData($payment);
+				$hash_in = array_merge($hash,$merchantData);
+				$litleRequest = new LitleOnlineRequest();
+				$litleResponse = $litleRequest->echeckCreditRequest($hash_in);
+			}
+			
+			$this->processResponse($payment,$litleResponse);
+		}
+		
+		if( $this->currentTxnType === "refund" )
+			$this->currentTxnType = "";
+		
 		return $this;
 	}
 
