@@ -60,8 +60,4 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 			}
 		}
 	}
-
-	protected function _beforeToHtml() {
-		parent::_beforeToHtml();
-	}	
 }

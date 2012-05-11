@@ -537,6 +537,16 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		}
 		$this->processResponse($payment,$litleResponse);
 	}
+	
+	public function wasLastTxnLessThan48HrsAgo(Varien_Object $payment)
+	{
+		$lastTxnId = $payment->getLastTransId();
+		$lastTxn = $payment->getTransaction($lastTxnId);
+		$timeOfLastTxn = $lastTxn->getData('created_at');
+		
+		//check if last txn was less than 48 hrs ago (172800 seconds == 48 hrs)
+		return ((time()-strtotime($timeOfLastTxn)) < 172800);
+	}
 
 	/**
 	 * called if refunding
@@ -555,7 +565,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$order = $payment->getOrder();
 		$isPartialRefund = ($amount < $order->getGrandTotal()) ? true : false;
 		
-		if( (empty($amount) || $amount === NULL || !$isPartialRefund) && !$alreadyInRefund)
+		if( (empty($amount) || $amount === NULL || !$isPartialRefund) && !$alreadyInRefund && $this->wasLastTxnLessThan48HrsAgo($payment))
 		{
 			$this->void($payment);
 		}
