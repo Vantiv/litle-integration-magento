@@ -479,6 +479,29 @@ EOD;
     	$session->visit($topRow[0]->getAttribute("title"));
     }
     
+    /**
+    * @Given /^I click on Invoices$/
+    */
+    public function iClickOnInvoices()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	$invoices = $page->findById("sales_order_view_tabs_order_invoices");
+    	$invoices->click();
+    }    
+    
+    /**
+    * @Given /^I click on the top row in Invoices$/
+    */
+    public function iClickOnTheTopRowInInvoices()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	$topRow = $session->getDriver()->find('/html/body/div[2]/div[3]/div/div/div[2]/div/div[3]/div[2]/div/div/div/table/tbody/tr/td');
+    	$session->visit($topRow[0]->getAttribute("title"));
+    }
     
     /**
      * @Then /^I should see "([^"]*)" in the column "([^"]*)"$/

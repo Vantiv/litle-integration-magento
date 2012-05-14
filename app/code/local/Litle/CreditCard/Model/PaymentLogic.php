@@ -390,6 +390,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
+		//Mage::throwException($litleResponseCode);
 					if( $this->currentTxnType === "refund" &&  $litleResponseCode === "360")
 					{
 						//call a refund
