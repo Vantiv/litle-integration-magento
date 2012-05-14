@@ -28,13 +28,17 @@
 
 <?php
 $customerId = 3;
+$_collection = array();
 $_collection = Mage::getModel('palorus/vault')
 ->getCollection()
 ->addFieldToFilter('customer_id',$customerId);
 $purchases = array();
+$i=0;
 foreach ($_collection as $purchase) {
-$purchases[] = $purchase->getData();
+$purchases[$i] = $purchase->getData();
+$i++;
 }
+
 ?>
 <?php
 $_reportGroup = $this->getReportGroup();
@@ -55,6 +59,19 @@ $_id = $_time . substr($_session,13);
 ?>
 <?php $_code=$this->getMethodCode() ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+	<li>
+        <label for="<?php echo $_code ?>_cc_type" class="required"><?php echo $this->__('Vault Credit Cards') ?></label>
+        <div class="input-box">
+            <select id="<?php echo $_code ?>_cc_numberType" name="payment[cc_numberType]">
+                <option><?php echo $this->__('--Please Select A Vaulted Credit Card--')?></option>
+	    <?php $i = 0; ?>
+            <?php foreach ($_collection as $key => $value): ?>
+                <option > <?php echo 'Vaulted ' . $purchases[$i]['type'] . ' Ending in: ' . $purchases[$i]['last4'] ?></option>
+	    <?php $i++ ?>
+            <?php endforeach ?>
+            </select>
+        </div>
+    </li>
     <li>
         <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
         <div class="input-box">
