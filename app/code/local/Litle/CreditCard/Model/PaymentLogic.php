@@ -347,40 +347,55 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		);
 		return $hash;
 	}
+	
+	public function getUpdater($litleResponse, $parentNode, $childNode=NULL){
+		
+		if($childNode === NULL){
+			$new = $litleResponse->getElementsByTagName($parentNode)->item(0);
+		}
+		else{
+			$new = $litleResponse->getElementsByTagName($parentNode)->item(0)->getElementsByTagName($childNode)->item(0)->nodeValue;
+		}
+		
+		return $new;
+	}
+	
+	public function saveToken(Varien_Object $payment,$litleResponse){
+
+		if($litleResponse->getElementsByTagName('tokenResponse')->item(0) !==  NULL){
+			$token_number = $litleResponse->getElementsByTagName('token')->item(0)->getElementsByTagName('ccAccountNumberType')->item(0)->nodeValue;
+			$token_type = $litleResponse->getElementsByTagName('token')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
+			$payment->setCcNumber($new_token_number);
+			$payment->setCcLast4(substr($new_token_number, -4));
+			$payment->setCcType($new_token_type);
+		}
+
+	}
+	
 
 	
 	public function accountUpdater(Varien_Object $payment,$litleResponse){
 
- 		if($litleResponse->getElementsByTagName('newCardInfo')->item(0) !==  NULL){
- 		$new_card_number = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
- 		}
-		//@$newTokenInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('number')->item(0)->nodeValue;
-		if($new_card_number){
-			
-			$new_card_type = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
-			$new_card_expDate = $litleResponse->getElementsByTagName('newCardInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
-			
-			$payment->setCcNumber($new_card_number);
-			$payment->setCcLast4(substr($new_card_number, -4));
-			//Mage::throwException('here'. $payment->getCcNumberEnc());
-			$payment->setCcType($new_card_type);
-			$payment->setCcExpDate($new_card_expDate);
-		
-			
-// 		}elseif($newTokenInfo){
-			
-// 			$newCardInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
-// 			$newCardInfo = $litleResponse->getElementsByTagName('newCardTokenInfo')->item(0)->getElementsByTagName('expDate')->item(0)->nodeValue;
+ 		if($this->getUpdater($litleResponse, 'newCardInfo') !==  NULL){
 
-// 			$payment->setCcNumber($new_token_number);
-// 			$payment->setCcType($new_token_type);
-// 			$payment->setCcExpDate($new_token_expDate);
-		}
-		
+			$payment->setCcLast4(substr($this->getUpdater($litleResponse, 'newCardInfo', 'number'), -4));
+			$payment->setCcType($this->getUpdater($litleResponse, 'newCardInfo','type'));
+			$payment->setCcExpDate($this->getUpdater($litleResponse, 'newCardInfo','expDate'));
+			
+ 		}
+ 		elseif($this->getUpdater($litleResponse, 'newCardTokenInfo') !==  NULL){
+ 			
+ 			$payment->setCcNumber($this->getUpdater($litleResponse, 'newCardTokenInfo','litleToken'));
+			$payment->setCcLast4(substr($this->getUpdater($litleResponse, 'newCardTokenInfo', 'litleToken'), -4));
+			$payment->setCcType($this->getUpdater($litleResponse, 'newCardTokenInfo','type'));
+			$payment->setCcExpDate($this->getUpdater($litleResponse, 'newCardTokenInfo','expDate'));
+ 		}
+ 		
 	}
 	
 
-	public function processResponse(Varien_Object $payment,$litleResponse){
+	public function processResponse(Varien_Object $payment,$litleResponse, $ordersource = ""){
+		//$this->saveToken($payment, $litleResponse);
 		$this->accountUpdater($payment,$litleResponse);
 		$message = XmlParser::getAttribute($litleResponse,'litleOnlineResponse','message');
 		if ($message == "Valid Format"){
@@ -390,11 +405,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
-		//Mage::throwException($litleResponseCode);
 					if( $this->currentTxnType === "refund" &&  $litleResponseCode === "360")
 					{
-						//call a refund
-						$this->refund($payment);
+						return false;
 					}
 					else
 					{
@@ -438,6 +451,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function authorize(Varien_Object $payment, $amount)
 	{
+		if( $this->currentTxnType === "" )
+			$this->currentTxnType = "authorize";
+		
 		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']) && ($this->getConfigData('paypage_enable') == "1") )
 		{
 			$payment
@@ -474,6 +490,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				Mage::helper("palorus")->saveVault($payment, $litleResponse);
 			}
 		}
+
+		if( $this->currentTxnType === "authorize" )
+			$this->currentTxnType = "";
 	}
 
 	/**
@@ -482,6 +501,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function capture (Varien_Object $payment, $amount)
 	{
+		if( $this->currentTxnType === "" )
+			$this->currentTxnType = "capture";
+		
 		if (preg_match("/sales_order_create/i", $_SERVER['REQUEST_URI']) && ($this->getConfigData('paypage_enable') == "1") )
 		{
 			$payment
@@ -492,6 +514,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			->setIsTransactionClosed(0)
 			->setCcType("Litle VT");
 
+			if($this->currentTxnType === "capture")
+				$this->currentTxnType = "";
+			
 			return;
 		}
 
@@ -537,16 +562,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			}
 		}
 		$this->processResponse($payment,$litleResponse);
-	}
-	
-	public function wasLastTxnLessThan48HrsAgo(Varien_Object $payment)
-	{
-		$lastTxnId = $payment->getLastTransId();
-		$lastTxn = $payment->getTransaction($lastTxnId);
-		$timeOfLastTxn = $lastTxn->getData('created_at');
 		
-		//check if last txn was less than 48 hrs ago (172800 seconds == 48 hrs)
-		return ((time()-strtotime($timeOfLastTxn)) < 172800);
+		if($this->currentTxnType === "capture")
+			$this->currentTxnType = "";
 	}
 
 	/**
@@ -554,37 +572,33 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function refund (Varien_Object $payment, $amount)
 	{
+		
 		$this->isFromVT($payment, "refund");
 		
-		$alreadyInRefund = false;
-		if($this->currentTxnType === "refund"){
-			$alreadyInRefund=true;
-		}
-		else if( $this->currentTxnType === "" )
+		if( $this->currentTxnType === "" )
 			$this->currentTxnType = "refund";
 		
 		$order = $payment->getOrder();
-		$isPartialRefund = ($amount < $order->getGrandTotal()) ? true : false;
+		$isPartialRefund = ($amount < $order->getGrandTotal()) ? "true" : "false";
 		
-		if( (empty($amount) || $amount === NULL || !$isPartialRefund) && !$alreadyInRefund && $this->wasLastTxnLessThan48HrsAgo($payment))
-		{
+		if( empty($amount) || $amount === NULL || !$isPartialRefund )
 			$this->void($payment);
+		
+		$amountToPass = ($amount* 100);
+		if (!empty($order)){
+			$hash = array(
+						'litleTxnId' => $payment->getCcTransId(),
+						'amount' => $amountToPass
+			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->creditRequest($hash_in);
 		}
-		else
-		{
-			$amountToPass = ($amount* 100);
-			if (!empty($order)){
-				$hash = array(
-							'litleTxnId' => $payment->getCcTransId(),
-							'amount' => $amountToPass
-				);
-				$merchantData = $this->merchantData($payment);
-				$hash_in = array_merge($hash,$merchantData);
-				$litleRequest = new LitleOnlineRequest();
-				$litleResponse = $litleRequest->creditRequest($hash_in);
-			}
-			$this->processResponse($payment,$litleResponse);
-		}
+		$this->processResponse($payment,$litleResponse);
+		
+		$payment->setParentTransactionId($payment->getCcTransId());
+		
 		if( $this->currentTxnType === "refund" )
 			$this->currentTxnType = "";
 		
@@ -598,6 +612,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$this->isFromVT($payment, "void");
 
+		if( $this->currentTxnType === "" )
+			$this->currentTxnType = "void";
+		
 		$order = $payment->getOrder();
 		if (!empty($order)){
 			$hash = array(
@@ -606,19 +623,12 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);
 			$litleRequest = new LitleOnlineRequest();
-			
-			if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH)){
-				$litleResponse = $litleRequest->authReversalRequest($hash_in);
-        	} else {
-        		$litleResponse = $litleRequest->voidRequest($hash_in);
-        	}	
+			$litleResponse = $litleRequest->authReversalRequest($hash_in);
 		}
 		$this->processResponse($payment,$litleResponse);
-	}
-	
-	public function cancel(Varien_Object $payment)
-	{
-		$this->void($payment);
+		
+		if( $this->currentTxnType === "void" )
+			$this->currentTxnType = "";
 	}
 
 }
