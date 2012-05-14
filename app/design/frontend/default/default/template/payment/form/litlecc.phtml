@@ -71,14 +71,40 @@ $_id = $_time . substr($_session,13);
                 <option value ="<?php echo ($purchases[$i]['vault_id'])?>"><?php echo 'Vaulted ' . $purchases[$i]['type'] . ' Ending in: ' . $purchases[$i]['last4'] ?></option>
 	    <?php $i++ ?>
             <?php endforeach ?>
-<?php if ($creditcard_cc_vaulted !== 0): ?>
-$creditcard_type = $purchases[$creditcard_cc_vaulted]['type'];
-$creditcard_type = $purchases[$creditcard_cc_vaulted]['number'];
+<?php if ($creditcard_cc_vaulted != 0): ?>
+$_paypageEnabled = 0;
+$creditcard_cc_type = $purchases[$creditcard_cc_vaulted]['type'];
+$creditcard_cc_number = $purchases[$creditcard_cc_vaulted]['number'];
 <?php endif; ?>
             </select>
         </div>
     </li>
 <?php endif; ?>
+
+<script type="text/javascript">
+
+var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+selectmenu.onchange=function(){ //run some code when "onchange" event fires
+ var chosenoption=this.options[this.selectedIndex] //this refers to "selectmenu"
+ if (chosenoption.value!= 0){
+	//$('creditcard_expiration').style.visibility = 'hidden';
+	//document.getElementById('creditcard_expiration').style.visibility = 'hidden';
+	//document.getElementById('creditcard_expiration').style.display = 'none';
+
+
+	$('creditcard_cc_type').hide();
+	$('creditcard_cc_number').hide();
+	$('creditcard_expiration').hide();
+	$('creditcard_expiration_yr').hide();
+}
+ if (chosenoption.value == 0){	
+  	$('creditcard_cc_type').show();
+	$('creditcard_cc_number').show();
+	$('creditcard_expiration').show();
+	$('creditcard_expiration_yr').show();
+ }
+}
+</script>
     <li>
         <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
         <div class="input-box">
@@ -129,8 +155,8 @@ $creditcard_type = $purchases[$creditcard_cc_vaulted]['number'];
             <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
         </div>
     </li>
+<?php endif; ?>
 
-    <?php endif; ?>
 	<?php if($_paypageEnabled == 1):?>
    		<input type="hidden" id="<?php echo $_code ?>_paypage_id" name="payment[paypage_id]" value="<?php echo $_paypageId; ?>"/>
         <input type="hidden" id="<?php echo $_code ?>_merchant_txn_id" name="payment[merchant_txn_id]" value="<?php echo $_id; ?>"/>
