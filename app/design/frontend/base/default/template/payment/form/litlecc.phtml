@@ -1,28 +1,28 @@
 <?php
 /**
-* Magento
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE_AFL.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@magentocommerce.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade Magento to newer
-* versions in the future. If you wish to customize Magento for your
-* needs please refer to http://www.magentocommerce.com for more information.
-*
-* @category design
-* @package base_default
-* @copyright Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
-* @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
-*/
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category design
+ * @package base_default
+ * @copyright Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
+ */
 ?>
 
 
@@ -35,8 +35,8 @@ $_collection = Mage::getModel('palorus/vault')
 $purchases = array();
 $i=0;
 foreach ($_collection as $purchase) {
-$purchases[$i] = $purchase->getData();
-$i++;
+	$purchases[$i] = $purchase->getData();
+	$i++;
 }
 ?>
 <?php
@@ -50,6 +50,9 @@ $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getCon
 Validation.creditCartTypes.set('DC', [new RegExp('^3(?:0[0-5]|[68][0-9])[0-9]{11}$'), new RegExp('^[0-9]{3}$'), true]);
 </script>
 
+
+
+
 <?php
 $_time =  date('ymdHis');
 $_session =  Mage::getModel("core/session")->getEncryptedSessionId();
@@ -57,25 +60,69 @@ $_id = $_time . substr($_session,13);
 
 ?>
 <?php $_code=$this->getMethodCode() ?>
-<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
-<?php if($_paypageEnabled == 1):?>
-<?php if ($purchases[0]['last4'] !== NULL): ?>
-	<li>
-        <label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Vault Credit Cards') ?></label>
-        <div class="input-box">
-            <select id="<?php echo $_code ?>_cc_numberType" name="payment[cc_vaulted]">
-                <option value><?php echo $this->__('--Please Select A Vaulted Credit Card--')?></option>
+<ul class="form-list" id="payment_form_<?php echo $_code ?>"
+	style="display: none;">
+
+
+
+
+
+
+	<?php if($_paypageEnabled == 1):?>
+
+
+
+
+
+
+	<?php if ($purchases[0]['last4'] !== NULL): ?>
+	<li><label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Stored Credit Cards') ?>
+	</label>
+		<div class="input-box">
+			<select id="<?php echo $_code ?>_cc_numberType"
+				name="payment[cc_vaulted]">
+				<option value>
+					
+					
+					
+					
+					
+				<?php echo $this->__('--Please Select A Stored Credit Card--')?></option>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 	    <?php $i = 0; ?>
 	<option value ="0">New Credit Card</option>
             <?php foreach ($_collection as $key => $value): ?>
-                <option value ="<?php echo ($purchases[$i]['vault_id'])?>"><?php echo 'Vaulted ' . $purchases[$i]['type'] . ' Ending in: ' . $purchases[$i]['last4'] ?></option>
+                <option value ="<?php echo ($purchases[$i]['vault_id'])?>"><?php echo 'Stored ' . $purchases[$i]['type'] . ' Ending in: ' . $purchases[$i]['last4'] ?></option>
 	    <?php $i++ ?>
             <?php endforeach ?>
             </select>
-        </div>
-    </li>
+		</div>
+	</li>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 <?php endif; ?>
-
+<?php if ($purchases[0]['last4'] !== NULL): ?>
 <script type="text/javascript">
 
 var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
@@ -107,6 +154,7 @@ selectmenu.onchange=function(){
  }
 }
 </script>
+<?php endif; ?>
 <?php endif; ?>
     <li>
         <label id = "creditcard_cc_type_label" for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
@@ -178,6 +226,9 @@ selectmenu.onchange=function(){
 	<?php endif; ?>
 </ul>
 
+
+
+
 <?php if($_paypageEnabled == 1):?>
 <script type="text/javascript">
 
@@ -242,18 +293,31 @@ Payment.prototype.save = function() {
 			"id" : document.getElementById(<?php echo "'" . $_code . "_merchant_txn_id" . "'" ?>).value,
 			"url" : (document.getElementById(<?php echo "'" . $_code . "_paypage_url" . "'" ?>).value)
 		};
+
 		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+		if(selectmenu){
 		var chosenoption=selectmenu.options[selectmenu.selectedIndex]
 		if (chosenoption.value == 0){
+
+			if( _currentMethod == "creditcard" ){
+			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+			}
+		 }
+		}else
+		 {
 			if( _currentMethod == "creditcard" ){
 			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
 			}
 		 }
 		
+
 		submitAfterLitle();
 
 		// End of Paypage
 	}
 }
 </script>
+
+
+
 <?php endif; ?>
