@@ -495,9 +495,10 @@ EOD;
     {
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
-    
-    	$invoices = $page->findById("sales_order_view_tabs_order_invoices");
-    	$invoices->click();
+    	
+    	$tmp = $session->getDriver()->find("/html/body/div[2]/div[3]/div/div/div/ul/li[2]/a/span");
+    	$link = $tmp[0];
+    	$link->click();
     }    
     
     /**
@@ -508,9 +509,22 @@ EOD;
     	$session = $this->getMink()->getSession('sahi');
     	$page = $session->getPage();
     
-    	$topRow = $session->getDriver()->find('/html/body/div[2]/div[3]/div/div/div[2]/div/div[3]/div[2]/div/div/div/table/tbody/tr/td');
+    	$topRow = $session->getDriver()->find('/html/body/div[2]/div[3]/div/div/div[2]/div/div[3]/div[2]/div/div/div/table/tbody/tr');
     	$session->visit($topRow[0]->getAttribute("title"));
     }
+    
+    /**
+    * @Given /^I click on refund$/
+    */
+    public function iClickOnRefund()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    	 
+    	$tmp = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[12]/div[6]/div[2]/div/button[2]');
+    	$tmp[0]->click();
+    }
+    
     
     /**
      * @Then /^I should see "([^"]*)" in the column "([^"]*)"$/

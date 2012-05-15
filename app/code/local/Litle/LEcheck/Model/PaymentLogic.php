@@ -186,7 +186,7 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
-					if( $this->currentTxnType === "refund" &&  $litleResponseCode === "360")
+					if( $this->currentTxnType === "refund" &&  $litleResponseCode === "362")
 					{
 						//call a refund
 						$this->refund($payment);
