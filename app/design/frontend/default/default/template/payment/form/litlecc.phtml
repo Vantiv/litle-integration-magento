@@ -91,13 +91,18 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
 	//document.getElementById('creditcard_expiration').style.visibility = 'hidden';
 	//document.getElementById('creditcard_expiration').style.display = 'none';
 
-
+	$('creditcard_cc_type_label').hide();
+	$('creditcard_cc_number_label').hide();
+	$('creditcard_cc_expDate_label').hide();
 	$('creditcard_cc_type').hide();
 	$('creditcard_cc_number').hide();
 	$('creditcard_expiration').hide();
 	$('creditcard_expiration_yr').hide();
 }
  if (chosenoption.value == 0){	
+    $('creditcard_cc_type_label').show();
+	$('creditcard_cc_number_label').show();
+	$('creditcard_cc_expDate_label').show();
   	$('creditcard_cc_type').show();
 	$('creditcard_cc_number').show();
 	$('creditcard_expiration').show();
@@ -106,7 +111,7 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
 }
 </script>
     <li>
-        <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
+        <label id = "creditcard_cc_type_label" for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
         <div class="input-box">
             <select id="<?php echo $_code ?>_cc_type" name="payment[cc_type]" class="required-entry validate-cc-type-select">
                 <option value=""><?php echo $this->__('--Please Select--')?></option>
@@ -118,13 +123,13 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
         </div>
     </li>
     <li>
-        <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
+        <label id = "creditcard_cc_number_label" for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
         <div class="input-box">
             <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="" />
         </div>
     </li>
     <li id="<?php echo $_code ?>_cc_type_exp_div">
-        <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
+        <label id = "creditcard_cc_expDate_label" for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
         <div class="input-box">
             <div class="v-fix">
                 <select id="<?php echo $_code ?>_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp required-entry">
