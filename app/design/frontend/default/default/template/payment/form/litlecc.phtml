@@ -25,17 +25,6 @@
 */
 ?>
 
-
-<?php
-$customerId = 3;
-$_collection = Mage::getModel('palorus/vault')
-->getCollection()
-->addFieldToFilter('customer_id',$customerId);
-$purchases = array();
-foreach ($_collection as $purchase) {
-$purchases[] = $purchase->getData();
-}
-?>
 <?php
 $_reportGroup = $this->getReportGroup();
 $_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
@@ -120,7 +109,6 @@ $_id = $_time . substr($_session,13);
         <input type="hidden" id="<?php echo $_code ?>_response_time" name="payment[response_time]"/>
         <input type="hidden" id="<?php echo $_code ?>_type" name="payment[type]"/>
         <input type="hidden" id="<?php echo $_code ?>_litle_txn_id" name="payment[litle_txn_id]"/>
-		<input type="hidden" id="<?php echo $_code ?>_vault_id" name="payment[paypage_id]" value="<?php echo $purchase['token']; ?>"/>
 	<?php endif; ?>
 </ul>
 
