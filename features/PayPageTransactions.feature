@@ -3,7 +3,7 @@ Feature: PayPageTransactions
 
   Background:
     Given I am doing cc or echeck transactions
-    And I am doing non paypage transactions
+    And I am doing paypage transaction
 
 
   @javascript @paypage @ready
