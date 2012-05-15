@@ -94,6 +94,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$info->setAdditionalInformation('paypage_enabled', $data->getPaypageEnabled());
 			$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
 			$info->setAdditionalInformation('paypage_order_id', $data->getOrderId());
+			$info->setAdditionalInformation('cc_vaulted', $data->getCcVaulted());
 		}
 		return parent::assignData($data);
 	}
@@ -147,10 +148,39 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $retArray;
 	}
 
-	public function creditCardOrPaypage($payment){
+	public function getTokenInfo($payment)
+	{
 		$info = $this->getInfoInstance();
+	
+		$vaultIndex = $info->getAdditionalInformation('cc_vaulted');
+		$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
+		$_collection = array();
+		$_collection = Mage::getModel('palorus/vault')
+		->getCollection()
+		->addFieldToFilter('customer_id',$customerId);
+		$purchases = array();
+		$i=0;
+		foreach ($_collection as $purchase) {
+			$purchases[$i] = $purchase->getData();
+			$i++;
+		}
+
+		$retArray = array();
+		$retArray["type"] = $purchases[$vaultIndex]['type'];
+		$retArray["litleToken"] = $purchases[$vaultIndex]['token'];
+		$retArray["cardValidationNum"] = $payment->getCcCid();
+	
+		return $retArray;
+	}
+	
+	public function creditCardOrPaypageOrToken($payment){
+		$info = $this->getInfoInstance();
+		$vaultIndex = $info->getAdditionalInformation('cc_vaulted');
 		$payment_hash = array();
-		if ($info->getAdditionalInformation('paypage_enabled') == "1" ){
+		if ($vaultIndex > 0){
+			$payment_hash['token'] = $this->getTokenInfo($payment);
+		}
+		elseif ($info->getAdditionalInformation('paypage_enabled') == "1" ){
 			$payment_hash['paypage'] = $this->getPaypageInfo($payment);
 		}
 		else{
@@ -373,7 +403,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	}
 
 	
-public function accountUpdater(Varien_Object $payment,$litleResponse){
+	public function accountUpdater(Varien_Object $payment,$litleResponse){
 
  		if($this->getUpdater($litleResponse, 'newCardInfo') !==  NULL){
 
@@ -476,7 +506,7 @@ public function accountUpdater(Varien_Object $payment,$litleResponse){
 									'enhancedData'=>$this->getEnhancedData($payment),
 									'customBilling'=>$this->getCustomBilling(Mage::app()->getStore()-> getBaseUrl())
 				);
-				$payment_hash = $this->creditCardOrPaypage($payment);
+				$payment_hash = $this->creditCardOrPaypageOrToken($payment);
 				$hash_temp = array_merge($hash,$payment_hash);
 				$merchantData = $this->merchantData($payment);
 				$hash_in = array_merge($hash_temp,$merchantData);
@@ -533,7 +563,7 @@ public function accountUpdater(Varien_Object $payment,$litleResponse){
 								'billToAddress'=> $this->getBillToAddress($payment),
 								'shipToAddress'=> $this->getAddressInfo($payment),
 				);
-				$payment_hash = $this->creditCardOrPaypage($payment);
+				$payment_hash = $this->creditCardOrPaypageOrToken($payment);
 				$hash = array_merge($hash_temp,$payment_hash);
 			}
 			$merchantData = $this->merchantData($payment);

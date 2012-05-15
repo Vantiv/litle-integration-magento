@@ -27,8 +27,7 @@
 
 
 <?php
-//$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
-$customerId = 3;
+$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
 $_collection = array();
 $_collection = Mage::getModel('palorus/vault')
 ->getCollection()
@@ -59,6 +58,7 @@ $_id = $_time . substr($_session,13);
 ?>
 <?php $_code=$this->getMethodCode() ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+<?php if($_paypageEnabled == 1):?>
 <?php if ($purchases[0]['last4'] !== NULL): ?>
 	<li>
         <label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Vault Credit Cards') ?></label>
@@ -71,11 +71,6 @@ $_id = $_time . substr($_session,13);
                 <option value ="<?php echo ($purchases[$i]['vault_id'])?>"><?php echo 'Vaulted ' . $purchases[$i]['type'] . ' Ending in: ' . $purchases[$i]['last4'] ?></option>
 	    <?php $i++ ?>
             <?php endforeach ?>
-<?php if ($creditcard_cc_vaulted != 0): ?>
-$_paypageEnabled = 0;
-$creditcard_cc_type = $purchases[$creditcard_cc_vaulted]['type'];
-$creditcard_cc_number = $purchases[$creditcard_cc_vaulted]['number'];
-<?php endif; ?>
             </select>
         </div>
     </li>
@@ -84,12 +79,9 @@ $creditcard_cc_number = $purchases[$creditcard_cc_vaulted]['number'];
 <script type="text/javascript">
 
 var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
-selectmenu.onchange=function(){ //run some code when "onchange" event fires
- var chosenoption=this.options[this.selectedIndex] //this refers to "selectmenu"
+selectmenu.onchange=function(){
+ var chosenoption=this.options[this.selectedIndex] 
  if (chosenoption.value!= 0){
-	//$('creditcard_expiration').style.visibility = 'hidden';
-	//document.getElementById('creditcard_expiration').style.visibility = 'hidden';
-	//document.getElementById('creditcard_expiration').style.display = 'none';
 
 	$('creditcard_cc_type_label').hide();
 	$('creditcard_cc_number_label').hide();
@@ -98,6 +90,7 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
 	$('creditcard_cc_number').hide();
 	$('creditcard_expiration').hide();
 	$('creditcard_expiration_yr').hide();
+	$('creditcard_cc_cid').value="";
 }
  if (chosenoption.value == 0){	
     $('creditcard_cc_type_label').show();
@@ -107,9 +100,14 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
 	$('creditcard_cc_number').show();
 	$('creditcard_expiration').show();
 	$('creditcard_expiration_yr').show();
+	$('creditcard_cc_cid').value="";
+	$('creditcard_cc_type').value = "";
+	$('creditcard_expiration').value = "";
+	$('creditcard_expiration_yr').value = "";
  }
 }
 </script>
+<?php endif; ?>
     <li>
         <label id = "creditcard_cc_type_label" for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
         <div class="input-box">
@@ -155,7 +153,7 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
         <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry validate-cc-cvn" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
+                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry " id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
             </div>
             <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
         </div>
@@ -244,10 +242,14 @@ Payment.prototype.save = function() {
 			"id" : document.getElementById(<?php echo "'" . $_code . "_merchant_txn_id" . "'" ?>).value,
 			"url" : (document.getElementById(<?php echo "'" . $_code . "_paypage_url" . "'" ?>).value)
 		};
-
-		if( _currentMethod == "creditcard" ){
+		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+		var chosenoption=selectmenu.options[selectmenu.selectedIndex]
+		if (chosenoption.value == 0){
+			if( _currentMethod == "creditcard" ){
 			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
-		}
+			}
+		 }
+		
 		submitAfterLitle();
 
 		// End of Paypage
