@@ -25,8 +25,22 @@
 */
 ?>
 
+
 <?php
-$_reportGroup = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("reportGroup");
+$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
+$_collection = array();
+$_collection = Mage::getModel('palorus/vault')
+->getCollection()
+->addFieldToFilter('customer_id',$customerId);
+$purchases = array();
+$i=0;
+foreach ($_collection as $purchase) {
+$purchases[$i] = $purchase->getData();
+$i++;
+}
+?>
+<?php
+$_reportGroup = $this->getReportGroup();
 $_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
 $_paypageUrl = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
@@ -44,8 +58,58 @@ $_id = $_time . substr($_session,13);
 ?>
 <?php $_code=$this->getMethodCode() ?>
 <ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+<?php if($_paypageEnabled == 1):?>
+<?php if ($purchases[0]['last4'] !== NULL): ?>
+	<li>
+        <label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Vault Credit Cards') ?></label>
+        <div class="input-box">
+            <select id="<?php echo $_code ?>_cc_numberType" name="payment[cc_vaulted]">
+                <option value><?php echo $this->__('--Please Select A Vaulted Credit Card--')?></option>
+	    <?php $i = 0; ?>
+	<option value ="0">New Credit Card</option>
+            <?php foreach ($_collection as $key => $value): ?>
+                <option value ="<?php echo ($purchases[$i]['vault_id'])?>"><?php echo 'Vaulted ' . $purchases[$i]['type'] . ' Ending in: ' . $purchases[$i]['last4'] ?></option>
+	    <?php $i++ ?>
+            <?php endforeach ?>
+            </select>
+        </div>
+    </li>
+<?php endif; ?>
+
+<script type="text/javascript">
+
+var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+selectmenu.onchange=function(){
+ var chosenoption=this.options[this.selectedIndex] 
+ if (chosenoption.value!= 0){
+
+	$('creditcard_cc_type_label').hide();
+	$('creditcard_cc_number_label').hide();
+	$('creditcard_cc_expDate_label').hide();
+	$('creditcard_cc_type').hide();
+	$('creditcard_cc_number').hide();
+	$('creditcard_expiration').hide();
+	$('creditcard_expiration_yr').hide();
+	$('creditcard_cc_cid').value="";
+}
+ if (chosenoption.value == 0){	
+    $('creditcard_cc_type_label').show();
+	$('creditcard_cc_number_label').show();
+	$('creditcard_cc_expDate_label').show();
+  	$('creditcard_cc_type').show();
+	$('creditcard_cc_number').show();
+	$('creditcard_expiration').show();
+	$('creditcard_expiration_yr').show();
+	$('creditcard_cc_cid').value="";
+	$('creditcard_cc_type').value = "";
+	$('creditcard_expiration').value = "";
+	$('creditcard_expiration_yr').value = "";
+ }
+}
+</script>
+<?php endif; ?>
     <li>
-        <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
+        <label id = "creditcard_cc_type_label" for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
         <div class="input-box">
             <select id="<?php echo $_code ?>_cc_type" name="payment[cc_type]" class="required-entry validate-cc-type-select">
                 <option value=""><?php echo $this->__('--Please Select--')?></option>
@@ -57,13 +121,13 @@ $_id = $_time . substr($_session,13);
         </div>
     </li>
     <li>
-        <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
+        <label id = "creditcard_cc_number_label" for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
         <div class="input-box">
             <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="" />
         </div>
     </li>
     <li id="<?php echo $_code ?>_cc_type_exp_div">
-        <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
+        <label id = "creditcard_cc_expDate_label" for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
         <div class="input-box">
             <div class="v-fix">
                 <select id="<?php echo $_code ?>_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp required-entry">
@@ -89,12 +153,13 @@ $_id = $_time . substr($_session,13);
         <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry validate-cc-cvn" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
+                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry " id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
             </div>
             <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
         </div>
     </li>
-    <?php endif; ?>
+<?php endif; ?>
+
 	<?php if($_paypageEnabled == 1):?>
    		<input type="hidden" id="<?php echo $_code ?>_paypage_id" name="payment[paypage_id]" value="<?php echo $_paypageId; ?>"/>
         <input type="hidden" id="<?php echo $_code ?>_merchant_txn_id" name="payment[merchant_txn_id]" value="<?php echo $_id; ?>"/>
@@ -109,6 +174,7 @@ $_id = $_time . substr($_session,13);
         <input type="hidden" id="<?php echo $_code ?>_response_time" name="payment[response_time]"/>
         <input type="hidden" id="<?php echo $_code ?>_type" name="payment[type]"/>
         <input type="hidden" id="<?php echo $_code ?>_litle_txn_id" name="payment[litle_txn_id]"/>
+		<input type="hidden" id="<?php echo $_code ?>_vault_id" name="payment[paypage_id]" value="<?php echo $purchase['token']; ?>"/>
 	<?php endif; ?>
 </ul>
 
@@ -153,7 +219,7 @@ Payment.prototype.save = function() {
 
 		function timeoutOnLitle() {
 			setLitleResponseFields();
-			alert('Request timed out. Re-enter your payment information, or contact us for further assistance.');
+			alert('timeout error');
 			return false;
 		}
 
@@ -176,10 +242,14 @@ Payment.prototype.save = function() {
 			"id" : document.getElementById(<?php echo "'" . $_code . "_merchant_txn_id" . "'" ?>).value,
 			"url" : (document.getElementById(<?php echo "'" . $_code . "_paypage_url" . "'" ?>).value)
 		};
-
-		if( _currentMethod == "creditcard" ){
+		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+		var chosenoption=selectmenu.options[selectmenu.selectedIndex]
+		if (chosenoption.value == 0){
+			if( _currentMethod == "creditcard" ){
 			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
-		}
+			}
+		 }
+		
 		submitAfterLitle();
 
 		// End of Paypage

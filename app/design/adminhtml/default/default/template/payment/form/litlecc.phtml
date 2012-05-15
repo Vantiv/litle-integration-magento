@@ -25,14 +25,73 @@
 */
 ?>
 <?php
+//$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
+//$customerId = Mage::getSingleton('customer/session')->getCustomer()->getEntityId();
+$customerId = Mage::getSingleton('adminhtml/session_quote')->getCustomer()->getData("entity_id");
+$_collection = array();
+$_collection = Mage::getModel('palorus/vault')
+->getCollection()
+->addFieldToFilter('customer_id',$customerId);
+$purchases = array();
+$i=0;
+foreach ($_collection as $purchase) {
+$purchases[$i] = $purchase->getData();
+$i++;
+}
+?>
+<?php
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
 $_code=$this->getMethodCode();
 ?>
+
 	<?php if($_paypageEnabled == 1):?>
    		<ul id="payment_form_<?php echo $_code ?>" style="display:none;">
 			<a href="https://vt.litle.com" target="_blank">Litle Virtual Terminal</a>
+<br>
+<br>
+	<?php if ($purchases[0]['last4'] !== NULL): ?>
+	<li>
+        <label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Stored Credit Cards') ?></label>
+        <div class="input-box">
+            <select id="<?php echo $_code ?>_cc_numberType" name="payment[cc_vaulted]">
+                <option value><?php echo $this->__('--Please Select A Stored Credit Card--')?></option>
+	    <?php $i = 0; ?>
+            <?php foreach ($_collection as $key => $value): ?>
+                <option value ="<?php echo ($purchases[$i]['vault_id'])?>"><?php echo 'Stored ' . $purchases[$i]['type'] . ' Ending in: ' . $purchases[$i]['last4'] ?></option>
+	    <?php $i++ ?>
+            <?php endforeach ?>
+            </select>
+        </div>
+    </li>
+    <li id="<?php echo $_code ?>_cc_type_cvv_div">
+        <label id = "creditcard_cc_cid_label" for="<?php echo $_code ?>_cc_cid" class="required"><?php echo $this->__('Card Verification Number') ?></label>
+        <div class="input-box">
+            <div class="v-fix">
+                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry " id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
+            </div>
+        </div>
+    </li>
 		</ul>
-	<?php endif; ?>
+		<script type="text/javascript">
+		$('creditcard_cc_cid').hide();
+		$('creditcard_cc_cid_label').hide();
+
+		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+		selectmenu.onchange=function(){
+			var chosenoption=this.options[this.selectedIndex]
+			if (chosenoption.value!= 0){
+				$('creditcard_cc_cid').show();
+				$('creditcard_cc_cid_label').show();
+				
+			}
+			if (chosenoption.value == 0){
+				$('creditcard_cc_cid').hide();
+				$('creditcard_cc_cid_label').hide();
+			}
+		}
+		</script>
+
+	<?php endif; ?><?php endif; ?>
 	<?php if($_paypageEnabled != 1):?>
    		<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
 		    <li>
