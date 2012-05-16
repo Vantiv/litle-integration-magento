@@ -692,6 +692,24 @@ EOD;
     }
     
     /**
+    * @Then /^I should see "([^"]*)" in Credit Card Number$/
+    */
+    public function iShouldSeeInCreditCardNumber($number)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	//$parent = $page->findById($section);
+    	$parent = $session->getDriver()->find('/html/body/div[2]/div[3]/div/div/div[2]/div/div[3]/div/div/div[8]/div/fieldset/table/tbody/tr[2]/td[2]');
+    	$text = $parent[0]->getText();
+    	
+    	if ($number !== $text){
+    		throw new ResponseTextException("Credit card " . $number . " was not updated", $session);
+    	}
+
+    }
+    
+    /**
     * @Given /^I press the "([^"]*)" button$/
     */
     public function iPressTheButton($span)
