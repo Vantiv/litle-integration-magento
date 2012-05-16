@@ -166,8 +166,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		}
 
 		$retArray = array();
-		$retArray["type"] = $purchases[$vaultIndex]['type'];
-		$retArray["litleToken"] = $purchases[$vaultIndex]['token'];
+		$retArray["type"] = $purchases[$vaultIndex - 1]['type'];
+		$retArray["litleToken"] = $purchases[$vaultIndex - 1]['token'];
 		$retArray["cardValidationNum"] = $payment->getCcCid();
 	
 		return $retArray;

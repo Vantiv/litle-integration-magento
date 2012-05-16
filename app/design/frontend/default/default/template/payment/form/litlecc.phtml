@@ -63,43 +63,13 @@ $_id = $_time . substr($_session,13);
 <ul class="form-list" id="payment_form_<?php echo $_code ?>"
 	style="display: none;">
 
-
-
-
-
-
 	<?php if($_paypageEnabled == 1):?>
-
-
-
-
-
-
 	<?php if ($purchases[0]['last4'] !== NULL): ?>
-	<li><label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Stored Credit Cards') ?>
-	</label>
+	<li>
+	<label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Stored Credit Cards') ?></label>
 		<div class="input-box">
-			<select id="<?php echo $_code ?>_cc_numberType"
-				name="payment[cc_vaulted]">
-				<option value>
-					
-					
-					
-					
-					
-				<?php echo $this->__('--Please Select A Stored Credit Card--')?></option>
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+			<select id="<?php echo $_code ?>_cc_vaulted" name="payment[cc_vaulted]">
+				<option value><?php echo $this->__('--Please Select A Stored Credit Card--')?></option>
 	    <?php $i = 0; ?>
 	<option value ="0">New Credit Card</option>
             <?php foreach ($_collection as $key => $value): ?>
@@ -109,23 +79,12 @@ $_id = $_time . substr($_session,13);
             </select>
 		</div>
 	</li>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 <?php endif; ?>
 <?php if ($purchases[0]['last4'] !== NULL): ?>
 <script type="text/javascript">
 
-var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+var selectmenu=document.getElementById("<?php echo $_code ?>_cc_vaulted");
 selectmenu.onchange=function(){
  var chosenoption=this.options[this.selectedIndex] 
  if (chosenoption.value!= 0){
@@ -294,7 +253,7 @@ Payment.prototype.save = function() {
 			"url" : (document.getElementById(<?php echo "'" . $_code . "_paypage_url" . "'" ?>).value)
 		};
 
-		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_vaulted");
 		if(selectmenu){
 		var chosenoption=selectmenu.options[selectmenu.selectedIndex]
 		if (chosenoption.value == 0){

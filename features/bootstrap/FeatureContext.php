@@ -106,6 +106,16 @@ EOD;
 	}
 	
 	/**
+	* @Given /^I am doing stored creditcard transaction$/
+	*/
+	public function iAmDoingStoredCreditcardTransaction()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForStoredCreditcard.sql");
+	}
+	
+	/**
 	* @Given /^I am doing paypage Sale transaction tests$/
 	*/
 	public function iAmDoingPaypageSaleTransactionTests()
