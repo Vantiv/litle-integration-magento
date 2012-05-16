@@ -58,7 +58,7 @@ Feature: PayPageTransactions
       Then I should see "Orders"
       And I click on the top row in Orders
         Then I should see "Order #"
-      And I press "Invoice"
+      And I press the "Invoice" button
       And I select "Capture Online" from "invoice[capture_case]"
       And I press "Submit Invoice"
     Then I should see "This order was placed using Litle Virtual Terminal. Please process the capture by logging into Litle Virtual Terminal (https://vt.litle.com)."
