@@ -15,10 +15,10 @@ Feature: NonPayPageTransactions
       And I press the "3rd" continue button
       And I choose "CreditCard"
       And I select "Visa" from "Credit Card Type"
-      And I fill in "Credit Card Number" with "4100000000000001"
+      And I put in "Credit Card Number" with "4100000000000001"
       And I select "9" from "Expiration Date"
       And I select "2012" from "creditcard_expiration_yr"
-      And I fill in "Card Verification Number" with "123"
+      And I put in "Card Verification Number" with "123"
       And I press the "4th" continue button
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
@@ -44,10 +44,10 @@ Feature: NonPayPageTransactions
       And I press the "3rd" continue button
       And I choose "CreditCard"
       And I select "Visa" from "Credit Card Type"
-      And I fill in "Credit Card Number" with "4137307201736110"
+      And I put in "Credit Card Number" with "4137307201736110"
       And I select "9" from "Expiration Date"
       And I select "2012" from "creditcard_expiration_yr"
-      And I fill in "Card Verification Number" with "123"
+      And I put in "Card Verification Number" with "123"
       And I press the "4th" continue button
       And I press "Place Order"
         Then I should not see "Thank you for your purchase"
@@ -70,10 +70,10 @@ Feature: NonPayPageTransactions
       And I choose "Fixed Shipping"
       And I choose "CreditCard"
       And I select "Visa" from "Credit Card Type"
-      And I fill in "Credit Card Number" with "4100000000000001"
+      And I put in "Credit Card Number" with "4100000000000001"
       And I select "9" from "Expiration Date"
       And I select "2012" from "creditcard_expiration_yr"
-      And I fill in "Card Verification Number" with "123"
+      And I put in "Card Verification Number" with "123"
       And I press "Submit Order"
    When I view "Sales" "Orders"
       Then I should see "Orders"
@@ -96,10 +96,10 @@ Feature: NonPayPageTransactions
       And I press the "3rd" continue button
       And I choose "CreditCard"
       And I select "Visa" from "Credit Card Type"
-      And I fill in "Credit Card Number" with "4100000000000001"
+      And I put in "Credit Card Number" with "4100000000000001"
       And I select "9" from "Expiration Date"
       And I select "2012" from "creditcard_expiration_yr"
-      And I fill in "Card Verification Number" with "123"
+      And I put in "Card Verification Number" with "123"
       And I press the "4th" continue button
       And I press "Place Order"
     Then I should see "Thank you for your purchase"

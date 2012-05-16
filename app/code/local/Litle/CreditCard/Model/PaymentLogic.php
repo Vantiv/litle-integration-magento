@@ -439,6 +439,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 						$this->refund($payment);
 						setStatus("Refunded");
 					}
+					elseif( $this->currentTxnType === "void" &&  $litleResponseCode === "363"){
+						Mage::throwException('This transaction has already been voided.');
+					}
 					else
 					{
 						$payment
