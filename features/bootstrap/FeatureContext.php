@@ -208,7 +208,6 @@ EOD;
     	$parent->findButton($button)->click();
     }
     
-    
     /**
     * @Given /^I sleep for (\d+) milliseconds$/
     */
@@ -294,7 +293,6 @@ EOD;
     		throw new PendingException();
     	}
     }
-    
     
     /**
     * @Given /^I am logged in as an administrator$/
@@ -535,7 +533,6 @@ EOD;
     	$tmp[0]->click();
     }
     
-    
     /**
      * @Then /^I should see "([^"]*)" in the column "([^"]*)"$/
      */
@@ -636,7 +633,6 @@ EOD;
     		throw new Exception("Table did not have expected value");
     	}
     }
-    
     
     /**
     * @Given /^the "([^"]*)" should have "([^"]*)" rows$/
