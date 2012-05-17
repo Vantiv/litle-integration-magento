@@ -36,7 +36,7 @@ Feature: PayPageTransactions
     Then I should see "The invoice has been created."
     And I follow "Log Out"
 
- @javascript @paypage @ready
+ @javascript @paypage @wip
  Scenario: Backend Paypage auth checkout, then attempt to capture
     Given I am doing Litle auth
     And I am logged in as an administrator
