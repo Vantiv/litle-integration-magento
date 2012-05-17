@@ -25,6 +25,9 @@
 				<rewrite>
 					<sales_order_view>Litle_CreditCard_Block_Adminhtml_Orderview</sales_order_view>
 				</rewrite>
+				<rewrite>
+					<sales_order_grid>Litle_CreditCard_Block_Adminhtml_Ordergrid</sales_order_grid>
+				</rewrite>
 			</adminhtml>
 		</blocks>
 		<models>
