@@ -166,10 +166,11 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		}
 
 		$retArray = array();
-		$retArray["type"] = $purchases[$vaultIndex]['type'];
-		$retArray["litleToken"] = $purchases[$vaultIndex]['token'];
+		$retArray["type"] = $purchases[$vaultIndex - 1]['type'];
+		$retArray["litleToken"] = $purchases[$vaultIndex - 1]['token'];
 		$retArray["cardValidationNum"] = $payment->getCcCid();
-	
+		$payment->setCcLast4(substr($retArray["litleToken"], -4));
+		$payment->setCcType($retArray["type"]);
 		return $retArray;
 	}
 	
@@ -390,19 +391,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $new;
 	}
 	
-	public function saveToken(Varien_Object $payment,$litleResponse){
-	
-		if($litleResponse->getElementsByTagName('tokenResponse')->item(0) !==  NULL){
-			$token_number = $litleResponse->getElementsByTagName('token')->item(0)->getElementsByTagName('ccAccountNumberType')->item(0)->nodeValue;
-			$token_type = $litleResponse->getElementsByTagName('token')->item(0)->getElementsByTagName('type')->item(0)->nodeValue;
-			$payment->setCcNumber($new_token_number);
-			$payment->setCcLast4(substr($new_token_number, -4));
-			$payment->setCcType($new_token_type);
-		}
-	
-	}
-
-	
 	public function accountUpdater(Varien_Object $payment,$litleResponse){
 
  		if($this->getUpdater($litleResponse, 'newCardInfo') !==  NULL){
@@ -438,6 +426,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 						//call a refund
 						$this->refund($payment);
 						setStatus("Refunded");
+					}
+					elseif( $this->currentTxnType === "void" &&  $litleResponseCode === "363"){
+						Mage::throwException('This transaction has already been voided.');
 					}
 					else
 					{

@@ -24,8 +24,6 @@
  * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
  */
 ?>
-
-
 <?php
 $customerId = Mage::helper('customer')->getCustomer()->getEntityId();
 $_collection = array();
@@ -50,9 +48,6 @@ $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getCon
 Validation.creditCartTypes.set('DC', [new RegExp('^3(?:0[0-5]|[68][0-9])[0-9]{11}$'), new RegExp('^[0-9]{3}$'), true]);
 </script>
 
-
-
-
 <?php
 $_time =  date('ymdHis');
 $_session =  Mage::getModel("core/session")->getEncryptedSessionId();
@@ -63,43 +58,13 @@ $_id = $_time . substr($_session,13);
 <ul class="form-list" id="payment_form_<?php echo $_code ?>"
 	style="display: none;">
 
-
-
-
-
-
 	<?php if($_paypageEnabled == 1):?>
-
-
-
-
-
-
 	<?php if ($purchases[0]['last4'] !== NULL): ?>
-	<li><label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Stored Credit Cards') ?>
-	</label>
+	<li>
+	<label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Stored Credit Cards') ?></label>
 		<div class="input-box">
-			<select id="<?php echo $_code ?>_cc_numberType"
-				name="payment[cc_vaulted]">
-				<option value>
-					
-					
-					
-					
-					
-				<?php echo $this->__('--Please Select A Stored Credit Card--')?></option>
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+			<select id="<?php echo $_code ?>_cc_vaulted" name="payment[cc_vaulted]">
+				<option value><?php echo $this->__('--Please Select A Stored Credit Card--')?></option>
 	    <?php $i = 0; ?>
 	<option value ="0">New Credit Card</option>
             <?php foreach ($_collection as $key => $value): ?>
@@ -109,27 +74,14 @@ $_id = $_time . substr($_session,13);
             </select>
 		</div>
 	</li>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 <?php endif; ?>
 <?php if ($purchases[0]['last4'] !== NULL): ?>
 <script type="text/javascript">
 
-var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+var selectmenu=document.getElementById("<?php echo $_code ?>_cc_vaulted");
 selectmenu.onchange=function(){
  var chosenoption=this.options[this.selectedIndex] 
  if (chosenoption.value!= 0){
-
 	$('creditcard_cc_type_label').hide();
 	$('creditcard_cc_number_label').hide();
 	$('creditcard_cc_expDate_label').hide();
@@ -226,9 +178,6 @@ selectmenu.onchange=function(){
 	<?php endif; ?>
 </ul>
 
-
-
-
 <?php if($_paypageEnabled == 1):?>
 <script type="text/javascript">
 
@@ -245,7 +194,7 @@ Payment.prototype.save = function() {
 	if (this.validate() && validator.validate()) {
 		checkout.setLoadWaiting('payment');
 
-		// Litle Page Stuff//
+		// Litle Page Stuff// 
 		function setLitleResponseFields(response) {
 			document.getElementById(<?php echo "'" . $_code . "_code" . "'" ?>).value = response.response;
 			document.getElementById(<?php echo "'" . $_code . "_message" . "'" ?>).value = response.message;
@@ -253,7 +202,6 @@ Payment.prototype.save = function() {
 			document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value = response.litleTxnId;
 			document.getElementById(<?php echo "'" . $_code . "_type" . "'" ?>).value = response.type;
 		}
-
 
 		function submitAfterLitle() {
 			var request = new Ajax.Request(
@@ -294,30 +242,25 @@ Payment.prototype.save = function() {
 			"url" : (document.getElementById(<?php echo "'" . $_code . "_paypage_url" . "'" ?>).value)
 		};
 
-		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_vaulted");
+		
 		if(selectmenu){
 		var chosenoption=selectmenu.options[selectmenu.selectedIndex]
-		if (chosenoption.value == 0){
-
-			if( _currentMethod == "creditcard" ){
-			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+			if (chosenoption.value == 0){
+				if( _currentMethod == "creditcard" ){
+					sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+				}
 			}
-		 }
-		}else
+		}
+		else
 		 {
 			if( _currentMethod == "creditcard" ){
-			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+				sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
 			}
 		 }
-		
-
 		submitAfterLitle();
-
-		// End of Paypage
+		// End of Paypage 
 	}
 }
 </script>
-
-
-
 <?php endif; ?>

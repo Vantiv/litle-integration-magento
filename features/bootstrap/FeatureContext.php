@@ -106,6 +106,16 @@ EOD;
 	}
 	
 	/**
+	* @Given /^I am doing stored creditcard transaction$/
+	*/
+	public function iAmDoingStoredCreditcardTransaction()
+	{
+		$dbName = getenv('MAGENTO_DB_NAME');
+		$dbUser = getenv('MAGENTO_DB_USER');
+		system("mysql -u $dbUser $dbName < " . dirname(__FILE__) . "/setupLitleForStoredCreditcard.sql");
+	}
+	
+	/**
 	* @Given /^I am doing paypage Sale transaction tests$/
 	*/
 	public function iAmDoingPaypageSaleTransactionTests()
@@ -198,7 +208,6 @@ EOD;
     	$parent->findButton($button)->click();
     }
     
-    
     /**
     * @Given /^I sleep for (\d+) milliseconds$/
     */
@@ -285,7 +294,6 @@ EOD;
     	}
     }
     
-    
     /**
     * @Given /^I am logged in as an administrator$/
     */
@@ -298,6 +306,7 @@ EOD;
  		//Get to login screen
  		$page = $session->getPage(); 		
  		$page->findField("User Name:")->setValue("admin");
+ 		//echo('filed is:' . $page->findField("User Name:"));
  		//$page->findField("Password:")->setValue("LocalMagentoAdmin1");
  		$session->executeScript('document.getElementById("login").value="LocalMagentoAdmin1"');
  		$page->findButton("Login")->click();    	
@@ -525,7 +534,6 @@ EOD;
     	$tmp[0]->click();
     }
     
-    
     /**
      * @Then /^I should see "([^"]*)" in the column "([^"]*)"$/
      */
@@ -627,7 +635,6 @@ EOD;
     	}
     }
     
-    
     /**
     * @Given /^the "([^"]*)" should have "([^"]*)" rows$/
     */
@@ -659,6 +666,15 @@ EOD;
     		$session->executeScript($script);
     	}
     	
+    	if($name === 'Bank routing number'){
+    		$script = 'document.getElementById("lecheck_echeck_routing_number").value=' . '"' . $value . '"';
+    		$session->executeScript($script);
+    	}
+    	if($name === 'Bank account number'){
+    		$script = 'document.getElementById("lecheck_echeck_bank_acct_num").value=' . '"' . $value . '"';
+    		$session->executeScript($script);
+    	}
+    	
     }
     
     /**
@@ -679,6 +695,24 @@ EOD;
     	if (preg_match("/.*" . "xxxx-" . $number . ".*/", $text) !== 0){
     		throw new ResponseTextException("Credit card number was not updated", $session);
     	}
+    }
+    
+    /**
+    * @Then /^I should see "([^"]*)" in Credit Card Number$/
+    */
+    public function iShouldSeeInCreditCardNumber($number)
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	//$parent = $page->findById($section);
+    	$parent = $session->getDriver()->find('/html/body/div[2]/div[3]/div/div/div[2]/div/div[3]/div/div/div[8]/div/fieldset/table/tbody/tr[2]/td[2]');
+    	$text = $parent[0]->getText();
+    	
+    	if ($number !== $text){
+    		throw new ResponseTextException("Credit card " . $number . " was not updated", $session);
+    	}
+
     }
     
     /**

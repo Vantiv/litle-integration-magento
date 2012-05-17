@@ -19,10 +19,10 @@ Feature: TransactionDetail
       And I press the "3rd" continue button
       And I choose "CreditCard"
       And I select "Visa" from "Credit Card Type"
-      And I fill in "Credit Card Number" with "4100000000000001"
+      And I put in "Credit Card Number" with "4100000000000001"
       And I select "1" from "Expiration Date"
       And I select "2017" from "creditcard_expiration_yr"
-      And I fill in "Card Verification Number" with "123"
+      And I put in "Card Verification Number" with "123"
       And I press the "4th" continue button
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
