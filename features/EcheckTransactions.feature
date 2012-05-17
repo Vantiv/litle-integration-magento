@@ -14,8 +14,8 @@ Background:
       And I press "Continue"
       And I press the "3rd" continue button
       And I choose "LEcheck"
-      And I fill in "Bank routing number" with "123456000"
-      And I fill in "Bank account number" with "123456000"
+      And I put in "Bank routing number" with "123456000"
+      And I put in "Bank account number" with "123456000"
       And I select "Checking" from "Account type"
       And I press the "4th" continue button
     Then I press "Place Order"
@@ -42,8 +42,8 @@ Background:
       And I press "Continue"
       And I press the "3rd" continue button
       And I choose "LEcheck"
-      And I fill in "Bank routing number" with "123456000"
-      And I fill in "Bank account number" with "123456000"
+      And I put in "Bank routing number" with "123456000"
+      And I put in "Bank account number" with "123456000"
       And I select "Checking" from "Account type"
       And I press the "4th" continue button
     Then I press "Place Order"
@@ -66,8 +66,8 @@ Scenario: Backend ECheck verify, then attempt to sale
      And I follow "Get shipping methods and rates"
      And I choose "Fixed Shipping"
      And I choose "LEcheck"
-     And I fill in "Bank routing number" with "123456000"
-     And I fill in "Bank account number" with "123456000"
+     And I put in "Bank routing number" with "123456000"
+     And I put in "Bank account number" with "123456000"
      And I select "Checking" from "Account type"
      And I press "Submit Order"
    When I view "Sales" "Orders"

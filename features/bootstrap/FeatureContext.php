@@ -306,6 +306,7 @@ EOD;
  		//Get to login screen
  		$page = $session->getPage(); 		
  		$page->findField("User Name:")->setValue("admin");
+ 		//echo('filed is:' . $page->findField("User Name:"));
  		//$page->findField("Password:")->setValue("LocalMagentoAdmin1");
  		$session->executeScript('document.getElementById("login").value="LocalMagentoAdmin1"');
  		$page->findButton("Login")->click();    	
@@ -662,6 +663,15 @@ EOD;
     	
     	if($name == 'Card Verification Number'){
     		$script = 'document.getElementById("creditcard_cc_cid").value=' . '"' . $value . '"';
+    		$session->executeScript($script);
+    	}
+    	
+    	if($name === 'Bank routing number'){
+    		$script = 'document.getElementById("lecheck_echeck_routing_number").value=' . '"' . $value . '"';
+    		$session->executeScript($script);
+    	}
+    	if($name === 'Bank account number'){
+    		$script = 'document.getElementById("lecheck_echeck_bank_acct_num").value=' . '"' . $value . '"';
     		$session->executeScript($script);
     	}
     	
