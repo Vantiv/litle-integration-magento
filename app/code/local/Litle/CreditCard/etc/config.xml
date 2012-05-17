@@ -66,6 +66,17 @@
 			</creditcard>
 		</helpers>
 	</global>
+	<admin>
+		<routers>
+			<creditcard>
+				<use>admin</use>
+				<args>
+					<module>Litle_CreditCard</module>
+					<frontName>creditcard</frontName>
+				</args>
+			</creditcard>
+		</routers>
+	</admin>
 	<frontend>
 		<layout>
 			<updates>
