@@ -153,17 +153,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$info = $this->getInfoInstance();
 	
 		$vaultIndex = $info->getAdditionalInformation('cc_vaulted');
-		$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
-		$_collection = array();
-		$_collection = Mage::getModel('palorus/vault')
-		->getCollection()
-		->addFieldToFilter('customer_id',$customerId);
-		$purchases = array();
-		$i=0;
-		foreach ($_collection as $purchase) {
-			$purchases[$i] = $purchase->getData();
-			$i++;
-		}
+		$purchases = Mage::helper('creditcard')->uniqueCreditCard(Mage::helper('customer')->getCustomer()->getEntityId());
 
 		$retArray = array();
 		$retArray["type"] = $purchases[$vaultIndex - 1]['type'];

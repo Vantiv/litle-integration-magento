@@ -25,21 +25,9 @@
 */
 ?>
 <?php
-//$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
-//$customerId = Mage::getSingleton('customer/session')->getCustomer()->getEntityId();
-$customerId = Mage::getSingleton('adminhtml/session_quote')->getCustomer()->getData("entity_id");
-$_collection = array();
-$_collection = Mage::getModel('palorus/vault')
-->getCollection()
-->addFieldToFilter('customer_id',$customerId);
-$purchases = array();
-$i=0;
-foreach ($_collection as $purchase) {
-$purchases[$i] = $purchase->getData();
-$i++;
-}
-?>
-<?php
+
+//$customerId = Mage::getSingleton('adminhtml/session_quote')->getCustomer()->getData("entity_id");
+$purchases = Mage::helper('creditcard')->uniqueCreditCard(Mage::getSingleton('adminhtml/session_quote')->getCustomer()->getData("entity_id"));
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
 $_code=$this->getMethodCode();
 ?>
@@ -53,11 +41,11 @@ $_code=$this->getMethodCode();
 	<li>
         <label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Stored Credit Cards') ?></label>
         <div class="input-box">
-            <select id="<?php echo $_code ?>_cc_numberType" name="payment[cc_vaulted]">
+            <select id="<?php echo $_code ?>_cc_vaulted" name="payment[cc_vaulted]">
                 <option value><?php echo $this->__('--Please Select A Stored Credit Card--')?></option>
-	    <?php $i = 0; ?>
-            <?php foreach ($_collection as $key => $value): ?>
-                <option value ="<?php echo ($purchases[$i]['vault_id'])?>"><?php echo 'Stored ' . $purchases[$i]['type'] . ' Ending in: ' . $purchases[$i]['last4'] ?></option>
+	    <?php $i = 1; ?>
+            <?php foreach ($purchases as $key => $value): ?>
+                <option value ="<?php echo ($i)?>"><?php echo 'Stored ' . $purchases[$i-1]['type'] . ' Ending in: ' . $purchases[$i-1]['last4'] ?></option>
 	    <?php $i++ ?>
             <?php endforeach ?>
             </select>
@@ -76,12 +64,13 @@ $_code=$this->getMethodCode();
 		$('creditcard_cc_cid').hide();
 		$('creditcard_cc_cid_label').hide();
 
-		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_numberType");
+		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_vaulted");
 		selectmenu.onchange=function(){
 			var chosenoption=this.options[this.selectedIndex]
 			if (chosenoption.value!= 0){
 				$('creditcard_cc_cid').show();
 				$('creditcard_cc_cid_label').show();
+				$('creditcard_cc_cid').value="";
 				
 			}
 			if (chosenoption.value == 0){

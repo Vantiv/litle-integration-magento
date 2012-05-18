@@ -28,4 +28,35 @@ class Litle_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
 		//echo $payment->getData('created_at'); exit;
 		return ($this->isMOPLitleCC($mop) || $this->isMOPLitleECheck($mop));
 	}
+	
+	public function uniqueCreditCard($customerId) {
+		//$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
+		$_collection = array();
+		$_collection = Mage::getModel('palorus/vault')
+		->getCollection()
+		->addFieldToFilter('customer_id',$customerId);
+		$purchases = array();
+		$unique = array();
+		$i=0;
+		foreach ($_collection as $purchase) {
+			$purchases[$i] = $purchase->getData();
+			$i++;
+		}
+		$unique = array();
+		$unique[0] = $purchases[0];
+		for ($y=1; $y < count($purchases); $y++){
+			$setter = 0;
+			for ($x=0; $x <= count($unique); $x++){
+				if (($purchases[$y]['type'] === $unique[$x]['type']) && ($purchases[$y]['last4'] === $unique[$x]['last4']))
+				{
+					$setter = 1;
+				}
+			}
+			if ($setter === 0)
+			{
+				array_push($unique, $purchases[$y]);
+			}
+		}
+		return $unique;
+	}
 }

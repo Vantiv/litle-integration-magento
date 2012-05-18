@@ -25,38 +25,7 @@
  */
 ?>
 <?php
-$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
-$_collection = array();
-$_collection = Mage::getModel('palorus/vault')
-->getCollection()
-->addFieldToFilter('customer_id',$customerId);
-$purchases = array();
-$unique = array();
-$i=0;
-foreach ($_collection as $purchase) {
-			$purchases[$i] = $purchase->getData();
- 	$i++;
-}
-//$setter = 0;
-$unique[0] = $purchases[0];
-for ($y=1; $y < count($purchases); $y++){
-	$setter = 0;
- 	for ($x=0; $x <= count($unique); $x++){
- 		if (($purchases[$y]['type'] === $unique[$x]['type']) && ($purchases[$y]['last4'] === $unique[$x]['last4']))
- 		{
-  			$setter = 1;
- 		}
- 	}
- 	if ($setter === 0)
- 	{
- 		array_push($unique, $purchases[$y]);
- 	}
-}
-
-$purchases = $unique;
-//var_dump($purchases);
-?>
-<?php
+$purchases = Mage::helper('creditcard')->uniqueCreditCard(Mage::helper('customer')->getCustomer()->getEntityId());
 $_reportGroup = $this->getReportGroup();
 $_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
 $_paypageUrl = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
@@ -84,10 +53,10 @@ $_id = $_time . substr($_session,13);
 		<div class="input-box">
 			<select id="<?php echo $_code ?>_cc_vaulted" name="payment[cc_vaulted]">
 				<option value><?php echo $this->__('--Please Select A Stored Credit Card--')?></option>
-	    <?php $i = 0; ?>
+	    <?php $i = 1; ?>
 	<option value ="0">New Credit Card</option>
             <?php foreach ($purchases as $key => $value): ?>
-                <option value ="<?php echo ($purchases[$i]['vault_id'])?>"><?php echo 'Stored ' . $purchases[$i]['type'] . ' Ending in: ' . $purchases[$i]['last4'] ?></option>
+                <option value ="<?php echo ($i)?>"><?php echo 'Stored ' . $purchases[$i-1]['type'] . ' Ending in: ' . $purchases[$i-1]['last4'] ?></option>
 	    	<?php $i++ ?>
           <?php endforeach ?>
             </select>
