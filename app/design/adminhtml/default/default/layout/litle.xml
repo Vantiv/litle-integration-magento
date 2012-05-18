@@ -15,4 +15,20 @@
             <block type="adminhtml/template" name="myform" template="palorus/myform.phtml"/>
         </reference>
     </palorus_adminhtml_myform_index>
+    
+    <!-- 
+    <adminhtml_sales_order_creditmemo_new>
+        <reference name="content">
+            <block type="adminhtml/sales_order_creditmemo_create" name="sales_creditmemo_create">
+                <block type="adminhtml/sales_order_creditmemo_create_form" name="form" template="sales/order/creditmemo/create/form.phtml">
+                     <block type="adminhtml/sales_order_view_info" name="order_info" template="sales/order/view/info.phtml"></block>
+                     <block type="adminhtml/sales_order_payment" name="order_payment"></block>
+                    <block type="adminhtml/creditmemocreateitems" name="order_items" template="payment/form/litlevoid.phtml">
+                    </block>
+                </block>
+            </block>
+        </reference>
+    </adminhtml_sales_order_creditmemo_new>
+     -->
+    
 </layout>
