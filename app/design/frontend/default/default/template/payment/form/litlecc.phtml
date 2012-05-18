@@ -24,8 +24,6 @@
  * @license http://opensource.org/licenses/afl-3.0.php Academic Free License (AFL 3.0)
  */
 ?>
-
-
 <?php
 $customerId = Mage::helper('customer')->getCustomer()->getEntityId();
 $_collection = array();
@@ -49,9 +47,6 @@ $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getCon
 <script type="text/javascript">
 Validation.creditCartTypes.set('DC', [new RegExp('^3(?:0[0-5]|[68][0-9])[0-9]{11}$'), new RegExp('^[0-9]{3}$'), true]);
 </script>
-
-
-
 
 <?php
 $_time =  date('ymdHis');
@@ -79,7 +74,6 @@ $_id = $_time . substr($_session,13);
             </select>
 		</div>
 	</li>
-
 <?php endif; ?>
 <?php if ($purchases[0]['last4'] !== NULL): ?>
 <script type="text/javascript">
@@ -88,7 +82,6 @@ var selectmenu=document.getElementById("<?php echo $_code ?>_cc_vaulted");
 selectmenu.onchange=function(){
  var chosenoption=this.options[this.selectedIndex] 
  if (chosenoption.value!= 0){
-
 	$('creditcard_cc_type_label').hide();
 	$('creditcard_cc_number_label').hide();
 	$('creditcard_cc_expDate_label').hide();
@@ -185,9 +178,6 @@ selectmenu.onchange=function(){
 	<?php endif; ?>
 </ul>
 
-
-
-
 <?php if($_paypageEnabled == 1):?>
 <script type="text/javascript">
 
@@ -204,7 +194,7 @@ Payment.prototype.save = function() {
 	if (this.validate() && validator.validate()) {
 		checkout.setLoadWaiting('payment');
 
-		// Litle Page Stuff//
+		// Litle Page Stuff// 
 		function setLitleResponseFields(response) {
 			document.getElementById(<?php echo "'" . $_code . "_code" . "'" ?>).value = response.response;
 			document.getElementById(<?php echo "'" . $_code . "_message" . "'" ?>).value = response.message;
@@ -212,7 +202,6 @@ Payment.prototype.save = function() {
 			document.getElementById(<?php echo "'" . $_code . "_litle_txn_id" . "'" ?>).value = response.litleTxnId;
 			document.getElementById(<?php echo "'" . $_code . "_type" . "'" ?>).value = response.type;
 		}
-
 
 		function submitAfterLitle() {
 			var request = new Ajax.Request(
@@ -254,27 +243,24 @@ Payment.prototype.save = function() {
 		};
 
 		var selectmenu=document.getElementById("<?php echo $_code ?>_cc_vaulted");
+		
 		if(selectmenu){
 		var chosenoption=selectmenu.options[selectmenu.selectedIndex]
-		if (chosenoption.value == 0){
-
-			if( _currentMethod == "creditcard" ){
-			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+			if (chosenoption.value == 0){
+				if( _currentMethod == "creditcard" ){
+					sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+				}
 			}
-		 }
-		}else
+		}
+		else
 		 {
 			if( _currentMethod == "creditcard" ){
-			sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+				sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
 			}
 		 }
 		submitAfterLitle();
-
-		// End of Paypage
+		// End of Paypage 
 	}
 }
 </script>
-
-
-
 <?php endif; ?>

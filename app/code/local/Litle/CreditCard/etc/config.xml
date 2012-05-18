@@ -26,6 +26,9 @@
 					<sales_order_view>Litle_CreditCard_Block_Adminhtml_Orderview</sales_order_view>
 					<sales_order_creditmemo_create_items>Litle_CreditCard_Block_Adminhtml_Creditmemocreateitems</sales_order_creditmemo_create_items>
 				</rewrite>
+				<rewrite>
+					<sales_order_grid>Litle_CreditCard_Block_Adminhtml_Ordergrid</sales_order_grid>
+				</rewrite>
 			</adminhtml>
 		</blocks>
 		<models>
@@ -64,6 +67,17 @@
 			</creditcard>
 		</helpers>
 	</global>
+	<admin>
+		<routers>
+			<creditcard>
+				<use>admin</use>
+				<args>
+					<module>Litle_CreditCard</module>
+					<frontName>creditcard</frontName>
+				</args>
+			</creditcard>
+		</routers>
+	</admin>
 	<frontend>
 		<layout>
 			<updates>
