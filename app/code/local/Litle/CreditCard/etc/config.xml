@@ -24,6 +24,7 @@
 			<adminhtml>
 				<rewrite>
 					<sales_order_view>Litle_CreditCard_Block_Adminhtml_Orderview</sales_order_view>
+					<sales_order_creditmemo_create_items>Litle_CreditCard_Block_Adminhtml_Creditmemocreateitems</sales_order_creditmemo_create_items>
 				</rewrite>
 			</adminhtml>
 		</blocks>

@@ -421,14 +421,11 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
-					if( $this->currentTxnType === "refund" &&  $litleResponseCode === "362")
+					if( $this->currentTxnType === "void" &&  $litleResponseCode === "362")
 					{
 						//call a refund
-						$this->refund($payment);
-						setStatus("Refunded");
-					}
-					elseif( $this->currentTxnType === "void" &&  $litleResponseCode === "363"){
-						Mage::throwException('This transaction has already been voided.');
+						Mage::throwException("The void did not go through.  Do a refund instead");
+						
 					}
 					else
 					{
@@ -572,16 +569,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		}
 		$this->processResponse($payment,$litleResponse);
 	}
-	
-	public function wasLastTxnLessThan48HrsAgo(Varien_Object $payment)
-	{
-		$lastTxnId = $payment->getLastTransId();
-		$lastTxn = $payment->getTransaction($lastTxnId);
-		$timeOfLastTxn = $lastTxn->getData('created_at');
-		
-		//check if last txn was less than 48 hrs ago (172800 seconds == 48 hrs)
-		return ((time()-strtotime($timeOfLastTxn)) < 172800);
-	}
 
 	/**
 	 * called if refunding
@@ -600,16 +587,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$order = $payment->getOrder();
 		$isPartialRefund = ($amount < $order->getGrandTotal()) ? true : false;
 		
-		if( (empty($amount) || $amount === NULL || !$isPartialRefund) && !$alreadyInRefund && $this->wasLastTxnLessThan48HrsAgo($payment))
-		{
-			/*$payment->setTxnType(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID);
-			$lastTxnId = $payment->getLastTransId();
-			$lastTxn = $payment->getTransaction($lastTxnId);
-			Mage::throwException('last txn is:' . $lastTxn->getTxnType());*/
-			$this->void($payment);
-		}
-		else
-		{
 			$amountToPass = ($amount* 100);
 			if (!empty($order)){
 				$hash = array(
@@ -622,7 +599,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleResponse = $litleRequest->creditRequest($hash_in);
 			}
 			$this->processResponse($payment,$litleResponse);
-		}
+		
 		if( $this->currentTxnType === "refund" )
 			$this->currentTxnType = "";
 		
