@@ -27,7 +27,8 @@ class Litle_CreditCard_Adminhtml_OrderController extends Mage_Adminhtml_Controll
 			if ($countCancelOrder) {
 				$this->_getSession()->addSuccess($this->__('%s order(s) have been canceled.', $countCancelOrder));
 			}
-			$this->_redirectUrl(Mage::helper('palorus')->getBaseUrl() . '/sales_order');
+			$referrer = $_SERVER['HTTP_REFERER'];
+			$this->_redirectUrl($referrer);
 		}
 
 }
