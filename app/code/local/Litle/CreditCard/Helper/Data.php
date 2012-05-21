@@ -5,43 +5,49 @@ class Litle_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
 		$payment = $order->getPayment();
 		$lastTxnId = $payment->getLastTransId();
 		$lastTxn = $payment->getTransaction($lastTxnId);
-		
+
 		if( $lastTxn->getTxnType() === $inOrderState )
-			return true;
+		return true;
 		else
-			return false;
+		return false;
 	}
-	
+
 	// TODO:: Needs to be implemented.
 	public function isMOPLitleCC($mop){
 		return ($mop === "creditcard");
 	}
-	
+
 	// TODO:: Needs to be implemented.
 	public function isMOPLitleECheck($mop){
 		return ($mop === "lecheck");
 	}
-	
+
 	public function isMOPLitle($payment){
 		$mop = $payment->getData('method');
 		//Mage::throwException($payment->getData('timestamp'));
 		//echo $payment->getData('created_at'); exit;
 		return ($this->isMOPLitleCC($mop) || $this->isMOPLitleECheck($mop));
 	}
-	
+
 	public function uniqueCreditCard($customerId) {
-		//$customerId = Mage::helper('customer')->getCustomer()->getEntityId();
-		$_collection = array();
-		$_collection = Mage::getModel('palorus/vault')
+		$collection = array();
+		$collection = Mage::getModel('palorus/vault')
 		->getCollection()
 		->addFieldToFilter('customer_id',$customerId);
+		
 		$purchases = array();
 		$unique = array();
 		$i=0;
-		foreach ($_collection as $purchase) {
+		foreach ($collection as $purchase) {
 			$purchases[$i] = $purchase->getData();
 			$i++;
 		}
+		
+		return $this->populateStoredCreditCard($purchases);
+	}
+	
+	public function populateStoredCreditCard($purchases) {
+		
 		$unique = array();
 		$unique[0] = $purchases[0];
 		for ($y=1; $y < count($purchases); $y++){
