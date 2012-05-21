@@ -5,8 +5,7 @@ Feature: StoredCreditCardTransaction
     Given I am doing cc or echeck transactions
     And I am doing paypage transaction
 
-
-  @javascript @paypage @wip
+  @javascript @paypage @ready
   Scenario: Do a successful checkout with stored credit card
     Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
