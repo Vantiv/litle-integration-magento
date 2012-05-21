@@ -9,25 +9,14 @@ class Litle_CreditCard_Adminhtml_OrderController extends Mage_Adminhtml_Controll
 		foreach ($orderIds as $orderId) {
 			$order = Mage::getModel('sales/order')->load($orderId);
 			if (true){
-				//)$order->canInvoice()) {
-				//if ($invoice->getState() == Mage_Sales_Model_Order_Invoice::STATE_PENDING)
-				//{
-				//	$invoice->getState() = Mage_Sales_Model_Order_Invoice::STATE_PENDING;
 
-				$invoice = $this->_initInvoice();
-				
-				//	$invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice(array());
-				//	$invoice->register();
-				//	$invoice->getOrder()->setIsInProcess(true);
-				
-				$invoice->capture();
-			//	$invoice->getOrder()->setIsInProcess(true);
-			//	$transactionSave = Mage::getModel('core/resource_transaction')
-			//	->addObject($invoice)
-			//	->addObject($invoice->getOrder())
-			//	->save();
 
-				//Mage::throwException('dsafdsafdsa');
+				$invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice(array());
+				$invoice->register();
+
+				$this->captureInvoice($invoice);
+
+
 
 				$countCancelOrder++;
 				//}
@@ -49,25 +38,64 @@ class Litle_CreditCard_Adminhtml_OrderController extends Mage_Adminhtml_Controll
 		$referrer = $_SERVER['HTTP_REFERER'];
 		$this->_redirectUrl($referrer);
 	}
-
-// 	public function captureAction()
-// 	{
-// 		if ($invoice = $this->_initInvoice()) {
-// 			try {
-// 				$invoice->capture();
-// 				$this->_saveInvoice($invoice);
-// 				$this->_getSession()->addSuccess($this->__('The invoice has been captured.'));
-// 			} catch (Mage_Core_Exception $e) {
-// 				$this->_getSession()->addError($e->getMessage());
-// 			} catch (Exception $e) {
-// 				$this->_getSession()->addError($this->__('Invoice capturing error.'));
-// 			}
-// 			$this->_redirect('*/*/view', array('invoice_id'=>$invoice->getId()));
-// 		} else {
-// 			$this->_forward('noRoute');
-// 		}
-// 	}
 	
+	private function captureInvoice($invoice)
+	{
+		// If no products add an error.
+		if (!$invoice->getTotalQty())
+		{
+			$this->_getSession()->addError($this->__('Order # '.$invoice->getOrder()->getIncrementId().': Cannot create an invoice without products.'));
+		}
+		else
+		{
+			// Set capture case to online and register the invoice.
+			$invoice->setRequestedCaptureCase('online');
+				
+			// Try and send the customer notification email.
+			try
+			{
+				$invoice->sendEmail(true);
+				$invoice->setEmailSent(true);
+				$invoice->getOrder()->setCustomerNoteNotify(true);
+			}
+			// Catch exceptions.
+			catch (Exception $e)
+			{
+				Mage::logException($e);
+				$this->_getSession()->addError('Order # '.$invoice->getOrder()->getIncrementId().': '. $this->__('Unable to send the invoice email.'));
+			}
+			// Capture invoice.
+			$invoice->getOrder()->setIsInProcess(true);
+			$invoice->capture();
+
+			// Go grab order from external resource and capture (etc. paypal, worldpay).
+			$transactionSave = Mage::getModel('core/resource_transaction')
+			->addObject($invoice)
+			->addObject($invoice->getOrder());
+			$transactionSave->save();
+
+			// Success message.
+			$this->_getSession()->addSuccess($this->__('Order # '.$invoice->getOrder()->getIncrementId().': The invoice for order has been captured.'));
+		}
+	}
+	// 	public function captureAction()
+	// 	{
+	// 		if ($invoice = $this->_initInvoice()) {
+	// 			try {
+	// 				$invoice->capture();
+	// 				$this->_saveInvoice($invoice);
+	// 				$this->_getSession()->addSuccess($this->__('The invoice has been captured.'));
+	// 			} catch (Mage_Core_Exception $e) {
+	// 				$this->_getSession()->addError($e->getMessage());
+	// 			} catch (Exception $e) {
+	// 				$this->_getSession()->addError($this->__('Invoice capturing error.'));
+	// 			}
+	// 			$this->_redirect('*/*/view', array('invoice_id'=>$invoice->getId()));
+	// 		} else {
+	// 			$this->_forward('noRoute');
+	// 		}
+	// 	}
+
 	protected function _initInvoice($update = false)
 	{
 		$this->_title($this->__('Sales'))->_title($this->__('Invoices'));
