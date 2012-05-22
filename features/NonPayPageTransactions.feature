@@ -104,3 +104,4 @@ Feature: NonPayPageTransactions
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
       And I follow "Log Out"
+      
