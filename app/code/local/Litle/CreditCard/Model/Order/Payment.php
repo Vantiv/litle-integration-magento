@@ -54,7 +54,7 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
 		->setShippingTaxRefunded(0)
 		->setSubtotalRefunded(0)
 		->setTaxRefunded(0)
-		->setTotalRefunded(0);
+		->setTotalRefunded(0)->save();
 		 
 		// update transactions, order state and add comments
 		$transaction = $this->_addTransaction(Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, null, true);
@@ -75,12 +75,20 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
 			return $this;
 		}
 
-		foreach($order->getItemsCollection() as $item){
-			if ($item->getQtyToInvoice() <= 0)
-			$item->setQtyInvoiced(0)->save();
-			Mage::log('Qty is:' . $item->getQtyToInvoice());
+		foreach($order->getItemsCollection() as $orderItem){
+			$orderItem->setQtyInvoiced(0);
+			$orderItem->setTaxInvoiced(0);
+        	$orderItem->setBaseTaxInvoiced(0);
+        	$orderItem->setHiddenTaxInvoiced(0);
+        	$orderItem->setBaseHiddenTaxInvoiced(0);
+
+        	$orderItem->setDiscountInvoiced(0);
+        	$orderItem->setBaseDiscountInvoiced(0);
+
+        	$orderItem->setRowInvoiced(0);
+        	$orderItem->setBaseRowInvoiced(0);
 		}
-		 
+		
 		$order
 		->setBaseDiscountInvoiced(0)
 		->setBaseShippingInvoiced(0)
@@ -96,7 +104,22 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
 		->setHiddenTaxInvoiced(0)
 		->setBaseHiddenTaxInvoiced(0)
 		->setShippingTaxInvoiced(0)
-		->setBaseShippingTaxInvoiced(0);
+		->setBaseShippingTaxInvoiced(0)
+		->setTotalPaid(0)
+		->setBaseTotalPaid(0);
+		
+		$this->setBaseShippingCaptured(0);
+		$this->setShippingCaptured(0);
+		$this->setAmountPaid(0);
+		$this->setBaseAmountPaid(0);
+		$this->setBaseAmountPaidOnline(0);
+		
+		$order->setBaseGrandTotal($order->getGrandTotal());
+		
+		foreach ($order->getInvoiceCollection() as $invoice) {
+ 			$invoice->setState("3")->save();	//3 means cancelled
+		}
+		
 
 
 		// update transactions, order state and add comments
@@ -106,6 +129,7 @@ class Litle_CreditCard_Model_Order_Payment extends Mage_Sales_Model_Order_Paymen
 		$message = $this->_appendTransactionToMessage($transaction, $message);
 		$order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, $message);
 	}
+	
 
 	/**
 	 * Void payment either online or offline (process void notification)
