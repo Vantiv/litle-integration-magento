@@ -6,7 +6,7 @@ Feature: BatchCaptureTransaction
     And I am doing non paypage transactions
 
 
-  @javascript @paypage @wip
+  @javascript @paypage @ready
   Scenario: Do a successful batch capture of two authorized transactions and an uncesseful one with a captured transactions
    Given I am doing Litle auth
    And I am logged in as "gdake@litle.com" with the password "password"
