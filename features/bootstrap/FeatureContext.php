@@ -726,18 +726,4 @@ EOD;
     	}
 
     }
-    
-    /**
-    * @Given /^I press the "([^"]*)" button$/
-    */
-    public function iPressTheButton($span)
-    {
-    	$session = $this->getMink()->getSession('sahi');
-    	$script = <<<EOD
-$$("button > span:contains('$span')")[0].parentNode.click()
-EOD;
-    	$session->executeScript($script);
-    }
-    
-    
 }
