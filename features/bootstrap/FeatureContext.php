@@ -521,6 +521,18 @@ EOD;
     	$topRow = $session->getDriver()->find('/html/body/div[2]/div[3]/div/div/div[2]/div/div[3]/div[2]/div/div/div/table/tbody/tr');
     	$session->visit($topRow[0]->getAttribute("title"));
     }
+
+    /**
+    * @Given /^I select all Orders$/
+    */
+    public function iSelectAllOrders()
+    {
+    	$session = $this->getMink()->getSession('sahi');
+    	$page = $session->getPage();
+    
+    	$tmp = $session->getDriver()->find('/html/body/div/div[3]/div/div[3]/div/div/table/tbody/tr/td/a');
+    	$tmp[0]->click();
+    }
     
     /**
     * @Given /^I click on refund$/
