@@ -30,7 +30,7 @@ Feature: BackendLeCheckTransactions
 	  And I press "Invoice"
       And I press "Submit Invoice"
       	Then I should see "The invoice has been created"
-      And I press "Void Capture"
+      And I press "Void Sale"
       	Then I should see "The payment has been voided."
       And I press "Invoice"
       And I press "Submit Invoice"

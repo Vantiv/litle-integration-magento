@@ -47,8 +47,7 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 				$this->_updateButton('void_payment', 'label','Auth-Reversal');
 				$this->_updateButton('void_payment', 'onclick', "confirmSetLocation('{$message}', '{$this->getVoidPaymentUrl()}')");
 			}
-// 			check if Void-Refund needs to be shown
-			
+// 			check if Void-Refund needs to be shown		
 			else if( Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND))
 			{
 				$onclickJs = 'deleteConfirm(\''
@@ -60,17 +59,33 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 				                'onclick'  => $onclickJs,
 				));
 			}
-			else if( Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE) &&
+			//check if void capture or void sale needs to be shown
+			else if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE) &&
 				$this->wasLastTxnLessThan48HrsAgo($order->getPayment()))
 			{
-				$onclickJs = 'deleteConfirm(\''
-				. Mage::helper('sales')->__('Are you sure? If capture was not done today then do a refund instead.')
-				. '\', \'' . $this->getVoidPaymentUrl() . '\');';
-			
-				$this->_addButton('void_refund', array(
-							                'label'    => 'Void Capture',
-							                'onclick'  => $onclickJs,
-				));
+				$mop = $order->getPayment()->getData('method');
+				//check if paying with a credit card
+				if(Mage::helper("creditcard")->isMOPLitleCC($mop)){
+					$onclickJs = 'deleteConfirm(\''
+					. Mage::helper('sales')->__('Are you sure? If capture was not done today then do a refund instead.')
+					. '\', \'' . $this->getVoidPaymentUrl() . '\');';
+				
+					$this->_addButton('void_capture', array(
+								                'label'    => 'Void Capture',
+								                'onclick'  => $onclickJs,
+					));
+				}
+				//check if paying with Litle echeck
+				elseif(Mage::helper("creditcard")->isMOPLitleECheck($mop)){
+					$onclickJs = 'deleteConfirm(\''
+					. Mage::helper('sales')->__('Are you sure? If capture was not done today then do a refund instead.')
+					. '\', \'' . $this->getVoidPaymentUrl() . '\');';
+					
+					$this->_addButton('void_sale', array(
+													                'label'    => 'Void Sale',
+													                'onclick'  => $onclickJs,
+					));
+				}
 			}
 		}
 	}
