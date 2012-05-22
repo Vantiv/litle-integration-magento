@@ -1,5 +1,5 @@
-Feature: PayPageTransactions
-  Tests to verify transactions are taking place successfully via PayPage.
+Feature: BackendCCTransactions
+  Tests to verify Backend Credit Card transactions are taking place
 
   Background:
     Given I am doing cc or echeck transactions

@@ -413,9 +413,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				{
 					if( $this->currentTxnType === "void" &&  $litleResponseCode === "362")
 					{
-						//call a refund
 						Mage::throwException("The void did not go through.  Do a refund instead");
-						
 					}
 					else
 					{
@@ -567,13 +565,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$this->isFromVT($payment, "refund");
 		
-		$alreadyInRefund = false;
-		if($this->currentTxnType === "refund"){
-			$alreadyInRefund=true;
-		}
-		else if( $this->currentTxnType === "" )
-			$this->currentTxnType = "refund";
-		
 		$order = $payment->getOrder();
 		$isPartialRefund = ($amount < $order->getGrandTotal()) ? true : false;
 		
@@ -589,9 +580,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleResponse = $litleRequest->creditRequest($hash_in);
 			}
 			$this->processResponse($payment,$litleResponse);
-		
-		if( $this->currentTxnType === "refund" )
-			$this->currentTxnType = "";
 		
 		return $this;
 	}
