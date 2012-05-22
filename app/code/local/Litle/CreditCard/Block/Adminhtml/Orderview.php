@@ -67,7 +67,7 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 				//check if paying with a credit card
 				if(Mage::helper("creditcard")->isMOPLitleCC($mop)){
 					$onclickJs = 'deleteConfirm(\''
-					. Mage::helper('sales')->__('Are you sure? If capture was not done today then do a refund instead.')
+					. Mage::helper('sales')->__('Are you sure?  If any previous partial captures were done on this order, or if capture was not done today then do a refund instead.')
 					. '\', \'' . $this->getVoidPaymentUrl() . '\');';
 				
 					$this->_addButton('void_capture', array(
@@ -78,7 +78,7 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 				//check if paying with Litle echeck
 				elseif(Mage::helper("creditcard")->isMOPLitleECheck($mop)){
 					$onclickJs = 'deleteConfirm(\''
-					. Mage::helper('sales')->__('Are you sure? If capture was not done today then do a refund instead.')
+					. Mage::helper('sales')->__('Are you sure?  If any previous partial captures were done on this order, or if capture was not done today then do a refund instead.')
 					. '\', \'' . $this->getVoidPaymentUrl() . '\');';
 					
 					$this->_addButton('void_sale', array(

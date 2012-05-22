@@ -61,8 +61,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 * can this method save cc info for later use?
 	 */
 	protected $_canSaveCc = false;
-	
-	protected $currentTxnType = "";
 
 	public function getConfigData($fieldToLookFor, $store = NULL)
 	{
@@ -411,9 +409,10 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
-					if( $this->currentTxnType === "void" &&  $litleResponseCode === "362")
+					//Mage::throwException('response code is: ' . $litleResponseCode . 'txn type is: ');
+					if(($litleResponseCode === "362") && Mage::helper("creditcard")->isStateOfOrderEqualTo($payment->getOrder(), Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE))
 					{
-						Mage::throwException("The void did not go through.  Do a refund instead");
+						Mage::throwException("The void did not go through.  Do a refund instead.");
 					}
 					else
 					{
