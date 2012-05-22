@@ -34,7 +34,7 @@ class FeatureContext extends Behat\Mink\Behat\Context\MinkContext
 			$dbName = getenv('MAGENTO_DB_NAME');
 			$dbUser = getenv('MAGENTO_DB_USER');
 			$sql = <<<EOD
-mysql -u $dbUser $dbUser -e "select path,value from core_config_data where path like 'payment/CreditCard/%'"
+mysql -u $dbUser $dbName -e "select path,value from core_config_data where path like 'payment/CreditCard/%'"
 EOD;
 			system($sql);				
 			$sql = <<<EOD
