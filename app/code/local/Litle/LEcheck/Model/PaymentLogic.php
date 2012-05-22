@@ -62,9 +62,6 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 	 * can this method save cc info for later use?
 	 */
 	protected $_canSaveCc = false;
-	
-	protected $currentTxnType = "";
-
 
 	public function assignData($data)
 	{
@@ -186,10 +183,9 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 				$litleResponseCode = XMLParser::getNode($litleResponse,'response');
 				if($litleResponseCode != "000")
 				{
-					if( $this->currentTxnType === "refund" &&  $litleResponseCode === "362")
+				if(($litleResponseCode === "362") && Mage::helper("creditcard")->isStateOfOrderEqualTo($payment->getOrder(), Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE))
 					{
-						//call a refund
-						$this->refund($payment);
+						Mage::throwException("The void did not go through.  Do a refund instead.");
 					}
 					else
 					{
@@ -282,22 +278,9 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 	 */
 	public function refund (Varien_Object $payment, $amount)
 	{
-		$alreadyInRefund = false;
-		if($this->currentTxnType === "refund"){
-			$alreadyInRefund=true;
-		}
-		else if( $this->currentTxnType === "" )
-			$this->currentTxnType = "refund";
-		
 		$order = $payment->getOrder();
 		$isPartialRefund = ($amount < $order->getGrandTotal()) ? true : false;
 		
-		if( (empty($amount) || $amount === NULL || !$isPartialRefund) && !$alreadyInRefund)
-		{
-			$this->void($payment);
-		}
-		else
-		{
 			$amountToPass = ($amount* 100);
 			if (!empty($order)){
 				$hash = array(
@@ -312,11 +295,6 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 			}
 			
 			$this->processResponse($payment,$litleResponse);
-		}
-		
-		if( $this->currentTxnType === "refund" )
-			$this->currentTxnType = "";
-		
 		return $this;
 	}
 
