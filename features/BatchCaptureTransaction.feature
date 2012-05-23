@@ -49,6 +49,7 @@ Feature: BatchCaptureTransaction
    And I press the "4th" continue button
    And I press "Place Order"
  Then I should see "Thank you for your purchase"
+ And I follow "Log Out"
    Given I am logged in as an administrator
     When I view "Sales" "Orders"
     And I select all Orders
