@@ -5,7 +5,7 @@ Feature: StoredCreditCardTransaction
     Given I am doing cc or echeck transactions
     And I am doing paypage transaction
 
-  @javascript @paypage @wip
+  @javascript @paypage @ready
   Scenario: Do a successful checkout with stored credit card
     Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
@@ -34,12 +34,10 @@ Feature: StoredCreditCardTransaction
     Then I should see "Thank you for your purchase"
     And I follow "Log Out"
     Given I am logged in as an administrator
-     Given I am logged in as an administrator
     When I view "Sales" "Orders"
       And I click on the top row in Orders
         Then I should see "Order #"
         Then I should see "Litle Credit Card"
-        Then I should see "xxxx-0001" in Credit Card Number
         When I view "Sales" "Orders"
         And I press "Create New Order"
         And I click on the customer "Greg Dake" in "Create New Order"
