@@ -1,9 +1,6 @@
 <layout version="0.1.0">
     <checkout_onepage_index>
         <reference name="head">
-       <!--    <block type="core/text" name="litle.js"><action method="setText"><text><![CDATA[<script type="text/javascript" src="https://cert01.securepaypage.litle.com/LitlePayPage/litle-api.js"></script>]]></text></action></block>
-         -<block type="core/text" name="litle2.js"><action method="setText"><text><![CDATA[<script type="text/javascript"> $.noConflict();</script>]]></text></action></block> 
-         -->
     		<block type="page/html" name="litle3.js" output="toHtml" template="payment/form/litlejs.phtml"/> 
         </reference>
     </checkout_onepage_index>
