@@ -8,7 +8,6 @@ Feature: BackendLeCheckTransactions
 
   @javascript @nonpaypage @ready
   Scenario: Attempt a failed void sale
-    Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart
       And I press "Proceed to Checkout"
@@ -34,7 +33,6 @@ Feature: BackendLeCheckTransactions
 
   @javascript @nonpaypage @ready
   Scenario: Do a void capture and then capture again
-    Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart
       And I press "Proceed to Checkout"
@@ -64,7 +62,6 @@ Feature: BackendLeCheckTransactions
 
   @javascript @nonpaypage @ready
   Scenario: Do a successful auth checkout and then reverse the auth
-    Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart
       And I press "Proceed to Checkout"
