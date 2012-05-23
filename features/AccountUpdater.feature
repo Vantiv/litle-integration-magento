@@ -5,7 +5,7 @@ Feature: AccountUpdater
     Given I am doing cc or echeck transactions
     And I am doing non paypage transactions
 
-  @javascript @creditcard @wip
+  @javascript @creditcard @ready
   Scenario: Do a successful checkout and then capture the auth
     Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
