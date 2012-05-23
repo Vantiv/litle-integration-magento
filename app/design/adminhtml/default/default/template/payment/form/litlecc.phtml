@@ -39,7 +39,7 @@ $_code=$this->getMethodCode();
 <br>
 	<?php if ($purchases[0]['last4'] !== NULL): ?>
 	<li>
-        <label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Stored Credit Cards') ?></label>
+        <label for="<?php echo $_code ?>_cc_vaulted" class=""><?php echo $this->__('Stored Credit Cards') ?></label>
         <div class="input-box">
             <select id="<?php echo $_code ?>_cc_vaulted" name="payment[cc_vaulted]">
                 <option value><?php echo $this->__('--Please Select A Stored Credit Card--')?></option>
@@ -52,10 +52,10 @@ $_code=$this->getMethodCode();
         </div>
     </li>
     <li id="<?php echo $_code ?>_cc_type_cvv_div">
-        <label id = "creditcard_cc_cid_label" for="<?php echo $_code ?>_cc_cid" class="required"><?php echo $this->__('Card Verification Number') ?></label>
+        <label id = "creditcard_cc_cid_label" for="<?php echo $_code ?>_cc_cid" class=""><?php echo $this->__('Card Verification Number') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry " id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
+                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text " id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
             </div>
         </div>
     </li>

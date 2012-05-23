@@ -63,7 +63,7 @@ Feature: NonPayPageTransactions
       And I click on the customer "Greg Dake" in "Create New Order"
       And I choose "English"
       And I press "Add Products"
-      And I click on the top row in Product Table
+      And I click on the product "vault"
       And I press "Add Selected Product(s) to Order"
       And I wait for the payments to appear
       And I follow "Get shipping methods and rates"
@@ -104,3 +104,4 @@ Feature: NonPayPageTransactions
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
       And I follow "Log Out"
+      

@@ -36,7 +36,7 @@ Feature: PayPageTransactions
     Then I should see "The invoice has been created."
     And I follow "Log Out"
 
- @javascript @paypage @wip
+ @javascript @paypage @ready
  Scenario: Backend Paypage auth checkout, then attempt to capture
     Given I am doing Litle auth
     And I am logged in as an administrator
@@ -46,7 +46,7 @@ Feature: PayPageTransactions
       And I click on the customer "Greg Dake" in "Create New Order"
       And I choose "English"
       And I press "Add Products"
-      And I click on the top row in Product Table
+      And I click on the product "vault"
       And I press "Add Selected Product(s) to Order"
       And I wait for the payments to appear
       And I choose "CreditCard"
@@ -58,7 +58,7 @@ Feature: PayPageTransactions
       Then I should see "Orders"
       And I click on the top row in Orders
         Then I should see "Order #"
-      And I press the "Invoice" button
+      And I press "Invoice"
       And I select "Capture Online" from "invoice[capture_case]"
       And I press "Submit Invoice"
     Then I should see "This order was placed using Litle Virtual Terminal. Please process the capture by logging into Litle Virtual Terminal (https://vt.litle.com)."

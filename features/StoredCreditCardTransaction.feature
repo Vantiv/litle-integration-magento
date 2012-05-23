@@ -36,19 +36,7 @@ Feature: StoredCreditCardTransaction
     And I follow "Log Out"
     Given I am logged in as an administrator
     When I view "Sales" "Orders"
-      And I click on the top row in Orders
-        Then I should see "Order #"
-        Then I should see "Litle Credit Card"
-        Then I should see "xxxx-5555" in Credit Card Number
-        When I view "Sales" "Orders"
-        And I press "Create New Order"
-        And I click on the customer "Greg Dake" in "Create New Order"
-        And I press "Add Products"
-        And I click on the top row in Product Table
-        And I press "Add Selected Product(s) to Order"
-        And I wait for the payments to appear
-        And I choose "CreditCard"
-    Then I should see "Stored Credit Cards"
+    And I check the 
     And I follow "Log Out"
     
     
