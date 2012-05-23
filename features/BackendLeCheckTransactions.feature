@@ -3,10 +3,11 @@ Feature: BackendLeCheckTransactions
 
   Background:
     Given I am doing Litle sale
+    And I am doing cc or echeck transactions
     And I am doing non paypage transactions
 
-@javascript @nonpaypage @ready
-  Scenario: Attempt a failed void capture
+  @javascript @nonpaypage @ready
+  Scenario: Attempt a failed void sale
     Given I am doing Litle auth
     And I am logged in as "gdake@litle.com" with the password "password"
     When I have "affluentvisa" in my cart

@@ -9,6 +9,7 @@ update core_config_data set value='JENKINS' where path='payment/CreditCard/user'
 update core_config_data set value='PayPageTransactions' where path='payment/CreditCard/password';
 update core_config_data set value='("USD"=>"101","GBP"=>"102")' where path='payment/CreditCard/merchant_id';
 update core_config_data set value='AE,DC,VI,MC,DI,JCB' where path='payment/CreditCard/cctypes';
+update core_config_data set value='Checking,Savings,Corporate,Corp Savings' where path='payment/LEcheck/accounttypes';
 update core_config_data set value='Litle ECheck' where path='payment/LEcheck/title';
 update core_config_data set value='Litle Credit Card' where path='payment/CreditCard/title';
 
