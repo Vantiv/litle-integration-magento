@@ -5,7 +5,7 @@ Feature: BatchCaptureTransaction
     Given I am doing cc or echeck transactions
     And I am doing non paypage transactions
 
-  @javascript @paypage @wip
+  @javascript @paypage @ready
   Scenario: Do a successful batch capture of two authorized transactions and an uncesseful one with a captured transactions
    Given I am doing Litle auth
    And I am logged in as "gdake@litle.com" with the password "password"
@@ -49,6 +49,7 @@ Feature: BatchCaptureTransaction
    And I press the "4th" continue button
    And I press "Place Order"
  Then I should see "Thank you for your purchase"
+ And I follow "Log Out"
    Given I am logged in as an administrator
     When I view "Sales" "Orders"
     And I select all Orders
