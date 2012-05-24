@@ -24,8 +24,6 @@ class Litle_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
 
 	public function isMOPLitle($payment){
 		$mop = $payment->getData('method');
-		//Mage::throwException($payment->getData('timestamp'));
-		//echo $payment->getData('created_at'); exit;
 		return ($this->isMOPLitleCC($mop) || $this->isMOPLitleECheck($mop));
 	}
 
