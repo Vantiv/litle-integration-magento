@@ -2,7 +2,7 @@ package com.litle.magento.builder;
 
 public class LitleMagentoBuilder {
 
-	protected LitleMagentoXMLWriter xmlWriter = new LitleMagentoXMLWriter();
+	//protected LitleMagentoXMLWriter xmlWriter = new LitleMagentoXMLWriter();
 	/**
 	 * @param args
 	 */

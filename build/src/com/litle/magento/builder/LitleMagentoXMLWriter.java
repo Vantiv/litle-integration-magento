@@ -14,8 +14,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
 public class LitleMagentoXMLWriter {
 
@@ -23,7 +21,11 @@ public class LitleMagentoXMLWriter {
 	protected DocumentBuilder docBuilder;
 	protected Document doc;
 	
-	public LitleMagentoXMLWriter() {
+	protected String pathToLitleMagentoIntegrationFolder;
+	protected String pathToFolderToSaveIn;
+	protected String versionNumber;
+	
+	public LitleMagentoXMLWriter(String versionNumber, String magentoIntegrationFolderPath, String folderToSaveInPath) {
 		try {
 			docFactory = DocumentBuilderFactory.newInstance();
 			docBuilder = docFactory.newDocumentBuilder();
@@ -32,9 +34,18 @@ public class LitleMagentoXMLWriter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// check if the last character in the path is "/" .. if not, then need to add it.
+		if( folderToSaveInPath.substring((folderToSaveInPath.length())-1).compareTo("/") == 0 )
+			this.pathToFolderToSaveIn = folderToSaveInPath;
+		else
+			this.pathToFolderToSaveIn = folderToSaveInPath + "/";
+		
+		this.pathToLitleMagentoIntegrationFolder = magentoIntegrationFolderPath;
+		this.versionNumber = versionNumber;
 	}
 
-	public boolean generateAndWriteXML(String filePath) {
+	public boolean generateAndWriteXML() {
 		try {
 			// root element
 			Element rootElement = doc.createElement("package");
@@ -79,12 +90,14 @@ public class LitleMagentoXMLWriter {
 			appendChildElement(rootElement, "license", "MIT");
 			appendChildElement(rootElement, "notes", "This extension implements Litle XML version 8.12&#13;\n&#13;\nAdditional features include enhanced reporting on orders, transactions, and customers.");
 			
+			
+			
 			// write the content into xml file
 			TransformerFactory transformerFactory = TransformerFactory
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			//StreamResult result = new StreamResult(new File(filePath));
+			//StreamResult result = new StreamResult(new File(this.pathToFolderToSaveIn + "package.xml"));
 
 			// Output to console for testing
 			StreamResult result = new StreamResult(System.out);
@@ -101,6 +114,26 @@ public class LitleMagentoXMLWriter {
 		return true;
 	}
 	
+	public boolean addNodesFromFileStructureInFolder(Element parentElement, String folderName){
+		boolean retVal = false;
+		File dir = new File(this.pathToLitleMagentoIntegrationFolder + folderName);
+		if( dir.exists() ) {
+			File[] children = dir.listFiles();
+			if( children != null ) {
+				for( int i = 0; i < children.length; i++ ) {
+					File fileOrDir = children[i];
+					if( fileOrDir != null && fileOrDir.isDirectory() ) {
+						addNodesFromFileStructureInFolder(parentElement, folderName + fileOrDir.getName());
+					}
+				}
+			}
+		}
+		else
+			return retVal;
+		
+		return retVal;
+	}
+	
 	public void setAttribute(Element in_element, String attrName, String attrVal) {
 		Attr attr = doc.createAttribute(attrName);
 		attr.setValue(attrVal);
@@ -113,8 +146,38 @@ public class LitleMagentoXMLWriter {
 		parentElement.appendChild(elemToAdd);
 	}
 
+	// argv[0] == version number
+	// version number for notes is derived from this.
+	// argv[1] == path to copy/write the files to.
+	// argv[2] == path to litle-integration-magento folder
 	public static void main(String argv[]) {
-		LitleMagentoXMLWriter newObj = new LitleMagentoXMLWriter();
-		newObj.generateAndWriteXML("/usr/local/litle-home/aagarwal/MagentoBuild/");
+		String versionNumber = "", pathToCopyFiles = "", pathToMagentoIntegration = "";
+		
+		if(argv.length > 0)
+		{
+			versionNumber = argv[0];
+			pathToCopyFiles = argv[1];
+			pathToMagentoIntegration = argv[2];			
+		}
+		else
+		{
+			System.out.println("Insufficient number of arguments. This build utility requires 3 arguments to work correctly: Version number, Path to a folder to copy/write files to, Path to litle-integration-magento folder.");
+			return;
+		}
+		
+		System.out.println("Values being used:");
+		System.out.println("\tVersion Number: " + versionNumber);
+		System.out.println("\tPath to Copy Files to: " + pathToCopyFiles);
+		System.out.println("\tPath to litle-integration-magento: " + pathToMagentoIntegration);
+		
+//		if( versionNumber.isEmpty() )
+//			versionNumber = "8.12.0";
+//		if( pathToCopyFiles.isEmpty() )
+//			pathToCopyFiles = "/usr/local/litle-home/aagarwal/MagentoBuild/";
+//		if( pathToMagentoIntegration.isEmpty() )
+//			pathToMagentoIntegration = "/usr/local/litle-home/aagarwal/git/litle-integration-magento/";
+		
+		LitleMagentoXMLWriter newObj = new LitleMagentoXMLWriter(versionNumber, pathToCopyFiles, pathToMagentoIntegration);
+		newObj.generateAndWriteXML();
 	}
 }
