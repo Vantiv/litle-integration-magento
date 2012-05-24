@@ -57,25 +57,44 @@ public class LitleMagentoXMLWriter {
 			Element leadElement = doc.createElement("lead");
 			appendChildElement(leadElement, "name", "Litle");
 			appendChildElement(leadElement, "user", "user");
-			appendChildElement(leadElement, "sdksupport@litle.com", "email");
+			appendChildElement(leadElement, "email", "sdksupport@litle.com");
 			appendChildElement(leadElement, "active", "yes");
+			rootElement.appendChild(leadElement);
+			
+			// TODO :: populate date and time dynamically
+			appendChildElement(rootElement, "date", "2012-05-23");
+			appendChildElement(rootElement, "time", "15:35:25");
+			
+			// TODO :: grab release and api version dynamically
+			Element versionElement = doc.createElement("version");
+			appendChildElement(versionElement, "release", "8.12.0");
+			appendChildElement(versionElement, "api", "8.12.0");
+			rootElement.appendChild(versionElement);
+			
+			Element stabilityElement = doc.createElement("stability");
+			appendChildElement(stabilityElement, "release", "stable");
+			appendChildElement(stabilityElement, "api", "stable");
+			rootElement.appendChild(stabilityElement);
+			
+			appendChildElement(rootElement, "license", "MIT");
+			appendChildElement(rootElement, "notes", "This extension implements Litle XML version 8.12&#13;\n&#13;\nAdditional features include enhanced reporting on orders, transactions, and customers.");
 			
 			// write the content into xml file
 			TransformerFactory transformerFactory = TransformerFactory
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(new File(filePath));
+			//StreamResult result = new StreamResult(new File(filePath));
 
 			// Output to console for testing
-			// StreamResult result = new StreamResult(System.out);
+			StreamResult result = new StreamResult(System.out);
 
 			transformer.transform(source, result);
 
 			System.out.println("File saved!");
 
-		} catch (ParserConfigurationException pce) {
-			pce.printStackTrace();
+		//} catch (ParserConfigurationException pce) {
+		//	pce.printStackTrace();
 		} catch (TransformerException tfe) {
 			tfe.printStackTrace();
 		}
@@ -95,6 +114,7 @@ public class LitleMagentoXMLWriter {
 	}
 
 	public static void main(String argv[]) {
-
+		LitleMagentoXMLWriter newObj = new LitleMagentoXMLWriter();
+		newObj.generateAndWriteXML("/usr/local/litle-home/aagarwal/MagentoBuild/");
 	}
 }
