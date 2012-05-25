@@ -119,7 +119,22 @@ public class LitleMagentoXMLWriter {
 					"notes",
 					"This extension implements Litle XML version 8.12&#13;\n&#13;\nAdditional features include enhanced reporting on orders, transactions, and customers.");
 
-			addNodesFromFileStructureInFolder(rootElement, "app/code/local/Litle/", "Litle");
+			Element contentsElement = doc.createElement("contents");
+			Element rootDirElement = doc.createElement("dir");
+			setAttribute(rootDirElement, "name", "/");
+			Element litleDirElement = doc.createElement("dir");
+			setAttribute(litleDirElement, "name", "Litle");
+			Element litleEmptyElement = doc.createElement("dir");
+			setAttribute(litleEmptyElement, "name", "");
+			
+			addNodesFromFileStructureInFolder(litleEmptyElement, "app/code/local/Litle/", "Litle");
+			
+			litleDirElement.appendChild(litleEmptyElement);
+			rootDirElement.appendChild(litleDirElement);
+			contentsElement.appendChild(rootDirElement);
+			
+			rootElement.appendChild(contentsElement);
+			
 			// write the content into xml file
 			TransformerFactory transformerFactory = TransformerFactory
 					.newInstance();
