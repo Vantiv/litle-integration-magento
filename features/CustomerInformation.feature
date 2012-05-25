@@ -5,7 +5,7 @@ Feature: CustomerInformation
     And see enhanced auth response data
 
   Background:
-    Given There are no rows in the database table "customer_insight"
+    Given There are no rows in the database table "litle_customer_insight"
     And I am using the sandbox
     
   @javascript @ready @creditcard
