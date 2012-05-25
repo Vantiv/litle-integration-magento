@@ -19,9 +19,9 @@ We deliver the most efficient and effective core processing available to digital
 </description>
    <license>MIT</license>
    <license_uri/>
-   <version>8.12.0</version>
+   <version>8.13.0</version>
    <stability>stable</stability>
-   <notes>This extension implements Litle XML version 8.12
+   <notes>This extension implements Litle XML version 8.13
 
 Additional features include enhanced reporting on orders, transactions, and customers.</notes>
    <authors>

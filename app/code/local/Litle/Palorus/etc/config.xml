@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Litle_Palorus>
-			<version>0.2.3</version>
+			<version>8.13.0</version>
 		</Litle_Palorus>
 	</modules>
 	<global>
@@ -15,10 +15,10 @@
 				<class>Litle_Palorus_Model_Mysql4</class>
 				<entities>
 					<insight>
-						<table>customer_insight</table>
+						<table>litle_customer_insight</table>
 					</insight>
 					<vault>
-						<table>vault</table>
+						<table>litle_vault</table>
 					</vault>
 				</entities>
 			</palorus_mysql4>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>Litle_Payments</name>
-    <version>8.12.0</version>
+    <version>8.13.0</version>
     <stability>stable</stability>
     <license>MIT</license>
     <channel>community</channel>
@@ -17,7 +17,7 @@ Why Litle?&#xD;
 &#xD;
 We deliver the most efficient and effective core processing available to digital and direct merchants. Relevant, value-added solutions help you drive more lasting and profitable customer relationships. We&#x2019;ll also show you how payments intelligence can power your business and your relationships to greater success. We support you with the best customer experience in the business.&#xD;
 </description>
-    <notes>This extension implements Litle XML version 8.12&#xD;
+    <notes>This extension implements Litle XML version 8.13&#xD;
 &#xD;
 Additional features include enhanced reporting on orders, transactions, and customers.</notes>
     <authors><author><name>Litle </name><user>Litle</user><email>sdksupport@litle.com</email></author></authors>

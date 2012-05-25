@@ -4,7 +4,7 @@ Feature: Vault
     I want to be able to see tokens in the vault table
 
   Background:
-    Given There are no rows in the database table "vault"
+    Given There are no rows in the database table "litle_vault"
     And I am using the sandbox
     
   @javascript @ready @creditcard
@@ -24,10 +24,10 @@ Feature: Vault
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
       And I follow "Log Out"
-      And the "vault" table should have a row with "9000" in the "last4" column
-      And the "vault" table should have a row like "%9000" in the "token" column
-      And the "vault" table should have a row with "MC" in the "type" column
-      And the "vault" table should have a row with "540028" in the "bin" column
+      And the "litle_vault" table should have a row with "9000" in the "last4" column
+      And the "litle_vault" table should have a row like "%9000" in the "token" column
+      And the "litle_vault" table should have a row with "MC" in the "type" column
+      And the "litle_vault" table should have a row with "540028" in the "bin" column
       
   @javascript @ready @creditcard
   Scenario: Non token transactions are not stored in the vault
@@ -46,7 +46,7 @@ Feature: Vault
       And I press "Place Order"
     Then I should see "Thank you for your purchase"
       And I follow "Log Out"
-      And the "vault" should have "0" rows
+      And the "litle_vault" should have "0" rows
       
 @javascript @ready @creditcard
 Scenario: Tokens are stored in the vault when doing sales
@@ -66,7 +66,7 @@ Scenario: Tokens are stored in the vault when doing sales
     And I press "Place Order"
   Then I should see "Thank you for your purchase"
     And I follow "Log Out"
-    And the "vault" table should have a row with "9000" in the "last4" column
-    And the "vault" table should have a row like "%9000" in the "token" column
-    And the "vault" table should have a row with "MC" in the "type" column
-    And the "vault" table should have a row with "540028" in the "bin" column
+    And the "litle_vault" table should have a row with "9000" in the "last4" column
+    And the "litle_vault" table should have a row like "%9000" in the "token" column
+    And the "litle_vault" table should have a row with "MC" in the "type" column
+    And the "litle_vault" table should have a row with "540028" in the "bin" column
