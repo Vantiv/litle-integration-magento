@@ -42,7 +42,7 @@ Feature: StoredCreditCardTransaction
         And I press "Create New Order"
         And I click on the customer "Greg Dake" in "Create New Order"
         And I press "Add Products"
-        And I click on the top row in Product Table
+        And I click on the product "vault"
         And I press "Add Selected Product(s) to Order"
         And I wait for the payments to appear
         And I choose "CreditCard"

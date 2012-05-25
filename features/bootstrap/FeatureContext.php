@@ -474,18 +474,6 @@ EOD;
     }
     
     /**
-    * @Given /^I click on the top row in Product Table$/
-    */
-    public function iClickOnTheTopRowInProductTable()
-    {
-    	$session = $this->getMink()->getSession('sahi');
-    	$page = $session->getPage();
-    
-    	$topRow = $session->getDriver()->find('/html/body/div/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div/div/div[2]/div/div/div/table/tbody/tr/td[2]');
-    	$topRow[0]->click();
-    }
-    
-    /**
     * @Given /^I click on the top row in Orders$/
     */
     public function iClickOnTheTopRowInOrders()
