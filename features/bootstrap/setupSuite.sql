@@ -22,6 +22,3 @@ INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'pa
 INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/order_status',null);
 INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/proxy','smoothproxy:8080');
 INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/cctypes','AE,DC,VI,MC,DI,JCB');
-
-drop table litle_customer_insight;
-drop table litle_vault;
