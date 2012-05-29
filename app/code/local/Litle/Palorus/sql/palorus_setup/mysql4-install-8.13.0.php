@@ -3,7 +3,11 @@
     $installer = $this;
      
     $installer->startSetup();
-     
+
+    $installer->run("
+    DROP TABLE IF EXISTS {$installer->getTable('palorus/insight')};
+    ");
+    
     $installer->run("
 CREATE TABLE {$installer->getTable('palorus/insight')} (
 customer_insight_id integer(10) unsigned NOT NULL auto_increment,
@@ -21,6 +25,10 @@ reloadable varchar(20) NULL,
 PRIMARY KEY (customer_insight_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Litle customer insight for an account';
 ");
+    
+    $installer->run("
+        DROP TABLE IF EXISTS {$installer->getTable('palorus/vault')};
+    ");
     
     $installer->run("
 CREATE TABLE {$installer->getTable('palorus/vault')} (

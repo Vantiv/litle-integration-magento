@@ -323,19 +323,22 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$lineItemArray = array();
 		foreach ($items as $itemId => $item)
 		{
-			$name[$i] = $item->getName();
-			$unitPrice[$i]=$item->getPrice();
-			$sku[$i]=$item->getSku();
-			$ids[$i]=$item->getProductId();
-			$qty[$i]=$item->getQtyToInvoice();
-				
+			$name = $item->getName();
+			$unitPrice=$item->getPrice();
+			$sku=$item->getSku();
+			$ids=$item->getProductId();
+			$qty=$item->getQtyToInvoice();
+			
+			if( strlen($name) > 26 )
+				$name = substr($name,0,26);
+			
 			$lineItemArray[$i] = array(
 			'itemSequenceNumber'=>($i+1),
-			'itemDescription'=>$name[$i],
-			'productCode'=>$ids[$i],
-			'quantity'=>$qty[$i],
-			'lineItemTotal'=>(($unitPrice[$i]*$qty[$i])*100),
-			'unitCost'=>($unitPrice[$i] * 100));
+			'itemDescription'=>$name,
+			'productCode'=>$ids,
+			'quantity'=>$qty,
+			'lineItemTotal'=>(($unitPrice*$qty)*100),
+			'unitCost'=>($unitPrice * 100));
 			$i++;
 		}
 		return $lineItemArray;
@@ -412,7 +415,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					//Mage::throwException('response code is: ' . $litleResponseCode . 'txn type is: ');
 					if(($litleResponseCode === "362") && Mage::helper("creditcard")->isStateOfOrderEqualTo($payment->getOrder(), Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE))
 					{
-						Mage::throwException("The void did not go through.  Do a refund instead.");
+						Mage::throwException("The void did not go through. Do a refund instead.");
 					}
 					else
 					{
