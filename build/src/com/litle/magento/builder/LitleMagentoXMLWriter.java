@@ -22,20 +22,38 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class LitleMagentoXMLWriter {
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
+
+public class LitleMagentoXMLWriter extends Task {
 
 	protected DocumentBuilderFactory docFactory;
 	protected DocumentBuilder docBuilder;
 	protected Document doc;
-
+	
 	protected String pathToLitleMagentoIntegrationFolder;
 	protected String pathToFolderToSaveIn;
-	protected String versionNumber;
 	
-	protected HashMap<String, String> folderToRoleMap;
-
-	public LitleMagentoXMLWriter(String versionNumber,
-			String folderToSaveInPath, String magentoIntegrationFolderPath) {
+    private String packageName = "Litle_Payments";
+    private String packageVersion;
+    private String packageStability = "stable";
+    private String packageLicense = "MIT";
+    private String packageChannel = "community";
+    private String packageExtends = "";
+    private String packageSummary = "This extension allows you to accept payments through Litle.";
+    private String packageDescription = "Installation of this extension will allow you to easily accept payments through Litle. Once installed, you can choose to accept credit cards as well as eChecks to be processed by Litle.&#13;\n&#13;\nYou will need to contact Litle to setup a merchant ID prior to processing your transaction. You can test your system against our sandbox without the need to contact Litle first.&#13;\n&#13;\nTo test with sandbox, you may enter any user name and password, and select 'Sandbox' from the drop down menu in Payment Method configuration.&#13;\n&#13;\nWhy Litle?&#13;\n&#13;\nWe deliver the most efficient and effective core processing available to digital and direct merchants. Relevant, value-added solutions help you drive more lasting and profitable customer relationships. We’ll also show you how payments intelligence can power your business and your relationships to greater success. We support you with the best customer experience in the business.&#13; ";
+    private String packageNotes = "This extension implements Litle XML&#13;\n&#13;\nAdditional features include enhanced reporting on orders, transactions, and customers.";
+    
+    private String authorName = "Litle";
+    private String authorUser = "Litle";
+    private String authorEmail = "sdksupport@litle.com";
+	
+    private String packageCompatible = "";
+    private String phpMinElement = "5.2.0";
+    private String phpMaxElement = "6.0.0";
+    
+    
+    public LitleMagentoXMLWriter() {
 		try {
 			docFactory = DocumentBuilderFactory.newInstance();
 			docBuilder = docFactory.newDocumentBuilder();
@@ -47,20 +65,160 @@ public class LitleMagentoXMLWriter {
 
 		// check if the last character in the path is "/" .. if not, then need
 		// to add it.
-		if (folderToSaveInPath.substring((folderToSaveInPath.length()) - 1)
-				.compareTo("/") == 0)
-			this.pathToFolderToSaveIn = folderToSaveInPath;
-		else
-			this.pathToFolderToSaveIn = folderToSaveInPath + "/";
-
-		this.pathToLitleMagentoIntegrationFolder = magentoIntegrationFolderPath;
-		this.versionNumber = versionNumber;
 		
 		this.folderToRoleMap = new HashMap<String, String>();
 		this.folderToRoleMap.put("Litle", "magelocal");
 		this.folderToRoleMap.put("design", "magedesign");
 		this.folderToRoleMap.put("etc","mageetc");
 	}
+    
+
+	public String getPathToLitleMagentoIntegrationFolder() {
+		return pathToLitleMagentoIntegrationFolder;
+	}
+
+	public void setPathToLitleMagentoIntegrationFolder(
+			String pathToLitleMagentoIntegrationFolder) {
+		this.pathToLitleMagentoIntegrationFolder = pathToLitleMagentoIntegrationFolder;
+	}
+
+	public String getPathToFolderToSaveIn() {
+		return pathToFolderToSaveIn;
+	}
+
+	public void setPathToFolderToSaveIn(String pathToFolderToSaveIn) {
+		this.pathToFolderToSaveIn = pathToFolderToSaveIn;
+	}
+
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
+
+	public String getPackageVersion() {
+		return packageVersion;
+	}
+
+	public void setPackageVersion(String packageVersion) {
+		this.packageVersion = packageVersion;
+	}
+
+	public String getPackageStability() {
+		return packageStability;
+	}
+
+	public void setPackageStability(String packageStability) {
+		this.packageStability = packageStability;
+	}
+
+	public String getPackageLicense() {
+		return packageLicense;
+	}
+
+	public void setPackageLicense(String packageLicense) {
+		this.packageLicense = packageLicense;
+	}
+
+	public String getPackageChannel() {
+		return packageChannel;
+	}
+
+	public void setPackageChannel(String packageChannel) {
+		this.packageChannel = packageChannel;
+	}
+
+	public String getPackageExtends() {
+		return packageExtends;
+	}
+
+	public void setPackageExtends(String packageExtends) {
+		this.packageExtends = packageExtends;
+	}
+
+	public String getPackageSummary() {
+		return packageSummary;
+	}
+
+	public void setPackageSummary(String packageSummary) {
+		this.packageSummary = packageSummary;
+	}
+
+	public String getPackageDescription() {
+		return packageDescription;
+	}
+
+	public void setPackageDescription(String packageDescription) {
+		this.packageDescription = packageDescription;
+	}
+
+	public String getPackageNotes() {
+		return packageNotes;
+	}
+
+	public void setPackageNotes(String packageNotes) {
+		this.packageNotes = packageNotes;
+	}
+
+	public String getAuthorName() {
+		return authorName;
+	}
+
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+
+	public String getAuthorUser() {
+		return authorUser;
+	}
+
+	public void setAuthorUser(String authorUser) {
+		this.authorUser = authorUser;
+	}
+
+	public String getAuthorEmail() {
+		return authorEmail;
+	}
+
+	public void setAuthorEmail(String authorEmail) {
+		this.authorEmail = authorEmail;
+	}
+
+	public String getPackageCompatible() {
+		return packageCompatible;
+	}
+
+	public void setPackageCompatible(String packageCompatible) {
+		this.packageCompatible = packageCompatible;
+	}
+
+	public String getPhpMinElement() {
+		return phpMinElement;
+	}
+
+	public void setPhpMinElement(String phpMinElement) {
+		this.phpMinElement = phpMinElement;
+	}
+
+	public String getPhpMaxElement() {
+		return phpMaxElement;
+	}
+
+	public void setPhpMaxElement(String phpMaxElement) {
+		this.phpMaxElement = phpMaxElement;
+	}
+
+	public HashMap<String, String> getFolderToRoleMap() {
+		return folderToRoleMap;
+	}
+
+	public void setFolderToRoleMap(HashMap<String, String> folderToRoleMap) {
+		this.folderToRoleMap = folderToRoleMap;
+	}
+	
+	protected HashMap<String, String> folderToRoleMap;
 
 	public boolean generateAndWriteXML() {
 		try {
@@ -68,24 +226,6 @@ public class LitleMagentoXMLWriter {
 			Element rootElement = doc.createElement("package");
 			doc.appendChild(rootElement);
 
-		    String packageName = "Litle_Payments";
-		    String packageVersion = "8.13.0";
-		    String packageStability = "stable";
-		    String packageLicense = "MIT";
-		    String packageChannel = "community";
-		    String packageExtends = "";
-		    String packageSummary = "This extension allows you to accept payments through Litle.";
-		    String packageDescription = "Installation of this extension will allow you to easily accept payments through Litle. Once installed, you can choose to accept credit cards as well as eChecks to be processed by Litle.&#13;\n&#13;\nYou will need to contact Litle to setup a merchant ID prior to processing your transaction. You can test your system against our sandbox without the need to contact Litle first.&#13;\n&#13;\nTo test with sandbox, you may enter any user name and password, and select 'Sandbox' from the drop down menu in Payment Method configuration.&#13;\n&#13;\nWhy Litle?&#13;\n&#13;\nWe deliver the most efficient and effective core processing available to digital and direct merchants. Relevant, value-added solutions help you drive more lasting and profitable customer relationships. We’ll also show you how payments intelligence can power your business and your relationships to greater success. We support you with the best customer experience in the business.&#13; ";
-		    String packageNotes = "This extension implements Litle XML version 8.12&#13;\n&#13;\nAdditional features include enhanced reporting on orders, transactions, and customers.";
-		    
-		    String authorName = "Litle";
-			String authorUser = "Litle";
-			String authorEmail = "sdksupport@litle.com";
-			
-			String packageCompatible = "";
-			String phpMinElement = "5.2.0";
-			String phpMaxElement = "6.0.0";
-		    
 			// sub elements
 			appendChildElement(rootElement, "name", packageName);
 			appendChildElement(rootElement, "version", packageVersion);
@@ -151,18 +291,14 @@ public class LitleMagentoXMLWriter {
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			// StreamResult result = new StreamResult(new
-			// File(this.pathToFolderToSaveIn + "package.xml"));
+			StreamResult result = new StreamResult(new
+			File(this.pathToFolderToSaveIn + "package.xml"));
 
 			// Output to console for testing
-			StreamResult result = new StreamResult(System.out);
+			//StreamResult result = new StreamResult(System.out);
 
 			transformer.transform(source, result);
 
-			//System.out.println("File saved!");
-
-			// } catch (ParserConfigurationException pce) {
-			// pce.printStackTrace();
 		} catch (TransformerException tfe) {
 			tfe.printStackTrace();
 		}
@@ -268,10 +404,10 @@ public class LitleMagentoXMLWriter {
 	// argv[1] == path to copy/write the files to.
 	// argv[2] == path to litle-integration-magento folder
 	public static void main(String argv[]) {
-		String versionNumber = "", pathToCopyFiles = "", pathToMagentoIntegration = "";
+		String packageVersion = "", pathToCopyFiles = "", pathToMagentoIntegration = "";
 
 		if (argv.length > 0) {
-			versionNumber = argv[0];
+			packageVersion = argv[0];
 			pathToCopyFiles = argv[1];
 			pathToMagentoIntegration = argv[2];
 		} else {
@@ -279,9 +415,24 @@ public class LitleMagentoXMLWriter {
 					.println("Insufficient number of arguments. This build utility requires 3 arguments to work correctly: Version number, Path to a folder to copy/write files to, Path to litle-integration-magento folder.");
 			return;
 		}
+		
+		LitleMagentoXMLWriter newObj = new LitleMagentoXMLWriter();
+		if (pathToCopyFiles.substring((pathToCopyFiles.length()) - 1)
+				.compareTo("/") == 0)
+			newObj.setPathToFolderToSaveIn(pathToCopyFiles);
+		else
+			newObj.setPathToFolderToSaveIn(pathToCopyFiles+ "/");
 
-		LitleMagentoXMLWriter newObj = new LitleMagentoXMLWriter(versionNumber,
-				pathToCopyFiles, pathToMagentoIntegration);
+		newObj.setPathToLitleMagentoIntegrationFolder(pathToMagentoIntegration);
+		newObj.setPackageVersion(packageVersion);
+
 		newObj.generateAndWriteXML();
+	}
+	
+	public void execute() throws BuildException {
+		if( packageVersion == null )
+			throw new BuildException("Package Version is required. Build Failed!");
+		
+		generateAndWriteXML();
 	}
 }
