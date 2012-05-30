@@ -431,7 +431,11 @@ public class LitleMagentoXMLWriter extends Task {
 	
 	public void execute() throws BuildException {
 		if( packageVersion == null )
-			throw new BuildException("Package Version is required. Build Failed!");
+			throw new BuildException("Package Version is required.");
+		if( pathToLitleMagentoIntegrationFolder == null )
+			throw new BuildException("Path to Magento is required.");
+		if( pathToFolderToSaveIn == null )
+			throw new BuildException("Export Path is required.");
 		
 		generateAndWriteXML();
 	}
