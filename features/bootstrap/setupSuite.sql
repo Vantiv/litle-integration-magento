@@ -4,6 +4,10 @@ delete from core_resource where code = 'creditcard_setup';
 delete from core_config_data where path like 'payment/CreditCard/%';
 delete from core_config_data where path like 'payment/LEcheck/%';
 
+delete from catalog_eav_attribute where attribute_id = (select attribute_id from eav_attribute where attribute_code = 'litle_subscription');
+delete from `eav_entity_attribute` where attribute_id = (select attribute_id from eav_attribute where attribute_code = 'litle_subscription');
+delete from eav_attribute where attribute_code = 'litle_subscription';
+
 INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/active','1');
 INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/title','Credit Card');
 INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/user','USER');

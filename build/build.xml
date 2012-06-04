@@ -7,7 +7,7 @@
 	<property environment="env" />
 	
 	<!-- set global properties for this build -->
-	<property name="version" value="8.13.0"/>
+	<property name="version" value="8.13.1"/>
 	<property name="pathToLitleMagentoIntegrationFolder" value="${env.WORKSPACE}"/>
 	<property name="pathToFolderToSaveIn" value="${env.WORKSPACE}output/"/>
 	

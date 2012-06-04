@@ -253,7 +253,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
  					'password'=> $this->getConfigData("password"),
 					'merchantId'=> $this->getMerchantId($payment),
 					'version'=>'8.10',
-					'merchantSdk'=>'Magento;8.13.0',
+					'merchantSdk'=>'Magento;8.13.1',
 					'reportGroup'=>$this->getMerchantId($payment),
 					'customerId'=> $order->getCustomerEmail(),
 					'url'=>$this->getConfigData("url"),	
@@ -351,8 +351,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$billing = $order->getBillingAddress();
 		$i = 0;
 		$hash = array('salesTax'=> $order->getTaxAmount()*100,
-			'discountAmount'=>$order->getDiscountAmount(),
-			'shippingAmount'=>$order->getShippingAmount(),
+			'discountAmount'=>$order->getDiscountAmount()*100,
+			'shippingAmount'=>$order->getShippingAmount()*100,
 			'destinationPostalCode'=>$billing->getPostcode(),
 			'destinationCountryCode'=>$billing->getCountry(),
 			'orderDate'=>$this->getOrderDate($payment),
