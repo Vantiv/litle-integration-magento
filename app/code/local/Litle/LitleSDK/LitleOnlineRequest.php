@@ -325,7 +325,7 @@ class LitleOnlineRequest
 			$hash_out['merchantSdk'] = $hash_in['merchantSdk'];
 		}
 		else {
-			$hash_out['merchantSdk'] = 'PHP;8.13.1';
+			$hash_out['merchantSdk'] = 'PHP;8.13.2';
 		}
 		if(isset($hash_in['id'])) {
 			$hash_out['id'] = $hash_in['id'];

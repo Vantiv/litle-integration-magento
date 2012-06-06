@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>Litle_Payments</name>
-    <version>8.13.1</version>
+    <version>8.13.2</version>
     <stability>stable</stability>
     <license>MIT</license>
     <channel>community</channel>
