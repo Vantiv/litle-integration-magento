@@ -30,6 +30,7 @@ $_reportGroup = $this->getReportGroup();
 $_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
 $_paypageUrl = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
 $_paypageEnabled = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_enable");
+$_isLoggedIn = Mage::helper('customer')->isLoggedIn();
 ?>
 
 <script type="text/javascript">
@@ -73,24 +74,29 @@ selectmenu.onchange=function(){
 	$('creditcard_cc_type_label').hide();
 	$('creditcard_cc_number_label').hide();
 	$('creditcard_cc_expDate_label').hide();
+	$('creditcard_cc_should_save_label').hide();
 	$('creditcard_cc_type').hide();
 	$('creditcard_cc_number').hide();
 	$('creditcard_expiration').hide();
 	$('creditcard_expiration_yr').hide();
+	$('creditcard_cc_should_save').hide();
 	$('creditcard_cc_cid').value="";
 }
  if (chosenoption.value == 0){	
     $('creditcard_cc_type_label').show();
 	$('creditcard_cc_number_label').show();
 	$('creditcard_cc_expDate_label').show();
+	$('creditcard_cc_should_save_label').show();
   	$('creditcard_cc_type').show();
 	$('creditcard_cc_number').show();
 	$('creditcard_expiration').show();
 	$('creditcard_expiration_yr').show();
+	$('creditcard_cc_should_save').show();
 	$('creditcard_cc_cid').value="";
 	$('creditcard_cc_type').value = "";
 	$('creditcard_expiration').value = "";
 	$('creditcard_expiration_yr').value = "";
+	$('creditcard_cc_should_save').value="false"
  }
 }
 </script>
@@ -146,6 +152,17 @@ selectmenu.onchange=function(){
             <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
         </div>
     </li>
+<?php endif; ?>
+
+<?php if($_isLoggedIn && $_paypageEnabled == 1):?>
+   <li id="<?php echo $_code ?>_cc_type_should_save_div">
+       <label for="<?php echo $_code ?>_cc_should_save"><?php echo $this->__('Save Card In My Account') ?></label>
+       <div class="input-box">
+           <div class="v-fix">
+               <input type="checkbox" title="<?php echo $this->__('Save Card In My Account') ?>" class="input-checkbox" id="<?php echo $_code ?>_cc_should_save" name="payment[cc_should_save]" />
+           </div>
+       </div>
+   </li>
 <?php endif; ?>
 
 	<?php if($_paypageEnabled == 1):?>

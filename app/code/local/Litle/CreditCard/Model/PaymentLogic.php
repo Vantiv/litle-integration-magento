@@ -93,6 +93,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
 			$info->setAdditionalInformation('paypage_order_id', $data->getOrderId());
 			$info->setAdditionalInformation('cc_vaulted', $data->getCcVaulted());
+			$info->setAdditionalInformation('cc_should_save', $data->getCcShouldSave());
 		}
 		return parent::assignData($data);
 	}
@@ -337,8 +338,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			'itemDescription'=>$name,
 			'productCode'=>$ids,
 			'quantity'=>$qty,
-			'lineItemTotal'=>(($unitPrice*$qty)*100),
-			'unitCost'=>($unitPrice * 100));
+			'lineItemTotal'=>Mage::helper("creditcard")->formatAmount(($unitPrice*$qty),true),
+			'unitCost'=>Mage::helper("creditcard")->formatAmount(($unitPrice),true));
 			$i++;
 		}
 		return $lineItemArray;
@@ -350,13 +351,18 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$order = $payment->getOrder();
 		$billing = $order->getBillingAddress();
 		$i = 0;
-		$hash = array('salesTax'=> $order->getTaxAmount()*100,
-			'discountAmount'=>$order->getDiscountAmount()*100,
-			'shippingAmount'=>$order->getShippingAmount()*100,
+		Mage::log(Mage::helper("creditcard")->formatAmount($order->getTaxAmount(),true));
+		Mage::log(Mage::helper("creditcard")->formatAmount($order->getDiscountAmount(),true));
+		Mage::log(Mage::helper("creditcard")->formatAmount($order->getShippingAmount(),true));
+		Mage::log(Mage::helper("creditcard")->formatAmount($order->getTaxAmount(),true));
+		
+		$hash = array('salesTax'=> Mage::helper("creditcard")->formatAmount($order->getTaxAmount(),true),
+			'discountAmount'=> Mage::helper("creditcard")->formatAmount($order->getDiscountAmount(),true),
+			'shippingAmount'=> Mage::helper("creditcard")->formatAmount($order->getShippingAmount(),true),
 			'destinationPostalCode'=>$billing->getPostcode(),
 			'destinationCountryCode'=>$billing->getCountry(),
 			'orderDate'=>$this->getOrderDate($payment),
-			'detailTax'=>array(array('taxAmount'=>$order->getTaxAmount()*100)),
+			'detailTax'=>array(array('taxAmount'=>Mage::helper("creditcard")->formatAmount($order->getTaxAmount(),true))),
 			'lineItemData' => $this->getLineItemData($payment)
 		);
 		return $hash;
@@ -472,7 +478,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		else{
 			$order = $payment->getOrder();
 			$orderId =  $order->getIncrementId();
-			$amountToPass = ($amount* 100);
+			$amountToPass = Mage::helper("creditcard")->formatAmount($amount,true);
+			Mage::log("amounttopass is: " . $amountToPass);
 			if (!empty($order)){
 				$hash = array(
 				 					'orderId'=> $orderId,
@@ -492,7 +499,10 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleResponse = $litleRequest->authorizationRequest($hash_in);
 				$this->processResponse($payment,$litleResponse);
 				Mage::helper("palorus")->saveCustomerInsight($payment, $litleResponse);
-				Mage::helper("palorus")->saveVault($payment, $litleResponse);
+				$info = $this->getInfoInstance();
+				if( !is_null($info->getAdditionalInformation('cc_should_save')) ){
+					Mage::helper("palorus")->saveVault($payment, $litleResponse);
+				}
 			}
 		}
 	}
@@ -522,7 +532,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		if (!empty($order)){
 
 			$orderId =$order->getIncrementId();
-			$amountToPass = ($amount* 100);
+			$amountToPass = Mage::helper("creditcard")->formatAmount($amount,true);
 			$isPartialCapture = ($amount < $order->getGrandTotal()) ? "true" : "false";
 			$isSale = ($payment->getCcTransId() != NULL)? FALSE : TRUE;
 
@@ -552,7 +562,10 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			{
 				$litleResponse = $litleRequest->saleRequest($hash_in);
 				Mage::helper("palorus")->saveCustomerInsight($payment, $litleResponse);
-				Mage::helper("palorus")->saveVault($payment, $litleResponse);
+				$info = $this->getInfoInstance();
+				if( !is_null($info->getAdditionalInformation('cc_should_save')) ){
+					Mage::helper("palorus")->saveVault($payment, $litleResponse);
+				}
 			} else {
 				$litleResponse = $litleRequest->captureRequest($hash_in);
 			}
@@ -570,7 +583,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$order = $payment->getOrder();
 		$isPartialRefund = ($amount < $order->getGrandTotal()) ? true : false;
 		
-			$amountToPass = ($amount* 100);
+			$amountToPass = Mage::helper("creditcard")->formatAmount($amount,true);
 			if (!empty($order)){
 				$hash = array(
 							'litleTxnId' => $payment->getCcTransId(),

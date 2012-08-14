@@ -116,4 +116,26 @@ class HelperDataTest extends PHPUnit_Framework_TestCase
 		array(NULL,'')
 		);
 	}
+	
+	/**
+	* @dataProvider providerFormatAmount
+	*/
+	public function testFormatAmount($input1, $input2, $expected) {
+		$this->assertEquals($expected, Litle_CreditCard_Helper_Data::formatAmount($input1, $input2));
+	}
+	
+	public function providerFormatAmount() {
+		return array(
+		array('10.00', true, '1000'),
+		array('10.10', true, '1010'),
+		array('10.101', true, '1011'),
+		array(NULL, true, ""),
+		array('', true, ""),
+		array('10.00', false, '1000'),
+		array('10.10', false, '1010'),
+		array('10.101', false, '1010'),
+		array(NULL, false, ""),
+		array('', false, "")
+		);
+	}
 }
