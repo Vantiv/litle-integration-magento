@@ -1,7 +1,7 @@
 <layout version="0.1.0">
     <checkout_onepage_index>
         <reference name="head">
-    		<block type="page/html" name="litle3.js" output="toHtml" template="payment/form/litlejs.phtml"/> 
+    		<block type="page/html" name="litle3.js" output="toHtml" template="litle/form/litlejs.phtml"/>
         </reference>
     </checkout_onepage_index>
 </layout>

@@ -27,10 +27,16 @@
 
 class Litle_CreditCard_Block_Form_CreditCard extends Mage_Payment_Block_Form
 {
+	/**
+	 *
+	 * @var array
+	 */
+	protected $_storedCards = null;
+
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('payment/form/litlecc.phtml');
+        $this->setTemplate('litle/form/litlecc.phtml');
     }
 
     /**
@@ -42,17 +48,17 @@ class Litle_CreditCard_Block_Form_CreditCard extends Mage_Payment_Block_Form
     {
         return Mage::getSingleton('payment/config');
     }
-    
+
     public function getCurrency()
     {
     	return Mage::app()->getStore()->getCurrentCurrencyCode();
     }
-    
+
     public function getMerchantIdMap()
     {
     	return Mage::getStoreConfig('payment/CreditCard/merchant_id');
     }
-    
+
     public function getReportGroup()
     {
     	$string2Eval = 'return array' . $this->getMerchantIdMap() . ";";
@@ -149,7 +155,7 @@ class Litle_CreditCard_Block_Form_CreditCard extends Mage_Payment_Block_Form
     * solo/switch card start year
     * @return array
     */
-     public function getSsStartYears()
+    public function getSsStartYears()
     {
         $years = array();
         $first = date("Y");
@@ -160,6 +166,36 @@ class Litle_CreditCard_Block_Form_CreditCard extends Mage_Payment_Block_Form
         }
         $years = array(0=>$this->__('Year'))+$years;
         return $years;
+    }
+
+    public function getPaypageEnabled()
+    {
+    	return Mage::getStoreConfig('payment/CreditCard/paypage_enable');
+    }
+
+    public function getVaultEnabled()
+    {
+    	return Mage::helper('palorus')->isVaultEnabled();
+    }
+
+    /**
+     *
+     * @return Litle_Palorus_Model_Mysql4_Vault_Collection
+     */
+    public function getStoredCards()
+    {
+    	if (is_null($this->_storedCards)) {
+    		$this->_storedCards = Mage::getModel('palorus/vault')->uniqueCreditCard(Mage::helper('customer')->getCustomer()->getEntityId());
+    	}
+    	return $this->_storedCards;
+    }
+
+    public function hasStoredCards()
+    {
+    	if (count($this->getStoredCards())) {
+    		return true;
+    	}
+    	return false;
     }
 
     /**

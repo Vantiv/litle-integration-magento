@@ -4,22 +4,27 @@
 class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
+	/**
+	 *
+	 * @param Mage_Payment_Model_Abstract $payment
+	 * @param unknown_type $litleResponse
+	 */
 	public function saveCustomerInsight($payment, $litleResponse) {
 		preg_match('/.*(\d\d\d\d)/', $payment->getCcNumber(), $matches);
 		$last4 = $matches[1];
 		$data = array(
-						'customer_id' => $payment->getOrder()->getCustomerId(), 
-						'order_number' => XMLParser::getNode($litleResponse, 'orderId'),
-						'order_id' => $payment->getOrder()->getId(),
-						'affluence' => Litle_Palorus_Helper_Data::formatAffluence(XMLParser::getNode($litleResponse,"affluence")),
-						'last' => $last4,
-						'order_amount' => Litle_Palorus_Helper_Data::formatAvailableBalance($amountToPass),
-						'affluence' => Litle_Palorus_Helper_Data::formatAffluence(XMLParser::getNode($litleResponse,"affluence")),
-						'issuing_country' => XMLParser::getNode($litleResponse, 'issuerCountry'),
-						'prepaid_card_type' => Litle_Palorus_Helper_Data::formatPrepaidCardType(XMLParser::getNode($litleResponse, 'prepaidCardType')),
-						'funding_source'=> Litle_Palorus_Helper_Data::formatFundingSource(XMLParser::getNode($litleResponse, 'type')),
-						'available_balance' => Litle_Palorus_Helper_Data::formatAvailableBalance(XMLParser::getNode($litleResponse, 'availableBalance')),
-						'reloadable' => Litle_Palorus_Helper_Data::formatReloadable(XMLParser::getNode($litleResponse, 'reloadable')),
+			'customer_id' => $payment->getOrder()->getCustomerId(),
+			'order_number' => XMLParser::getNode($litleResponse, 'orderId'),
+			'order_id' => $payment->getOrder()->getId(),
+			'affluence' => Litle_Palorus_Helper_Data::formatAffluence(XMLParser::getNode($litleResponse,"affluence")),
+			'last' => $last4,
+			'order_amount' => Litle_Palorus_Helper_Data::formatAvailableBalance($payment->getAmountAuthorized()),
+			'affluence' => Litle_Palorus_Helper_Data::formatAffluence(XMLParser::getNode($litleResponse,"affluence")),
+			'issuing_country' => XMLParser::getNode($litleResponse, 'issuerCountry'),
+			'prepaid_card_type' => Litle_Palorus_Helper_Data::formatPrepaidCardType(XMLParser::getNode($litleResponse, 'prepaidCardType')),
+			'funding_source'=> Litle_Palorus_Helper_Data::formatFundingSource(XMLParser::getNode($litleResponse, 'type')),
+			'available_balance' => Litle_Palorus_Helper_Data::formatAvailableBalance(XMLParser::getNode($litleResponse, 'availableBalance')),
+			'reloadable' => Litle_Palorus_Helper_Data::formatReloadable(XMLParser::getNode($litleResponse, 'reloadable')),
 		);
 		Mage::getModel('palorus/insight')->setData($data)->save();
 	}
@@ -32,7 +37,7 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 			return;
 		}
 		$data = array(
-			'customer_id' => $payment->getOrder()->getCustomerId(), 
+			'customer_id' => $payment->getOrder()->getCustomerId(),
 			'order_id' => $payment->getOrder()->getId(),
 			'last4' => $last4,
 			'token'=> XMLParser::getNode($litleResponse, 'litleToken'),
@@ -41,13 +46,18 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		);
 		Mage::getModel('palorus/vault')->setData($data)->save();
 	}
-	
+
+	public function isVaultEnabled()
+	{
+		return Mage::getStoreConfig('payment/CreditCard/vault_enable');
+	}
+
 	public function getBaseUrl() {
 		$litle = new Litle_CreditCard_Model_PaymentLogic();
 		$url = $litle->getConfigData("url");
-		return Litle_Palorus_Helper_Data::getBaseUrlFrom($url);		
+		return Litle_Palorus_Helper_Data::getBaseUrlFrom($url);
 	}
-	
+
 	static public function getBaseUrlFrom($url) {
 		if(preg_match("/payments/",$url)) {
 			$baseUrl = "https://reports.litle.com";
@@ -66,7 +76,7 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return $baseUrl;
 	}
-	
+
 
 	static public function formatAvailableBalance ($balance)
 	{

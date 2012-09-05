@@ -4,7 +4,7 @@ class Litle_LEcheck_Block_Form_LEcheck extends Mage_Payment_Block_Form
 	protected function _construct()
 	{
 		parent::_construct();
-		$this->setTemplate('payment/form/litleecheck.phtml');
+		$this->setTemplate('litle/form/litleecheck.phtml');
 	}
 
 	public function getAccountAvailableTypes()
