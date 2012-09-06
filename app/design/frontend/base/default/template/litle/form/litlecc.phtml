@@ -26,7 +26,6 @@
 /* @var $this Litle_CreditCard_Block_Form_CreditCard  */
 ?>
 <?php
-$purchases = Mage::helper('creditcard')->uniqueCreditCard(Mage::helper('customer')->getCustomer()->getEntityId());
 $_reportGroup = $this->getReportGroup();
 $_paypageId = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_id");
 $_paypageUrl = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigData("paypage_url");
@@ -64,9 +63,7 @@ $_id = $_time . substr($_session,13);
             </select>
 		</div>
 	</li>
-	<?php endif ?>
 
-	<?php if ($this->getPaypageEnabled() && $this->hasStoredCards()): ?>
 	<script type="text/javascript">
 	Event.observe($("<?php echo $_code ?>_cc_vaulted"), 'change', function() {
 		if ($F(this) != '0') {
@@ -98,8 +95,8 @@ $_id = $_time . substr($_session,13);
     </li>
     <li class="new-card">
         <label id="creditcard_cc_number_label" for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
-        <div class="input-box">
-            <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="" />
+        <div class="input-box"> <!-- validate-cc-number  -->
+            <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-type" value="" />
         </div>
     </li>
     <li id="<?php echo $_code ?>_cc_type_exp_div" class="new-card">

@@ -240,33 +240,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return null;
 	}
 
-	/**
-	 * Prepare information to store this record in the Litle Vault
-	 *
-	 * @param Varien_Object $payment
-	 * @return array
-	 */
-	public function getVaultInformation(Varien_Object $payment)
-	{
-		$retArray = array();
-
-		/* @var $order Mage_Sales_Model_Order */
-		$order = $payment->getOrder();
-
-		$vault = Mage::getModel('palorus/vault')
-			->setOrderId($order->getIncrementId())
-			->setCustomerId($order->getCustomerId())
-			->setLast4($this->getCcLast4($payment))
-			->setType($this->litleCcTypeEnum($payment))
-			->save();
-
-		$retArray['id'] = $vault->getId();
-		$retArray['customerId'] = $order->getCustomerEmail();
-		$retArray['reportGroup'] = $this->getMerchantId($payment);
-
-		return $retArray;
-	}
-
 	public function getIpAddress(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
@@ -478,10 +451,10 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		if (!is_null($this->getUpdater($litleResponse, 'tokenResponse')) &&
 			!is_null($this->getUpdater($litleResponse, 'tokenResponse', 'litleToken'))) {
 
-			$vault = Mage::getModel('palorus/vault')->load($this->getUpdater($litleResponse, 'tokenResponse', 'id'))
-				->setToken($this->getUpdater($litleResponse, 'tokenResponse', 'litleToken'))
-				->setBin($this->getUpdater($litleResponse, 'tokenResponse', 'bin'))
-				->save();
+			$vault = Mage::getModel('palorus/vault')->setTokenFromPayment(
+					$payment,
+					$this->getUpdater($litleResponse, 'tokenResponse', 'litleToken'),
+					$this->getUpdater($litleResponse, 'tokenResponse', 'bin'));
 		}
 	}
 
@@ -533,8 +506,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 						->setIsTransactionClosed(0)
 						->setTransactionAdditionalInfo('additional_information',
 							XMLParser::getNode($litleResponse, 'message'));
-
-					$this->_saveToken($payment, $litleResponse);
 				}
 				return true;
 			}
@@ -578,11 +549,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 				$info = $this->getInfoInstance();
 
-				// Add tokenization
-				if (Mage::helper('palorus')->isVaultEnabled() && $info->getAdditionalInformation('cc_should_save')) {
-					$hash['registerTokenRequest'] = $this->getVaultInformation($payment);
-				}
-
 				$payment_hash = $this->creditCardOrPaypageOrToken($payment);
 				$hash_temp = array_merge($hash, $payment_hash);
 				$merchantData = $this->merchantData($payment);
@@ -591,12 +557,15 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$litleRequest = new LitleOnlineRequest();
 				$litleResponse = $litleRequest->authorizationRequest($hash_in);
 				$this->processResponse($payment, $litleResponse);
+
 				Mage::helper('palorus')->saveCustomerInsight($payment, $litleResponse);
-				if (! is_null($info->getAdditionalInformation('cc_should_save'))) {
-					Mage::helper('palorus')->saveVault($payment, $litleResponse);
+				if (!is_null($info->getAdditionalInformation('cc_should_save'))) {
+					$this->_saveToken($payment, $litleResponse);
 				}
 			}
 		}
+
+		return $this;
 	}
 
 	/**
@@ -652,13 +621,15 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				Mage::helper('palorus')->saveCustomerInsight($payment, $litleResponse);
 				$info = $this->getInfoInstance();
 				if (! is_null($info->getAdditionalInformation('cc_should_save'))) {
-					Mage::helper('palorus')->saveVault($payment, $litleResponse);
+					$this->_saveToken($payment, $litleResponse);
 				}
 			} else {
 				$litleResponse = $litleRequest->captureRequest($hash_in);
 			}
 		}
 		$this->processResponse($payment, $litleResponse);
+
+		return $this;
 	}
 
 	/**
@@ -711,10 +682,15 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			}
 		}
 		$this->processResponse($payment, $litleResponse);
+
+		return $this;
 	}
 
 	public function cancel(Varien_Object $payment)
 	{
 		$this->void($payment);
+
+
+		return $this;
 	}
 }

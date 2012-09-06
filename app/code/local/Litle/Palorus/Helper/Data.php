@@ -77,6 +77,19 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		return $baseUrl;
 	}
 
+	public function litleCcTypeEnum(Varien_Object $payment)
+	{
+		$typeEnum = '';
+		if ($payment->getCcType() == 'AE') {
+			$typeEnum = 'AX';
+		} elseif ($payment->getCcType() == 'JCB') {
+			$typeEnum = 'JC';
+		} else {
+			$typeEnum = $payment->getCcType();
+		}
+		return $typeEnum;
+	}
+
 
 	static public function formatAvailableBalance ($balance)
 	{

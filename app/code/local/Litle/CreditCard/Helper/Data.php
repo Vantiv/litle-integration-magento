@@ -27,10 +27,6 @@ class Litle_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
 		return ($this->isMOPLitleCC($mop) || $this->isMOPLitleECheck($mop));
 	}
 
-	public function uniqueCreditCard($customerId) {
-		return Mage::getModel('palorus/vault')->uniqueCreditCard($customerId);
-	}
-
 	// This method converts dollars to cents, and takes care of trailing decimals if any.
 	public function formatAmount($amountInDecimal, $roundUp) {
 		if( empty($amountInDecimal) || $amountInDecimal === "" )
