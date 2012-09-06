@@ -46,9 +46,9 @@ implements Mage_Adminhtml_Block_Widget_Tab_Interface
 	{
 		$params = array(
 				'customer_id' => $this->getCustomer()->getId(),
-				'profile_id' => $card->getId()
+				'vault_id' => $card->getId()
 		);
-		return $this->getUrl('vaultadmin/adminhtml_customer/deleteCard', $params);
+		return $this->getUrl('palorus/adminhtml_vault/deleteCard', $params);
 	}
 
 	/**
