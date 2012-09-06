@@ -46,6 +46,7 @@ class Litle_CreditCard_Block_Form_CreditCard extends Mage_Payment_Block_Form
 		return Mage::getSingleton('payment/config');
 	}
 
+
 	public function getCurrency()
 	{
 		return Mage::app()->getStore()->getCurrentCurrencyCode();
@@ -185,9 +186,7 @@ class Litle_CreditCard_Block_Form_CreditCard extends Mage_Payment_Block_Form
 	public function getStoredCards()
 	{
 		if (is_null($this->_storedCards)) {
-			$this->_storedCards = Mage::getModel('palorus/vault')->visibleStoredCards(
-					Mage::helper('customer')->getCustomer()
-						->getEntityId());
+			$this->_storedCards = Mage::getModel('palorus/vault')->getCollection()->addCustomerFilter(Mage::helper('palorus')->getCustomer());
 		}
 		return $this->_storedCards;
 	}

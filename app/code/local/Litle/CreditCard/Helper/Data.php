@@ -45,4 +45,15 @@ class Litle_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
 		Mage::log("Outgoing amount is: " . $amountToReturn);
 		return $amountToReturn;
 	}
+
+	/**
+	 * Are we using the sandbox?
+	 *
+	 * @return boolean
+	 */
+	public function isSandbox()
+	{
+		$url = Mage::getStoreConfig('payment/CreditCard/url');
+		return (stristr($url, '.testlitle.com/sandbox') !== false);
+	}
 }

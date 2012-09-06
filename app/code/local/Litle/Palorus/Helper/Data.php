@@ -3,6 +3,40 @@
 
 class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 {
+	/**
+	 * Returns the checkout session.
+	 *
+	 * @return Mage_Core_Model_Session_Abstract
+	 */
+	public function getCheckout ()
+	{
+		if (Mage::app()->getStore()->isAdmin()) {
+			return Mage::getSingleton('adminhtml/session_quote');
+		}
+		else {
+			return Mage::getSingleton('checkout/session');
+		}
+	}
+
+	/**
+	 * Returns the quote.
+	 *
+	 * @return Mage_Sales_Model_Quote
+	 */
+	public function getQuote ()
+	{
+		return $this->getCheckout()->getQuote();
+	}
+
+	/**
+	 * Returns the logged in user.
+	 *
+	 * @return Mage_Customer_Model_Customer
+	 */
+	public function getCustomer ()
+	{
+		return $this->getQuote()->getCustomer();
+	}
 
 	/**
 	 *
@@ -27,24 +61,6 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 			'reloadable' => Litle_Palorus_Helper_Data::formatReloadable(XMLParser::getNode($litleResponse, 'reloadable')),
 		);
 		Mage::getModel('palorus/insight')->setData($data)->save();
-	}
-
-	public function saveVault($payment, $litleResponse) {
-		preg_match('/.*(\d\d\d\d)/', $payment->getCcNumber(), $matches);
-		$last4 = $matches[1];
-		$token = XMLParser::getNode($litleResponse, 'litleToken');
-		if($token == NULL) {
-			return;
-		}
-		$data = array(
-			'customer_id' => $payment->getOrder()->getCustomerId(),
-			'order_id' => $payment->getOrder()->getId(),
-			'last4' => $last4,
-			'token'=> XMLParser::getNode($litleResponse, 'litleToken'),
-			'type' => XMLParser::getNode($litleResponse, 'type'),
-			'bin' => XMLParser::getNode($litleResponse, 'bin')
-		);
-		Mage::getModel('palorus/vault')->setData($data)->save();
 	}
 
 	public function isVaultEnabled()
@@ -77,6 +93,12 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		return $baseUrl;
 	}
 
+	/**
+	 * Convert from Magento card types to Litle
+	 *
+	 * @param Varien_Object $payment
+	 * @return string
+	 */
 	public function litleCcTypeEnum(Varien_Object $payment)
 	{
 		$typeEnum = '';
@@ -87,6 +109,25 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		} else {
 			$typeEnum = $payment->getCcType();
 		}
+		return $typeEnum;
+	}
+
+	/**
+	 * Convert from Litle card types to Magento card types
+	 *
+	 * @param string $type
+	 * @return string
+	 */
+	public function mageCcTypeLitle($type)
+	{
+		$typeEnum = $type;
+
+		if ($type == 'AX') {
+			$typeEnum = 'AE';
+		} elseif ($type == 'JC') {
+			$typeEnum = 'JCB';
+		}
+
 		return $typeEnum;
 	}
 

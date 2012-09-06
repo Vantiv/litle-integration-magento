@@ -44,6 +44,8 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 			$vault = Mage::getModel('palorus/vault');
 		}
 
+		// @TODO Set the order_type to track recurring/normal tokens
+
 		$order = $payment->getOrder();
 		Mage::helper('core')->copyFieldset('palorus_vault_order', 'to_vault', $order, $vault);
 		Mage::helper('core')->copyFieldset('palorus_vault_payment', 'to_vault', $payment, $vault);
@@ -58,5 +60,19 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 		$order->setLitleVaultId($vault->getId());
 
 		return $vault;
+	}
+
+	public function getTypeName()
+	{
+		if ($this->getType()) {
+			$type = Mage::helper('palorus')->mageCcTypeLitle($this->getType());
+			$types = Mage::getSingleton('payment/config')->getCcTypes();
+
+			if (array_key_exists($type, $types)) {
+				return $types[$type];
+			}
+			return $type;
+		}
+		return '';
 	}
 }

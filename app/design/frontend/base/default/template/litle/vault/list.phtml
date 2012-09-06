@@ -1,0 +1,49 @@
+<?php /* @var $this Litle_Palorus_Block_Vault_List */ ?>
+<div class="page-title title-buttons">
+	<h1><?php echo $this->__('Stored Credit Cards') ?></h1>
+	<!-- <button type="button" class="button" onclick="location.href='<?php echo $this->getAddUrl() ?>';" title="<?php echo $this->__('Add New Credit Card Profile') ?>"><span><span><?php echo $this->__('Add New Credit Card Profile') ?></span></span></button> -->
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<ul>
+<?php $cards = $this->getStoredCards() ?>
+<?php if (count($cards)): ?>
+	<?php foreach($cards as $card): ?>
+		<li class="info-box">
+			<dl>
+			<?php if ($card) { ?>
+				<dt><?php echo $this->__('Card Type'); ?>:</dt>
+				<dd><?php echo $card->getTypeName(); ?></dd>
+				<dt><?php echo $this->__('Card Number'); ?>:</dt>
+				<dd><?php echo $this->__('Ends in') . ' ' . $card->getLast4(); ?></dd>
+			<?php } ?>
+			</dl>
+			<p class="actions">
+				<!-- <a style="margin-left: 0;" href="<?php echo $this->getEditUrl($card) ?>"><?php echo $this->__('Edit') ?></a>  -->
+				<a class="btn-blank" href="#" onclick="return deleteCard('<?php echo $card->getId() ?>');"><?php echo $this->__('Delete') ?></a>
+			</p>
+		</li>
+	<?php endforeach; ?>
+<?php else: ?>
+	<li class="item empty">
+		<p><?php echo $this->__('You have no stored credit cards.') ?></p>
+	</li>
+<?php endif ?>
+</ul>
+<script type="text/javascript">
+//<![CDATA[
+    function deleteCard (cardId) {
+        if (confirm('<?php echo $this->__('Are you sure you want to delete this profile?') ?>')) {
+            window.location='<?php echo $this->getDeleteUrl() ?>vault_id/' + cardId;
+        }
+        return false;
+    }
+//]]>
+</script>
+<style type="text/css">
+	.info-box { float: left; width: 48%; margin-right: 2%; }
+	.info-box:nth-child(even) { float: right; margin-right: 0; }
+	.info-box dl { margin: 10px 17px 17px; }
+	.info-box dt { float: left; clear: left; width: 30%; margin-right: 5%; font-weight: bold; }
+	.info-box dd { float: left; width: 65%; }
+	p.actions { clear: both; padding: 10px 17px 17px; }
+</style>

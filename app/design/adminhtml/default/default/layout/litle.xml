@@ -6,9 +6,13 @@
                 <name>my_custom_tab</name>
                 <block>palorus/adminhtml_palorus_insight_tab</block>
             </action>
+            <action method="addTab">
+                <name>litle_vault_tab</name>
+                <block>palorus/adminhtml_customer_edit_tab_vault</block>
+            </action>
         </reference>
     </adminhtml_customer_edit>
-    
+
     <palorus_adminhtml_myform_index>
         <update handle="palorus_myform_index"/>
         <reference name="content">
