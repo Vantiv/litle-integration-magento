@@ -23,9 +23,9 @@ $installer->run("
 	  `updated` datetime DEFAULT NULL,
 	  `created` datetime DEFAULT NULL,
 	  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
-  	  `order_type` varchar(16) DEFAULT NULL,
+  	  `order_type` varchar(32) DEFAULT 'ecommerce',
 	  PRIMARY KEY (`vault_id`),
-	  UNIQUE KEY `token` (`token`)
+	  UNIQUE KEY `customer_token` (`customer_id`, `token`)
 	) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 ");
 
@@ -50,8 +50,8 @@ $installer->run("
 		ADD `created` DATETIME NULL DEFAULT NULL,
 		ADD `order_number` INT UNSIGNED NULL DEFAULT NULL AFTER  `order_id`,
 		ADD `is_visible` TINYINT( 1 ) NOT NULL DEFAULT  '1',
-		ADD  `order_type` VARCHAR( 16 ) NULL DEFAULT NULL,
-		ADD UNIQUE (`token`);
+		ADD `order_type` VARCHAR( 32 ) NULL DEFAULT 'ecommerce',
+		ADD UNIQUE (`customer_id`, `token`)
 ");
 
 $installer->run("INSERT INTO `{$installer->getTable('palorus/vault')}` SELECT * FROM `_{$installer->getTable('palorus/vault')}_tmp`;");

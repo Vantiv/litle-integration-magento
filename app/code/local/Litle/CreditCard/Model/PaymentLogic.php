@@ -84,11 +84,11 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 	public function assignData($data)
 	{
-		if ($this->getConfigData('paypage_enabled')) {
-			if (! ($data instanceof Varien_Object)) {
-				$data = new Varien_Object($data);
-			}
+		if (! ($data instanceof Varien_Object)) {
+			$data = new Varien_Object($data);
+		}
 
+		if ($this->getConfigData('paypage_enabled')) {
 			$info = $this->getInfoInstance();
 			$info->setAdditionalInformation('paypage_enabled', $data->getPaypageEnabled());
 			$info->setAdditionalInformation('paypage_registration_id', $data->getPaypageRegistrationId());
@@ -164,9 +164,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 	public function getTokenInfo($payment)
 	{
-		$info = $this->getInfoInstance();
-
-		$vaultIndex = $info->getAdditionalInformation('cc_vaulted');
+		$vaultIndex = $this->getInfoInstance()->getAdditionalInformation('cc_vaulted');
 		$vaultCard = Mage::getModel('palorus/vault')->load($vaultIndex);
 
 		$retArray = array();
@@ -174,8 +172,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$retArray['litleToken'] = $vaultCard->getToken();
 		$retArray['cardValidationNum'] = $payment->getCcCid();
 
-		$payment->setCcLast4(substr($retArray['litleToken'], - 4));
-		$payment->setCcType($retArray['type']);
+		$payment->setCcLast4($vaultCard->getLast4());
+		$payment->setCcType($vaultCard->getType());
 
 		return $retArray;
 	}
@@ -253,8 +251,11 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$order = $payment->getOrder();
 		$currency = $order->getOrderCurrencyCode();
+
+		// @TODO this needs to be re-done properly with a customer config field.
 		$string2Eval = 'return array' . $this->getConfigData('merchant_id') . ';';
 		$merchant_map = eval($string2Eval);
+
 		$merchantId = $merchant_map[$currency];
 		return $merchantId;
 	}
@@ -364,11 +365,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	{
 		$order = $payment->getOrder();
 		$billing = $order->getBillingAddress();
-		$i = 0;
-		Mage::log(Mage::helper('creditcard')->formatAmount($order->getTaxAmount(), true));
-		Mage::log(Mage::helper('creditcard')->formatAmount($order->getDiscountAmount(), true));
-		Mage::log(Mage::helper('creditcard')->formatAmount($order->getShippingAmount(), true));
-		Mage::log(Mage::helper('creditcard')->formatAmount($order->getTaxAmount(), true));
 
 		$hash = array(
 				'salesTax' => Mage::helper('creditcard')->formatAmount($order->getTaxAmount(), true),
@@ -455,6 +451,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					$payment,
 					$this->getUpdater($litleResponse, 'tokenResponse', 'litleToken'),
 					$this->getUpdater($litleResponse, 'tokenResponse', 'bin'));
+
+			$this->getInfoInstance()->setAdditionalInformation('vault_id', $vault->getId());
 		}
 	}
 
@@ -532,12 +530,19 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$order = $payment->getOrder();
 			$orderId = $order->getIncrementId();
 			$amountToPass = Mage::helper('creditcard')->formatAmount($amount, true);
-			Mage::log('amounttopass is: ' . $amountToPass);
+
+			Mage::log('Litle amounttopass is: ' . $amountToPass);
+
 			if (! empty($order)) {
+				$info = $this->getInfoInstance();
+				if (!$info->getAdditionalInformation('orderSource')) {
+					$info->setAdditionalInformation('orderSource', 'ecommerce');
+				}
+
 				$hash = array(
 						'orderId' => $orderId,
 						'amount' => $amountToPass,
-						'orderSource' => 'ecommerce',
+						'orderSource' => $info->getAdditionalInformation('orderSource'),
 						'billToAddress' => $this->getBillToAddress($payment),
 						'shipToAddress' => $this->getAddressInfo($payment),
 						'cardholderAuthentication' => $this->getFraudCheck($payment),
@@ -547,7 +552,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 									->getBaseUrl())
 				);
 
-				$info = $this->getInfoInstance();
+
 
 				$payment_hash = $this->creditCardOrPaypageOrToken($payment);
 				$hash_temp = array_merge($hash, $payment_hash);
@@ -589,6 +594,10 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 		$order = $payment->getOrder();
 		if (! empty($order)) {
+			$info = $this->getInfoInstance();
+			if (!$info->getAdditionalInformation('orderSource')) {
+				$info->setAdditionalInformation('orderSource', 'ecommerce');
+			}
 
 			$orderId = $order->getIncrementId();
 			$amountToPass = Mage::helper('creditcard')->formatAmount($amount, true);
@@ -605,9 +614,10 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$hash_temp = array(
 						'orderId' => $orderId,
 						'amount' => $amountToPass,
-						'orderSource' => 'ecommerce',
+						'orderSource' => $info->getAdditionalInformation('orderSource'),
 						'billToAddress' => $this->getBillToAddress($payment),
-						'shipToAddress' => $this->getAddressInfo($payment)
+						'shipToAddress' => $this->getAddressInfo($payment),
+						'enhancedData' => $this->getEnhancedData($payment)
 				);
 				$payment_hash = $this->creditCardOrPaypageOrToken($payment);
 				$hash = array_merge($hash_temp, $payment_hash);
@@ -619,12 +629,13 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			if ($isSale) {
 				$litleResponse = $litleRequest->saleRequest($hash_in);
 				Mage::helper('palorus')->saveCustomerInsight($payment, $litleResponse);
-				$info = $this->getInfoInstance();
-				if (! is_null($info->getAdditionalInformation('cc_should_save'))) {
-					$this->_saveToken($payment, $litleResponse);
-				}
 			} else {
 				$litleResponse = $litleRequest->captureRequest($hash_in);
+			}
+
+			$info = $this->getInfoInstance();
+			if (! is_null($info->getAdditionalInformation('cc_should_save'))) {
+				$this->_saveToken($payment, $litleResponse);
 			}
 		}
 		$this->processResponse($payment, $litleResponse);

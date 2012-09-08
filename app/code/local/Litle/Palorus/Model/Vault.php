@@ -26,6 +26,24 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 	}
 
 	/**
+	 * Get a matching customer vault item.
+	 *
+	 * @param Mage_Customer_Model_Customer $customer
+	 * @param string $token
+	 * @return Litle_Palorus_Model_Vault
+	 */
+	public function getCustomerToken(Mage_Customer_Model_Customer $customer, $token)
+	{
+		$c = $this->getCollection()->addCustomerFilter($customer)
+			->addFieldToFilter('token', $token);
+
+		if ($c->count()) {
+			return $c->getFirstItem();
+		}
+		return null;
+	}
+
+	/**
 	 * Create or update a token from a payment object
 	 *
 	 * @param Varien_Object $payment
@@ -39,12 +57,10 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 			return false;
 		}
 
-		$vault = Mage::getModel('palorus/vault')->load($token, 'token');
+		$vault = $this->getCustomerToken($payment->getOrder()->getCustomer(), $token);
 		if (!$vault) {
 			$vault = Mage::getModel('palorus/vault');
 		}
-
-		// @TODO Set the order_type to track recurring/normal tokens
 
 		$order = $payment->getOrder();
 		Mage::helper('core')->copyFieldset('palorus_vault_order', 'to_vault', $order, $vault);
@@ -53,7 +69,8 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 		$vault->setLast4(substr($payment->getCcNumber(), -4))
 			->setType(Mage::helper('palorus')->litleCcTypeEnum($payment))
 			->setToken($token)
-			->setBin($bin);
+			->setBin($bin)
+			->setOrderType($payment->getInfoInstance()->getAdditionalInformation('orderSource'));
 
 		$vault->save();
 
@@ -62,6 +79,11 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 		return $vault;
 	}
 
+	/**
+	 * Get the human-friendly card type
+	 *
+	 * @return string
+	 */
 	public function getTypeName()
 	{
 		if ($this->getType()) {
