@@ -1,0 +1,33 @@
+<?php /* @var $this Litle_Palorus_Block_Adminhtml_Customer_Edit_Tab_Vault */ ?>
+<div class="entry-edit">
+    <div class="entry-edit-head"><h4 class="icon-head"><?php echo Mage::helper('authnetcim')->__('Litle Vault Stored Cards') ?></h4></div>
+    <fieldset>
+		<?php $cards = $this->getStoredCards() ?>
+		<?php if (count($cards)) { ?>
+			<?php $count = 1; ?>
+			<?php foreach ($cards as $card) { ?>
+				<div class="<?php echo ($count % 2 == 1 ? 'box-left' : 'box-right') ?>">
+					<button type="button" style="float: right;" class="scalable delete" onclick="deleteConfirm('Are you sure?', '<?php echo $this->getCardDeleteUrl($card) ?>')"><span><?php echo $this->__('Delete Stored Card') ?></span></button>
+					<strong><?php echo $this->__('Litle Vault token:') ?></strong> <?php echo $card->getToken() ?>
+				<?php if ($card->getIsDefault()) { ?>
+					<br /><em><?php echo $this->__('Default') ?></em>
+				<?php } ?>
+				<?php if (!$card->getIsVisible()) { ?>
+					<br /><em><?php echo $this->__('Not visible') ?></em>
+				<?php } ?>
+					<div style="margin-top: 5px;">
+						<strong>Card Number:</strong> XXXX-XXXX-XXXX-<?php echo $card->getLast4() ?><br />
+						<strong>Card Exp:</strong> <?php echo $card->getExpirationMonth()?>/<?php echo $card->getExpirationYear()?>
+					</div>
+				</div>
+				<?php if ($count % 2 == 0) { ?>
+					<div style="height: 10px; clear: both;"></div>
+				<?php } ?>
+				<?php $count++; ?>
+			<?php } ?>
+		<?php } else { ?>
+			<em><?php echo $this->__('No Vaulted cards registered.') ?></em>
+		<?php } ?>
+	</fieldset>
+</div>
+
