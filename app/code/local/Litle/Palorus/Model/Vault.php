@@ -67,7 +67,7 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 		Mage::helper('core')->copyFieldset('palorus_vault_payment', 'to_vault', $payment, $vault);
 
 		$vault->setLast4(substr($payment->getCcNumber(), -4))
-			->setType(Mage::helper('palorus')->litleCcTypeEnum($payment))
+			->setLitleCcType($payment->getCcType())
 			->setToken($token)
 			->setBin($bin)
 			->setOrderType($payment->getInfoInstance()->getAdditionalInformation('orderSource'));
@@ -80,6 +80,59 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 	}
 
 	/**
+	 * Create a token with the minimum information.
+	 *
+	 * @param Mage_Customer_Model_Customer $customer
+	 * @param string $token
+	 * @param string $bin
+	 * @param string $type
+	 * @param int $expMonth
+	 * @param int $expYear
+	 * @param boolean $isVisible
+	 * @return Litle_Palorus_Model_Vault
+	 */
+	public function createBasicToken(Mage_Customer_Model_Customer $customer, $token, $bin, $type, $expMonth, $expYear, $isVisible = true)
+	{
+		$vault = $this->getCustomerToken($customer, $token);
+		if (!$vault) {
+			$vault = Mage::getModel('palorus/vault');
+		}
+
+		$vault->setCustomerId($customer->getId())
+			->setToken($token)
+			->setBin($bin)
+			->setCcType($type)
+			->setExpirationMonth($expMonth)
+			->setExpirationYear($expYear)
+			->setIsVisible($isVisible)
+			->save();
+
+		return $vault;
+	}
+
+	public function setLitleCcType($code)
+	{
+		$this->setType($code);
+		return $this;
+	}
+
+	public function setCcType($code)
+	{
+		$this->setType(Mage::helper('palorus')->litleCcType($code));
+		return $this;
+	}
+
+	public function getCcType()
+	{
+		return Mage::helper('palorus')->mageCcTypeLitle($this->getType());
+	}
+
+	public function getLitleCcType()
+	{
+		return $this->getType();
+	}
+
+	/**
 	 * Get the human-friendly card type
 	 *
 	 * @return string
@@ -87,7 +140,7 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 	public function getTypeName()
 	{
 		if ($this->getType()) {
-			$type = Mage::helper('palorus')->mageCcTypeLitle($this->getType());
+			$type = $this->getCcType();
 			$types = Mage::getSingleton('payment/config')->getCcTypes();
 
 			if (array_key_exists($type, $types)) {

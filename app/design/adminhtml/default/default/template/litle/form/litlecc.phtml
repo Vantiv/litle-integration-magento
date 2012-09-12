@@ -108,7 +108,7 @@ $_paypageUrl = Mage::getModel('Litle_CreditCard_Model_PaymentLogic')->getConfigD
     <li class="new-card">
         <label for="<?php echo $_code ?>_cc_number"><?php echo $this->__('Credit Card Number') ?> <span class="required">*</span></label>
         <div class="input-box">
-            <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-type <?php if (Mage::helper('creditcard')->isSandbox()): ?>validate-cc-number<?php endif ?>" value="<?php echo $this->getInfoData('cc_number')?>" />
+            <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-type <?php if (!Mage::helper('creditcard')->isSandbox()): ?>validate-cc-number<?php endif ?>" value="<?php echo $this->getInfoData('cc_number')?>" />
         </div>
     </li>
     <li class="new-card" id="<?php echo $_code ?>_cc_type_exp_div">
