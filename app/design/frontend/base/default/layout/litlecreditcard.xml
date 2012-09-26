@@ -1,7 +1,32 @@
 <layout version="0.1.0">
+
+	<!-- One page checkout -->
     <checkout_onepage_index>
         <reference name="head">
-    		<block type="page/html" name="litle3.js" output="toHtml" template="payment/form/litlejs.phtml"/> 
+    		<block type="page/html" name="litle3.js" output="toHtml" template="litle/form/litlejs.phtml"/>
         </reference>
     </checkout_onepage_index>
+
+
+	<!-- Customer Account handles -->
+	<customer_account>
+		<reference name="customer_account_navigation">
+			<action method="addLink" translate="label" module="palorus" ifconfig="payment/CreditCard/vault_enable">
+				<name>litle_vault</name>
+				<path>palorus/vault</path>
+				<label>Stored Credit Cards</label>
+			</action>
+		</reference>
+	</customer_account>
+
+	<palorus_vault_index>
+		<update handle="customer_account" />
+		<reference name="my.account.wrapper">
+			<block type="palorus/vault_list" name="vault.stored_cards.list" template="litle/vault/list.phtml" />
+		</reference>
+		<reference name="head">
+			<action method="setTitle"><title>Stored Credit Cards</title></action>
+		</reference>
+	</palorus_vault_index>
+
 </layout>

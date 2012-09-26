@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Litle_Palorus>
-			<version>8.13.2</version>
+			<version>8.13.3</version>
 		</Litle_Palorus>
 	</modules>
 	<global>
@@ -62,9 +62,42 @@
 			<palorus>
 				<class>Litle_Palorus_Helper</class>
 			</palorus>
-		</helpers>	
+		</helpers>
+
+		<fieldsets>
+			<sales_convert_quote_payment>
+				<litle_vault_id><to_order_payment>*</to_order_payment></litle_vault_id>
+				<is_visible><to_order_payment>*</to_order_payment></is_visible>
+			</sales_convert_quote_payment>
+
+			<palorus_vault_order>
+				<id><to_vault>order_id</to_vault></id>
+				<increment_id><to_vault>order_number</to_vault></increment_id>
+				<customer_id><to_vault>*</to_vault></customer_id>
+			</palorus_vault_order>
+
+			<palorus_vault_payment>
+				<cc_exp_month><to_vault>expiration_month</to_vault></cc_exp_month>
+				<cc_exp_year><to_vault>expiration_year</to_vault></cc_exp_year>
+			</palorus_vault_payment>
+		</fieldsets>
 	</global>
-	
+
+	<frontend>
+		<routers>
+            <palorus>
+                <use>standard</use>
+                <args>
+                    <module>Litle_Palorus</module>
+                    <frontName>palorus</frontName>
+                </args>
+            </palorus>
+        </routers>
+		<secure_url>
+			<palorus_vault>/palorus/vault/</palorus_vault>
+		</secure_url>
+	</frontend>
+
 	<admin>
 		<routers>
 			<palorus>
@@ -76,7 +109,7 @@
 			</palorus>
 		</routers>
 	</admin>
-	
+
 	<adminhtml>
        <menu>
             <dashboard>
@@ -100,7 +133,7 @@
         		    </palorus_adminform>
         		 </children>
         	</dashboard>
-       
+
             <sales>
                 <children>
                     <palorus_adminform translate="title" module="palorus">
@@ -122,7 +155,7 @@
         		    </palorus_adminform>
         		 </children>
         	</sales>
-       
+
             <report>
                 <children>
                     <palorus_adminform translate="title" module="palorus">
@@ -161,7 +194,7 @@
                 </children>
             </report>
         </menu>
-        
+
         <acl>
             <resources>
                 <admin>
