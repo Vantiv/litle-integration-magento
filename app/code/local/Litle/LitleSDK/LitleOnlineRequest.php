@@ -102,7 +102,7 @@ class LitleOnlineRequest
 
 		$choice_hash = array($hash_out['card'],$hash_out['paypal'],$hash_out['token'],$hash_out['paypage']);
 		$choice2_hash= array($hash_out['fraudCheck'],$hash_out['cardholderAuthentication']);
-		$saleResponse = LitleOnlineRequest::processRequest($hash_out,$hash_in,'sale',$choice_hash,$choice_hash2);
+		$saleResponse = LitleOnlineRequest::processRequest($hash_out,$hash_in,'sale',$choice_hash,$choice2_hash);
 		return $saleResponse;
 	}
 
