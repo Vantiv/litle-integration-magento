@@ -36,7 +36,17 @@ class Communication{
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,2);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		if(Mage::getStoreConfig('payment/CreditCard/debug_enable')) {
+			$xmlToPrint = Communication::cleanseAccountNumber($req);
+			$xmlToPrint = Communication::cleanseCardValidationNum($xmlToPrint);
+			$xmlToPrint = Communication::cleansePassword($xmlToPrint);
+			Mage::log($xmlToPrint,null,"litle_transaction.log");
+		}
 		$output = curl_exec($ch);
+		if(Mage::getStoreConfig('payment/CreditCard/debug_enable')) {
+			$xmlToPrint = Communication::cleanseAccountNumber($output);
+			Mage::log($xmlToPrint,null,"litle_transaction.log");
+		}
 		$responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		if (! $output){
 			throw new Exception (curl_error($ch));
@@ -46,6 +56,18 @@ class Communication{
 			curl_close($ch);
 			return $output;
 		}
-
 	}
+	
+	static public function cleanseAccountNumber($xml) {
+		return preg_replace("|<number>\d+(\d{4})</number>|", "<number>XXXX$1</number>",$xml);
+	}
+	
+	static public function cleanseCardValidationNum($xml) {
+		return preg_replace("|<cardValidationNum>\d+</cardValidationNum>|", "<cardValidationNum>NEUTERED</cardValidationNum>",$xml);
+	}
+	
+	static public function cleansePassword($xml) {
+		return preg_replace("|<password>.*?</password>|", "<password>NEUTERED</password>",$xml);
+	}
+	
 }

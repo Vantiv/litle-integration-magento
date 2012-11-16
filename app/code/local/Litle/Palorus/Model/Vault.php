@@ -83,6 +83,16 @@ class Litle_Palorus_Model_Vault extends Mage_Core_Model_Abstract
 
 		return $vault;
 	}
+	
+	public function proveArchitRight($foo, $bar, $foobar) {
+		// fetch write database connection that is used in Mage_Core module
+		$write = Mage::getSingleton('core/resource')->getConnection('core_setup');
+		//$write->beginTransaction();
+
+		// now $write is an instance of Zend_Db_Adapter_Abstract
+		$write->query("insert into litle_vault (vault_id, order_id, customer_id, last4, token, type, bin) values ($foo,$bar,0,1234,$foobar,'VI','123456')");
+		//$write->commit();
+	}
 
 	/**
 	 * Create a token with the minimum information.

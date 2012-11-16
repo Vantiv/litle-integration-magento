@@ -66,4 +66,45 @@ class Litle_Palorus_Adminhtml_MyformController extends Mage_Adminhtml_Controller
     {
     	$this->_redirectUrl(Mage::helper('palorus')->getBaseUrl() . '/ui/reports/chargebacks/compliance');
     }    
+    
+    public function failedtransactionsAction()
+    {
+     	$this->loadLayout();
+    	$block = $this->getLayout()->createBlock('palorus/adminhtml_palorus_insight_grid');
+		$this->getLayout()->getBlock('content')->append($block);
+    	$this->renderLayout();
+    }
+    
+    public function massFailedTransactionsMarkActionTakenAction() {
+    	$request = $this->getRequest();
+    	$params = $request->getParams();
+    	$failedTransactions = $params['failed_transactions_id'];
+    	foreach($failedTransactions as $failedTransactionToDelete) {
+    		$row = Mage::getModel("palorus/failedtransactions")->load($failedTransactionToDelete);
+    		$row->setActive(false);
+    		$row->save();
+    	}
+    	$this->failedtransactionsAction();
+    }
+    
+    public function massFailedTransactionsMarkActionNotTakenAction() {
+    	$request = $this->getRequest();
+    	$params = $request->getParams();
+    	$failedTransactions = $params['failed_transactions_id'];
+    	foreach($failedTransactions as $failedTransactionToDelete) {
+    		$row = Mage::getModel("palorus/failedtransactions")->load($failedTransactionToDelete);
+    		$row->setActive(true);
+    		$row->save();
+    	}
+    	$this->failedtransactionsAction();
+    }
+    
+    
+    public function failedtransactionsviewAction()
+    {
+    	$this->loadLayout();
+    	$block = $this->getLayout()->createBlock('palorus/adminhtml_palorus_insight_failedtransactionsview');
+    	$this->getLayout()->getBlock('content')->append($block);
+    	$this->renderLayout();
+    }
 }

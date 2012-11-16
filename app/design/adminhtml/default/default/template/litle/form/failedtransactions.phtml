@@ -1,0 +1,88 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<!-- Addresses list -->
+
+<?php $active = $this->getActive();?>
+<table cellspacing="0" class="form-edit">
+	<tr>
+		<td class="address-list">
+			<div class="content-header">
+				<h3 class="icon-head head-sales-order">
+					
+				Failed Transaction Details
+				</h3>
+			</div>
+			<ul class="messages">
+
+			<?php if ($active === false):?>
+				<ul>
+					<li><span>Failed Transaction has already been dealt with.</span></li>
+				</ul>
+			<?php endif;?>
+				
+			<div class="hor-scroll">
+				<table class="form-list" cellspacing="0">
+					<tbody>
+						<tr>
+							<td class="label"><label>Litle Transaction ID:</label></td>
+							<td class="value"><?php echo $this->getLitleTxnId()?></td>
+						</tr>
+						<tr>
+							<td class="label"><label>Customer ID:</label></td> 
+							<td class="value"><?php echo $this->getCustomerUrl()?></td>
+						</tr>
+						<tr>
+							<td class="label"><label>Order Number:</label></td>
+							<td class="value"><?php echo $this->getOrderUrl()?></td>
+						</tr>
+						<tr>
+							<td class="label"><label>Message:</label></td>
+							<td class="value"><?php echo $this->getMessage()?></td>
+						</tr>
+						<tr>
+							<td class="label"><label>Raw XML:</label></td>
+							<td class="value"><?php echo $this->getFullXml()?></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</td>
+	</tr>
+	<div align="right">
+<?php if ($active === true):?>
+	<?php echo $this->getChildHtml('cancel_button') ?> &nbsp
+	<?php echo $this->getChildHtml('suspend_button') ?> &nbsp
+	<?php echo $this->getChildHtml('save_button') ?> &nbsp
+	<?php if ($this->showResumeButton()): ?>
+		<?php echo $this->getChildHtml('resume_button') ?>
+	<?php endif?>
+<?php endif?>
+	</div>
+	
+</table>
+<br>
+

@@ -95,8 +95,6 @@ implements Mage_Adminhtml_Block_Widget_Tab_Interface {
 	
 	public function getGridUrl()
 	{
-// 		Mage::log("Get grid url");
-// 		return $this->getUrl('*/*/orders', array('_current' => true));
 	}
 
 	/**

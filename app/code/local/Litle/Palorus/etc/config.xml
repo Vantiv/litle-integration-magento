@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Litle_Palorus>
-			<version>8.13.3</version>
+			<version>8.14.0</version>
 		</Litle_Palorus>
 	</modules>
 	<global>
@@ -20,6 +20,9 @@
 					<vault>
 						<table>litle_vault</table>
 					</vault>
+					<failedtransactions>
+						<table>litle_failed_transactions</table>
+					</failedtransactions>
 				</entities>
 			</palorus_mysql4>
 		</models>
@@ -151,6 +154,10 @@
         		                <title>Chargebacks</title>
         		                <action>palorus/adminhtml_myform/chargebacksearch</action>
         		            </chargebacks>
+		   		            <failedtransactions translate="title" module="palorus">
+		   		            	<title>Failed transactions</title>
+		   		            	<action>palorus/adminhtml_myform/failedtransactions</action>
+		   		            </failedtransactions>
         		        </children>
         		    </palorus_adminform>
         		 </children>

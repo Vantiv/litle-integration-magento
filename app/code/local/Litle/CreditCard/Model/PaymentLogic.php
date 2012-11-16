@@ -62,7 +62,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 * can this method save cc info for later use?
 	 */
 	protected $_canSaveCc = false;
-
+	
 	public function getConfigData($fieldToLookFor, $store = null)
 	{
 		$returnFromThisModel = Mage::getStoreConfig('payment/CreditCard/' . $fieldToLookFor);
@@ -265,7 +265,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				'password' => $this->getConfigData('password'),
 				'merchantId' => $this->getMerchantId($payment),
 				'version' => '8.10',
-				'merchantSdk' => 'Magento;8.13.2',
+				'merchantSdk' => 'Magento;8.14.0',
 				'reportGroup' => $this->getMerchantId($payment),
 				'customerId' => $order->getCustomerEmail(),
 				'url' => $this->getConfigData('url'),
@@ -470,28 +470,19 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			if (isset($litleResponse)) {
 				$litleResponseCode = XMLParser::getNode($litleResponse, 'response');
 				if ($litleResponseCode != '000') {
-					// Mage::throwException('response code is: ' .
-					// $litleResponseCode . 'txn type is: ');
-					if (($litleResponseCode === '362') && Mage::helper('creditcard')->isStateOfOrderEqualTo(
-							$payment->getOrder(), Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE)) {
-						Mage::throwException('The void did not go through. Do a refund instead.');
-					} else {
-						$payment->setStatus('Rejected')
-							->setCcTransId(XMLParser::getNode($litleResponse, 'litleTxnId'))
-							->setLastTransId(XMLParser::getNode($litleResponse, 'litleTxnId'))
-							->setTransactionId(XMLParser::getNode($litleResponse, 'litleTxnId'))
-							->setIsTransactionClosed(0)
-							->setTransactionAdditionalInfo('additional_information',
-								XMLParser::getNode($litleResponse, 'message'));
-
-						if ($isSale)
-							throw new Mage_Payment_Model_Info_Exception(
-									Mage::helper('core')->__(
-											'Transaction was not approved. Contact us or try again later.'));
-						else
-							throw new Mage_Payment_Model_Info_Exception(
-									Mage::helper('core')->__(
-											'Transaction was not approved. Contact Litle or try again later.'));
+					if ($isSale) {
+						if(Mage::getStoreConfig('payment/CreditCard/debug_enable')) {
+							Mage::log("Had an unsuccessful response in an authorization/sale - response code: " . $litleResponseCode, null, "litle.log");
+						}
+						$customerId = $payment->getOrder()->getCustomerId();
+						$orderId = $payment->getOrder()->getId();
+						$this->writeFailedTransactionToDatabase($customerId, null, $message, $litleResponse); //null order id because the order hasn't been created yet
+						
+						Mage::throwException("The order was not approved.  Please try again later or contact us.  For your reference, the transaction id is " . XMLParser::getNode($litleResponse, 'litleTxnId'));
+						
+					}		
+					else {
+						$this->handleResponseForNonSuccessfulBackendTransactions($payment, $litleResponse, $litleResponseCode);
 					}
 				} else {
 					$payment->setStatus('Approved')
@@ -507,6 +498,129 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		} else {
 			Mage::throwException($message);
 		}
+	}
+	
+	public function writeFailedTransactionToDatabase($customerId, $orderId, $message, $xmlDocument) {
+		$orderNumber = 0;
+		if($orderId === null) {
+			$orderId = 0;
+		}
+		else {
+			$order = Mage::getModel("sales/order")->load($orderId);
+			$orderNumber = $order->getData("increment_id");
+		}
+		if($customerId === null) {
+			$customerId = 0;
+		}
+		$config = Mage::getResourceModel("sales/order")->getReadConnection()->getConfig();
+		$host = $config['host'];
+		$username = $config['username'];
+		$password = $config['password'];
+		$dbname = $config['dbname'];
+
+		$con = mysql_connect($host,$username,$password);
+		$fullXml = $xmlDocument->saveXML();
+		if (!$con)
+		{
+			Mage::log("Failed to write failed transaction to database.  Transaction details: " . $fullXml, null, "litle_failed_transactions.log");
+		}
+		else {
+			$selectedDb = mysql_select_db($dbname, $con);
+			if(!$selectedDb) {
+				Mage::log("Can't use selected database " . $dbname, null, "litle.log");
+			}
+			$fullXml = mysql_real_escape_string($fullXml);
+			$litleTxnId = XMLParser::getNode($xmlDocument, 'litleTxnId');
+			$sql = "insert into litle_failed_transactions (customer_id, order_id, message, full_xml, litle_txn_id, active, transaction_timestamp, order_num) values (" . $customerId . ", " . $orderId . ", '" . $message . "', '" . $fullXml . "', '" . $litleTxnId . "', true, now()," . $orderNumber . ")";
+			$result = mysql_query($sql);
+			if(!$result) {
+				Mage::log("Insert failed with error message: " . mysql_error(), null, "litle.log");
+				Mage::log("Query executed: " . $sql, null, "litle.log");
+			}
+			mysql_close($con);
+		}
+	}
+	
+	public function handleResponseForNonSuccessfulBackendTransactions(Varien_Object $payment, $litleResponse, $litleResponseCode) {
+		$order = $payment->getOrder();
+		$litleMessage = XMLParser::getNode($litleResponse, 'message');
+		$litleTxnId = XMLParser::getNode($litleResponse, 'litleTxnId');
+		$customerId = $order->getData('customer_id');
+		$orderId = $order->getId();
+		
+		if($litleResponseCode === '306') {
+		
+			$this->setOrderStatusAndCommentsForFailedTransaction(	$payment, $litleTxnId,
+															Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID, 
+															Mage_Sales_Model_Order::STATE_CANCELED,
+															Mage_Payment_Model_Method_Abstract::STATUS_VOID, 
+															"Authorization has expired - no need to reverse.  The original Authorization is no longer valid, because it has expired.  You can not perform an Authorization Reversal for an expired Authorization.");
+		}
+		elseif($litleResponseCode === '311') {
+			$this->setOrderStatusAndCommentsForFailedTransaction(	$payment, $litleTxnId, 
+															Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND, 
+															Mage_Sales_Model_Order::STATE_COMPLETE,
+															Mage_Payment_Model_Method_Abstract::STATUS_APPROVED, 
+															"Deposit is already referenced by a chargeback.  The deposit is already referenced by a chargeback; therefore, a refund cannot be processed against the original transaction.");
+		}
+		elseif($litleResponseCode === '316') {
+			$this->setOrderStatusAndCommentsForFailedTransaction(	$payment, $litleTxnId,
+															Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND, 
+															Mage_Sales_Model_Order::STATE_COMPLETE,
+															Mage_Payment_Model_Method_Abstract::STATUS_APPROVED, 
+															"Automatic refund already issued.  This refund transaction is a duplicate for one already processed automatically by the Litle Fraud Chargeback Prevention Service.");
+		}
+		elseif($litleResponseCode === '335') {
+			$descriptiveMessage = "This method of payment does not support authorization reversals.  You can not perform an Authorization Reversal transaction for this payment type."; 
+			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId);
+		}
+		elseif($litleResponseCode === '336') {
+			$descriptiveMessage = "Reversal amount does not match Authorization amount.  For a merchant initiated reversal against an American Express authorization, the reversal amount must match the authorization amount exactly."; 
+			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId);
+		}
+		elseif($litleResponseCode === '361') {
+			$descriptiveMessage = "Authorization no longer available.  The authorization for this transaction is no longer available;  the authorization has already been consumed by another capture."; 
+			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId);
+		}
+		elseif($litleResponseCode === '362') {
+			$descriptiveMessage = "Transaction Not Voided - Already Settled.  This transaction cannot be voided; it has already been delivered to the card networks.  You may want to try a refund instead."; 
+			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId);
+		}
+		elseif($litleResponseCode === '365') {
+			$descriptiveMessage = "Total credit amount exceeds capture amouont.  The amount of the credit is greater than the capture, or the amount of this credit plus other credits already referencing this capture are greater than the capture amount."; 
+			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId);
+		}
+		elseif($litleResponseCode === '370') {
+			$descriptiveMessage = "Internal System Error - Call Litle.  There is a problem with the Litle System.  Contact support@litle.com and provide the following transaction id: " . $litleTxnId; 
+			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId);
+		}
+		else { 			
+			$descriptiveMessage = "Transaction was not approved and Litle's Magento extension can not tell why. Contact Litle at support@litle.com and provide the following transaction id: " . $litleTxnId; 
+			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId);
+		}
+	
+	}
+
+	public function setOrderStatusAndCommentsForFailedTransaction($payment, $litleTxnId, $transactionType, $orderState, $paymentStatus, $litleMessage) {
+		$paymentHelp = new Litle_CreditCard_Model_Lpayment();
+		$paymentHelp->setOrder($payment->getOrder());
+		$transaction = $paymentHelp->addTransaction(transactionType, null, true, $litleMessage);
+		$payment->setStatus($paymentStatus)
+			->setCcTransId($litleTxnId)
+			->setLastTransId($litleTxnId)
+			->setTransactionId($litleTxnId)
+			->setIsTransactionClosed(true)
+			->setTransactionAdditionalInfo('additional_information', $litleMessage);	
+	}
+	
+	public function showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $messageToShow, $litleTxnId) {
+		$this->writeFailedTransactionToDatabase($customerId, $orderId, $litleMessage, $litleResponse);
+		$resource = Mage::getSingleton('core/resource');
+		$conn = $resource->getConnection('core_read');
+		$query = 'select failed_transactions_id from litle_failed_transactions where litle_txn_id = ' . $litleTxnId;
+		$failedTransactionId = $conn->fetchOne($query);
+		$url = Mage::getUrl('palorus/adminhtml_myform/failedtransactionsview/') . 'failed_transactions_id/' . $failedTransactionId;
+		Mage::throwException($messageToShow . "For your reference, the transaction id is <a href='" . $url . "'>".$litleTxnId."</a>");
 	}
 
 	/**
