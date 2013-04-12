@@ -449,7 +449,9 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					$this->getUpdater($litleResponse, 'tokenResponse', 'litleToken'),
 					$this->getUpdater($litleResponse, 'tokenResponse', 'bin'));
 
-			$this->getInfoInstance()->setAdditionalInformation('vault_id', $vault->getId());
+			if ($vault) {
+				$this->getInfoInstance()->setAdditionalInformation('vault_id', $vault->getId());
+			}
 		}
 	}
 
