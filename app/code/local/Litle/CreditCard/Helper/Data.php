@@ -4,9 +4,10 @@ class Litle_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
 	public function isStateOfOrderEqualTo($order, $inOrderState){
 		$payment = $order->getPayment();
 		$lastTxnId = $payment->getLastTransId();
+		Mage::log("Last txn id: " . $lastTxnId);
 		$lastTxn = $payment->getTransaction($lastTxnId);
 
-		if( $lastTxn->getTxnType() === $inOrderState )
+		if( $lastTxn != null && $lastTxn->getTxnType() === $inOrderState )
 		return true;
 		else
 		return false;

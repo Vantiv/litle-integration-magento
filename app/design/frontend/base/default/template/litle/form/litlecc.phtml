@@ -46,7 +46,7 @@ $_id = $_time . substr($_session,13);
 <ul class="form-list" id="payment_form_<?php echo $_code ?>"
 	style="display: none;">
 
-<?php if ($this->getVaultEnabled()): ?>
+<?php if($_isLoggedIn && $this->getVaultEnabled()):?>
 	<?php if ($this->hasStoredCards()): ?>
 	<li>
 	<label for="<?php echo $_code ?>_cc_vaulted" class="required"><?php echo $this->__('Stored Credit Cards') ?></label>

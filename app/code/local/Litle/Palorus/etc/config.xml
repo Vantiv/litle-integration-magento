@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Litle_Palorus>
-			<version>8.14.0</version>
+			<version>8.14.1</version>
 		</Litle_Palorus>
 	</modules>
 	<global>
@@ -23,6 +23,9 @@
 					<failedtransactions>
 						<table>litle_failed_transactions</table>
 					</failedtransactions>
+					<avscid>
+						<table>litle_avs_cid</table>
+					</avscid>
 				</entities>
 			</palorus_mysql4>
 		</models>

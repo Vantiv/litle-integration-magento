@@ -112,7 +112,15 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 
 	static public function formatAvailableBalance($balance)
 	{
-		return self::formatMoney($balance);
+		if ($balance === '' || $balance === NULL) {
+			$available_balance = '';
+		} else {
+			$balance = str_pad($balance, 3, '0', STR_PAD_LEFT);
+			$available_balance = substr_replace($balance, '.', -2, 0);
+			$available_balance = '$' . $available_balance; 
+		}
+
+		return $available_balance;
 	}
 
 	static public function formatAffluence($affluence)
