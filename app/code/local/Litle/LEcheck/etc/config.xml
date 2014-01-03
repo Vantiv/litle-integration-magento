@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Litle_LEcheck>
-			<version>8.13.3</version>
+			<version>8.15.0</version>
 		</Litle_LEcheck>
 	</modules>
 	<global>
