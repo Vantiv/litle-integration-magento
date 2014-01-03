@@ -298,12 +298,15 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					$url_temp2 = explode('.', $url);
 					$count = count($url_temp2);
 				}
-				if ($count < 3) {
+				if ($count == 2) {
 					if (strlen($url_temp2['0'] . '.' . $url_temp2['1']) > 13) {
 						$url = $url_temp2['0'];
 					} else {
 						$url = $url_temp2['0'] . '.' . $url_temp2['1'];
 					}
+				}
+				if($count == 1) {
+				    $url = substr($url_temp2['0'], 0, 13);
 				}
 			}
 		}
@@ -391,9 +394,18 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function getFraudCheck(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
-		$hash = array(
-				'customerIpAddress' => $order->getRemoteIp()
-		);
+		$ip = $order->getRemoteIp();
+		$ipv4Regex = "/\A(?:\d{1,3}\.){3}\d{1,3}\z/";
+		$matches = preg_match($ipv4Regex, $ip);
+		if($matches === 1) {
+    		$hash = array(
+	   			'customerIpAddress' => $ip
+		  );
+		}
+		else {
+		    Mage::log("Not sending ip address " . $ip . " because it isn't ipv4", null, "litle.log");
+		    $hash = array();
+		}
 		return $hash;
 	}
 
@@ -704,7 +716,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$hash_in = array_merge($hash_temp, $merchantData);
 
 				$litleRequest = new LitleOnlineRequest();
-				Mage::log("Sending " . print_r($hash_in,true));
 				$litleResponse = $litleRequest->authorizationRequest($hash_in);
 				$this->processResponse($payment, $litleResponse);
 
