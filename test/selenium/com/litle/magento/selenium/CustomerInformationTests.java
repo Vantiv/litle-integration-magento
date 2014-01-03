@@ -11,14 +11,14 @@ public class CustomerInformationTests extends BaseTestCase {
 		iAmDoingCCOrEcheckTransaction();
 		iAmDoingNonPaypageTransaction();
 	}
-	
+
 	@Test
-	public void buyWithVisaAffluentCreditCard() {
+	public void buyWithVisaAffluentCreditCard() throws Exception {
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100300018088000");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Customers", "Manage Customers");
 		iClickOnTheCustomerWithEmail("gdake@litle.com");
@@ -28,14 +28,14 @@ public class CustomerInformationTests extends BaseTestCase {
 		iClickOnTheTopRowInCustomerInsights();
 		iLogOutAsAdministrator();
 	}
-	
+
 	@Test
-	public void buyWithVisaMassAffluentCreditCard() {
+	public void buyWithVisaMassAffluentCreditCard() throws Exception {
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100300023117000");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Customers", "Manage Customers");
 		iClickOnTheCustomerWithEmail("gdake@litle.com");
@@ -46,12 +46,12 @@ public class CustomerInformationTests extends BaseTestCase {
 	}
 
 	@Test
-	public void buyWithPrepaidCard() {
+	public void buyWithPrepaidCard() throws Exception {
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100323136403000");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Customers", "Manage Customers");
 		iClickOnTheCustomerWithEmail("gdake@litle.com");
@@ -63,14 +63,14 @@ public class CustomerInformationTests extends BaseTestCase {
 		iShouldSeeInTheColumnInCustomerInsights("No","Reloadable");
 		iLogOutAsAdministrator();
 	}
-	
+
 	@Test
-	public void testBuyWithIssuingCountryCard() {
+	public void testBuyWithIssuingCountryCard() throws Exception {
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100300002271000");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Customers", "Manage Customers");
 		iClickOnTheCustomerWithEmail("gdake@litle.com");

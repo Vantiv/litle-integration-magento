@@ -1,12 +1,9 @@
 package com.litle.magento.selenium;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import java.sql.ResultSet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 public class BackendEcheckTransactionsTests extends BaseTestCase {
 
@@ -16,14 +13,14 @@ public class BackendEcheckTransactionsTests extends BaseTestCase {
 		iAmDoingCCOrEcheckTransaction();
 		iAmDoingNonPaypageTransaction();
 	}
-	
+
 	@Test
 	public void attemptAFailedVoidSale() throws Exception {
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWithEcheck("053100300", "13131313","Checking");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Sales","Orders");
 		iClickOnTheTopRowInOrders();
@@ -33,11 +30,14 @@ public class BackendEcheckTransactionsTests extends BaseTestCase {
 
 	@Test
 	public void voidCaptureAndThenCaptureAgain() throws Exception {
+	    ResultSet rs = stmt.executeQuery("select value from core_config_data where path='payment/LEcheck/payment_action'");
+	    rs.next();
+	    System.out.println(rs.getString(1));
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWithEcheck("123456000", "123456000", "Checking");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Sales", "Orders");
 		iClickOnTheTopRowInOrders();
@@ -48,12 +48,12 @@ public class BackendEcheckTransactionsTests extends BaseTestCase {
 	}
 
 	@Test
-	public void successfulCheckoutThenRefundThenVoidRefund() {
+	public void successfulCheckoutThenRefundThenVoidRefund() throws Exception {
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWithEcheck("123456000", "123456000", "Checking");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Sales", "Orders");
 		iClickOnTheTopRowInOrders();

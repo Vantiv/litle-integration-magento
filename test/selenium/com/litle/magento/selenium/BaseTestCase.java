@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -24,6 +26,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
@@ -33,11 +36,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseTestCase {
 
-    static String MAGENTO_DB_NAME = System.getenv("MAGENTO_DB_NAME");
-    static String MAGENTO_DB_USER = System.getenv("MAGENTO_DB_USER");
-    static String MAGENTO_HOME = System.getenv("MAGENTO_HOME");
-    static final long DEFAULT_TIMEOUT = 60;
-    static String CONTEXT = "magento1702";
+    private static final String SCREENSHOT_DIR = "/usr/local/litle-home/gdake/git/litle-integration-magento/test/screenshots/";
+    private static final String HOST = System.getenv("MAGENTO_HOST");
+    private static final String FIREFOX_PATH = System.getenv("FIREFOX_PATH");
+    private static final String MAGENTO_DB_NAME = System.getenv("MAGENTO_DB_NAME");
+    private static final String MAGENTO_DB_USER = System.getenv("MAGENTO_DB_USER");
+    private static final String MAGENTO_DB_PASS = System.getenv("MAGENTO_DB_PASS");
+    private static final String MAGENTO_HOME = System.getenv("MAGENTO_HOME");
+    private static final String CONTEXT = System.getenv("MAGENTO_CONTEXT");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final long DEFAULT_TIMEOUT = 15;
     private static String JDBC_URL;
     private static Connection conn;
     static Statement stmt;
@@ -46,12 +54,13 @@ public class BaseTestCase {
 
     @BeforeClass
     public static void setupSuite() throws Exception {
-        String[] cmd = new String[] {"rm","-rf",MAGENTO_HOME+"/var/cache/*"};
-        Runtime.getRuntime().exec(cmd);
-        //JDBC_URL = "jdbc:mysql://localhost:3306/" + MAGENTO_DB_NAME;
-        JDBC_URL = "jdbc:mysql://localhost:3306/magento1702";
+
+        FileUtils.deleteDirectory(new File(MAGENTO_HOME+"/var/cache"));
+        FileUtils.deleteDirectory(new File(MAGENTO_HOME+"/var/log"));
+        FileUtils.deleteDirectory(new File(SCREENSHOT_DIR));
+        JDBC_URL = "jdbc:mysql://localhost:3306/" + MAGENTO_DB_NAME;
         Class.forName("com.mysql.jdbc.Driver");
-        conn = DriverManager.getConnection(JDBC_URL, MAGENTO_DB_USER, "");
+        conn = DriverManager.getConnection(JDBC_URL, MAGENTO_DB_USER, MAGENTO_DB_PASS);
         stmt = conn.createStatement();
         stmt.executeUpdate("delete from core_resource where code = 'palorus_setup'");
         stmt.executeUpdate("delete from core_resource where code = 'lecheck_setup'");
@@ -72,39 +81,47 @@ public class BaseTestCase {
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/payment_action','authorize')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/url','https://www.testlitle.com/sandbox/communicator/online')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/paypage_enable','0')");
+        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/vault_enable','0')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/paypage_url',null)");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/paypage_id',null)");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/timeout',null)");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/active','0')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/title',null)");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/payment_action','authorize')");
-        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/order_status',null)");
+        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/order_status','processing')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/proxy','iwp1.lowell.litle.com:8080')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/cctypes','AE,DC,VI,MC,DI,JCB')");
 
-        cmd = new String[] {"rm","-f",MAGENTO_HOME+"/var/log/*"};
-        Runtime.getRuntime().exec(cmd);
     }
 
     @Before
     public void before() throws Exception {
-        System.setProperty("webdriver.firefox.bin","/usr/local/litle-home/gdake/firefox/firefox");
-        //FirefoxProfile profile = new FirefoxProfile(new File("/usr/local/litle-home/gdake/.mozilla/firefox/wzy1h2qp.magento"));
-        //driver = new FirefoxDriver(profile);
-        FirefoxProfile profile = new FirefoxProfile();
+        System.setProperty("webdriver.firefox.bin",FIREFOX_PATH);
+        ProfilesIni allProfiles = new ProfilesIni();
+        FirefoxProfile profile = allProfiles.getProfile("Magento");
         profile.setEnableNativeEvents(true);
         driver = new EventFiringWebDriver(new FirefoxDriver(profile));
         wait = new WebDriverWait(driver, DEFAULT_TIMEOUT);
         WebDriverEventListener errorListener = new AbstractWebDriverEventListener() {
             @Override
             public void onException(Throwable throwable, WebDriver driver) {
-                takeScreenshot(driver.getTitle() + "-" + String.valueOf(System.currentTimeMillis()));
+                String testClass = "";
+                String testMethod = "";
+                for(StackTraceElement stackTrace : throwable.getStackTrace()) {
+                    String className = stackTrace.getClassName();
+                    if(className.endsWith("Tests") && className.startsWith("com.litle.magento.selenium")) {
+                        testClass = className;
+                        testMethod = stackTrace.getMethodName();
+                    }
+                }
+                Calendar c = Calendar.getInstance();
+                takeScreenshot(testClass + "." + testMethod + " " + sdf.format(c.getTime()) + "-" + driver.getTitle() + "-" + String.valueOf(System.currentTimeMillis()));
             }
 
             private void takeScreenshot(String screenshotName) {
                 File tempFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
                 try {
-                    FileUtils.copyFile(tempFile, new File("/usr/local/litle-home/gdake/git/litle-integration-magento/test/screenshots/" + screenshotName + ".png"));
+                    FileUtils.copyFile(tempFile, new File(SCREENSHOT_DIR + screenshotName + ".png"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -128,22 +145,7 @@ public class BaseTestCase {
 
     @After
     public void after() {
-        // if($event->getResult() == 4) { //Failure
-        // $dbName = getenv('MAGENTO_DB_NAME');
-        // $dbUser = getenv('MAGENTO_DB_USER');
-        // $sql = <<<EOD
-        // mysql -u $dbUser $dbName -e
-        // "select path,value from core_config_data where path like 'payment/CreditCard/%'"
-        // EOD;
-        // system($sql);
-        // $sql = <<<EOD
-        // mysql -u $dbUser $dbName -e
-        // "select path,value from core_config_data where path like 'payment/LEcheck/%'"
-        // EOD;
-        // system($sql);
-        // }
-
-        //driver.quit();
+        driver.quit();
     }
 
     static void iAmDoingCCOrEcheckTransaction() throws Exception {
@@ -171,6 +173,16 @@ public class BaseTestCase {
         stmt.executeUpdate("update core_config_data set value='0' where path='payment/CreditCard/paypage_enable'");
     }
 
+    static void iAmDoingPaypageTransaction() throws Exception {
+        stmt.executeUpdate("update core_config_data set value='1' where path='payment/CreditCard/paypage_enable'");
+        stmt.executeUpdate("update core_config_data set value='a2y4o6m8k0' where path='payment/CreditCard/paypage_id'");
+        stmt.executeUpdate("update core_config_data set value='https://request-prelive.np-securepaypage-litle.com' where path='payment/CreditCard/paypage_url'");
+    }
+
+    static void iAmDoingStoredCards() throws Exception {
+        stmt.executeUpdate("update core_config_data set value='1' where path='payment/CreditCard/vault_enable'");
+    }
+
     void iAmDoingLitleAuth() throws Exception {
         stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/CreditCard/payment_action'");
         stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/LEcheck/payment_action'");
@@ -181,8 +193,8 @@ public class BaseTestCase {
         stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/LEcheck/payment_action'");
     }
 
-    void iAmLoggedInAsWithThePassword(String username, String password) {
-        driver.get("http://localhost/" + CONTEXT + "/index.php/");
+    void iAmLoggedInAsWithThePassword(String username, String password) throws Exception {
+        driver.get("http://"+HOST+"/" + CONTEXT + "/index.php/");
 
         //Get to login screen
         driver.findElement(By.linkText("Log In")).click();
@@ -191,8 +203,10 @@ public class BaseTestCase {
         //Login
         driver.findElement(By.id("email")).clear();
         driver.findElement(By.id("email")).sendKeys(username);
+        Thread.sleep(1000L);
         driver.findElement(By.id("pass")).clear();
         driver.findElement(By.id("pass")).sendKeys(password);
+        Thread.sleep(1000L);
         driver.findElement(By.id("send2")).click(); //click login button
         waitForCssVisible("html body.customer-account-index div.wrapper div.page div.main-container div.main div.col-main div.my-account div.dashboard div.page-title h1");
     }
@@ -239,11 +253,15 @@ public class BaseTestCase {
         waitFor(By.linkText("Forgot your password?"));
     }
 
-    void iClickOnTheTopRowInOrders() {
-        WebElement topRow = driver.findElement(By.xpath("/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[1]"));
+    void iClickOnTheTopRowInOrders() throws Exception {
+        WebElement ordersGrid = driver.findElement(By.id("sales_order_grid_table"));
+        WebElement topRow = ordersGrid.findElement(By.tagName("tbody")).findElement(By.tagName("tr"));
+        //WebElement topRow = driver.findElement(By.xpath("/html/body/div/div[3]/div/div[3]/div/div[2]/div/table/tbody/tr[1]"));
         String title = topRow.getAttribute("title");
         driver.get(title);
+
         waitFor(By.className("head-billing-address"));
+        waitFor(By.className("head-sales-order"));
     }
 
     void iClickOnTheTopRowInCustomerInsights() {
@@ -254,13 +272,16 @@ public class BaseTestCase {
     }
 
     void iAddTheTopRowInProductsToTheOrder() {
-        WebElement topRow = driver.findElement(By.xpath("/html/body/div/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div[2]/div/div[2]/div/div/div/table/tbody/tr"));
-        topRow.click();
+//        WebElement topRow = driver.findElement(By.xpath("/html/body/div/div[3]/div/form/div[5]/div/div/table/tbody/tr/td[2]/div[2]/div/div[2]/div/div/div/table/tbody/tr"));
+//        topRow.click();
+//        waitFor(By.cssSelector("html body#html-body.adminhtml-sales-order-create-index div.wrapper div#anchor-content.middle div#page:main-container form#edit_form div#order-data div div.page-create-order table tbody tr td.main-col div#order-items div div.entry-edit div table tbody tr td.a-right button .scalable"));
+        WebElement productsTable = driver.findElement(By.id("sales_order_create_search_grid_table"));
+        productsTable.findElement(By.tagName("tbody")).findElement(By.tagName("tr")).click(); //Clicking the top row sets the qtyToAdd to 1
         WebElement e = driver.findElement(By.id("order-search"));
         e = e.findElement(By.className("entry-edit-head"));
         e = e.findElement(By.tagName("button"));
         e.click();
-        waitFor(By.cssSelector("html body#html-body.adminhtml-sales-order-create-index div.wrapper div#anchor-content.middle div#page:main-container form#edit_form div#order-data div div.page-create-order table tbody tr td.main-col div#order-items div div.entry-edit div table tbody tr td.a-right button .scalable"));
+        waitForIdVisible("order-items");
     }
 
     void iClickAddProducts() {
@@ -357,13 +378,15 @@ public class BaseTestCase {
             waitFor(By.id("sales_order_grid"));
         } else if("Manage Customers".equals(subMenu)) {
             waitFor(By.id("customerGrid"));
+        } else if("Transactions".equals(subMenu)) {
+            waitFor(By.id("order_transactions"));
         }
     }
 
 
     void iAmLoggedInAsAnAdministrator() {
         //Get to login screen
-        driver.get("http://localhost/" + CONTEXT + "/index.php/admin");
+        driver.get("http://"+HOST+"/" + CONTEXT + "/index.php/admin");
         waitForIdVisible("username");
 
         //Enter username
@@ -375,13 +398,27 @@ public class BaseTestCase {
         e = driver.findElement(By.id("login"));
         e.clear();
         e.sendKeys("LocalMagentoAdmin1");
+        e.submit();
 
-        //Click login button
-        driver.findElement(By.className("form-button")).click();
         waitForClassVisible("link-logout");
     }
 
-    void iCheckOutWith(String ccType, String creditCardNumber) {
+    void iAccessAReportingUrl(String lastBitOfUrl) {
+        driver.get("http://"+HOST+"/" + CONTEXT + "/index.php" + lastBitOfUrl);
+        //Enter username
+        WebElement e = driver.findElement(By.id("username"));
+        e.clear();
+        e.sendKeys("admin");
+
+        //Enter password
+        e = driver.findElement(By.id("login"));
+        e.clear();
+        e.sendKeys("LocalMagentoAdmin1");
+        e.submit();
+
+    }
+
+    private void baseCheckoutHelper(String ccType, String creditCardNumber, boolean saveCreditCard) {
         //And I press "Proceed to Checkout"
         WebElement e = driver.findElement(By.className("btn-proceed-checkout"));
         e.click();
@@ -393,7 +430,7 @@ public class BaseTestCase {
         e.click();
         waitForIdVisible("co-shipping-method-form");
 
-        //	      And I press the "3rd" continue button - Shipping Method
+        //        And I press the "3rd" continue button - Shipping Method
         e = driver.findElement(By.id("co-shipping-method-form"));
         e = e.findElement(By.tagName("button"));
         e.click();
@@ -404,39 +441,65 @@ public class BaseTestCase {
         e.click();
         waitForIdVisible("creditcard_cc_type");
 
-        //And I select "Visa" from "Credit Card Type"
-        iSelectFromSelect(ccType, "creditcard_cc_type");
+        if(creditCardNumber.startsWith("Stored")) {
+            iSelectFromSelect(creditCardNumber, "creditcard_cc_vaulted");
+        }
+        else {
+            //And I select "Visa" from "Credit Card Type"
+            iSelectFromSelect(ccType, "creditcard_cc_type");
 
-        //	      And I put in "Credit Card Number" with "4000162019882000"
-        e = driver.findElement(By.id("creditcard_cc_number"));
-        e.clear();
-        e.sendKeys(creditCardNumber);
+            //        And I put in "Credit Card Number" with "4000162019882000"
+            e = driver.findElement(By.id("creditcard_cc_number"));
+            e.clear();
+            e.sendKeys(creditCardNumber);
+        }
 
-        //	      And I select "9" from "Expiration Date"
+        //        And I select "9" from "Expiration Date"
         iSelectFromSelect("09 - September", "creditcard_expiration");
 
-        //	      And I select "2012" from "creditcard_expiration_yr"
+        //        And I select "2012" from "creditcard_expiration_yr"
         iSelectFromSelect("2015", "creditcard_expiration_yr");
 
-        //	      And I put in "Card Verification Number" with "123"
+        //        And I put in "Card Verification Number" with "123"
         e = driver.findElement(By.id("creditcard_cc_cid"));
         e.clear();
         e.sendKeys("123");
 
-        //	      And I press the "4th" continue button
+        if(saveCreditCard) {
+            e = driver.findElement(By.id("creditcard_cc_should_save"));
+            e.click();
+        }
+
+        //        And I press the "4th" continue button
         e = driver.findElement(By.id("payment-buttons-container"));
         e = e.findElement(By.tagName("button"));
         e.click();
         waitForIdVisible("checkout-step-review");
 
-        //	      And I press "Place Order"
+        //        And I press "Place Order"
         e = driver.findElement(By.id("review-buttons-container"));
         e = e.findElement(By.tagName("button"));
         e.click();
 
+    }
+
+    void iFailCheckOutWith(String ccType, String creditCardNumber, String modalErrorMessage) {
+        baseCheckoutHelper(ccType, creditCardNumber, false);
+        Alert alert = driver.switchTo().alert();
+        String alertText = alert.getText();
+        assertTrue(alertText, alertText.contains(modalErrorMessage));
+        alert.accept();
+    }
+
+    void iCheckOutWith(String ccType, String creditCardNumber) {
+        iCheckOutWith(ccType, creditCardNumber, false);
+    }
+
+    void iCheckOutWith(String ccType, String creditCardNumber, boolean saveCreditCard) {
+        baseCheckoutHelper(ccType, creditCardNumber, saveCreditCard);
         //	    Then I should see "Thank you for your purchase"
         waitForCssVisible("html body.checkout-onepage-success div.wrapper div.page div.main-container div.main div.col-main p a");
-        e = driver.findElement(By.className("col-main"));
+        WebElement e = driver.findElement(By.className("col-main"));
         e = e.findElement(By.className("sub-title"));
         assertEquals("Thank you for your purchase!",e.getText());
     }
@@ -499,6 +562,17 @@ public class BaseTestCase {
 
     void iSelectFromSelect(String optionText, String selectId) {
         WebElement select = driver.findElement(By.id(selectId));
+        List<WebElement> options = select.findElements(By.tagName("option"));
+        for(WebElement option : options){
+            if(option.getText().equals(optionText)) {
+                option.click();
+                break;
+            }
+        }
+    }
+
+    void iSelectNameFromSelect(String optionText, String selectName) {
+        WebElement select = driver.findElement(By.name(selectName));
         List<WebElement> options = select.findElements(By.tagName("option"));
         for(WebElement option : options){
             if(option.getText().equals(optionText)) {
@@ -716,6 +790,20 @@ public class BaseTestCase {
         e.click();
 
         waitFor(By.id("messages"));
+    }
+
+    protected void iPressSubmitOrder() {
+        List<WebElement> buttons = driver.findElements(By.tagName("button"));
+        WebElement submitOrderButton = null;
+        for(WebElement button : buttons) {
+            if("Submit Order".equals(button.getAttribute("title"))) {
+                submitOrderButton = button;
+                break;
+            }
+        }
+        assertNotNull("Couldn't find submit order button", submitOrderButton);
+        submitOrderButton.click();
+        waitForIdVisible("messages");
     }
 
 

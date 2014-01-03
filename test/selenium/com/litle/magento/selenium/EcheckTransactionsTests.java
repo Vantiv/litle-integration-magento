@@ -1,9 +1,11 @@
 package com.litle.magento.selenium;
 
-import static org.junit.Assert.fail;
+
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class EcheckTransactionsTests extends BaseTestCase {
 
@@ -13,7 +15,7 @@ public class EcheckTransactionsTests extends BaseTestCase {
     }
 
     @Test
-    public void doAVerifiyAndThenSale() {
+    public void doAVerifiyAndThenSale() throws Exception {
         iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
         iHaveInMyCart("vault");
         iCheckOutWithEcheck("123456000", "123456000", "Checking");
@@ -28,7 +30,7 @@ public class EcheckTransactionsTests extends BaseTestCase {
     }
 
     @Test
-    public void testBackendECheckVerifyThenAttemptSale() {
+    public void testBackendECheckVerifyThenAttemptSale() throws Exception {
         iAmLoggedInAsAnAdministrator();
         iView("Sales", "Orders");
         iPressCreateNewOrder();
@@ -36,37 +38,51 @@ public class EcheckTransactionsTests extends BaseTestCase {
         iClickAddProducts();
         iAddTheTopRowInProductsToTheOrder();
 
-        fail("Finish implementing me");
-    }
+        //And I choose "Echeck"
+        waitFor(By.id("p_method_lecheck"));
+        driver.findElement(By.id("p_method_lecheck")).click();
+        //And I enter a routing number
+        waitForIdVisible("lecheck_echeck_routing_number");
+        WebElement e = driver.findElement(By.id("lecheck_echeck_routing_number"));
+        e.clear();
+        e.sendKeys("123456000");
+        //And I enter a bank account number
+        e = driver.findElement(By.id("lecheck_echeck_bank_acct_num"));
+        e.clear();
+        e.sendKeys("123456000");
+        //And I select Checking
+        iSelectFromSelect("Checking", "lecheck_echeck_account_type");
 
-    //	@javascript @ready @echeck
-    //	Scenario: Backend ECheck verify, then attempt to sale
-    //	   Given I am doing Litle auth
-    //	   And I am logged in as an administrator
-    //	   When I view "Sales" "Orders"
-    //	     Then I should see "Orders"
-    //	     And I press "Create New Order"
-    //	     And I click on the customer "Greg Dake" in "Create New Order"
-    //	     And I choose "English"
-    //	     And I press "Add Products"
-    //	     And I click on the product "affluentvisa"
-    //	     And I press "Add Selected Product(s) to Order"
-    //	     And I wait for the payments to appear
-    //	     And I follow "Get shipping methods and rates"
-    //	     And I choose "Fixed Shipping"
-    //	     And I choose "LEcheck"
-    //	     And I put in "Bank routing number" with "123456000"
-    //	     And I put in "Bank account number" with "123456000"
-    //	     And I select "Checking" from "Account type"
-    //	     And I press "Submit Order"
-    //	   When I view "Sales" "Orders"
-    //	     Then I should see "Orders"
-    //	     And I click on the top row in Orders
-    //	       Then I should see "Order #"
-    //	     And I press "Invoice"
-    //	     And I select "Capture Online" from "invoice[capture_case]"
-    //	     And I press "Submit Invoice"
-    //	   Then I should see "The invoice has been created."
-    //	   And I follow "Log Out"
-    //
+        //And I configure shipping method
+        waitFor(By.id("order-shipping-method-summary"));
+        driver.findElement(By.id("order-shipping-method-summary")).click();
+        waitForIdVisible("s_method_flatrate_flatrate");
+        driver.findElement(By.id("s_method_flatrate_flatrate")).click();
+
+        //And I choose "Echeck"
+        waitFor(By.id("p_method_lecheck"));
+        driver.findElement(By.id("p_method_lecheck")).click();
+        //And I enter a routing number
+        waitForIdVisible("lecheck_echeck_routing_number");
+        e = driver.findElement(By.id("lecheck_echeck_routing_number"));
+        e.clear();
+        e.sendKeys("123456000");
+        //And I enter a bank account number
+        e = driver.findElement(By.id("lecheck_echeck_bank_acct_num"));
+        e.clear();
+        e.sendKeys("123456000");
+        //And I select Checking
+        iSelectFromSelect("Checking", "lecheck_echeck_account_type");
+
+        //And I press Submit order
+        //waitFor(By.id("order-totals-bottom"));
+        //driver.findElement(By.id("order-totals-bottom")).findElement(By.tagName("button")).click();
+        iPressSubmitOrder();
+        iView("Sales", "Orders");
+
+        iClickOnTheTopRowInOrders();
+        iPressInvoice();
+        iPressSubmitInvoice("The invoice has been created.", "Captured amount of $6.99 online. Transaction ID:");
+        iLogOutAsAdministrator();
+    }
 }

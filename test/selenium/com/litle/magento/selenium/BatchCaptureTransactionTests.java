@@ -1,7 +1,6 @@
 package com.litle.magento.selenium;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.ResultSet;
@@ -19,11 +18,11 @@ public class BatchCaptureTransactionTests extends BaseTestCase {
 		iAmDoingCCOrEcheckTransaction();
 		iAmDoingNonPaypageTransaction();
 	}
-	
+
 	@Test
 	public void doAsuccessfulBatchCaptureOfTwoAuthorizedTransactionsAndAnUnsucessfulOneWithACapturedTransaction() throws Exception {
 		iAmDoingLitleAuth();
-		
+
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa","4100000000000001");
@@ -32,7 +31,7 @@ public class BatchCaptureTransactionTests extends BaseTestCase {
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa","4100000000000001");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Sales", "Orders");
 		String orderNum = getOrderNumForOrder(2);
@@ -48,7 +47,7 @@ public class BatchCaptureTransactionTests extends BaseTestCase {
 		iSelectTopOrders(3);
 		iSelectFromSelect("Capture", "sales_order_grid_massaction-select");
 		iPressSubmitOnOrders();
-		
+
 		WebElement errorMsgDiv = driver.findElement(By.className("error-msg"));
 		List<WebElement> errorMsgList = errorMsgDiv.findElements(By.tagName("li"));
 		assertEquals(1, errorMsgList.size());
@@ -58,18 +57,18 @@ public class BatchCaptureTransactionTests extends BaseTestCase {
 		String litleTxnId = rs.getString(1);
 		String expectedErrorMsg = "The order #"+orderNum+" can not be captured. Authorization no longer available. The authorization for this transaction is no longer available; the authorization has already been consumed by another capture.For your reference, the transaction id is "+litleTxnId;
 		assertEquals(expectedErrorMsg, actualErrorMsg);
-		
+
 		WebElement successMsgDiv = driver.findElement(By.className("success-msg"));
 		List<WebElement> successMsgList = successMsgDiv.findElements(By.tagName("li"));
 		assertEquals(2, successMsgList.size());
 		String actualSuccessMsg = successMsgList.get(0).getText();
 		String expectedSuccessMsg = "The order #"+getOrderNumForOrder(0)+" captured successfully";
 		assertEquals(expectedSuccessMsg, actualSuccessMsg);
-		
+
 		actualSuccessMsg = successMsgList.get(1).getText();
 		expectedSuccessMsg = "The order #"+getOrderNumForOrder(1)+" captured successfully";
 		assertEquals(expectedSuccessMsg, actualSuccessMsg);
-		
+
 		iLogOutAsAdministrator();
 	}
 }
