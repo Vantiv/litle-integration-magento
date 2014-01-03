@@ -38,7 +38,7 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 
 	public function getBaseUrl()
 	{
-		$url = Mage::getModel('creditcard/paymentlogic')->getConfigData('url');
+		$url = Mage::getModel('creditcard/paymentLogic')->getConfigData('url');
 		return self::getBaseUrlFrom($url);
 	}
 
