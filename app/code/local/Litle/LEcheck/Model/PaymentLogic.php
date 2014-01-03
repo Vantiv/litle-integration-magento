@@ -170,7 +170,17 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 					'reportGroup'=>$this->getMerchantId($payment),
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),
-					'timeout'=>$this->getConfigData("timeout")
+					'timeout'=>$this->getConfigData("timeout"),
+	                'batch_requests_path' => 'MAGENTO', //Magento doesn't use batch
+                    'sftp_username' => 'MAGENTO', //Magento doesn't use batch
+                    'sftp_password' => 'MAGENTO', //Magento doesn't use batch
+                    'batch_url' => 'MAGENTO', //Magento doesn't use batch
+                    'tcp_port' => 'MAGENTO', //Magento doesn't use batch
+                    'tcp_ssl' => 'MAGENTO', //Magento doesn't use batch
+                    'tcp_timeout' => 'MAGENTO', //Magento doesn't use batch
+                    'litle_requests_path' => 'MAGENTO', //Magento doesn't use batch
+                    'print_xml' => 'false' //Magento uses debug_enabled instead
+					
 		);
 		return $hash;
 	}
