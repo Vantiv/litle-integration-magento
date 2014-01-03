@@ -264,13 +264,21 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				'user' => $this->getConfigData('user'),
 				'password' => $this->getConfigData('password'),
 				'merchantId' => $this->getMerchantId($payment),
-				'version' => '8.10',
-				'merchantSdk' => 'Magento;8.14.0',
+				'merchantSdk' => 'Magento;8.15.0',
 				'reportGroup' => $this->getMerchantId($payment),
 				'customerId' => $order->getCustomerEmail(),
 				'url' => $this->getConfigData('url'),
 				'proxy' => $this->getConfigData('proxy'),
-				'timeout' => $this->getConfigData('timeout')
+				'timeout' => $this->getConfigData('timeout'),
+				'batch_requests_path' => 'MAGENTO', //Magento doesn't use batch
+				'sftp_username' => 'MAGENTO', //Magento doesn't use batch
+				'sftp_password' => 'MAGENTO', //Magento doesn't use batch
+				'batch_url' => 'MAGENTO', //Magento doesn't use batch
+				'tcp_port' => 'MAGENTO', //Magento doesn't use batch
+				'tcp_ssl' => 'MAGENTO', //Magento doesn't use batch
+				'tcp_timeout' => 'MAGENTO', //Magento doesn't use batch
+				'litle_requests_path' => 'MAGENTO', //Magento doesn't use batch
+				'print_xml' => 'false' //Magento uses debug_enabled instead
 		);
 		return $hash;
 	}
@@ -314,7 +322,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function getOrderDate(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
-		$date = $order->getCreatedAtFormated(short);
+		$date = $order->getCreatedAtFormated('short');
 		$date_temp = explode('/', $date);
 		$month = $date_temp['0'];
 		if ((int) $month < 10) {
@@ -696,6 +704,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				$hash_in = array_merge($hash_temp, $merchantData);
 
 				$litleRequest = new LitleOnlineRequest();
+				Mage::log("Sending " . print_r($hash_in,true));
 				$litleResponse = $litleRequest->authorizationRequest($hash_in);
 				$this->processResponse($payment, $litleResponse);
 

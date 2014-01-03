@@ -51,13 +51,33 @@ function initialize(){
 		$line['password'] = trim(fgets(STDIN));
 		print "Please input your merchantId: ";
 		$line['currency_merchant_map ']['DEFAULT'] = trim(fgets(STDIN));
-		print "Please choose Litle url from the following list (example: 'cert') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/communicator/online \ncert => https://cert.litle.com/vap/communicator/online \nprecert => https://precert.litle.com/vap/communicator/online \nproduction1 => https://payments.litle.com/vap/communicator/online \nproduction2 => https://payments2.litle.com/vap/communicator/online" . PHP_EOL;
+		print "Please choose Litle url from the following list (example: 'sandbox') or directly input another URL: \nsandbox => https://www.testlitle.com/sandbox/communicator/online \npostlive => https://postlive.litle.com/vap/communicator/online \ntransact-postlive => https://transact-postlive.litle.com/vap/communicator/online \nproduction => https://payments.litle.com/vap/communicator/online \nproduction-transact => https://transact.litle.com/vap/communicator/online \nprelive => https://prelive.litle.com/vap/communicator/online \ntransact-prelive => https://transact-prelive.litle.com/vap/communicator/online" . PHP_EOL;
 		$url = UrlMapper::getUrl(trim(fgets(STDIN)));
 		$line['url'] = $url;
 		print "Please input the proxy, if no proxy hit enter key: ";
 		$line['proxy'] = trim(fgets(STDIN));
+	
+		print "Batch processing saves files to disk. \n";
+		print "Please input a directory to save these files. If you are not using batch processing, you may hit enter. ";
+		$dir = trim(fgets(STDIN));
+		$line['batch_requests_path'] = $dir;
+		$line['litle_requests_path'] = $dir;
+		
+		print "Please input your SFTP username. If you are not using SFTP, you may hit enter. ";
+		$line['sftp_username'] = trim(fgets(STDIN));
+		print "Please input your SFTP password. If you are not using SFTP, you may hit enter. ";
+		$line['sftp_password'] = trim(fgets(STDIN));
+		print "Please input the URL for batch processing. If you are not using batch processing, you may hit enter. ";
+		$line['batch_url'] = trim(fgets(STDIN));
+		print "Please input the port for stream batch delivery. If you are not using stream batch delivery, you may hit enter. ";
+		$line['tcp_port'] = trim(fgets(STDIN));
+		print "Please input the timeout (in seconds) for stream batch delivery. If you are not using stream batch delivery, you may hit enter. ";
+		$line['tcp_timeout'] = trim(fgets(STDIN));
+		# ssl should be usd by default
+		$line['tcp_ssl'] = '1';
+		$line['print_xml'] = '0';
+		
 		writeConfig($line,$handle);
-		fwrite($handle, "version = 8.13" .  PHP_EOL);
 		fwrite($handle, "timeout =  65".  PHP_EOL);
 		fwrite($handle, "reportGroup = Default Report Group".  PHP_EOL);
 	}

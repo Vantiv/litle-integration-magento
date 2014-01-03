@@ -23,8 +23,13 @@
 * OTHER DEALINGS IN THE SOFTWARE.
 */
 class Communication{
-	function httpRequest($req,$hash_config=NULL){
+	static function httpRequest($req,$hash_config=NULL){
+		
 		$config = Obj2xml::getConfig($hash_config);
+		
+		if((int)$config['print_xml']){
+			echo $req;
+		}
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_PROXY, $config['proxy']);
 		curl_setopt($ch, CURLOPT_POST, true);
@@ -36,6 +41,7 @@ class Communication{
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,2);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSLVERSION, 3);
 		if(Mage::getStoreConfig('payment/CreditCard/debug_enable')) {
 			$xmlToPrint = Communication::cleanseAccountNumber($req);
 			$xmlToPrint = Communication::cleanseCardValidationNum($xmlToPrint);
@@ -69,5 +75,4 @@ class Communication{
 	static public function cleansePassword($xml) {
 		return preg_replace("|<password>.*?</password>|", "<password>NEUTERED</password>",$xml);
 	}
-	
 }

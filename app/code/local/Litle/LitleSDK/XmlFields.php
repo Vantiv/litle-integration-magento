@@ -26,9 +26,12 @@ require_once realpath(dirname(__FILE__)) . "/LitleOnline.php";
 
 class XmlFields
 {
-	public static function returnArrayValue($hash_in, $key)
+	public static function returnArrayValue($hash_in, $key, $maxlength = null)
 	{
 		$retVal = array_key_exists($key, $hash_in)? $hash_in[$key] : null;
+		if ($maxlength && !is_null($retVal)) {
+			$retVal = substr($retVal, 0, $maxlength);
+		}
 		return $retVal;
 	}
 
@@ -37,20 +40,20 @@ class XmlFields
 		if (isset($hash_in))
 		{
 			$hash_out = array(
-						"name"=>XmlFields::returnArrayValue($hash_in, "name"),
-						"firstName" =>XmlFields::returnArrayValue($hash_in, "firstName"),
-						"middleInitial"=>XmlFields::returnArrayValue($hash_in, "middleInitial"),
-						"lastName"=>XmlFields::returnArrayValue($hash_in, "lastName"),
-						"companyName"=>XmlFields::returnArrayValue($hash_in, "companyName"),
-						"addressLine1"=>XmlFields::returnArrayValue($hash_in, "addressLine1"),
-						"addressLine2"=>XmlFields::returnArrayValue($hash_in, "addressLine2"),
-						"addressLine3"=>XmlFields::returnArrayValue($hash_in, "addressLine3"),
-						"city"=>XmlFields::returnArrayValue($hash_in, "city"),
-						"state"=>XmlFields::returnArrayValue($hash_in, "state"),
-						"zip"=>XmlFields::returnArrayValue($hash_in, "zip"),
-						"country"=>XmlFields::returnArrayValue($hash_in, "country"),
-						"email"=>XmlFields::returnArrayValue($hash_in, "email"),
-						"phone"=>XmlFields::returnArrayValue($hash_in, "phone")
+						"name"=>XmlFields::returnArrayValue($hash_in, "name", 100),
+						"firstName" =>XmlFields::returnArrayValue($hash_in, "firstName", 25),
+						"middleInitial"=>XmlFields::returnArrayValue($hash_in, "middleInitial", 1),
+						"lastName"=>XmlFields::returnArrayValue($hash_in, "lastName", 25),
+						"companyName"=>XmlFields::returnArrayValue($hash_in, "companyName", 40),
+						"addressLine1"=>XmlFields::returnArrayValue($hash_in, "addressLine1", 35),
+						"addressLine2"=>XmlFields::returnArrayValue($hash_in, "addressLine2", 35),
+						"addressLine3"=>XmlFields::returnArrayValue($hash_in, "addressLine3", 35),
+						"city"=>XmlFields::returnArrayValue($hash_in, "city", 35),
+						"state"=>XmlFields::returnArrayValue($hash_in, "state", 30),
+						"zip"=>XmlFields::returnArrayValue($hash_in, "zip", 20),
+						"country"=>XmlFields::returnArrayValue($hash_in, "country", 3),
+						"email"=>XmlFields::returnArrayValue($hash_in, "email", 100),
+						"phone"=>XmlFields::returnArrayValue($hash_in, "phone", 20)
 			);
 			return $hash_out;
 		}
@@ -192,7 +195,9 @@ class XmlFields
 			$hash_out = array(
 						"capability"=>(Checker::requiredField(XmlFields::returnArrayValue($hash_in, "capability"))),
 						"entryMode"=>(Checker::requiredField(XmlFields::returnArrayValue($hash_in, "entryMode"))),
-						"cardholderId"=>(Checker::requiredField(XmlFields::returnArrayValue($hash_in, "cardholderId")))
+						"cardholderId"=>(Checker::requiredField(XmlFields::returnArrayValue($hash_in, "cardholderId"))),
+						"terminalId"=>XmlFields::returnArrayValue($hash_in,"terminalId"),
+						"catLevel"=>XmlFields::returnArrayValue($hash_in,"catLevel"),
 			);
 			return $hash_out;
 		}
@@ -219,8 +224,8 @@ class XmlFields
 		{
 			$hash_out = array(
 						"itemSequenceNumber"=>XmlFields::returnArrayValue($hash_in, "itemSequenceNumber"),
-						"itemDescription"=>XmlFields::returnArrayValue($hash_in, "itemDescription"),
-						"productCode"=>XmlFields::returnArrayValue($hash_in, "productCode"),
+						"itemDescription"=>XmlFields::returnArrayValue($hash_in, "itemDescription", 26),
+						"productCode"=>XmlFields::returnArrayValue($hash_in, "productCode", 12),
 						"quantity"=>XmlFields::returnArrayValue($hash_in, "quantity"),
 						"unitOfMeasure"=>XmlFields::returnArrayValue($hash_in, "unitOfMeasure"),
 						"taxAmount"=>XmlFields::returnArrayValue($hash_in, "taxAmount"),
@@ -257,13 +262,15 @@ class XmlFields
 				if ($key == 'lineItemData' && $key != NULL){
 					$lineItem = array();
 					for($j=0; $j<count($value); $j++){
-						$hash_out[('lineItemData' . (string)$j)] = XmlFields::lineItemData($value[$j]);
+						$outIndex = ('lineItemData') . (string)$j;
+						$hash_out[$outIndex] = XmlFields::lineItemData(XmlFields::returnArrayValue($value,$j));
 					}
 				}
 				elseif ($key == 'detailTax' & $key != NULL){
 					$detailtax = array();
 					for($j=0; $j<count($value); $j++){
-						$hash_out[('detailTax' . (string)$j)] = XmlFields::detailTax($value[$j]);
+						$outIndex = ('detailTax') . (string)$j;
+						$hash_out[$outIndex] = XmlFields::detailTax(XmlFields::returnArrayValue($value,$j));
 					}
 				}
 			}
@@ -359,10 +366,10 @@ class XmlFields
 		if (isset($hash_in))
 		{
 			$hash_out = array(
-						"phone"=>XmlFields::returnArrayValue($hash_in, "phone"),
-						"city" =>XmlFields::returnArrayValue($hash_in, "city"),
-						"url" =>XmlFields::returnArrayValue($hash_in, "url"),
-						"descriptor" =>XmlFields::returnArrayValue($hash_in, "descriptor")
+						"phone"=>XmlFields::returnArrayValue($hash_in, "phone", 13),
+						"city" =>XmlFields::returnArrayValue($hash_in, "city", 35),
+						"url" =>XmlFields::returnArrayValue($hash_in, "url", 13),
+						"descriptor" =>XmlFields::returnArrayValue($hash_in, "descriptor", 25)
 			);
 			return $hash_out;
 		}
@@ -455,6 +462,54 @@ class XmlFields
 			return $hash_out;
 		}
 	}
-
-
+	
+	
+	
+	public static function recurringRequestType($hash_in)
+	{
+		if(isset($hash_in))
+		{
+			$hash_out = array(
+					"subscription"=>(XmlFields::recurringSubscriptionType(XmlFields::returnArrayValue($hash_in,"subscription")))
+			);
+			return $hash_out;		
+		}
+	}
+	
+	public static function recurringSubscriptionType($hash_in) {
+		if(isset($hash_in))
+		{
+			$hash_out = array(
+					"planCode"=>(Checker::requiredField(XmlFields::returnArrayValue($hash_in, "planCode"))),
+					"numberOfPayments"=>(XmlFields::returnArrayValue($hash_in, "numberOfPayments")),
+					"startDate"=>(XmlFields::returnArrayValue($hash_in, "startDate")),
+					"amount"=>(XmlFields::returnArrayValue($hash_in, "amount")),
+			);
+			return $hash_out;
+		}
+	}
+	
+	public static function litleInternalRecurringRequestType($hash_in)
+	{
+		if(isset($hash_in))
+		{
+			$hash_out = array(
+					"subscriptionId"=>(Checker::requiredField(XmlFields::returnArrayValue($hash_in, "subscriptionId"))),
+					"recurringTxnId"=>(Checker::requiredField(XmlFields::returnArrayValue($hash_in, "recurringTxnId")))
+			);
+			return $hash_out;
+		}
+	}
+	
+	public static function advancedFraudChecksType($hash_in)
+    {
+        if (isset($hash_in))
+        {
+            $hash_out = array(
+                "threatMetrixSessionId"=>(Checker::requiredField(XmlFields::returnArrayValue($hash_in, "threatMetrixSessionId", 128)))
+            );
+            return $hash_out;
+        }
+    }
+	
 }

@@ -23,9 +23,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-define('CURRENT_XML_VERSION', '8.13');
-error_reporting(E_ALL ^ E_NOTICE);
-//ini_set('display_errors', '1');
+define('CURRENT_XML_VERSION', '8.23');
+define('CURRENT_SDK_VERSION', 'PHP;8.23.0');
+define('MAX_TXNS_PER_BATCH', 100000);
+define('MAX_TXNS_PER_REQUEST', 500000);
 require_once realpath(dirname(__FILE__)) . '/LitleXmlMapper.php';
 require_once realpath(dirname(__FILE__)) . '/XmlFields.php';
 require_once realpath(dirname(__FILE__)) . '/Communication.php';
@@ -34,3 +35,7 @@ require_once realpath(dirname(__FILE__)) . '/Obj2xml.php';
 require_once realpath(dirname(__FILE__)) . '/Checker.php';
 require_once realpath(dirname(__FILE__)) . '/LitleOnlineRequest.php';
 require_once realpath(dirname(__FILE__)) . '/UrlMapper.php';
+require_once realpath(dirname(__FILE__)) . '/BatchRequest.php';
+require_once realpath(dirname(__FILE__)) . '/LitleRequest.php';
+require_once realpath(dirname(__FILE__)) . '/Transactions.php';
+require_once realpath(dirname(__FILE__)) . '/LitleResponseProcessor.php';
