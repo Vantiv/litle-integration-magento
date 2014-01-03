@@ -78,7 +78,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$parentTxnId = $payment->getParentTransactionId();
 		if ($parentTxnId == 'Litle VT') {
 			Mage::throwException(
-					"This order was placed using Litle Virtual Terminal. Please process the $txnType by logging into Litle Virtual Terminal (https://vt.litle.com).");
+					"This order was placed using Litle Virtual Terminal. Please process the $txnType by logging into Litle Virtual Terminal (https://reports.litle.com).");
 		}
 	}
 
@@ -96,7 +96,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			$info->setAdditionalInformation('cc_vaulted', $data->getCcVaulted());
 			$info->setAdditionalInformation('cc_should_save', $data->getCcShouldSave());
 		}
-
+        
 		if ($this->getConfigData('vault_enable')) {
 			$info->setAdditionalInformation('cc_vaulted', $data->getCcVaulted());
 			$info->setAdditionalInformation('cc_should_save', $data->getCcShouldSave());
@@ -539,13 +539,13 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			}
 			$sql = "select * from sales_payment_transaction where order_id = " . $orderId . " order by created_at asc";
 			$result = mysql_query($sql);
-			Mage::log("Executed sql: " . $sql);
-			Mage::log($result);
+			Mage::log("Executed sql: " . $sql, null, "litle.log");
+			Mage::log($result, null, "litle.log");
 			while($row = mysql_fetch_assoc($result)) {
-				Mage::log($row['transaction_id']);
+				Mage::log($row['transaction_id'], null, "litle.log");
 				$sql = "insert into sales_payment_transaction (parent_id, order_id, payment_id, txn_id, parent_txn_id, txn_type, is_closed, created_at, additional_information) values (".$row['transaction_id'].", ".$orderId.", ".$orderId.", ".$litleTxnId.", ".$row['txn_id'].", '".$txnType."', 0,now(),'".serialize(array('message'=>message))."')";
 			}
-			Mage::log("Sql to execute is: " . $sql);
+			Mage::log("Sql to execute is: " . $sql, null, "litle.log");
 			$result = mysql_query($sql);
 			if(!$result) {
 				Mage::log("Insert failed with error message: " . mysql_error(), null, "litle.log");
@@ -553,7 +553,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			}
 			
 			$sql = "insert into sales_flat_order_status_history (parent_id, is_customer_notified, is_visible_on_front, comment, status, created_at, entity_name) values (".$orderId.", 2, 0,'".$message.". Transaction ID: ".$litleTxnId."','processing',now(),'".$txnType."')";
-			Mage::log("Sql to execute is: " . $sql);
+			Mage::log("Sql to execute is: " . $sql, null, "litle.log");
 			$result = mysql_query($sql);
 			if(!$result) {
 				Mage::log("Insert failed with error message: " . mysql_error(), null, "litle.log");
@@ -646,7 +646,6 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$query = 'select failed_transactions_id from litle_failed_transactions where litle_txn_id = ' . $litleTxnId;
 		$failedTransactionId = $conn->fetchOne($query);
 		$url = Mage::getUrl('palorus/adminhtml_myform/failedtransactionsview/') . 'failed_transactions_id/' . $failedTransactionId;
-		//Mage::getSingleton('core/session')->addError($messageToShow . "For your reference, the transaction id is <a href='" . $url . "'>".$litleTxnId."</a>");
 		Mage::throwException($messageToShow . "For your reference, the transaction id is <a href='" . $url . "'>".$litleTxnId."</a>");
 	}
 
@@ -655,6 +654,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	 */
 	public function authorize(Varien_Object $payment, $amount)
 	{
+	    // What about this?   Mage::app()->getStore()->isAdmin()
 		// @TODO This is the wrong way to do this.
 		if (preg_match('/sales_order_create/i', $_SERVER['REQUEST_URI']) &&
 				 ($this->getConfigData('paypage_enable') == '1')) {
@@ -768,7 +768,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 			} else {
 				$litleResponse = $litleRequest->captureRequest($hash_in);
 			}
-
+            
 			if (! is_null($info->getAdditionalInformation('cc_should_save'))) {
 				$this->_saveToken($payment, $litleResponse);
 			}
