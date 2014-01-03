@@ -10,17 +10,29 @@ class  Litle_CreditCard_Model_URL
 	                'label' => 'Sandbox'
 			),
 			array(
-			         'value' => "https://cert.litle.com/vap/communicator/online",
-			         'label' => 'Cert'
+			         'value' => "https://postlive.litle.com/vap/communicator/online",
+			         'label' => 'Postlive'
 			),
-			array(
-	                 'value' => "https://precert.litle.com/vap/communicator/online",
-	                 'label' => 'PreCert'
-			),
+            array(
+                     'value' => "https://prelive.litle.com/vap/communicator/online",
+                     'label' => 'Prelive'
+            ),
+            array(
+                     'value' => "https://transact-postlive.litle.com/vap/communicator/online",
+                     'label' => 'Transact Postlive'
+            ),
+            array(
+                     'value' => "https://transact-prelive.litle.com/vap/communicator/online",
+                     'label' => 'Transact Prelive'
+            ),
 			array(
 			         'value' => "https://payments.litle.com/vap/communicator/online",
 			         'label' => 'Production'
 			)
+            array(
+                     'value' => "https://transact.litle.com/vap/communicator/online",
+                     'label' => 'Transact Production'
+            )
 		);
 
 	}
