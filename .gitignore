@@ -1,6 +1,8 @@
 /.htaccess
 /.htaccess.sample
 *.zip
+kit
+output
 /app/locale
 /app/Mage.php
 /app/.htaccess
