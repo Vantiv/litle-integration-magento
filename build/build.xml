@@ -9,7 +9,7 @@
 	<!-- set global properties for this build -->
 	<property name="version" value="8.15.0"/>
 	<property name="pathToLitleMagentoIntegrationFolder" value="${env.WORKSPACE}"/>
-	<property name="pathToFolderToSaveIn" value="${env.WORKSPACE}output/"/>
+	<property name="pathToFolderToSaveIn" value="${env.WORKSPACE}/output/"/>
 	
 	<taskdef name="builder" classname="com.litle.magento.builder.LitleMagentoXMLWriter">
 		<classpath>
