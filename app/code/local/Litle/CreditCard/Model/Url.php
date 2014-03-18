@@ -28,7 +28,7 @@ class  Litle_CreditCard_Model_URL
 			array(
 			         'value' => "https://payments.litle.com/vap/communicator/online",
 			         'label' => 'Production'
-			)
+			),
             array(
                      'value' => "https://transact.litle.com/vap/communicator/online",
                      'label' => 'Transact Production'
