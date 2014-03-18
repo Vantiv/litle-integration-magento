@@ -36,7 +36,7 @@ public class NonPayPageTransactionsTests extends BaseTestCase {
 	    iFailCheckOutWith("Visa", "4137307201736110", "The order was not approved.  Please try again later or contact us.  For your reference, the transaction id is");
 	    iLogOutAsUser();
 	}
-
+/*
 	@Test
 	public void backendAuthCheckoutCapture() throws Exception {
 	    iAmDoingLitleAuth();
@@ -81,5 +81,6 @@ public class NonPayPageTransactionsTests extends BaseTestCase {
         iHaveInMyCart("vault");
         iCheckOutWith("Visa", "4100000000000001");
         iLogOutAsUser();
-	}
+	}a
+*/
 }

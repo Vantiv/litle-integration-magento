@@ -1,5 +1,5 @@
 <!--Create build.properties with a line like java4home =/usr/local/litle-home/"your home directory"/j2sdk1.4.2_19-->
-<project name="litle-integration-magento" default="build" basedir=".">
+<project name="litle-integration-magento" default="build" basedir="..">
 	<description>
         Builds litle-integration-magento package
     </description>
@@ -13,7 +13,7 @@
 	
 	<taskdef name="builder" classname="com.litle.magento.builder.LitleMagentoXMLWriter">
 		<classpath>
-			<pathelement location="${basedir}/magento-xml-builder.jar" />
+			<pathelement location="${basedir}/build/magento-xml-builder.jar" />
 		</classpath>
 	</taskdef>
 
@@ -36,11 +36,49 @@
 		</copy>
 		
 		<!-- Tar gz it up -->
-		<mkdir dir="${basedir}/../kit"/>
+		<mkdir dir="${basedir}/kit"/>
 		<tar 
 			destfile="${basedir}/../kit/Litle_Payments-${version}.tgz" 
 			basedir="${pathToFolderToSaveIn}" 
 			compression="gzip"/> 
+	</target>
+
+	<path id="classpath.ref">
+		<pathelement location="${basedir}/build/selenium-2.31.0/selenium-2.31.0/selenium-java-2.31.0.jar" />
+	        <pathelement location="${basedir}/build/junit-4.8.2.jar" />
+	        <pathelement location="${basedir}/build/mysql.jar" />
+	        <pathelement location="${basedir}/build/selenium-2.31.0/selenium-2.31.0/libs/commons-io-2.2.jar"/>
+	        <pathelement location="${basedir}/build/selenium-2.31.0/selenium-2.31.0/libs/guava-14.0.jar"/>
+	        <pathelement location="${basedir}/build/selenium-2.31.0/selenium-2.31.0/libs/json-20080701.jar"/>
+	        <pathelement location="${basedir}/build/selenium-2.31.0/selenium-2.31.0/libs/commons-exec-1.1.jar"/>
+	        <pathelement location="${basedir}/build/selenium-2.31.0/selenium-2.31.0/libs/httpcore-4.2.1.jar"/>
+	        <pathelement location="${basedir}/build/selenium-2.31.0/selenium-2.31.0/libs/httpclient-4.2.1.jar"/>
+	        <pathelement location="${basedir}/build/selenium-2.31.0/selenium-2.31.0/libs/commons-logging-1.1.1.jar"/>
+	</path>
+
+	<target name="selenium">
+		<mkdir dir="${basedir}/test/output"/>
+		<javac destdir="${basedir}/test/output" includeantruntime="false" source="1.5" target="1.5" classpathref="classpath.ref" debug="true" debuglevel="lines,vars,source">
+			<compilerarg value="-Xbootclasspath/p:${toString:lib.path.ref}" />
+			<src path="test/selenium" />
+		</javac>
+		<mkdir dir="${basedir}/reports/selenium"/>
+
+		<junit haltonfailure="true" printsummary="true" fork="yes">
+			<classpath>
+				<path refid="classpath.ref" />
+				<pathelement location="${basedir}/test/output"/>
+			</classpath>
+
+			<formatter type="plain" usefile="false" />
+			<formatter type="xml" />
+
+			<batchtest todir="reports/selenium">
+				<fileset dir="test/output">
+					<include name="**/*Tests.class" /> 
+				</fileset>
+			</batchtest>
+		</junit>
 	</target>
 
 </project>

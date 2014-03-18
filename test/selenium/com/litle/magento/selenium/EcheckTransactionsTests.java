@@ -28,7 +28,7 @@ public class EcheckTransactionsTests extends BaseTestCase {
         iPressSubmitInvoice(null, null);
         iLogOutAsAdministrator();
     }
-
+/*
     @Test
     public void testBackendECheckVerifyThenAttemptSale() throws Exception {
         iAmLoggedInAsAnAdministrator();
@@ -85,4 +85,5 @@ public class EcheckTransactionsTests extends BaseTestCase {
         iPressSubmitInvoice("The invoice has been created.", "Captured amount of $6.99 online. Transaction ID:");
         iLogOutAsAdministrator();
     }
+*/
 }
