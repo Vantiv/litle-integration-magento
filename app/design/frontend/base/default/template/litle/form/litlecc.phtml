@@ -165,7 +165,6 @@ $_id = $_time . substr($_session,13);
 
 <?php if($this->getPaypageEnabled()):?>
 <script type="text/javascript">
-document.observe("dom:loaded", function() {
 	Payment.prototype.save = function() {
 
 		var _saveUrl = this.saveUrl;
@@ -245,6 +244,5 @@ document.observe("dom:loaded", function() {
 			submitAfterLitle();
 		}
 	};
-});
 </script>
 <?php endif; ?>
