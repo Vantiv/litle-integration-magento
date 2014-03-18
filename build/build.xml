@@ -38,7 +38,7 @@
 		<!-- Tar gz it up -->
 		<mkdir dir="${basedir}/kit"/>
 		<tar 
-			destfile="${basedir}/../kit/Litle_Payments-${version}.tgz" 
+			destfile="${basedir}/kit/Litle_Payments-${version}.tgz" 
 			basedir="${pathToFolderToSaveIn}" 
 			compression="gzip"/> 
 	</target>
