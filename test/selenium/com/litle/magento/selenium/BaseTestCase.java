@@ -272,7 +272,7 @@ public class BaseTestCase {
         WebElement topRow = rows.get(0);
         String title = topRow.getAttribute("title");
         driver.get(title);
-        waitFor(By.className("head-billing-address"));
+        waitFor(By.id("sales_order_view"));
     }
 
     void iAddTheTopRowInProductsToTheOrder() {
