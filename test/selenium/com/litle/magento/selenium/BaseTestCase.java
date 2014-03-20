@@ -265,9 +265,9 @@ public class BaseTestCase {
     }
 
     void iClickOnTheTopRowInCustomerInsights() {
-        WebElement tab = driver.findElement(By.id("my_custom_tab"));
-        WebElement table = tab.findElement(By.tagName("table"));
-        List<WebElement> rows = table.findElements(By.tagName("tr"));
+        WebElement table = driver.findElement(By.id("my_custom_tab_table"));
+        WebElement tbody = table.findElement(By.tagName("tbody"));
+        List<WebElement> rows = tbody.findElements(By.tagName("tr"));
         assertTrue(rows.size() > 0);
         WebElement topRow = rows.get(0);
         String title = topRow.getAttribute("title");
