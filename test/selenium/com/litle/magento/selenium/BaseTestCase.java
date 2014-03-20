@@ -265,7 +265,11 @@ public class BaseTestCase {
     }
 
     void iClickOnTheTopRowInCustomerInsights() {
-        WebElement topRow = driver.findElement(By.xpath("/html/body/div/div[3]/div/div/div[2]/div/div[3]/form/div[3]/div/div/div/table/tbody/tr"));
+        WebElement tab = driver.findElement(By.id("my_custom_tab"));
+        WebElement table = tab.findElement(By.tagName("table"));
+        List<WebElement> rows = table.findElements(By.tagName("tr"));
+        assertTrue(rows.size() > 0);
+        WebElement topRow = rows.get(0);
         String title = topRow.getAttribute("title");
         driver.get(title);
         waitFor(By.className("head-billing-address"));
