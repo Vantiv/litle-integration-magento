@@ -487,8 +487,9 @@ public class BaseTestCase {
 
     }
 
-    void iFailCheckOutWith(String ccType, String creditCardNumber, String modalErrorMessage) {
+    void iFailCheckOutWith(String ccType, String creditCardNumber, String modalErrorMessage) throws InterruptedException {
         baseCheckoutHelper(ccType, creditCardNumber, false);
+        Thread.sleep(2000);
         Alert alert = driver.switchTo().alert();
         String alertText = alert.getText();
         assertTrue(alertText, alertText.contains(modalErrorMessage));
