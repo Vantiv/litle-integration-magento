@@ -697,25 +697,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					$info->setAdditionalInformation('orderSource', 'ecommerce');
 				}
 
-				$hash = array(
-						'orderId' => $orderId,
-						'amount' => $amountToPass,
-						'orderSource' => $info->getAdditionalInformation('orderSource'),
-						'billToAddress' => $this->getBillToAddress($payment),
-						'shipToAddress' => $this->getAddressInfo($payment),
-						'cardholderAuthentication' => $this->getFraudCheck($payment),
-						'enhancedData' => $this->getEnhancedData($payment),
-						'customBilling' => $this->getCustomBilling(
-								Mage::app()->getStore()
-									->getBaseUrl())
-				);
-
-
-
-				$payment_hash = $this->creditCardOrPaypageOrToken($payment);
-				$hash_temp = array_merge($hash, $payment_hash);
-				$merchantData = $this->merchantData($payment);
-				$hash_in = array_merge($hash_temp, $merchantData);
+                $hash_in = generateAuthorizationHash();
 
 				$litleRequest = new LitleOnlineRequest();
 				$litleResponse = $litleRequest->authorizationRequest($hash_in);
@@ -729,6 +711,28 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		}
 
 		return $this;
+	}
+	
+	function generateAuthorizationHash($orderId, $amountToPass, $info, $payment) {
+        $hash = array(
+                'orderId' => $orderId,
+                'amount' => $amountToPass,
+                'orderSource' => $info->getAdditionalInformation('orderSource'),
+                'billToAddress' => $this->getBillToAddress($payment),
+                'shipToAddress' => $this->getAddressInfo($payment),
+                'cardholderAuthentication' => $this->getFraudCheck($payment),
+                'enhancedData' => $this->getEnhancedData($payment),
+                'customBilling' => $this->getCustomBilling(
+                        Mage::app()->getStore()
+                            ->getBaseUrl())
+        );
+
+        $payment_hash = $this->creditCardOrPaypageOrToken($payment);
+        $hash_temp = array_merge($hash, $payment_hash);
+        $merchantData = $this->merchantData($payment);
+        $hash_in = array_merge($hash_temp, $merchantData);
+        
+        return $hash_in;
 	}
 
 	/**
