@@ -325,19 +325,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function getOrderDate(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
-		$date = $order->getCreatedAtFormated('short');
-		$date_temp = explode('/', $date);
-		$month = $date_temp['0'];
-		if ((int) $month < 10) {
-			$month = '0' . $month;
-		}
-		$day = $date_temp['1'];
-		if ((int) $day < 10) {
-			$day = '0' . $day;
-		}
-		$year_temp = explode(' ', $date_temp['2']);
-		$year = '20' . $year_temp['0'];
-		return $year . '-' . $month . '-' . $day;
+		$date = $order->getCreatedAtStoreDate();
+		return Mage::getModel('core/date')->date('Y-m-d',$date);
 	}
 
 	public function getLineItemData(Varien_Object $payment)
