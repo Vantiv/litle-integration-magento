@@ -806,7 +806,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$amountToPass = Mage::helper('creditcard')->formatAmount($amount, true);
 		if (! empty($order)) {
 			$hash = array(
-					'litleTxnId' => $payment->getCcTransId(),
+					'litleTxnId' => $this->findCaptureLitleTxnToRefundForPayment($payment),
 					'amount' => $amountToPass
 			);
 			$merchantData = $this->merchantData($payment);
@@ -817,6 +817,11 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		$this->processResponse($payment, $litleResponse);
 
 		return $this;
+	}
+	
+	function findCaptureLitleTxnToRefundForPayment($payment) {
+	   $capture = $payment->lookupTransaction(false, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
+	   return $capture->getTxnId();
 	}
 
 	/**

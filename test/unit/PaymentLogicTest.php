@@ -45,4 +45,22 @@ class PaymentLogicTest extends PHPUnit_Framework_TestCase
 		$hash = $litle->generateAuthorizationHash('123','100', $mock, $payment);
 		$this->assertEquals('123', $hash['id']);
 	}
+	
+	public function testFindCaptureLitleTxnToRefundForPayment()
+    {
+        $capture = new Varien_Object();
+        $capture->setTxnId(2);
+        $payment = $this->getMock('Mage_Sales_Model_Order_Payment');
+        $payment->expects($this->any())
+                ->method('lookupTransaction')
+                ->with($this->equalTo(false),
+                       $this->equalTo(Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE))
+                ->will($this->returnValue($capture));
+        
+        $litle = new Litle_CreditCard_Model_PaymentLogic();
+        
+        $litleTxnId = $litle->findCaptureLitleTxnToRefundForPayment($payment);
+        
+        $this->assertEquals(2, $litleTxnId);
+    }
 }
