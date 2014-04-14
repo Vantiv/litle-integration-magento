@@ -26,6 +26,7 @@ php.ini.sample
 /app/Mage.php
 /app/.htaccess
 /app/code/core/*
+/app/code/community/Phoenix/*
 /app/design/install
 /app/design/adminhtml/default/default/layout/admin.xml
 /app/design/adminhtml/default/default/layout/adminnotification.xml

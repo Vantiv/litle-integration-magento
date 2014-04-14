@@ -178,9 +178,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $retArray;
 	}
 
-	public function creditCardOrPaypageOrToken($payment)
+	public function creditCardOrPaypageOrToken($payment, $info)
 	{
-		$info = $this->getInfoInstance();
 		$vaultIndex = $info->getAdditionalInformation('cc_vaulted');
 		$payment_hash = array();
 		if ($vaultIndex > 0) {
@@ -686,7 +685,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 					$info->setAdditionalInformation('orderSource', 'ecommerce');
 				}
 
-                $hash_in = generateAuthorizationHash();
+                $hash_in = $this->generateAuthorizationHash($orderId, $amountToPass, $info, $payment);
 
 				$litleRequest = new LitleOnlineRequest();
 				$litleResponse = $litleRequest->authorizationRequest($hash_in);
@@ -705,6 +704,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	function generateAuthorizationHash($orderId, $amountToPass, $info, $payment) {
         $hash = array(
                 'orderId' => $orderId,
+                'id' => $orderId,
                 'amount' => $amountToPass,
                 'orderSource' => $info->getAdditionalInformation('orderSource'),
                 'billToAddress' => $this->getBillToAddress($payment),
@@ -715,8 +715,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
                         Mage::app()->getStore()
                             ->getBaseUrl())
         );
-
-        $payment_hash = $this->creditCardOrPaypageOrToken($payment);
+        
+        $payment_hash = $this->creditCardOrPaypageOrToken($payment, $info);
         $hash_temp = array_merge($hash, $payment_hash);
         $merchantData = $this->merchantData($payment);
         $hash_in = array_merge($hash_temp, $merchantData);
@@ -770,7 +770,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 						'shipToAddress' => $this->getAddressInfo($payment),
 						'enhancedData' => $this->getEnhancedData($payment)
 				);
-				$payment_hash = $this->creditCardOrPaypageOrToken($payment);
+				$payment_hash = $this->creditCardOrPaypageOrToken($payment, $info);
 				$hash = array_merge($hash_temp, $payment_hash);
 			}
 			$merchantData = $this->merchantData($payment);
