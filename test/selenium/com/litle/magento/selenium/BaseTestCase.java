@@ -36,7 +36,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BaseTestCase {
 
-    private static final String WORKSPACE = System.getenv("WORKSPACE") == null ? System.getProperty("user.home") : System.getevn("WORKSPACE");
+    private static final String WORKSPACE = System.getenv("WORKSPACE") == null ? System.getProperty("user.home") : System.getenv("WORKSPACE");
     private static final String SCREENSHOT_DIR = WORKSPACE + "/test/screenshots/";
     private static final String HOST = System.getenv("MAGENTO_HOST");
     private static final String FIREFOX_PATH = System.getenv("FIREFOX_PATH");
