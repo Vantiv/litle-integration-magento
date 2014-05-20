@@ -60,6 +60,49 @@ public class StoredCreditCardTransactionTests extends BaseTestCase {
 	    iLogOutAsAdministrator();
 	}
 
+	@Test
+	public void doASuccessfulCheckkoutWithStoredCreditCard_Amex() throws Exception {
+System.out.println("TEST RUNS");
+	    iAmDoingLitleAuth();
+	    iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+
+	    iHaveInMyCart("vault");
+	    iCheckOutWith("American Express", "370028010000001", true);
+
+        iHaveInMyCart("vault");
+        iCheckOutWith("American Express", "Stored American Express Ending in: 0001");
+
+        theVaultTableHas("0001", "%0001", "AE", "370028");
+
+        //Verify my account lists the card
+        //Click My Account
+        driver.findElement(By.linkText("My Account")).click();
+        waitFor(By.linkText("Stored Credit Cards"));
+        //Click stored credit cards
+        driver.findElement(By.linkText("Stored Credit Cards")).click();
+        //Check the text of the box
+        WebElement infoBox = driver.findElement(By.className("info-box"));
+        String infoText = infoBox.getText();
+        assertTrue(infoText, infoText.contains("American Express"));
+        assertTrue(infoText, infoText.contains("Ends in 0001"));
+        //Delete the stored card
+        infoBox.findElement(By.linkText("Delete")).click();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        waitFor(By.className("success-msg"));
+        String message = driver.findElement(By.className("success-msg")).getText();
+        assertTrue(message, message.contains("The card has been deleted"));
+	    iLogOutAsUser();
+
+	    iAmLoggedInAsAnAdministrator();
+	    iView("Sales", "Orders");
+	    iClickOnTheTopRowInOrders();
+	    iPressInvoice();
+	    iSelectNameFromSelect("Capture Online", "invoice[capture_case]");
+	    iPressSubmitInvoice("The invoice has been created.", null);
+	    iLogOutAsAdministrator();
+	}
+
     private void theVaultTableHas(String last4, String tokenLike, String type, String bin) throws Exception {
         ResultSet rs = stmt.executeQuery("select * from litle_vault where token like '"+tokenLike+"'");
         assertTrue(rs.next());
