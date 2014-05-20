@@ -169,12 +169,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 
 		$retArray = array();
                 $retArray['type'] = $this->litleCcTypeEnum($vaultCard);
-		//$retArray['type'] = $vaultCard->getType();
 		$retArray['litleToken'] = $vaultCard->getToken();
 		$retArray['cardValidationNum'] = $payment->getCcCid();
-
-                Mage::Log("I'M PRINTING!!!!!:");
-                Mage::Log( $retArray['type'] );
 
 		$payment->setCcLast4($vaultCard->getLast4());
 		$payment->setCcType($vaultCard->getType());
