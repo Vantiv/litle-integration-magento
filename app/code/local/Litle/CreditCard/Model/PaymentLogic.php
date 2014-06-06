@@ -171,7 +171,8 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
                 $retArray['type'] = $this->litleCcTypeEnum($vaultCard);
 		$retArray['litleToken'] = $vaultCard->getToken();
 		$retArray['cardValidationNum'] = $payment->getCcCid();
-
+		preg_match('/\d\d(\d\d)/', $vaultCard->getExpirationYear(), $expYear);
+	        $retArray['expDate'] = sprintf('%02d%02d', $vaultCard->getExpirationMonth(), $expYear[1]);
 		$payment->setCcLast4($vaultCard->getLast4());
 		$payment->setCcType($vaultCard->getType());
 
