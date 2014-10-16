@@ -30,19 +30,8 @@ class Litle_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
 
 	// This method converts dollars to cents, and takes care of trailing decimals if any.
 	public function formatAmount($amountInDecimal, $roundUp) {
-		if( empty($amountInDecimal) || $amountInDecimal === "" )
-			return $amountInDecimal;
 
-		$amountInCents = ((double)$amountInDecimal) * 100;
-		$amountToReturn = (int)$amountInCents;
-
-		// check to see if we have left over decimals -- i.e. the incoming amount had more than 2 decimals
-		if( $amountInCents != (double)$amountToReturn)
-		{
-			// yes, more decimals than needed indeed!
-			$amountToReturn = ($roundUp) ? ($amountToReturn + 1) : ($amountToReturn);
-		}
-		return $amountToReturn;
+		return (Mage::app()->getStore()->roundPrice($amountInDecimal) * 100);
 	}
 
 	/**
