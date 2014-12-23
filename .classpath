@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="build/selenium-2.44.0/libs/guava-18.0.jar"/>
 	<classpathentry kind="lib" path="build/selenium-2.44.0/libs/gson-2.3.jar"/>
 	<classpathentry kind="lib" path="build/selenium-2.44.0/libs/commons-exec-1.1.jar"/>
+	<classpathentry kind="lib" path="build/selenium-2.44.0/libs/httpcore-4.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
