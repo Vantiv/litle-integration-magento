@@ -52,6 +52,7 @@
         <pathelement location="${basedir}/build/selenium-2.44.0/libs/gson-2.3.jar"/>
 	    <pathelement location="${basedir}/build/selenium-2.44.0/libs/commons-exec-1.1.jar"/>
 		<pathelement location="${basedir}/build/selenium-2.44.0/libs/httpcore-4.3.2.jar"/>
+		<pathelement location="${basedir}/build/selenium-2.44.0/libs/httpclient-4.3.4.jar"/>
 	</path>
 
 	<target name="selenium">
