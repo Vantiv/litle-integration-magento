@@ -3,7 +3,8 @@ package com.litle.magento.selenium;
 
 import org.junit.Before;
 import org.junit.Test;
-TestCase {
+
+public class PayPageTransactionsTests extends BaseTestCase {
 
     @Before
     public void setUp() throws Exception {
