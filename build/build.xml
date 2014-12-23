@@ -49,6 +49,7 @@
 	        <pathelement location="${basedir}/build/mysql.jar" />
 	        <pathelement location="${basedir}/build/selenium-2.44.0/libs/commons-io-2.4.jar"/>
 	        <pathelement location="${basedir}/build/selenium-2.44.0/libs/guava-18.0.jar"/>
+	        <pathelement location="${basedir}/build/selenium-2.44.0/libs/gson-2.3.jar"/>
 	</path>
 
 	<target name="selenium">
