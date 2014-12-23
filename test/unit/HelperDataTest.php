@@ -128,14 +128,14 @@ class HelperDataTest extends PHPUnit_Framework_TestCase
 		return array(
 		array('10.00', true, '1000'),
 		array('10.10', true, '1010'),
-		array('10.101', true, '1011'),
-		array(NULL, true, ""),
-		array('', true, ""),
+		array('10.11', true, '1011'),
+		array(NULL, true, "0"),
+		array('', true, "0"),
 		array('10.00', false, '1000'),
 		array('10.10', false, '1010'),
 		array('10.101', false, '1010'),
-		array(NULL, false, ""),
-		array('', false, "")
+		array(NULL, false, "0"),
+		array('', false, "0")
 		);
 	}
 }
