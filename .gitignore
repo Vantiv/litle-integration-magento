@@ -239,3 +239,4 @@ php.ini.sample
 /skin/*
 /var/*
 /vendor/*
+/bin
