@@ -2,9 +2,6 @@ package com.litle.magento.selenium;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class BackendCCTransactionsTests extends BaseTestCase {
 
@@ -13,16 +10,16 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 		iAmDoingCCOrEcheckTransaction();
 		iAmDoingNonPaypageTransaction();
 	}
-	
+
 	@Test
 	public void attemptAFailedVoidCapture() throws Exception {
 		iAmDoingLitleAuth();
-		
+
 		iAmLoggedInAsWithThePassword("gdake@litle.com","password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("American Express","346854278192102");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Sales","Orders");
 		iClickOnTheTopRowInOrders();
@@ -31,16 +28,16 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 		iPressVoidCapture("Transaction Not Voided - Already Settled. This transaction cannot be voided; it has already been delivered to the card networks. You may want to try a refund instead.For your reference, the transaction id is \\d+");
 		iLogOutAsAdministrator();
 	}
-	
+
 	@Test
 	public void doAVoidCaptureAndThenCaptureAgain() throws Exception {
 		iAmDoingLitleAuth();
-		
+
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100000000000001");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Sales","Orders");
 		iClickOnTheTopRowInOrders();
@@ -51,17 +48,17 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 		iPressSubmitInvoice("The invoice has been created.","Captured amount of $6.99 online");
 		iLogOutAsAdministrator();
 	}
-	
-	
+
+
 	@Test
 	public void doASuccessfulRefundAndThenVoidTheRefund() throws Exception {
 		iAmDoingLitleAuth();
-		
+
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100000000000001");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Sales","Orders");
 		iClickOnTheTopRowInOrders();
@@ -72,18 +69,18 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 		iPressCreditMemo();
 		iPressRefund("The credit memo has been created.");
 		iPressVoidRefund("The payment has been voided.");
-		iLogOutAsAdministrator();	
+		iLogOutAsAdministrator();
 	}
 
 	@Test
 	public void doASuccessfulAuthCheckoutAndThenCancelTheAuth() throws Exception {
 		iAmDoingLitleAuth();
-		
+
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100000000000001");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Sales","Orders");
 		iClickOnTheTopRowInOrders();
@@ -94,17 +91,17 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 	@Test
 	public void doASuccessfulAuthCheckoutAndThenReverseTheAuth() throws Exception {
 		iAmDoingLitleAuth();
-		
+
 		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100000000000001");
 		iLogOutAsUser();
-		
+
 		iAmLoggedInAsAnAdministrator();
 		iView("Sales","Orders");
 		iClickOnTheTopRowInOrders();
 		iPressAuthReversal("The payment has been voided.");
 		iLogOutAsAdministrator();
 	}
-	
+
 }
