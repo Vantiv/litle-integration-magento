@@ -2,7 +2,6 @@ package com.litle.magento.selenium;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 public class NonPayPageTransactionsTests extends BaseTestCase {
 

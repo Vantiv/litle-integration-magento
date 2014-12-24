@@ -1,12 +1,8 @@
 package com.litle.magento.selenium;
 
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.NoSuchElementException;
 
 public class PayPageTransactionsTests extends BaseTestCase {
 

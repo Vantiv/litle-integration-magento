@@ -4,8 +4,6 @@ package com.litle.magento.selenium;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 public class EcheckTransactionsTests extends BaseTestCase {
 
