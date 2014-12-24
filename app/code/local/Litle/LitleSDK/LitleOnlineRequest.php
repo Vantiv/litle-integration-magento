@@ -507,7 +507,6 @@ class LitleOnlineRequest
 	{
 	
 		$hash_config = LitleOnlineRequest::overideconfig($hash_in);
-		Mage::log($hash_config);
 		
 		$hash = LitleOnlineRequest::getOptionalAttributes($hash_in,$hash_out);
 		Checker::choice($choice1);
