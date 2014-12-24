@@ -63,4 +63,41 @@ class PaymentLogicTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals(2, $litleTxnId);
     }
+    
+    public function testGetTokenInfo()
+    {
+        $payment = new Varien_Object();
+        $payment->setCcCid('789');
+        $vaultCard = new Varien_Object();
+        $vaultCard->setCcType('VI');
+        $vaultCard->setLast4('1234');
+        $vaultCard->setType('VI');
+        $vaultCard->setExpirationMonth('12');
+        $vaultCard->setExpirationYear('2050');
+        $vaultCard->setToken('1111222233331234');
+        
+        $litle = new Litle_CreditCard_Model_PaymentLogic();
+        
+        $modelPalorusVault = $this->getMock('Litle_Palorus_Model_Vault');
+        $modelPalorusVault->expects($this->any())
+                          ->method('load')
+                          ->with($this->equalTo(50))
+                          ->will($this->returnValue($vaultCard));
+        $litle->setModelPalorusVault($modelPalorusVault);
+        $info = new Mage_Payment_Model_Info();
+        $info->setAdditionalInformation('cc_vaulted', 50);
+        
+        $arr = array('info_instance' => $info);
+        $litle->addData($arr);
+        
+        $tokenInfo = $litle->getTokenInfo($payment);
+        
+        $this->assertEquals('1234', $payment->getCcLast4());
+        $this->assertEquals('VI', $payment->getCcType());
+
+        $this->assertEquals('789', $tokenInfo['cardValidationNum']);        
+        $this->assertEquals('VI', $tokenInfo['type']);
+        $this->assertEquals('1111222233331234', $tokenInfo['litleToken']);
+        $this->assertEquals('1250', $tokenInfo['expDate']);
+    }
 }

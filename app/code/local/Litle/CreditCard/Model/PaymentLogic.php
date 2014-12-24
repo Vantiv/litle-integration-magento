@@ -162,17 +162,30 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 		return $retArray;
 	}
 
+    protected $_modelPalorusVault;
+    public function setModelPalorusVault(Litle_Palorus_Model_Vault $modelPalorusVault) {
+        $this->_modelPalorusVault = $modelPalorusVault;
+    }
+    
+    public function getModelPalorusVault() {
+        if(null === $this->_modelPalorusVault) {
+            setModelPalorusVault(Mage::getModel('palorus/vault'));
+        }
+        return $this->_modelPalorusVault;
+    }
+
 	public function getTokenInfo($payment)
 	{
 		$vaultIndex = $this->getInfoInstance()->getAdditionalInformation('cc_vaulted');
-		$vaultCard = Mage::getModel('palorus/vault')->load($vaultIndex);
+		$vaultCard = $this->getModelPalorusVault()->load($vaultIndex);
 
 		$retArray = array();
-                $retArray['type'] = $this->litleCcTypeEnum($vaultCard);
+        $retArray['type'] = $this->litleCcTypeEnum($vaultCard);
 		$retArray['litleToken'] = $vaultCard->getToken();
 		$retArray['cardValidationNum'] = $payment->getCcCid();
+		
 		preg_match('/\d\d(\d\d)/', $vaultCard->getExpirationYear(), $expYear);
-	        $retArray['expDate'] = sprintf('%02d%02d', $vaultCard->getExpirationMonth(), $expYear[1]);
+        $retArray['expDate'] = sprintf('%02d%02d', $vaultCard->getExpirationMonth(), $expYear[1]);
 		$payment->setCcLast4($vaultCard->getLast4());
 		$payment->setCcType($vaultCard->getType());
 
