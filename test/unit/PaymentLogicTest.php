@@ -100,4 +100,10 @@ class PaymentLogicTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('1111222233331234', $tokenInfo['litleToken']);
         $this->assertEquals('1250', $tokenInfo['expDate']);
     }
+    
+    public function testGetModelPalorusVault_NotSetYet() {
+        $litle = new Litle_CreditCard_Model_PaymentLogic();
+        $vault = $litle->getModelPalorusVault();
+        $this->assertNotNull($vault);
+    }
 }

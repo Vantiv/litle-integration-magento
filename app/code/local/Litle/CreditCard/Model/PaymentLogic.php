@@ -169,7 +169,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
     
     public function getModelPalorusVault() {
         if(null === $this->_modelPalorusVault) {
-            setModelPalorusVault(Mage::getModel('palorus/vault'));
+            $this->setModelPalorusVault(Mage::getModel('palorus/vault'));
         }
         return $this->_modelPalorusVault;
     }
