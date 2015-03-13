@@ -13,6 +13,10 @@ class  Litle_LEcheck_Model_Transactiontypes
                 'value' => Mage_Paygate_Model_Authorizenet::ACTION_AUTHORIZE_CAPTURE,
                 'label' => 'Sale'
             ),
+            array(
+                'value' => Mage_Paygate_Model_Authorizenet::ACTION_ORDER,
+                'label' => 'Sale With Verification'
+            ),
         );
     }
 }

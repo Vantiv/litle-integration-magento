@@ -116,7 +116,8 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 				$retArray["addressLine2"] = $contactInfo->getStreet(2);
 				$retArray["addressLine3"] = $contactInfo->getStreet(3);
 				$retArray["city"] = $contactInfo->getCity();
-				$retArray["state"] = $contactInfo->getRegion();
+				$region = Mage::getModel('directory/region')->load($contactInfo->getRegionId());
+				$retArray["state"] = $region->getCode();
 				$retArray["zip"] = $contactInfo->getPostcode();
 				$retArray["country"] = $contactInfo->getCountry();
 				$retArray["email"] = $contactInfo->getCustomerEmail();
@@ -166,7 +167,7 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 		$hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
 					'merchantId'=>$this->getMerchantId($payment),
-	                'merchantSdk' => 'Magento;8.15.2',
+	                'merchantSdk' => 'Magento;8.15.4',
 					'reportGroup'=>$this->getMerchantId($payment),
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),
@@ -264,16 +265,40 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 		$order = $payment->getOrder();
 		$orderId =$order->getIncrementId();
 		$amountToPass = ($amount* 100);
-
 		if (!empty($order)){
 			$hash = array(
 	 					'orderId'=> $orderId,
 	 					'amount'=> $amountToPass,
 	 					'orderSource'=> "ecommerce",
-						'verify'=>'true',
 						'billToAddress'=> $this->getBillToAddress($payment),
 						'shipToAddress'=> $this->getAddressInfo($payment),
 	 					'echeck'=> $this->getEcheckInfo($payment)
+			);
+			$merchantData = $this->merchantData($payment);
+			$hash_in = array_merge($hash,$merchantData);
+			$litleRequest = new LitleOnlineRequest();
+			$litleResponse = $litleRequest->echeckSaleRequest($hash_in);
+		}
+		$this->processResponse($payment,$litleResponse);
+	}
+	/**
+	* this method is called if we are authorising AND
+	* capturing a transaction with verification
+	*/
+	public function order (Varien_Object $payment, $amount)
+	{
+		$order = $payment->getOrder();
+		$orderId =$order->getIncrementId();
+		$amountToPass = ($amount* 100);
+		if (!empty($order)){
+			$hash = array(
+				'orderId'=> $orderId,
+				'amount'=> $amountToPass,
+				'orderSource'=> "ecommerce",
+				'verify'=>'true',
+				'billToAddress'=> $this->getBillToAddress($payment),
+				'shipToAddress'=> $this->getAddressInfo($payment),
+				'echeck'=> $this->getEcheckInfo($payment)
 			);
 			$merchantData = $this->merchantData($payment);
 			$hash_in = array_merge($hash,$merchantData);

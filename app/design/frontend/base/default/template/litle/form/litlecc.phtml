@@ -188,6 +188,13 @@ $_id = $_time . substr($_session,13);
 			}
 
 			function submitAfterLitle() {
+				var cc_num = encodeURI($('creditcard_cc_number').name);
+				var cc_cid = encodeURI($('creditcard_cc_cid').name);
+				var kvPairs = Form.serialize(_form).split("&");
+				for ( var i = kvPairs.length-1; i>=0; i--) {
+					if(kvPairs[i].indexOf(cc_num) > -1 || kvPairs[i].indexOf(cc_cid) > -1)
+						kvPairs.splice(i,1);
+				}
 				var request = new Ajax.Request(
 					_saveUrl,
 					{
@@ -195,7 +202,7 @@ $_id = $_time . substr($_session,13);
 						onComplete: _onComplete,
 						onSuccess: _onSave,
 						onFailure: checkout.ajaxFailure.bind(checkout),
-						parameters: Form.serialize(_form)
+						parameters: kvPairs.join("&")
 					}
 				);
 			}

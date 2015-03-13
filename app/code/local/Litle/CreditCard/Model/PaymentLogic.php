@@ -277,7 +277,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 				'user' => $this->getConfigData('user'),
 				'password' => $this->getConfigData('password'),
 				'merchantId' => $this->getMerchantId($payment),
-				'merchantSdk' => 'Magento;8.15.2',
+				'merchantSdk' => 'Magento;8.15.4',
 				'reportGroup' => $this->getMerchantId($payment),
 				'customerId' => $order->getCustomerEmail(),
 				'url' => $this->getConfigData('url'),
