@@ -200,6 +200,7 @@ public class BaseTestCase {
         //Get to login screen
         driver.findElement(By.linkText("Log In")).click();
         waitForIdVisible("email");
+        waitForIdVisible("pass");
 
         //Login
         driver.findElement(By.id("email")).clear();
@@ -393,6 +394,7 @@ public class BaseTestCase {
         //Get to login screen
         driver.get("http://"+HOST+"/" + CONTEXT + "/index.php/admin");
         waitForIdVisible("username");
+        waitForIdVisible("login");
 
         //Enter username
         WebElement e = driver.findElement(By.id("username"));
