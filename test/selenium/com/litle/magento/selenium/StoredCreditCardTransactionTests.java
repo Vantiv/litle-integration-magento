@@ -23,7 +23,7 @@ public class StoredCreditCardTransactionTests extends BaseTestCase {
 	@Test
 	public void doASuccessfulCheckkoutWithStoredCreditCard() throws Exception {
 	    iAmDoingLitleAuth();
-	    iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+	    iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 	    iHaveInMyCart("vault");
 	    iCheckOutWith("Visa", "4100280190123000", true);
         iHaveInMyCart("vault");
@@ -64,7 +64,7 @@ public class StoredCreditCardTransactionTests extends BaseTestCase {
 	public void doASuccessfulCheckkoutWithStoredCreditCard_Amex() throws Exception {
 System.out.println("TEST RUNS");
 	    iAmDoingLitleAuth();
-	    iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+	    iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 
 	    iHaveInMyCart("vault");
 	    iCheckOutWith("American Express", "370028010000001", true);

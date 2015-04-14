@@ -16,7 +16,7 @@ public class PayPageTransactionsTests extends BaseTestCase {
 	@Test
 	public void doASuccessfulAuthAndThenCaptureTheAuth() throws Exception {
 	    iAmDoingLitleAuth();
-	    iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+	    iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 	    iHaveInMyCart("vault");
 	    iCheckOutWith("Visa", "4100000000000001");
 	    iLogOutAsUser();
@@ -37,7 +37,7 @@ public class PayPageTransactionsTests extends BaseTestCase {
 	    iAmLoggedInAsAnAdministrator();
 	    iView("Sales", "Orders");
 	    iPressCreateNewOrder();
-        iClickOnTheCustomerWithEmail("gdake@litle.com");
+        iClickOnTheCustomerWithEmail("abc@gmail.com");
         iClickAddProducts();
         iAddTheTopRowInProductsToTheOrder();
 
@@ -73,7 +73,7 @@ public class PayPageTransactionsTests extends BaseTestCase {
 //TODO The sandbox PayPage isn't equipped to deal with failures
 //    @Test
 //    public void doAnUnsuccessfulCheckout() throws Exception {
-//        iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+//        iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 //        iHaveInMyCart("vault");
 //        iFailCheckOutWith("Visa", "4137307201736110", "The order was not approved.  Please try again later or contact us.  For your reference, the transaction id is");
 //        iLogOutAsUser();
@@ -83,7 +83,7 @@ public class PayPageTransactionsTests extends BaseTestCase {
     @Test
     public void doASucessfullSale() throws Exception {
         iAmDoingLitleSale();
-        iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+        iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");
         iCheckOutWith("Visa", "4100000000000001");
         iLogOutAsUser();

@@ -14,7 +14,7 @@ public class EcheckTransactionsTests extends BaseTestCase {
 
     @Test
     public void doAVerifiyAndThenSale() throws Exception {
-        iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+        iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");
         iCheckOutWithEcheck("123456000", "123456000", "Checking");
         iLogOutAsUser();
@@ -32,7 +32,7 @@ public class EcheckTransactionsTests extends BaseTestCase {
         iAmLoggedInAsAnAdministrator();
         iView("Sales", "Orders");
         iPressCreateNewOrder();
-        iClickOnTheCustomerWithEmail("gdake@litle.com");
+        iClickOnTheCustomerWithEmail("abc@gmail.com");
         iClickAddProducts();
         iAddTheTopRowInProductsToTheOrder();
 

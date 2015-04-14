@@ -14,14 +14,14 @@ public class CustomerInformationTests extends BaseTestCase {
 
 	@Test
 	public void buyWithVisaAffluentCreditCard() throws Exception {
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100300018088000");
 		iLogOutAsUser();
 
 		iAmLoggedInAsAnAdministrator();
 		iView("Customers", "Manage Customers");
-		iClickOnTheCustomerWithEmail("gdake@litle.com");
+		iClickOnTheCustomerWithEmail("abc@gmail.com");
 		iClickOnTab("customer_info_tabs","Click here to view Litle & Co. Customer Insight");
 		waitFor(By.id("my_custom_tab"));
 		iShouldSeeInTheColumnInCustomerInsights("Affluent","Affluence");
@@ -31,14 +31,14 @@ public class CustomerInformationTests extends BaseTestCase {
 
 	@Test
 	public void buyWithVisaMassAffluentCreditCard() throws Exception {
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100300023117000");
 		iLogOutAsUser();
 
 		iAmLoggedInAsAnAdministrator();
 		iView("Customers", "Manage Customers");
-		iClickOnTheCustomerWithEmail("gdake@litle.com");
+		iClickOnTheCustomerWithEmail("abc@gmail.com");
 		iClickOnTab("customer_info_tabs","Click here to view Litle & Co. Customer Insight");
 		waitFor(By.id("my_custom_tab"));
 		iShouldSeeInTheColumnInCustomerInsights("Mass Affluent","Affluence");
@@ -47,14 +47,14 @@ public class CustomerInformationTests extends BaseTestCase {
 
 	@Test
 	public void buyWithPrepaidCard() throws Exception {
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100323136403000");
 		iLogOutAsUser();
 
 		iAmLoggedInAsAnAdministrator();
 		iView("Customers", "Manage Customers");
-		iClickOnTheCustomerWithEmail("gdake@litle.com");
+		iClickOnTheCustomerWithEmail("abc@gmail.com");
 		iClickOnTab("customer_info_tabs","Click here to view Litle & Co. Customer Insight");
 		waitFor(By.id("my_custom_tab"));
 		iShouldSeeInTheColumnInCustomerInsights("Gift","Prepaid Card Type");
@@ -66,14 +66,14 @@ public class CustomerInformationTests extends BaseTestCase {
 
 	@Test
 	public void testBuyWithIssuingCountryCard() throws Exception {
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100300002271000");
 		iLogOutAsUser();
 
 		iAmLoggedInAsAnAdministrator();
 		iView("Customers", "Manage Customers");
-		iClickOnTheCustomerWithEmail("gdake@litle.com");
+		iClickOnTheCustomerWithEmail("abc@gmail.com");
 		iClickOnTab("customer_info_tabs","Click here to view Litle & Co. Customer Insight");
 		waitFor(By.id("my_custom_tab"));
 		iShouldSeeInTheColumnInCustomerInsights("BRA","Issuing Country");

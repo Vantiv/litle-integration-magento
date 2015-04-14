@@ -14,7 +14,7 @@ public class AccountUpdaterTests extends BaseTestCase {
 		iAmDoingCCOrEcheckTransaction();
 		iAmDoingNonPaypageTransaction();
 		iAmDoingLitleAuth();
-		iAmLoggedInAsWithThePassword("gdake@litle.com","password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com","password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa","4000162019882000");
 		iLogOutAsUser();

@@ -15,7 +15,7 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 	public void attemptAFailedVoidCapture() throws Exception {
 		iAmDoingLitleAuth();
 
-		iAmLoggedInAsWithThePassword("gdake@litle.com","password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com","password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("American Express","346854278192102");
 		iLogOutAsUser();
@@ -33,7 +33,7 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 	public void doAVoidCaptureAndThenCaptureAgain() throws Exception {
 		iAmDoingLitleAuth();
 
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100000000000001");
 		iLogOutAsUser();
@@ -54,7 +54,7 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 	public void doASuccessfulRefundAndThenVoidTheRefund() throws Exception {
 		iAmDoingLitleAuth();
 
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100000000000001");
 		iLogOutAsUser();
@@ -76,7 +76,7 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 	public void doASuccessfulAuthCheckoutAndThenCancelTheAuth() throws Exception {
 		iAmDoingLitleAuth();
 
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100000000000001");
 		iLogOutAsUser();
@@ -92,7 +92,7 @@ public class BackendCCTransactionsTests extends BaseTestCase {
 	public void doASuccessfulAuthCheckoutAndThenReverseTheAuth() throws Exception {
 		iAmDoingLitleAuth();
 
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWith("Visa", "4100000000000001");
 		iLogOutAsUser();

@@ -16,7 +16,7 @@ public class BackendEcheckTransactionsTests extends BaseTestCase {
 
 	@Test
 	public void attemptAFailedVoidSale() throws Exception {
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWithEcheck("053100300", "13131313","Checking");
 		iLogOutAsUser();
@@ -33,7 +33,7 @@ public class BackendEcheckTransactionsTests extends BaseTestCase {
 	    ResultSet rs = stmt.executeQuery("select value from core_config_data where path='payment/LEcheck/payment_action'");
 	    rs.next();
 	    System.out.println(rs.getString(1));
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWithEcheck("123456000", "123456000", "Checking");
 		iLogOutAsUser();
@@ -49,7 +49,7 @@ public class BackendEcheckTransactionsTests extends BaseTestCase {
 
 	@Test
 	public void successfulCheckoutThenRefundThenVoidRefund() throws Exception {
-		iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+		iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 		iHaveInMyCart("vault");
 		iCheckOutWithEcheck("123456000", "123456000", "Checking");
 		iLogOutAsUser();

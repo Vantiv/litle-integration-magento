@@ -22,7 +22,7 @@ public class TransactionDetailTests extends BaseTestCase {
 	@Test
 	public void transactionDetailHasLinksToLitle() throws Exception {
 	    iAmDoingLitleAuth();
-	    iAmLoggedInAsWithThePassword("gdake@litle.com", "password");
+	    iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 	    iHaveInMyCart("vault");
 	    iCheckOutWith("Visa", "4100000000000001");
 	    iLogOutAsUser();
