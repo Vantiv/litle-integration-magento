@@ -199,22 +199,26 @@ public class BaseTestCase {
 
         //Get to login screen
         driver.findElement(By.linkText("Log In")).click();
-        waitForIdVisible("email");
-        waitForIdVisible("pass");
+        WebElement emailElement = waitForIdVisible("email");
+        WebElement passElement = waitForIdVisible("pass");
 
         //Login
-        driver.findElement(By.id("email")).clear();
-        driver.findElement(By.id("email")).sendKeys(username);
-        Thread.sleep(1000L);
-        driver.findElement(By.id("pass")).clear();
-        driver.findElement(By.id("pass")).sendKeys(password);
-        Thread.sleep(1000L);
+        emailElement.clear();
+        emailElement.sendKeys(username);
+        passElement.clear();
+        passElement.sendKeys(password);
+        //driver.findElement(By.id("email")).clear();
+        //driver.findElement(By.id("email")).sendKeys(username);
+        //Thread.sleep(1000L);
+        //driver.findElement(By.id("pass")).clear();
+        //driver.findElement(By.id("pass")).sendKeys(password);
+        //Thread.sleep(1000L);
         driver.findElement(By.id("send2")).click(); //click login button
         waitForCssVisible("html body.customer-account-index div.wrapper div.page div.main-container div.main div.col-main div.my-account div.dashboard div.page-title h1");
     }
 
-    void waitForIdVisible(String id) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
+    WebElement waitForIdVisible(String id) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
     }
 
     void waitForCssVisible(String css) {
