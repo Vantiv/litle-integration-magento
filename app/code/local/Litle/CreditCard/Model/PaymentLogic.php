@@ -654,7 +654,7 @@ class Litle_CreditCard_Model_PaymentLogic extends Mage_Payment_Model_Method_Cc
 	public function setOrderStatusAndCommentsForFailedTransaction($payment, $litleTxnId, $transactionType, $orderState, $paymentStatus, $litleMessage, $closed) {
 		$paymentHelp = new Litle_CreditCard_Model_Lpayment();
 		$paymentHelp->setOrder($payment->getOrder());
-		$transaction = $paymentHelp->addTransaction(transactionType, null, true, $litleMessage);
+		$transaction = $paymentHelp->addTransaction($transactionType, null, true, $litleMessage);
 		$payment->setStatus($paymentStatus)
 			->setCcTransId($litleTxnId)
 			->setLastTransId($litleTxnId)
