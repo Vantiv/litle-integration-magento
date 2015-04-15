@@ -196,7 +196,8 @@ public class BaseTestCase {
 
     void iAmLoggedInAsWithThePassword(String username, String password) throws Exception {
         driver.get("http://"+HOST+"/" + CONTEXT + "/index.php/");
-
+        
+        waitFor(By.linkText("Log In"));
         //Get to login screen
         driver.findElement(By.linkText("Log In")).click();
         WebElement emailElement = waitForIdVisible("email");
