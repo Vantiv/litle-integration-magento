@@ -28,9 +28,11 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.PauseAction;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.events.WebDriverEventListener;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -169,6 +171,24 @@ public class BaseTestCase {
         stmt.executeUpdate("delete from sales_flat_order");
         stmt.executeUpdate("delete from sales_flat_quote");
     }
+    
+    static void iAmDoingLPaypalTransaction() throws Exception {
+        stmt.executeUpdate("update core_config_data set value='https://www.testlitle.com/sandbox/communicator/online' where path='payment/CreditCard/url'");
+        stmt.executeUpdate("update core_config_data set value='JENKINS' where path='payment/CreditCard/user'");
+        stmt.executeUpdate("update core_config_data set value='LPaypalTransactions' where path='payment/CreditCard/password'");
+        stmt.executeUpdate("update core_config_data set value='(\"USD\"=>\"101\",\"GBP\"=>\"102\")' where path='payment/CreditCard/merchant_id'");
+        stmt.executeUpdate("update core_config_data set value='iwp1.lowell.litle.com:8080' where path='payment/CreditCard/proxy'");
+
+        // for Paypal
+        stmt.executeUpdate("update core_config_data set value='1' where path='payment/paypal_express/active'");
+        stmt.executeUpdate("update core_config_data set value='1' where path='payment/paypal_express/skip_order_review_step'");
+        stmt.executeUpdate("update core_config_data set value='Order' where path='payment/paypal_express/payment_action'");
+        stmt.executeUpdate("update core_config_data set value='1' where path='paypal/wpp/sandbox_flag'");
+        stmt.executeUpdate("update core_config_data set value='1' where path='payment/LPaypal/active'");
+        
+        stmt.executeUpdate("delete from sales_flat_order");
+        stmt.executeUpdate("delete from sales_flat_quote");
+    }
 
     static void iAmDoingNonPaypageTransaction() throws Exception {
         stmt.executeUpdate("update core_config_data set value='0' where path='payment/CreditCard/paypage_enable'");
@@ -183,7 +203,7 @@ public class BaseTestCase {
     static void iAmDoingStoredCards() throws Exception {
         stmt.executeUpdate("update core_config_data set value='1' where path='payment/CreditCard/vault_enable'");
     }
-
+    
     void iAmDoingLitleAuth() throws Exception {
         stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/CreditCard/payment_action'");
         stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/LEcheck/payment_action'");
@@ -193,27 +213,32 @@ public class BaseTestCase {
         stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/CreditCard/payment_action'");
         stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/LEcheck/payment_action'");
     }
+    
+    void iAmDoingLPaypalAuth() throws Exception {
+        stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/LPaypal/payment_action'");
+    }
+    
+    void iAmDoingLPaypalSale() throws Exception {
+        stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/LPaypal/payment_action'");
+    }
 
     void iAmLoggedInAsWithThePassword(String username, String password) throws Exception {
         driver.get("http://"+HOST+"/" + CONTEXT + "/index.php/");
+//        
+//        if(driver.findElements(By.linkText("Log Out")).size() != 0){
+//            driver.findElement(By.linkText("Log Out")).click();
+//        }
         
         waitFor(By.linkText("Log In"));
-        //Get to login screen
-        driver.findElement(By.linkText("Log In")).click();
-        WebElement emailElement = waitForIdVisible("email");
-        WebElement passElement = waitForIdVisible("pass");
 
         //Login
-        emailElement.clear();
-        emailElement.sendKeys(username);
-        passElement.clear();
-        passElement.sendKeys(password);
-        //driver.findElement(By.id("email")).clear();
-        //driver.findElement(By.id("email")).sendKeys(username);
-        //Thread.sleep(1000L);
-        //driver.findElement(By.id("pass")).clear();
-        //driver.findElement(By.id("pass")).sendKeys(password);
-        //Thread.sleep(1000L);
+        driver.findElement(By.linkText("Log In")).click();
+        driver.findElement(By.id("pass")).clear();
+        driver.findElement(By.id("pass")).sendKeys(password);
+        Thread.sleep(1000L);
+        driver.findElement(By.id("email")).clear();
+        driver.findElement(By.id("email")).sendKeys(username);
+        Thread.sleep(1000L);
         driver.findElement(By.id("send2")).click(); //click login button
         waitForCssVisible("html body.customer-account-index div.wrapper div.page div.main-container div.main div.col-main div.my-account div.dashboard div.page-title h1");
     }
@@ -222,16 +247,16 @@ public class BaseTestCase {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
     }
 
-    void waitForCssVisible(String css) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(css)));
+    WebElement waitForCssVisible(String css) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(css)));
     }
 
-    void waitForClassVisible(String className) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
+    WebElement waitForClassVisible(String className) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(className)));
     }
 
-    void waitFor(By locator) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    WebElement waitFor(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     void iHaveInMyCart(String productName) {
@@ -399,7 +424,6 @@ public class BaseTestCase {
         //Get to login screen
         driver.get("http://"+HOST+"/" + CONTEXT + "/index.php/admin");
         waitForIdVisible("username");
-        waitForIdVisible("login");
 
         //Enter username
         WebElement e = driver.findElement(By.id("username"));
@@ -429,15 +453,10 @@ public class BaseTestCase {
         e.submit();
 
     }
-
-    private void baseCheckoutHelper(String ccType, String creditCardNumber, boolean saveCreditCard) {
-        //And I press "Proceed to Checkout"
-        WebElement e = driver.findElement(By.className("btn-proceed-checkout"));
-        e.click();
-        waitForIdVisible("co-billing-form");
-
+    
+    private void goThroughBillingAndShipping(){
         //And I press "Continue"
-        e = driver.findElement(By.id("co-billing-form"));
+        WebElement e = driver.findElement(By.id("co-billing-form"));
         e = e.findElement(By.tagName("button"));
         e.click();
         waitForIdVisible("co-shipping-method-form");
@@ -447,7 +466,17 @@ public class BaseTestCase {
         e = e.findElement(By.tagName("button"));
         e.click();
         waitForIdVisible("co-payment-form");
+    }
 
+    private void baseCheckoutHelper(String ccType, String creditCardNumber, boolean saveCreditCard) {
+        //And I press "Proceed to Checkout"
+        WebElement e = driver.findElement(By.className("btn-proceed-checkout"));
+        e.click();
+        waitForIdVisible("co-billing-form");
+        
+        // go through Billing and Shipping sections
+        goThroughBillingAndShipping();
+        
         //And I choose "CreditCard"
         e = driver.findElement(By.id("p_method_creditcard"));
         e.click();
@@ -494,7 +523,40 @@ public class BaseTestCase {
         e.click();
 
     }
+    
+    private void loginPaypalAndConfirm(String account, String password){
+        // I login paypal
+        WebElement e = driver.findElement(By.id("login_email"));
+        e.clear();
+        e.sendKeys(account);
+        e = driver.findElement(By.id("login_password"));
+        e.clear();
+        e.sendKeys(password);
+        e = driver.findElement(By.id("submitLogin"));
+        e.click();
+        waitForIdVisible("continue_abovefold");
+        
+        // And I confirm the payment detail on Paypal website
+        e = driver.findElement(By.id("continue_abovefold"));
+        e.click();
+    }
 
+    private void onepageLPaypalCheckoutHelper(String account, String password){
+        // select the Paypal express checkout method
+        WebElement e = driver.findElement(By.id("p_method_paypal_express"));
+        e.click();
+        waitForClassVisible("form-alt");
+        
+        //      And I press the "4th" continue button
+        e = driver.findElement(By.id("payment-buttons-container"));
+        e = e.findElement(By.tagName("button"));
+        e.click();
+        waitForIdVisible("login_email");
+        
+        // login Paypal website and confirm the payment
+        loginPaypalAndConfirm(account, password);
+    }
+    
     void iFailCheckOutWith(String ccType, String creditCardNumber, String modalErrorMessage) throws InterruptedException {
         baseCheckoutHelper(ccType, creditCardNumber, false);
         Thread.sleep(2000);
@@ -567,7 +629,66 @@ public class BaseTestCase {
         e = e.findElement(By.className("sub-title"));
         assertEquals("Thank you for your purchase!",e.getText());
     }
+    
+    void iCheckOutWithLPaypal(String account, String password) {
+        //And I press "Proceed to Checkout"
+        WebElement e = driver.findElement(By.className("btn-proceed-checkout"));
+        e.click();
+        waitForIdVisible("co-billing-form");
+        
+        // go through Billing and Shipping sections
+        goThroughBillingAndShipping();
+        
+        // finish Paypal checkout flow
+        onepageLPaypalCheckoutHelper(account, password);
+        //      Then I should see "Thank you for your purchase"
+        waitForCssVisible("html body.checkout-onepage-success div.wrapper div.page div.main-container div.main div.col-main p a");
+        e = driver.findElement(By.className("col-main"));
+        e = e.findElement(By.className("sub-title"));
+        assertEquals("Thank you for your purchase!",e.getText());
+    }
 
+    void iCheckOutInCartWithLPaypal(String account, String password) {
+        //And I press "Proceed to Checkout"
+        WebElement e = driver.findElement(By.className("paypal-logo"));
+        e = e.findElement(By.tagName("img"));
+        e.click();
+        waitForIdVisible("login_email");
+        
+        // finish Paypal checkout flow
+        loginPaypalAndConfirm(account, password);
+        waitForIdVisible("review_button");
+      
+        // And I select shipping method
+//        iSelectFirstOption("shipping_method");
+        iSelectFromSelect("Fixed - $5.00", "shipping_method");
+        waitForPlaceOrderButtonEnable();
+      
+        // And I press "Place Order"
+        e = driver.findElement(By.id("review_button"));
+        e.click();
+//      Then I should see "Thank you for your purchase"
+        waitForCssVisible("html body.checkout-onepage-success div.wrapper div.page div.main-container div.main div.col-main p a");
+        e = driver.findElement(By.className("col-main"));
+        e = e.findElement(By.className("sub-title"));
+        assertEquals("Thank you for your purchase!",e.getText());
+    }
+    
+    void waitForPlaceOrderButtonEnable(){
+        WebDriverWait wait = new WebDriverWait(driver,10);
+
+        wait.until(new ExpectedCondition<Boolean>() {
+                    public Boolean apply(WebDriver driver) {
+                                 WebElement button = driver.findElement(By.id("review_button"));
+                                 String enabled = button.getAttribute("class");
+                                 if(enabled.equals("button btn-checkout")) 
+                        return true;
+                                 else
+                                    return false;
+                            }
+           });
+    }
+    
     void iLogOutAsUser() {
         driver.findElement(By.linkText("Log Out")).click();
         waitFor(By.partialLinkText("Log In"));
@@ -593,6 +714,12 @@ public class BaseTestCase {
                 break;
             }
         }
+    }
+    
+    void iSelectFirstOption(String selectId) {
+        WebElement select = driver.findElement(By.id(selectId));
+        List<WebElement> options = select.findElements(By.tagName("option"));
+        options.get(1).click();
     }
 
     void iPressInvoice() {
@@ -818,8 +945,4 @@ public class BaseTestCase {
         submitOrderButton.click();
         waitForIdVisible("messages");
     }
-
-
-
-
 }
