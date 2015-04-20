@@ -526,18 +526,20 @@ public class BaseTestCase {
     
     private void loginPaypalAndConfirm(String account, String password){
         // I login paypal
-        WebElement e = driver.findElement(By.id("login_email"));
+        String cssStr = "html body.ng-scope section.login div.inputField.emailField.confidential > input";
+        WebElement e = driver.findElement(By.cssSelector(cssStr));
         e.clear();
         e.sendKeys(account);
-        e = driver.findElement(By.id("login_password"));
+        cssStr = "html body.ng-scope section.login div.inputField.passwordField.confidential > input";
+        e = driver.findElement(By.cssSelector(cssStr));
         e.clear();
         e.sendKeys(password);
-        e = driver.findElement(By.id("submitLogin"));
+        e = driver.findElement(By.cssSelector(".btn.full.loginBtn"));
         e.click();
-        waitForIdVisible("continue_abovefold");
+        waitForIdVisible("confirmButtonTop");
         
         // And I confirm the payment detail on Paypal website
-        e = driver.findElement(By.id("continue_abovefold"));
+        e = driver.findElement(By.id("confirmButtonTop"));
         e.click();
     }
 
@@ -551,7 +553,8 @@ public class BaseTestCase {
         e = driver.findElement(By.id("payment-buttons-container"));
         e = e.findElement(By.tagName("button"));
         e.click();
-        waitForIdVisible("login_email");
+        // change waitfor element due to new Paypal sandbox page
+        waitForIdVisible("forgot_password_link");
         
         // login Paypal website and confirm the payment
         loginPaypalAndConfirm(account, password);
@@ -653,7 +656,10 @@ public class BaseTestCase {
         WebElement e = driver.findElement(By.className("paypal-logo"));
         e = e.findElement(By.tagName("img"));
         e.click();
-        waitForIdVisible("login_email");
+        // change waitfor element due to new Paypal sandbox page
+        // waitForIdVisible("login_email");
+        waitForIdVisible("forgotPasswordSection");
+//        waitForClassVisible("inputField emailField confidential");
         
         // finish Paypal checkout flow
         loginPaypalAndConfirm(account, password);
