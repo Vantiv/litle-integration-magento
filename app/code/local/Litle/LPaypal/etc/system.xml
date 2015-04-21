@@ -21,6 +21,15 @@
 							<show_in_website>1</show_in_website>
 							<show_in_store>0</show_in_store>
 						</active>
+                        <title translate="label">
+                            <label>Title</label>
+                            <comment>This will only be displayed on the admin page.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </title>
 						<payment_action translate="label">
 							<label>Payment Action</label>
 							<frontend_type>select</frontend_type>

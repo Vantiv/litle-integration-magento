@@ -501,7 +501,6 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 						}
 						$customerId = $payment->getOrder()->getCustomerId();
 						$orderId = $payment->getOrder()->getId();
-//						$this->writeFailedTransactionToDatabase($customerId, null, $message, $litleResponse); //null order id because the order hasn't been created yet
                         Mage::helper('creditcard')->writeFailedTransactionToDatabase($customerId, null, $message, $litleResponse); //null order id because the order hasn't been created yet
 
 						Mage::throwException("The order was not approved.  Please try again later or contact us.  For your reference, the transaction id is " . XMLParser::getNode($litleResponse, 'litleTxnId'));
@@ -526,70 +525,6 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 			Mage::throwException($message);
 		}
 	}
-	
-//	public function writeFailedTransactionToDatabase($customerId, $orderId, $message, $xmlDocument, $txnType) {
-//		$orderNumber = 0;
-//		if($orderId === null) {
-//			$orderId = 0;
-//		}
-//		else {
-//			$order = Mage::getModel("sales/order")->load($orderId);
-//			$orderNumber = $order->getData("increment_id");
-//		}
-//		if($customerId === null) {
-//			$customerId = 0;
-//		}
-//		$config = Mage::getResourceModel("sales/order")->getReadConnection()->getConfig();
-//		$host = $config['host'];
-//		$username = $config['username'];
-//		$password = $config['password'];
-//		$dbname = $config['dbname'];
-//
-//		$con = mysql_connect($host,$username,$password);
-//		$fullXml = $xmlDocument->saveXML();
-//		if (!$con)
-//		{
-//			Mage::log("Failed to write failed transaction to database.  Transaction details: " . $fullXml, null, "litle_failed_transactions.log");
-//		}
-//		else {
-//			$selectedDb = mysql_select_db($dbname, $con);
-//			if(!$selectedDb) {
-//				Mage::log("Can't use selected database " . $dbname, null, "litle.log");
-//			}
-//			$fullXml = mysql_real_escape_string($fullXml);
-//			$litleTxnId = XMLParser::getNode($xmlDocument, 'litleTxnId');
-//			$sql = "insert into litle_failed_transactions (customer_id, order_id, message, full_xml, litle_txn_id, active, transaction_timestamp, order_num) values (" . $customerId . ", " . $orderId . ", '" . $message . "', '" . $fullXml . "', '" . $litleTxnId . "', true, now()," . $orderNumber . ")";
-//			$result = mysql_query($sql);
-//			if(!$result) {
-//				Mage::log("Insert failed with error message: " . mysql_error(), null, "litle.log");
-//				Mage::log("Query executed: " . $sql, null, "litle.log");
-//			}
-//			$sql = "select * from sales_payment_transaction where order_id = " . $orderId . " order by created_at asc";
-//			$result = mysql_query($sql);
-//			Mage::log("Executed sql: " . $sql, null, "litle.log");
-//			Mage::log($result, null, "litle.log");
-//			while($row = mysql_fetch_assoc($result)) {
-//				Mage::log($row['transaction_id'], null, "litle.log");
-//				$sql = "insert into sales_payment_transaction (parent_id, order_id, payment_id, txn_id, parent_txn_id, txn_type, is_closed, created_at, additional_information) values (".$row['transaction_id'].", ".$orderId.", ".$orderId.", ".$litleTxnId.", ".$row['txn_id'].", '".$txnType."', 0,now(),'".serialize(array('message'=>message))."')";
-//			}
-//			Mage::log("Sql to execute is: " . $sql, null, "litle.log");
-//			$result = mysql_query($sql);
-//			if(!$result) {
-//				Mage::log("Insert failed with error message: " . mysql_error(), null, "litle.log");
-//				Mage::log("Query executed: " . $sql, null, "litle.log");
-//			}
-//
-//			$sql = "insert into sales_flat_order_status_history (parent_id, is_customer_notified, is_visible_on_front, comment, status, created_at, entity_name) values (".$orderId.", 2, 0,'".$message.". Transaction ID: ".$litleTxnId."','processing',now(),'".$txnType."')";
-//			Mage::log("Sql to execute is: " . $sql, null, "litle.log");
-//			$result = mysql_query($sql);
-//			if(!$result) {
-//				Mage::log("Insert failed with error message: " . mysql_error(), null, "litle.log");
-//				Mage::log("Query executed: " . $sql, null, "litle.log");
-//			}
-//
-//			mysql_close($con);
-//		}
-//	}
 	
 	public function handleResponseForNonSuccessfulBackendTransactions(Varien_Object $payment, $litleResponse, $litleResponseCode) {
 		$order = $payment->getOrder();
@@ -657,7 +592,7 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 	public function setOrderStatusAndCommentsForFailedTransaction($payment, $litleTxnId, $transactionType, $orderState, $paymentStatus, $litleMessage, $closed) {
 		$paymentHelp = new Litle_CreditCard_Model_Lpayment();
 		$paymentHelp->setOrder($payment->getOrder());
-		$transaction = $paymentHelp->addTransaction(transactionType, null, true, $litleMessage);
+		$transaction = $paymentHelp->addTransaction($transactionType, null, true, $litleMessage);
 		$payment->setStatus($paymentStatus)
 			->setCcTransId($litleTxnId)
 			->setLastTransId($litleTxnId)

@@ -214,10 +214,11 @@ class Litle_LPaypal_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
      */
     public function processResponse(Varien_Object $payment, $litleResponse, $amount=0, $closeOrder=false)
     {
-//         $this->accountUpdater($payment, $litleResponse);
         $message = XmlParser::getAttribute($litleResponse, 'litleOnlineResponse', 'message');
         if ($message == 'Valid Format') {
-             $orderTransaction = $payment->lookupTransaction(false, Mage_Sales_Model_Order_Payment_Transaction::TYPE_ORDER);
+            // Check if this is a frontend transaction: if there is already an order transaction in the payment, then
+            // it's a backend transaction. Otherwise, it's a frontend transaction
+            $orderTransaction = $payment->lookupTransaction(false, Mage_Sales_Model_Order_Payment_Transaction::TYPE_ORDER);
             if (isset($litleResponse)) {
                 $litleResponseCode = XMLParser::getNode($litleResponse, 'response');
                 if ($litleResponseCode != '000') {
