@@ -525,7 +525,7 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 			Mage::throwException($message);
 		}
 	}
-	
+
 	public function handleResponseForNonSuccessfulBackendTransactions(Varien_Object $payment, $litleResponse, $litleResponseCode) {
 		$order = $payment->getOrder();
 		$litleMessage = XMLParser::getNode($litleResponse, 'message');

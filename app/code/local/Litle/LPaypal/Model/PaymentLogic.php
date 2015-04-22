@@ -286,7 +286,49 @@ class Litle_LPaypal_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
         
 
         // TODO: Add sandbox test for the responseCode of Paypal transaction
-        if($litleResponseCode === '120') {
+        if($litleResponseCode === '306') {
+
+            $this->setOrderStatusAndCommentsForFailedTransaction(	$payment, $litleTxnId,
+                Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID,
+                Mage_Sales_Model_Order::STATE_CANCELED,
+                Mage_Payment_Model_Method_Abstract::STATUS_VOID,
+                "Authorization has expired - no need to reverse.  The original Authorization is no longer valid, because it has expired.  You can not perform an Authorization Reversal for an expired Authorization.",
+                true);
+        }
+        elseif($litleResponseCode === '311') {
+            $this->setOrderStatusAndCommentsForFailedTransaction(	$payment, $litleTxnId,
+                Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND,
+                Mage_Sales_Model_Order::STATE_COMPLETE,
+                Mage_Payment_Model_Method_Abstract::STATUS_APPROVED,
+                "Deposit is already referenced by a chargeback.  The deposit is already referenced by a chargeback; therefore, a refund cannot be processed against the original transaction.",
+                true);
+        }
+        elseif($litleResponseCode === '316') {
+            $this->setOrderStatusAndCommentsForFailedTransaction(	$payment, $litleTxnId,
+                Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND,
+                Mage_Sales_Model_Order::STATE_COMPLETE,
+                Mage_Payment_Model_Method_Abstract::STATUS_APPROVED,
+                "Automatic refund already issued.  This refund transaction is a duplicate for one already processed automatically by the Litle Fraud Chargeback Prevention Service.",
+                true);
+        }
+        elseif($litleResponseCode === '361') {
+            $descriptiveMessage = "The order #".$order->getIncrementId()." can not be captured.  Authorization no longer available.  The authorization for this transaction is no longer available;  the authorization has already been consumed by another capture.";
+            $this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
+        }
+        elseif($litleResponseCode === '362') {
+            $descriptiveMessage = "Transaction Not Voided - Already Settled.  This transaction cannot be voided; it has already been delivered to the card networks.  You may want to try a refund instead.";
+            $this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId, Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID);
+        }
+        elseif($litleResponseCode === '365') {
+            $descriptiveMessage = "Total credit amount exceeds capture amouont.  The amount of the credit is greater than the capture, or the amount of this credit plus other credits already referencing this capture are greater than the capture amount.";
+            $this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND);
+        }
+        elseif($litleResponseCode === '370') {
+            $descriptiveMessage = "Internal System Error - Call Litle.  There is a problem with the Litle System.  Contact support@litle.com and provide the following transaction id: " . $litleTxnId;
+            $this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId, Mage_Sales_Model_Order_Payment_Transaction::TYPE_PAYMENT);
+        }
+        // paypal response code
+        elseif($litleResponseCode === '120') {
             $descriptiveMessage = "Either an internal PayPal error occurred, the maximum number of authorizations allowed for the transaction is reached.";
             $this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId, Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID);
         }
