@@ -37,11 +37,17 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
         $order = $this->getOrder();
 	    if(Mage::helper("creditcard")->isMOPLitle($order->getPayment()))
 		{
-            if($order->getPayment()->getAuthorizationTransaction() && $order->getPayment()->getAmountPaid() == 0)
+            $authTransaction = $order->getPayment()->lookupTransaction(false, Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH);
+            if($authTransaction)
 			{
-				$message = 'Are you sure you want to reverse the authorization?';
-				$this->_updateButton('void_payment', 'label','Auth-Reversal');
-				$this->_updateButton('void_payment', 'onclick', "confirmSetLocation('{$message}', '{$this->getVoidPaymentUrl()}')");
+                if($authTransaction->getIsClosed()){
+                    # remove the invoice button
+                    $this->removeButton('order_invoice');
+                } else if ($order->getPayment()->getAmountPaid() == 0){
+                    $message = 'Are you sure you want to reverse the authorization?';
+                    $this->_updateButton('void_payment', 'label','Auth-Reversal');
+                    $this->_updateButton('void_payment', 'onclick', "confirmSetLocation('{$message}', '{$this->getVoidPaymentUrl()}')");
+                }
 			}
 
 // 			check if Void-Refund needs to be shown		

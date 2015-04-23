@@ -683,7 +683,6 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 	public function capture(Varien_Object $payment, $amount)
 	{
 //        throw new Exception('who calls me?');
-        Mage::log("amount paid after each capture :" .$payment->getAmountPaid(),null,'lpaypal_be.log' );
 		if (preg_match('/sales_order_create/i', $_SERVER['REQUEST_URI']) &&
 				 ($this->getConfigData('paypage_enable') == '1')) {
 			$payment->setStatus('N/A')

@@ -570,13 +570,8 @@ class Litle_LPaypal_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
             // check if we should do a sale or a capture
             $orderTransaction = $payment->lookupTransaction(false, Mage_Sales_Model_Order_Payment_Transaction::TYPE_ORDER);
             $authTransaction = $payment->lookupTransaction(false, Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH);
-            if($authTransaction){
-                $isSale = Mage::helper('lpaypal')->isLastAuthCreatedBeforeDays($authTransaction, 3);
-            } else{
-                $isSale = true;
-            }
 
-            if (! $isSale) {
+            if ($authTransaction) {
                 $lastTxnId = $authTransaction->getTxnId();
                 $payment->setParentTransactionId($lastTxnId);
                 $hash = array(
@@ -607,10 +602,10 @@ class Litle_LPaypal_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 
             // do Litle transaction
             $litleRequest = new LitleOnlineRequest();
-            if ($isSale) {
-                $litleResponse = $litleRequest->saleRequest($hash_in);
-            } else {
+            if ($authTransaction) {
                 $litleResponse = $litleRequest->captureRequest($hash_in);
+            } else {
+                $litleResponse = $litleRequest->saleRequest($hash_in);
             }
 
             Mage::helper('palorus')->saveCustomerInsight($payment, $litleResponse);
