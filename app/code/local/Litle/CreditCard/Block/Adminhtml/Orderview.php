@@ -90,6 +90,9 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 					));
 				}
 			}
+            else{
+                $this->removeButton('order_invoice');
+            }
 		}
 	}
 	
