@@ -952,4 +952,33 @@ public class BaseTestCase {
         waitForIdVisible("messages");
     }
     
+        void iHaveMultipleProductsInMyCart(String productName,String numberOfProducts) {
+        waitFor(By.id("search"));
+        //Find the item
+
+        //Enter search text
+        WebElement e = driver.findElement(By.id("search"));
+        e.clear();
+        e.sendKeys(productName);
+
+        //Hit the search button
+        e = driver.findElement(By.className("form-search"));
+        e = e.findElement(By.tagName("button"));
+        e.click();
+        waitForCssVisible(".btn-cart");
+
+        //Add to cart
+        e = driver.findElement(By.cssSelector(".btn-cart"));
+        e.click();
+
+        waitForCssVisible(".btn-proceed-checkout");
+
+        e = driver.findElement(By.cssSelector(".qty"));
+        e.clear();
+        e.sendKeys(numberOfProducts);
+
+        e = driver.findElement(By.cssSelector(".btn-update"));
+        e.click();
+
+    }
 }
