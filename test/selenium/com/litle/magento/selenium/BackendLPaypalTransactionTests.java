@@ -98,7 +98,8 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
         iClickOnTheTopRowInOrders();
         iPressInvoice();
         iPressSubmitInvoice("The invoice has been created.",null);
-        iPressVoidCapture("Transaction Not Voided - Already Settled. This transaction cannot be voided; it has already been delivered to the card networks. You may want to try a refund instead.For your reference, the transaction id is \\d+");
+        iPressVoidCapture("Litle response message:Transaction Not Voided - Already Settled. Description:Transaction Not Voided - Already Settled. This transaction cannot be voided; it has already been delivered to the card networks. You may want to try a refund instead. For your reference, the transaction id is \\d+");
+        
         iLogOutAsAdministrator();
     }
 
