@@ -38,20 +38,23 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 	    if(Mage::helper("creditcard")->isMOPLitle($order->getPayment()))
 		{
             $authTransaction = $order->getPayment()->lookupTransaction(false, Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH);
-            if($authTransaction)
-			{
-                if($authTransaction->getIsClosed()){
-                    # remove the invoice button
-                    $this->removeButton('order_invoice');
-                } else if ($order->getPayment()->getAmountPaid() == 0){
-                    $message = 'Are you sure you want to reverse the authorization?';
-                    $this->_updateButton('void_payment', 'label','Auth-Reversal');
-                    $this->_updateButton('void_payment', 'onclick', "confirmSetLocation('{$message}', '{$this->getVoidPaymentUrl()}')");
+            // check if Auth-Reversal need to be shown
+            if (!(Mage::helper("creditcard")->isMOPLitleECheck($order->getPayment()->getData('method')))){
+                if($authTransaction && !$authTransaction->getIsClosed())
+                {
+                    if ($order->getPayment()->getAmountPaid() == 0){
+                        $message = 'Are you sure you want to reverse the authorization?';
+                        $this->_updateButton('void_payment', 'label','Auth-Reversal');
+                        $this->_updateButton('void_payment', 'onclick', "confirmSetLocation('{$message}', '{$this->getVoidPaymentUrl()}')");
+                    }
                 }
-			}
+                else{
+                    $this->removeButton('order_invoice');
+                }
+            }
 
 // 			check if Void-Refund needs to be shown		
-			else if( Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND))
+			if( Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND))
 			{
 				$onclickJs = 'deleteConfirm(\''
 				. Mage::helper('sales')->__('Are you sure? The refund request will be canceled.')
@@ -63,7 +66,7 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 				));
 			}
 			//check if void capture or void sale needs to be shown
-			else if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE) &&
+			if(Mage::helper("creditcard")->isStateOfOrderEqualTo($order, Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE) &&
 				$this->wasLastTxnLessThan24HrsAgo($order->getPayment()))
 			{
 				$mop = $order->getPayment()->getData('method');
@@ -90,9 +93,7 @@ class Litle_CreditCard_Block_Adminhtml_Orderview extends Mage_Adminhtml_Block_Sa
 					));
 				}
 			}
-            else{
-                $this->removeButton('order_invoice');
-            }
+
 		}
 	}
 	
