@@ -681,7 +681,7 @@ public class BaseTestCase {
     }
     
     void waitForPlaceOrderButtonEnable(){
-        WebDriverWait wait = new WebDriverWait(driver,10);
+        WebDriverWait wait = new WebDriverWait(driver,30);
 
         wait.until(new ExpectedCondition<Boolean>() {
                     public Boolean apply(WebDriver driver) {
