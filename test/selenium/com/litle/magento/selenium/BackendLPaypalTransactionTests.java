@@ -8,7 +8,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
     public void setup() throws Exception {
         iAmDoingLPaypalTransaction();
     }
-    
+
     @Test
     public void doASuccessfulAuthCheckoutAndThenReverseTheAuth() throws Exception {
         iAmDoingLPaypalAuth();
@@ -24,7 +24,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
         iPressAuthReversal("The payment has been voided.");
         iLogOutAsAdministrator();
     }
-    
+
     @Test
     public void doASuccessfulAuthCheckoutAndThenCancelTheAuth() throws Exception {
         iAmDoingLPaypalAuth();
@@ -40,7 +40,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
         iPressCancel("The order has been cancelled.");
         iLogOutAsAdministrator();
     }
-    
+
     @Test
     public void doASuccessfulRefundAndThenVoidTheRefund() throws Exception {
         iAmDoingLPaypalAuth();
@@ -62,7 +62,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
         iPressVoidRefund("The payment has been voided.");
         iLogOutAsAdministrator();
     }
-    
+
     @Test
     public void doAVoidCaptureAndThenCaptureAgain() throws Exception {
         iAmDoingLPaypalAuth();
@@ -83,22 +83,39 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
         iLogOutAsAdministrator();
     }
 
-//    @Test
-//    public void attemptAFailedVoidCapture() throws Exception {
-//        iAmDoingLitleAuth();
-//
-//        iAmLoggedInAsWithThePassword("abc@gmail.com","password");
-//        iHaveInMyCart("vault");
-//        iCheckOutWith("American Express","346854278192102");
-//        iLogOutAsUser();
-//
-//        iAmLoggedInAsAnAdministrator();
-//        iView("Sales","Orders");
-//        iClickOnTheTopRowInOrders();
-//        iPressInvoice();
-//        iPressSubmitInvoice("The invoice has been created.",null);
-//        iPressVoidCapture("Transaction Not Voided - Already Settled. This transaction cannot be voided; it has already been delivered to the card networks. You may want to try a refund instead.For your reference, the transaction id is \\d+");
-//        iLogOutAsAdministrator();
-//    }
-    
+    @Test
+    public void attemptAFailedVoidCapture() throws Exception {
+        iAmDoingLPaypalAuth();
+
+        iAmLoggedInAsWithThePassword("paypal_fail@gmail.com","password");
+        iHaveMultipleProductsInMyCart("vault","31");
+
+        iCheckOutInCartWithLPaypal("sdksupport-buyer@litle.com", "vantiv2015");
+        iLogOutAsUser();
+
+        iAmLoggedInAsAnAdministrator();
+        iView("Sales","Orders");
+        iClickOnTheTopRowInOrders();
+        iPressInvoice();
+        iPressSubmitInvoice("The invoice has been created.",null);
+        iPressVoidCapture("Transaction Not Voided - Already Settled. This transaction cannot be voided; it has already been delivered to the card networks. You may want to try a refund instead.For your reference, the transaction id is \\d+");
+        iLogOutAsAdministrator();
+    }
+
+    @Test
+    public void doASuccessfulSaleAndThenVoidTheSale() throws Exception {
+        iAmDoingLPaypalSale();
+
+        iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
+        iHaveInMyCart("vault");
+        iCheckOutInCartWithLPaypal("sdksupport-buyer@litle.com", "vantiv2015");
+        iLogOutAsUser();
+
+        iAmLoggedInAsAnAdministrator();
+        iView("Sales","Orders");
+        iClickOnTheTopRowInOrders();
+        iPressVoidCapture("The payment has been voided.");
+        iLogOutAsAdministrator();
+    }
+
 }
