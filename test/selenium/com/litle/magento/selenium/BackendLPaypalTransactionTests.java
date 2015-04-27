@@ -11,7 +11,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
 
     @Test
     public void doASuccessfulAuthCheckoutAndThenReverseTheAuth() throws Exception {
-        iAmDoingLPaypalAuth();
+        iAmDoingLitleAuth();
 
         iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");
@@ -27,7 +27,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
 
     @Test
     public void doASuccessfulAuthCheckoutAndThenCancelTheAuth() throws Exception {
-        iAmDoingLPaypalAuth();
+        iAmDoingLitleAuth();
 
         iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");
@@ -43,7 +43,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
 
     @Test
     public void doASuccessfulRefundAndThenVoidTheRefund() throws Exception {
-        iAmDoingLPaypalAuth();
+        iAmDoingLitleAuth();
 
         iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");
@@ -65,7 +65,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
 
     @Test
     public void doAVoidCaptureAndThenCaptureAgain() throws Exception {
-        iAmDoingLPaypalAuth();
+        iAmDoingLitleAuth();
 
         iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");
@@ -85,7 +85,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
 
     @Test
     public void attemptAFailedVoidCapture() throws Exception {
-        iAmDoingLPaypalAuth();
+        iAmDoingLitleAuth();
 
         iAmLoggedInAsWithThePassword("paypal_fail@gmail.com","password");
         iHaveMultipleProductsInMyCart("vault","31");
@@ -105,7 +105,7 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
 
     @Test
     public void doASuccessfulSaleAndThenVoidTheSale() throws Exception {
-        iAmDoingLPaypalSale();
+        iAmDoingLitleSale();
 
         iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");

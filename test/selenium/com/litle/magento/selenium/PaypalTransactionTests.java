@@ -11,7 +11,7 @@ public class PaypalTransactionTests extends BaseTestCase{
     
     @Test
     public void doASucessfulAuthWithOnepage() throws Exception {
-        iAmDoingLPaypalAuth();
+        iAmDoingLitleAuth();
         
         iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");
@@ -21,7 +21,7 @@ public class PaypalTransactionTests extends BaseTestCase{
     
     @Test
     public void doASucessfulSaleWithOnepage() throws Exception {
-        iAmDoingLPaypalSale();
+        iAmDoingLitleSale();
         
         iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");
@@ -31,7 +31,7 @@ public class PaypalTransactionTests extends BaseTestCase{
     
     @Test
     public void doASucessfulAuthInCart() throws Exception {
-        iAmDoingLPaypalAuth();
+        iAmDoingLitleAuth();
         
         iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");

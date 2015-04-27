@@ -68,8 +68,10 @@ public class BaseTestCase {
         stmt.executeUpdate("delete from core_resource where code = 'palorus_setup'");
         stmt.executeUpdate("delete from core_resource where code = 'lecheck_setup'");
         stmt.executeUpdate("delete from core_resource where code = 'creditcard_setup'");
+        stmt.executeUpdate("delete from core_resource where code = 'lpaypal_setup'");
         stmt.executeUpdate("delete from core_config_data where path like 'payment/CreditCard/%'");
         stmt.executeUpdate("delete from core_config_data where path like 'payment/LEcheck/%'");
+        stmt.executeUpdate("delete from core_config_data where path like 'payment/LPaypal/%'");
 
         stmt.executeUpdate("delete from catalog_eav_attribute where attribute_id = (select attribute_id from eav_attribute where attribute_code = 'litle_subscription')");
         stmt.executeUpdate("delete from `eav_entity_attribute` where attribute_id = (select attribute_id from eav_attribute where attribute_code = 'litle_subscription')");
@@ -94,7 +96,9 @@ public class BaseTestCase {
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/order_status','processing')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/proxy','iwp1.lowell.litle.com:8080')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/cctypes','AE,DC,VI,MC,DI,JCB')");
-
+        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LPaypal/active','0')");
+        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LPaypal/payment_action','authorize')");
+        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LPaypal/title',null)");
     }
 
     @Before
@@ -185,6 +189,7 @@ public class BaseTestCase {
         stmt.executeUpdate("update core_config_data set value='Order' where path='payment/paypal_express/payment_action'");
         stmt.executeUpdate("update core_config_data set value='1' where path='paypal/wpp/sandbox_flag'");
         stmt.executeUpdate("update core_config_data set value='1' where path='payment/LPaypal/active'");
+        stmt.executeUpdate("update core_config_data set value='Litle Paypal' where path='payment/LPaypal/title'");
         
         // change the flatrate shipping type
         stmt.executeUpdate("update core_config_data set value='O' where path='carriers/flatrate/type'");
@@ -210,18 +215,12 @@ public class BaseTestCase {
     void iAmDoingLitleAuth() throws Exception {
         stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/CreditCard/payment_action'");
         stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/LEcheck/payment_action'");
+        stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/LPaypal/payment_action'");
     }
 
     void iAmDoingLitleSale() throws Exception {
         stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/CreditCard/payment_action'");
         stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/LEcheck/payment_action'");
-    }
-    
-    void iAmDoingLPaypalAuth() throws Exception {
-        stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/LPaypal/payment_action'");
-    }
-    
-    void iAmDoingLPaypalSale() throws Exception {
         stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/LPaypal/payment_action'");
     }
 
