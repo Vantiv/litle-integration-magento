@@ -186,6 +186,9 @@ public class BaseTestCase {
         stmt.executeUpdate("update core_config_data set value='1' where path='paypal/wpp/sandbox_flag'");
         stmt.executeUpdate("update core_config_data set value='1' where path='payment/LPaypal/active'");
         
+        // change the flatrate shipping type
+        stmt.executeUpdate("update core_config_data set value='O' where path='carriers/flatrate/type'");
+        
         stmt.executeUpdate("delete from sales_flat_order");
         stmt.executeUpdate("delete from sales_flat_quote");
     }
