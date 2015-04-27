@@ -48,7 +48,7 @@ public class BaseTestCase {
     private static final String MAGENTO_HOME = System.getenv("MAGENTO_HOME");
     private static final String CONTEXT = System.getenv("MAGENTO_CONTEXT");
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final long DEFAULT_TIMEOUT = 30;
+    private static final long DEFAULT_TIMEOUT = 20;
     private static String JDBC_URL;
     private static Connection conn;
     static Statement stmt;
@@ -526,23 +526,39 @@ public class BaseTestCase {
 
     }
     
-    private void loginPaypalAndConfirm(String account, String password){
+    private void loginPaypalAndConfirm(String account, String password, boolean isNew){
         // I login paypal
-        String cssStr = "html body.ng-scope section.login div.inputField.emailField.confidential > input";
-        WebElement e = driver.findElement(By.cssSelector(cssStr));
-        e.clear();
-        e.sendKeys(account);
-        cssStr = "html body.ng-scope section.login div.inputField.passwordField.confidential > input";
-        e = driver.findElement(By.cssSelector(cssStr));
-        e.clear();
-        e.sendKeys(password);
-        e = driver.findElement(By.cssSelector(".btn.full.loginBtn"));
-        e.click();
-        waitForIdVisible("confirmButtonTop");
-        
-        // And I confirm the payment detail on Paypal website
-        e = driver.findElement(By.id("confirmButtonTop"));
-        e.click();
+        if (isNew){
+            String cssStr = "html body.ng-scope section.login div.inputField.emailField.confidential > input";
+            WebElement e = driver.findElement(By.cssSelector(cssStr));
+            e.clear();
+            e.sendKeys(account);
+            cssStr = "html body.ng-scope section.login div.inputField.passwordField.confidential > input";
+            e = driver.findElement(By.cssSelector(cssStr));
+            e.clear();
+            e.sendKeys(password);
+            e = driver.findElement(By.cssSelector(".btn.full.loginBtn"));
+            e.click();
+            waitForIdVisible("confirmButtonTop");
+            
+            // And I confirm the payment detail on Paypal website
+            e = driver.findElement(By.id("confirmButtonTop"));
+            e.click();
+        } else {
+            WebElement e = driver.findElement(By.id("login_email"));
+            e.clear();
+            e.sendKeys(account);
+            e = driver.findElement(By.id("login_password"));
+            e.clear();
+            e.sendKeys(password);
+            e = driver.findElement(By.id("submitLogin"));
+            e.click();
+            waitForIdVisible("continue_abovefold");
+         
+            // And I confirm the payment detail on Paypal website
+            e = driver.findElement(By.id("continue_abovefold"));
+            e.click();
+        }
     }
 
     private void onepageLPaypalCheckoutHelper(String account, String password){
@@ -556,10 +572,16 @@ public class BaseTestCase {
         e = e.findElement(By.tagName("button"));
         e.click();
         // change waitfor element due to new Paypal sandbox page
-        waitForIdVisible("forgot_password_link");
+        boolean isNewPaypalSandbox = true;
+        try {
+            waitForIdVisible("forgot_password_link");
+        } catch (Exception e2) {
+            waitForIdVisible("login_email");
+            isNewPaypalSandbox = false;
+        }
         
         // login Paypal website and confirm the payment
-        loginPaypalAndConfirm(account, password);
+        loginPaypalAndConfirm(account, password, isNewPaypalSandbox);
     }
     
     void iFailCheckOutWith(String ccType, String creditCardNumber, String modalErrorMessage) throws InterruptedException {
@@ -659,12 +681,16 @@ public class BaseTestCase {
         e = e.findElement(By.tagName("img"));
         e.click();
         // change waitfor element due to new Paypal sandbox page
-        // waitForIdVisible("login_email");
-        waitForIdVisible("forgotPasswordSection");
-//        waitForClassVisible("inputField emailField confidential");
+        boolean isNewPaypalSandbox = true;
+        try {
+            waitForIdVisible("forgotPasswordSection");
+        } catch (Exception e2) {
+            waitForIdVisible("login_email");
+            isNewPaypalSandbox = false;
+        }
         
         // finish Paypal checkout flow
-        loginPaypalAndConfirm(account, password);
+        loginPaypalAndConfirm(account, password, isNewPaypalSandbox);
         waitForIdVisible("review_button");
       
         // And I select shipping method
