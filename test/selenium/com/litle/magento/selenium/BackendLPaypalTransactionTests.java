@@ -7,7 +7,6 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
     @Before
     public void setup() throws Exception {
         iAmDoingLPaypalTransaction();
-        iAmDoingLitleSale();
     }
 
     @Test
@@ -106,7 +105,8 @@ public class BackendLPaypalTransactionTests extends BaseTestCase {
 
     @Test
     public void doASuccessfulSaleAndThenVoidTheSale() throws Exception {
-
+        iAmDoingLitleSale();
+        
         iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
         iHaveInMyCart("vault");
         iCheckOutInCartWithLPaypal("sdksupport-buyer@litle.com", "vantiv2015");

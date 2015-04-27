@@ -212,13 +212,13 @@ public class BaseTestCase {
         stmt.executeUpdate("update core_config_data set value='1' where path='payment/CreditCard/vault_enable'");
     }
     
-    void iAmDoingLitleAuth() throws Exception {
+    static void iAmDoingLitleAuth() throws Exception {
         stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/CreditCard/payment_action'");
         stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/LEcheck/payment_action'");
         stmt.executeUpdate("update core_config_data set value='authorize' where path='payment/LPaypal/payment_action'");
     }
 
-    void iAmDoingLitleSale() throws Exception {
+    static void iAmDoingLitleSale() throws Exception {
         stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/CreditCard/payment_action'");
         stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/LEcheck/payment_action'");
         stmt.executeUpdate("update core_config_data set value='authorize_capture' where path='payment/LPaypal/payment_action'");
