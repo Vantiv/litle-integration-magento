@@ -106,11 +106,12 @@ class Litle_LPaypal_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
     public function merchantData(Varien_Object $payment)
     {
         $order = $payment->getOrder();
+        $version = Mage::getModel('core_resource/resource')->getDbVersion($this->getCode() . '_setup');
         $hash = array(
                 'user' => $this->getConfigData('user'),
                 'password' => $this->getConfigData('password'),
                 'merchantId' => $this->getMerchantId($payment),
-                'merchantSdk' => 'Magento;8.15.4',
+                'merchantSdk' => 'Magento;' . $version,
                 'reportGroup' => $this->getMerchantId($payment),
                 'customerId' => $order->getCustomerEmail(),
                 'url' => $this->getConfigData('url'),

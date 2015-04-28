@@ -501,7 +501,7 @@ public class BaseTestCase {
         iSelectFromSelect("09 - September", "creditcard_expiration");
 
         //        And I select "2012" from "creditcard_expiration_yr"
-        iSelectFromSelect("2015", "creditcard_expiration_yr");
+        iSelectFromSelect("2020", "creditcard_expiration_yr");
 
         //        And I put in "Card Verification Number" with "123"
         e = driver.findElement(By.id("creditcard_cc_cid"));

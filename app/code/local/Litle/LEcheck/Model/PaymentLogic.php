@@ -164,10 +164,11 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 
 	public function merchantData(Varien_Object $payment)
 	{
-		$hash = array('user'=> $this->getConfigData("user"),
+        $version = Mage::getModel('core_resource/resource')->getDbVersion($this->getCode() . '_setup');
+        $hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
 					'merchantId'=>$this->getMerchantId($payment),
-	                'merchantSdk' => 'Magento;8.15.4',
+	                'merchantSdk' => 'Magento;' . $version,
 					'reportGroup'=>$this->getMerchantId($payment),
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),

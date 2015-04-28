@@ -273,11 +273,12 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 	public function merchantData(Varien_Object $payment)
 	{
 		$order = $payment->getOrder();
-		$hash = array(
+        $version = Mage::getModel('core_resource/resource')->getDbVersion($this->getCode() . '_setup');
+        $hash = array(
 				'user' => $this->getConfigData('user'),
 				'password' => $this->getConfigData('password'),
 				'merchantId' => $this->getMerchantId($payment),
-				'merchantSdk' => 'Magento;8.15.4',
+				'merchantSdk' => 'Magento;' . $version,
 				'reportGroup' => $this->getMerchantId($payment),
 				'customerId' => $order->getCustomerEmail(),
 				'url' => $this->getConfigData('url'),
