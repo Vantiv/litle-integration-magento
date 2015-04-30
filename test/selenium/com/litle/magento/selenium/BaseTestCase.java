@@ -185,7 +185,7 @@ public class BaseTestCase {
 
         // for Paypal
         stmt.executeUpdate("update core_config_data set value='1' where path='payment/paypal_express/active'");
-        stmt.executeUpdate("update core_config_data set value='1' where path='payment/paypal_express/skip_order_review_step'");
+//        stmt.executeUpdate("update core_config_data set value='0' where path='payment/paypal_express/skip_order_review_step'");
         stmt.executeUpdate("update core_config_data set value='Order' where path='payment/paypal_express/payment_action'");
         stmt.executeUpdate("update core_config_data set value='1' where path='paypal/wpp/sandbox_flag'");
         stmt.executeUpdate("update core_config_data set value='1' where path='payment/LPaypal/active'");
@@ -668,6 +668,9 @@ public class BaseTestCase {
         
         // finish Paypal checkout flow
         onepageLPaypalCheckoutHelper(account, password);
+        waitForIdVisible("review_button");
+        // review and place order 
+        reviewAndPlaceOrder();
         //      Then I should see "Thank you for your purchase"
         waitForCssVisible("html body.checkout-onepage-success div.wrapper div.page div.main-container div.main div.col-main p a");
         e = driver.findElement(By.className("col-main"));
@@ -693,19 +696,25 @@ public class BaseTestCase {
         loginPaypalAndConfirm(account, password, isNewPaypalSandbox);
         waitForIdVisible("review_button");
       
-        // And I select shipping method
-//        iSelectFirstOption("shipping_method");
-        iSelectFromSelect("Fixed - $5.00", "shipping_method");
-        waitForPlaceOrderButtonEnable();
-      
-        // And I press "Place Order"
-        e = driver.findElement(By.id("review_button"));
-        e.click();
+        // review and place order 
+        reviewAndPlaceOrder();
+        
 //      Then I should see "Thank you for your purchase"
         waitForCssVisible("html body.checkout-onepage-success div.wrapper div.page div.main-container div.main div.col-main p a");
         e = driver.findElement(By.className("col-main"));
         e = e.findElement(By.className("sub-title"));
         assertEquals("Thank you for your purchase!",e.getText());
+    }
+    
+    void reviewAndPlaceOrder(){
+     // And I select shipping method
+//      iSelectFirstOption("shipping_method");
+      iSelectFromSelect("Fixed - $5.00", "shipping_method");
+      waitForPlaceOrderButtonEnable();
+    
+      // And I press "Place Order"
+      WebElement e = driver.findElement(By.id("review_button"));
+      e.click();
     }
     
     void waitForPlaceOrderButtonEnable(){
