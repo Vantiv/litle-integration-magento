@@ -707,29 +707,50 @@ public class BaseTestCase {
     }
     
     void reviewAndPlaceOrder(){
+      WebElement e;
+      String version = driver.getCurrentUrl();
+      if (version.contains("1702") || version.contains("1810")){
+          e = driver.findElement(By.id("shipping:telephone"));
+          e.sendKeys("1231231234");
+          e = driver.findElement(By.id("update_order"));
+          e.click();
+          waitForPlaceOrderButtonEnable();
+      }
      // And I select shipping method
-//      iSelectFirstOption("shipping_method");
       iSelectFromSelect("Fixed - $5.00", "shipping_method");
       waitForPlaceOrderButtonEnable();
     
       // And I press "Place Order"
-      WebElement e = driver.findElement(By.id("review_button"));
+      e = driver.findElement(By.id("review_button"));
       e.click();
     }
     
     void waitForPlaceOrderButtonEnable(){
         WebDriverWait wait = new WebDriverWait(driver,30);
-
-        wait.until(new ExpectedCondition<Boolean>() {
-                    public Boolean apply(WebDriver driver) {
-                                 WebElement button = driver.findElement(By.id("review_button"));
-                                 String enabled = button.getAttribute("class");
-                                 if(enabled.equals("button btn-checkout")) 
+        String version = driver.getCurrentUrl();
+        if (version.contains("1702") || version.contains("1810")){
+            wait.until(new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver driver) {
+                    WebElement button = driver.findElement(By.id("review_button"));
+                    String enabled = button.getAttribute("class");
+                    if(enabled.equals("button btn-checkout validation-passed")) 
                         return true;
-                                 else
-                                    return false;
-                            }
-           });
+                    else
+                        return false;
+                }
+            });
+        } else {
+            wait.until(new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver driver) {
+                    WebElement button = driver.findElement(By.id("review_button"));
+                    String enabled = button.getAttribute("class");
+                    if(enabled.equals("button btn-checkout")) 
+                        return true;
+                    else
+                        return false;
+                }
+            });
+        }
     }
     
     void iLogOutAsUser() {
