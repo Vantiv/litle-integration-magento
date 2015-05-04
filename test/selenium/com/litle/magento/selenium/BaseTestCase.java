@@ -526,15 +526,23 @@ public class BaseTestCase {
 
     }
     
-    private void loginPaypalAndConfirm(String account, String password, boolean isNew){
+    private void loginPaypalAndConfirm(String account, String password){
+        String loginCssStr = "html body.ng-scope section.login div.inputField.emailField.confidential > input";
+        String passCssStr = "html body.ng-scope section.login div.inputField.passwordField.confidential > input";
+     // change waitfor element due to new Paypal sandbox page
+        boolean isNew = true;
+        try {
+            waitForCssVisible(loginCssStr);
+        } catch (Exception e2) {
+            waitForIdVisible("login_email");
+            isNew = false;
+        }
         // I login paypal
         if (isNew){
-            String cssStr = "html body.ng-scope section.login div.inputField.emailField.confidential > input";
-            WebElement e = driver.findElement(By.cssSelector(cssStr));
+            WebElement e = driver.findElement(By.cssSelector(loginCssStr));
             e.clear();
             e.sendKeys(account);
-            cssStr = "html body.ng-scope section.login div.inputField.passwordField.confidential > input";
-            e = driver.findElement(By.cssSelector(cssStr));
+            e = driver.findElement(By.cssSelector(passCssStr));
             e.clear();
             e.sendKeys(password);
             e = driver.findElement(By.cssSelector(".btn.full.loginBtn"));
@@ -571,17 +579,9 @@ public class BaseTestCase {
         e = driver.findElement(By.id("payment-buttons-container"));
         e = e.findElement(By.tagName("button"));
         e.click();
-        // change waitfor element due to new Paypal sandbox page
-        boolean isNewPaypalSandbox = true;
-        try {
-            waitForIdVisible("forgot_password_link");
-        } catch (Exception e2) {
-            waitForIdVisible("login_email");
-            isNewPaypalSandbox = false;
-        }
         
         // login Paypal website and confirm the payment
-        loginPaypalAndConfirm(account, password, isNewPaypalSandbox);
+        loginPaypalAndConfirm(account, password);
     }
     
     void iFailCheckOutWith(String ccType, String creditCardNumber, String modalErrorMessage) throws InterruptedException {
@@ -683,17 +683,10 @@ public class BaseTestCase {
         WebElement e = driver.findElement(By.className("paypal-logo"));
         e = e.findElement(By.tagName("img"));
         e.click();
-        // change waitfor element due to new Paypal sandbox page
-        boolean isNewPaypalSandbox = true;
-        try {
-            waitForIdVisible("forgotPasswordSection");
-        } catch (Exception e2) {
-            waitForIdVisible("login_email");
-            isNewPaypalSandbox = false;
-        }
+        
         
         // finish Paypal checkout flow
-        loginPaypalAndConfirm(account, password, isNewPaypalSandbox);
+        loginPaypalAndConfirm(account, password);
         waitForIdVisible("review_button");
       
         // review and place order 
