@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -527,46 +528,46 @@ public class BaseTestCase {
     }
     
     private void loginPaypalAndConfirm(String account, String password){
-        String loginCssStr = "html body.ng-scope section.login div.inputField.emailField.confidential > input";
-        String passCssStr = "html body.ng-scope section.login div.inputField.passwordField.confidential > input";
-     // change waitfor element due to new Paypal sandbox page
-        boolean isNew = true;
+        WebElement emailInput;
+        WebElement passwdInput;
+        WebElement loginButton;
+        String comfirmButtonId;
+        WebElement comfirmButton;
+        String emailCssStr = "html body section.login div.inputField.emailField.confidential > input";
+        String passCssStr = "html body section.login div.inputField.passwordField.confidential > input";
+        // login into the paypal sandbox
         try {
-            waitForCssVisible(loginCssStr);
+            try {
+                // for new paypal sandbox page with element id
+                waitForIdVisible("email");
+                emailInput = driver.findElement(By.id("email"));
+                passwdInput = driver.findElement(By.id("password"));
+                loginButton = driver.findElement(By.cssSelector(".btn.full.continue"));
+            } catch (Exception e1){
+                // for new paypal sandbox page without element id
+                waitForCssVisible(emailCssStr);
+                emailInput = driver.findElement(By.cssSelector(emailCssStr));
+                passwdInput = driver.findElement(By.cssSelector(passCssStr));
+                loginButton = driver.findElement(By.cssSelector(".btn.full.loginBtn"));
+            }
+            comfirmButtonId = "confirmButtonTop";
         } catch (Exception e2) {
+            // for old paypal sandbox page
             waitForIdVisible("login_email");
-            isNew = false;
+            emailInput = driver.findElement(By.id("login_email"));
+            passwdInput = driver.findElement(By.id("login_password"));
+            loginButton = driver.findElement(By.id("submitLogin"));
+            comfirmButtonId = "continue_abovefold";
         }
-        // I login paypal
-        if (isNew){
-            WebElement e = driver.findElement(By.cssSelector(loginCssStr));
-            e.clear();
-            e.sendKeys(account);
-            e = driver.findElement(By.cssSelector(passCssStr));
-            e.clear();
-            e.sendKeys(password);
-            e = driver.findElement(By.cssSelector(".btn.full.loginBtn"));
-            e.click();
-            waitForIdVisible("confirmButtonTop");
-            
-            // And I confirm the payment detail on Paypal website
-            e = driver.findElement(By.id("confirmButtonTop"));
-            e.click();
-        } else {
-            WebElement e = driver.findElement(By.id("login_email"));
-            e.clear();
-            e.sendKeys(account);
-            e = driver.findElement(By.id("login_password"));
-            e.clear();
-            e.sendKeys(password);
-            e = driver.findElement(By.id("submitLogin"));
-            e.click();
-            waitForIdVisible("continue_abovefold");
-         
-            // And I confirm the payment detail on Paypal website
-            e = driver.findElement(By.id("continue_abovefold"));
-            e.click();
-        }
+        emailInput.clear();
+        emailInput.sendKeys(account);
+        passwdInput.clear();
+        passwdInput.sendKeys(password);
+        loginButton.click();
+        // click continue button on the review page
+        waitForIdVisible(comfirmButtonId);
+        comfirmButton = driver.findElement(By.id(comfirmButtonId));
+        comfirmButton.click();
     }
 
     private void onepageLPaypalCheckoutHelper(String account, String password){
@@ -704,6 +705,7 @@ public class BaseTestCase {
       String version = driver.getCurrentUrl();
       if (version.contains("1702") || version.contains("1810")){
           e = driver.findElement(By.id("shipping:telephone"));
+          e.clear();
           e.sendKeys("1231231234");
           e = driver.findElement(By.id("update_order"));
           e.click();
