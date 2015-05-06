@@ -710,7 +710,8 @@ public class BaseTestCase {
           e.sendKeys("1231231234");
           e = driver.findElement(By.id("update_order"));
           e.click();
-          waitForPlaceOrderButtonEnable();
+//          waitForPlaceOrderButtonEnable();
+          waitForIdVisible("shipping_method");
       }
      // And I select shipping method
       iSelectFromSelect("Fixed - $5.00", "shipping_method");
