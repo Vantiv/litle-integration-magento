@@ -405,6 +405,7 @@ public class BaseTestCase {
         WebElement firstMenuElement = e.findElement(By.linkText(menu));
         Actions mouseOver = new Actions(driver);
         mouseOver.moveToElement(firstMenuElement).build().perform();
+        waitFor(By.linkText(subMenu));
         WebElement secondMenuElement = e.findElement(By.linkText(subMenu));
         secondMenuElement.click();
         waitFor(By.className("content-header"));
