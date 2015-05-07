@@ -164,12 +164,14 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 
 	public function merchantData(Varien_Object $payment)
 	{
+        $order = $payment->getOrder();
         $version = Mage::getModel('core_resource/resource')->getDbVersion($this->getCode() . '_setup');
         $hash = array('user'=> $this->getConfigData("user"),
  					'password'=> $this->getConfigData("password"),
 					'merchantId'=>$this->getMerchantId($payment),
 	                'merchantSdk' => 'Magento;' . $version,
 					'reportGroup'=>$this->getMerchantId($payment),
+                	'customerId' => $order->getCustomerEmail(),
 					'url'=>$this->getConfigData("url"),	
 					'proxy'=>$this->getConfigData("proxy"),
 					'timeout'=>$this->getConfigData("timeout"),
@@ -242,6 +244,7 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 		if (!empty($order)){
 			$hash = array(
 	 					'orderId'=> $orderId,
+	 					'id'=> $orderId,
 	 					'amount'=> $amountToPass,
 	 					'orderSource'=> "ecommerce",
 						'verify'=>'true',
@@ -269,6 +272,7 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 		if (!empty($order)){
 			$hash = array(
 	 					'orderId'=> $orderId,
+	 					'id'=> $orderId,
 	 					'amount'=> $amountToPass,
 	 					'orderSource'=> "ecommerce",
 						'billToAddress'=> $this->getBillToAddress($payment),

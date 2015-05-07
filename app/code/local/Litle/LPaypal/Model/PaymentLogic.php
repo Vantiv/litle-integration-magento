@@ -591,6 +591,7 @@ class Litle_LPaypal_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
                 $payment->setParentTransactionId($lastTxnId);
                 $hash = array(
                         'orderId' => $orderId,
+                        'id' => $orderId,
                         'amount' => $amountToPass,
                         'orderSource' => 'ecommerce',
                         'paypal' => $this->_getPayPalInfo($payment),

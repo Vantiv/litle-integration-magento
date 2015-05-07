@@ -719,6 +719,7 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 			} else {
 				$hash_temp = array(
 						'orderId' => $orderId,
+						'id' => $orderId,
 						'amount' => $amountToPass,
 						'orderSource' => $info->getAdditionalInformation('orderSource'),
 						'billToAddress' => $this->getBillToAddress($payment),
