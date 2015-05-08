@@ -24,10 +24,6 @@ class Litle_LPaypal_Adminhtml_System_ConfigController extends Mage_Adminhtml_Sys
     		// if merchant turn on litle paypal, turn on paypal express chekout automatically and set the payment action to Order
         	$config ->saveConfig('payment/paypal_express/active', "1", 'default', 0);
         	$config ->saveConfig('payment/paypal_express/payment_action', "Order", 'default', 0);
-        	// Disable litle paypal if fail to enable the paypal express checkout
-        	if (!Mage::getStoreConfig('payment/paypal_express/active')){
-        		$config ->saveConfig('payment/LPaypal/active', "0", 'default', 0);	
-        	}
     	}
     }
 }
