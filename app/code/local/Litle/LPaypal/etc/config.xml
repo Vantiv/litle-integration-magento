@@ -47,11 +47,6 @@
             </lpaypal_read>
         </resources>
         <blocks>
-            <adminhtml>
-                <rewrite>
-                    <system_config_form>Litle_LPaypal_Block_System_Config_Form</system_config_form>
-                </rewrite>
-            </adminhtml>
             <payment>
                 <rewrite>
                     <info>Litle_LPaypal_Block_Payment_Info</info>

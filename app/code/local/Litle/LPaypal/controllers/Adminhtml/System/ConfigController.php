@@ -10,11 +10,24 @@ require_once 'Mage/Adminhtml/controllers/System/ConfigController.php';
 
 class Litle_LPaypal_Adminhtml_System_ConfigController extends Mage_Adminhtml_System_ConfigController {
     public function saveAction(){
+    	$LPaypalWasOn = (Mage::getStoreConfig('payment/LPaypal/active')) ? True : False;
+
         parent::saveAction();
-        if (Mage::getStoreConfig('payment/paypal_express/payment_action') != 'Order' ||
-            !Mage::getStoreConfig('payment/paypal_express/active')){
-            $config = new Mage_Core_Model_Config();
-            $config ->saveConfig('payment/LPaypal/active', "0", 'default', 0);
-        }
+
+		$config = new Mage_Core_Model_Config();
+        if (!Mage::getStoreConfig('payment/LPaypal/active')){
+    		// if merchant turn off litle paypal, turn off the paypal express checkout either
+    		if ($LPaypalWasOn){
+        		$config ->saveConfig('payment/paypal_express/active', "0", 'default', 0);	
+    		}
+    	} else {
+    		// if merchant turn on litle paypal, turn on paypal express chekout automatically and set the payment action to Order
+        	$config ->saveConfig('payment/paypal_express/active', "1", 'default', 0);
+        	$config ->saveConfig('payment/paypal_express/payment_action', "Order", 'default', 0);
+        	// Disable litle paypal if fail to enable the paypal express checkout
+        	if (!Mage::getStoreConfig('payment/paypal_express/active')){
+        		$config ->saveConfig('payment/LPaypal/active', "0", 'default', 0);	
+        	}
+    	}
     }
 }
