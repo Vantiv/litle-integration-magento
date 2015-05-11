@@ -250,7 +250,7 @@ class Litle_LPaypal_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
                         }
                     }else{
                         if ($closeOrder){
-                            $payment->setIsTranlsactionClosed(1);
+                            $payment->setIsTransactionClosed(1);
                         }
                         // add paypal order transaction
                         $formattedPrice = $payment->getOrder()->getBaseCurrency()->formatTxt($amount);
@@ -582,13 +582,7 @@ class Litle_LPaypal_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
                         'partial' => $isPartialCapture
                 );
             } else {
-                // if this is a frontend sale, the order transaction is not in the database yet
-                // we get the order transaction id from $payment object
-                $lastTxnId = $payment->getTransactionId();
-                if($orderTransaction){
-                    $lastTxnId = $orderTransaction->getTxnId();
-                }
-                $payment->setParentTransactionId($lastTxnId);
+                // this is a frontend sale
                 $hash = array(
                         'orderId' => $orderId,
                         'id' => $orderId,
