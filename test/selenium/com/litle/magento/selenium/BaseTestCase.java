@@ -236,12 +236,13 @@ public class BaseTestCase {
 
         //Login
         driver.findElement(By.linkText("Log In")).click();
+        waitForIdVisible("pass");
         driver.findElement(By.id("pass")).clear();
         driver.findElement(By.id("pass")).sendKeys(password);
-        Thread.sleep(1000L);
+        waitForIdVisible("email");
         driver.findElement(By.id("email")).clear();
         driver.findElement(By.id("email")).sendKeys(username);
-        Thread.sleep(1000L);
+        waitForIdVisible("send2");
         driver.findElement(By.id("send2")).click(); //click login button
         waitForCssVisible("html body.customer-account-index div.wrapper div.page div.main-container div.main div.col-main div.my-account div.dashboard div.page-title h1");
     }
