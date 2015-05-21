@@ -159,7 +159,7 @@ class Litle_LPaypal_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
                     'productCode' => $ids,
                     'quantity' => $qty,
                     'lineItemTotal' => Mage::helper('creditcard')->formatAmount(($unitPrice * $qty), true),
-                    'unitCost' => Mage::helper('creditcard')->formatAmount(($unitPrice), true)
+                    'unitCost' => Mage::app()->getStore()->roundPrice($unitPrice)
             );
             $i ++;
         }
