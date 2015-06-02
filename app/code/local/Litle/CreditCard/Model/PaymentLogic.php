@@ -502,7 +502,7 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 						}
 						$customerId = $payment->getOrder()->getCustomerId();
 						$orderId = $payment->getOrder()->getId();
-                        Mage::helper('creditcard')->writeFailedTransactionToDatabase($customerId, null, $message, $litleResponse); //null order id because the order hasn't been created yet
+                        Mage::helper('creditcard')->writeFailedTransactionToDatabase($customerId, null, $message, $litleResponse, null); //null order id because the order hasn't been created yet
 
 						Mage::throwException("The order was not approved.  Please try again later or contact us.  For your reference, the transaction id is " . XMLParser::getNode($litleResponse, 'litleTxnId'));
 						
