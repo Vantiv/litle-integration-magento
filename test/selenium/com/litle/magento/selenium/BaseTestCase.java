@@ -11,7 +11,9 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
@@ -533,8 +535,8 @@ public class BaseTestCase {
         WebElement emailInput;
         WebElement passwdInput;
         WebElement loginButton;
-        String comfirmButtonId;
-        WebElement comfirmButton;
+        String confirmButtonId;
+        WebElement confirmButton;
         String emailCssStr = "html body section.login div.inputField.emailField.confidential > input";
         String passCssStr = "html body section.login div.inputField.passwordField.confidential > input";
         // login into the paypal sandbox
@@ -552,14 +554,12 @@ public class BaseTestCase {
                 passwdInput = driver.findElement(By.cssSelector(passCssStr));
                 loginButton = driver.findElement(By.cssSelector(".btn.full.loginBtn"));
             }
-            comfirmButtonId = "confirmButtonTop";
         } catch (Exception e2) {
             // for old paypal sandbox page
             waitForIdVisible("login_email");
             emailInput = driver.findElement(By.id("login_email"));
             passwdInput = driver.findElement(By.id("login_password"));
             loginButton = driver.findElement(By.id("submitLogin"));
-            comfirmButtonId = "continue_abovefold";
         }
         emailInput.clear();
         emailInput.sendKeys(account);
@@ -567,9 +567,25 @@ public class BaseTestCase {
         passwdInput.sendKeys(password);
         loginButton.click();
         // click continue button on the review page
-        waitForIdVisible(comfirmButtonId);
-        comfirmButton = driver.findElement(By.id(comfirmButtonId));
-        comfirmButton.click();
+        try {
+            // for a continue button
+            confirmButtonId = "confirmButtonTop";
+            waitForIdVisible(confirmButtonId);
+        } catch (Exception e3) {
+            // for another continue button
+            confirmButtonId = "continue_abovefold";
+            waitForIdVisible(confirmButtonId);
+        }
+        confirmButton = driver.findElement(By.id(confirmButtonId));
+        
+        // wait for continue button to be available
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        confirmButton.click();
     }
 
     private void onepageLPaypalCheckoutHelper(String account, String password){
