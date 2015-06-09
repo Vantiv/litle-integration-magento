@@ -118,4 +118,24 @@ class Litle_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
             mysql_close($con);
         }
     }
+
+    public function parseMerchantIdMap($IdMapString)
+    {
+        $regex_output = array();
+        $validate_regex = "/\(( *(\"[A-Z]+\"|'[A-Z]+') *=> *(\"\d+\"|'\d+') *,?)+ *\)/";
+        $parse_regex = "/(?P<cur>(\"[A-Z]+\"|'[A-Z]+')) *=> *(?P<id>(\"\d+\"|'\d+'))/";
+        $validate_res = preg_match($validate_regex, $IdMapString, $regex_output);
+        if ($validate_res) {
+            $num_res = preg_match_all($parse_regex, $IdMapString, $regex_output);
+            $merchant_map = array();
+            $cur_array = $regex_output["cur"];
+            $id_array = $regex_output["id"];
+            for ($i = 0; $i < $num_res; $i++) {
+                $merchant_map[substr($cur_array[$i], 1, -1)] = substr($id_array[$i], 1, -1);
+            }
+            return $merchant_map;
+        } else {
+            return false;
+        }
+    }
 }

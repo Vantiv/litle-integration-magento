@@ -30,8 +30,12 @@ require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Widget/
 require_once(getenv('MAGENTO_HOME')."/app/code/core/Mage/Adminhtml/Block/Sales/Transactions/Detail.php");
 require_once(getenv('MAGENTO_HOME')."/app/code/local/Litle/CreditCard/Model/PaymentLogic.php");
 
+
 class ValidateMerchantIdTest extends PHPUnit_Framework_TestCase
 {
+	public function setUp() {
+		Mage::app('default');
+	}
 
 	public function testValidateMerchantId_Success() {
 		//Should not throw an exception

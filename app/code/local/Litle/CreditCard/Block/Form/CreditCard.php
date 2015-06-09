@@ -59,9 +59,9 @@ class Litle_CreditCard_Block_Form_CreditCard extends Mage_Payment_Block_Form
 
 	public function getReportGroup()
 	{
-		$string2Eval = 'return array' . $this->getMerchantIdMap() . ";";
-		$merchant_map = eval($string2Eval);
+		$merchant_map = Mage::helper('creditcard')->parseMerchantIdMap($this->getMerchantIdMap());
 		$reportGroup = $merchant_map[$this->getCurrency()];
+
 		return $reportGroup;
 	}
 
@@ -212,4 +212,3 @@ class Litle_CreditCard_Block_Form_CreditCard extends Mage_Payment_Block_Form
 		return parent::_toHtml();
 	}
 }
-

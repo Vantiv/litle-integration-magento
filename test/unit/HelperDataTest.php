@@ -138,4 +138,19 @@ class HelperDataTest extends PHPUnit_Framework_TestCase
 		array('', false, "0")
 		);
 	}
+	
+	public function testParseMerchantIdMap() {
+		$testMerchantMapString = '("USD"=>"101","GBP"=>"102")';
+		$merchantMap = Litle_CreditCard_Helper_Data::parseMerchantIdMap($testMerchantMapString);
+		$this->assertEquals(count($merchantMap), 2);
+		$this->assertEquals($merchantMap["USD"], "101");
+		$this->assertEquals($merchantMap["GBP"], "102");
+		
+		
+		//"('USD'=>'101')"
+		$testMerchantMapString = "('USD'=>'101')";
+		$merchantMap = Litle_CreditCard_Helper_Data::parseMerchantIdMap($testMerchantMapString);
+		$this->assertEquals(count($merchantMap), 1);
+		$this->assertEquals($merchantMap["USD"], "101");
+	}
 }

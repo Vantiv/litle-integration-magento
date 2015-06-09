@@ -17,9 +17,8 @@ class Litle_CreditCard_Model_ValidateMerchantId extends Mage_Core_Model_Config_D
 	}
 	
 	public static function validate($merchantId) {
-		$string2Eval = 'return array' . $merchantId . ';';
 		$currency = "USD";//assumed that the base currency is USD
-		@$merchant_map = eval($string2Eval);
+		$merchant_map = Mage::helper('creditcard')->parseMerchantIdMap($merchantId);
 		
 		if(!is_array($merchant_map)){
 			Mage::throwException('Merchant ID must be of the form ("Currency" => "Code"), '. PHP_EOL . 'i.e. ("USD" => "101","GBP" => "102")');
