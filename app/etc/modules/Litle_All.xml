@@ -12,12 +12,6 @@
 			<codePool>local</codePool>
 		</Litle_LEcheck>
 	</modules>
-    <modules>
-        <Litle_LPaypal>
-            <active>true</active>
-            <codePool>local</codePool>
-        </Litle_LPaypal>
-    </modules>
 	<modules>
         <Litle_Palorus>
             <active>true</active>
