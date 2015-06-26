@@ -73,6 +73,7 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 		$info->setAdditionalInformation('echeck_routing_num', $data->getEcheckRoutingNumber());
 		$info->setAdditionalInformation('echeck_bank_acc_num', $data->getEcheckBankAcctNum());
 		$info->setAdditionalInformation('echeck_acc_type', $data->getEcheckAccountType());
+		$info->setAdditionalInformation('echeck_company_name', $data->getEcheckCompanyName());
 
 		return $this;
 	}
@@ -82,7 +83,11 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 		$returnFromThisModel = "";
 		
 		if( $fieldToLookFor == "title" || $fieldToLookFor == "active" || $fieldToLookFor == "accounttypes"
-			|| $fieldToLookFor == "payment_action" || $fieldToLookFor == "order_status"){
+			|| $fieldToLookFor == "payment_action" || $fieldToLookFor == "order_status"
+			|| $fieldToLookFor == "companyname_enable"){
+			if ($fieldToLookFor == "companyname_enable") {
+				Mage::log("hi", null, "lecheck_fe.log");				
+			}
 			$returnFromThisModel = Mage::getStoreConfig('payment/LEcheck/' . $fieldToLookFor);
 		}
 		else{
@@ -107,24 +112,32 @@ class Litle_LEcheck_Model_PaymentLogic extends Mage_Payment_Model_Method_Abstrac
 
 	public function getContactInformation($contactInfo)
 	{
+		$retArray = array();
 		if(!empty($contactInfo)){
-			$retArray = array();
-				$retArray["firstName"] =$contactInfo->getFirstname();
-				$retArray["lastName"] = $contactInfo->getLastname();
-				$retArray["companyName"] = $contactInfo->getCompany();
-				$retArray["addressLine1"] = $contactInfo->getStreet(1);
-				$retArray["addressLine2"] = $contactInfo->getStreet(2);
-				$retArray["addressLine3"] = $contactInfo->getStreet(3);
-				$retArray["city"] = $contactInfo->getCity();
-				$region = Mage::getModel('directory/region')->load($contactInfo->getRegionId());
-				$retArray["state"] = $region->getCode();
-				$retArray["zip"] = $contactInfo->getPostcode();
-				$retArray["country"] = $contactInfo->getCountry();
-				$retArray["email"] = $contactInfo->getCustomerEmail();
-				$retArray["phone"] = $contactInfo->getTelephone();
-			return $retArray;
+			$retArray["firstName"] =$contactInfo->getFirstname();
+			$retArray["lastName"] = $contactInfo->getLastname();
+			$retArray["companyName"] = $contactInfo->getCompany();
+			$retArray["addressLine1"] = $contactInfo->getStreet(1);
+			$retArray["addressLine2"] = $contactInfo->getStreet(2);
+			$retArray["addressLine3"] = $contactInfo->getStreet(3);
+			$retArray["city"] = $contactInfo->getCity();
+			$region = Mage::getModel('directory/region')->load($contactInfo->getRegionId());
+			$retArray["state"] = $region->getCode();
+			$retArray["zip"] = $contactInfo->getPostcode();
+			$retArray["country"] = $contactInfo->getCountry();
+			$retArray["email"] = $contactInfo->getCustomerEmail();
+			$retArray["phone"] = $contactInfo->getTelephone();
 		}
-		return NULL;
+
+		// get company name from onepage
+		$info = $this->getInfoInstance();
+		$company = $info->getAdditionalInformation('echeck_company_name');
+		if ($company) {
+			$retArray["companyName"] = $company;
+			$contactInfo->setCompany($company)->save();
+		}
+		
+		return (count($retArray) > 0) ? $retArray : NULL;
 	}
 
 

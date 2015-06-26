@@ -1,5 +1,10 @@
 <fieldset class="form-list">
-    <?php $_code=$this->getMethodCode() ?>
+    <?php 
+    $_code=$this->getMethodCode(); 
+    $companyname_enable = Mage::getModel('Litle_LEcheck_Model_PaymentLogic')->getConfigData("companyname_enable");
+    $user_logged_in = Mage::getSingleton('customer/session')->isLoggedIn();
+    ?>
+
     <ul id="payment_form_<?php echo $_code ?>" style="display:none">
         <li>
             <div class="input-box">
@@ -25,6 +30,26 @@
                 </select>
             </div>
         </li>
+        <?php if ($companyname_enable): ?>
+            <?php 
+              $company_name = "";
+              if ($user_logged_in) {
+                $customer = Mage::getSingleton('customer/session')->getCustomer();
+
+                $address_id = $customer->getDefaultBilling();
+                if ((int)$address_id) {
+                    $address = Mage::getModel('customer/address')->load($address_id);
+                    $company_name = $address->getCompany();
+                }
+              }
+              ?>
+            <li>
+             <div class="input-box">
+                <label for="<?php echo $_code ?>_echeck_company_name" class="required"><?php echo $this->__('Company Name') ?><em>*</em></label><br />
+                <input id="<?php echo $_code ?>_echeck_company_name" name="payment[echeck_company_name]" value="<?php echo $company_name ?>" title="<?php echo $this->__('Company') ?>" class="input-text required-entry <?php echo $this->helper('customer/address')->getAttributeValidationClass('company') ?>" >
+            </div>   
+            </li>
+        <?php endif;?>
         <!-- li>
             <div class="input-box">
                 <label for="<?php echo $_code ?>_echeck_type"><?php echo $this->__('Echeck type') ?> <span class="required">*</span></label><br />
