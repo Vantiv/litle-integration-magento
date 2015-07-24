@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="jcai-vm1" name="com.litle.magento.selenium.PayPageTransactionsTests" tests="2" time="26.343" timestamp="2015-04-24T19:23:28">
+  <properties>
+    <property name="env.DESKTOP_SESSION" value="gnome" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="env.G1_GC_OPTIONS" value="-XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0" />
+    <property name="env.SKYBOT_KITHOME" value="/usr/local/litle-home/jcai/kit/skybot" />
+    <property name="env.JAVA_OPTIONS_TOMCAT" value="-Dvap.kit.name=Test -XX:MaxPermSize=128M -Xmx512M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="env.rvm_bin_path" value="/usr/local/litle-home/jcai/.rvm/bin" />
+    <property name="java.home" value="/usr/local/litle-tools/java/jdk1.7.0_51/jre" />
+    <property name="env.GDM_LANG" value="en_US.UTF-8" />
+    <property name="env.DISPLAY" value=":0.0" />
+    <property name="env.BEVAP_CONFIG_OVERRIDE" value="/usr/local/litle-apps/jcai/vapHomes/vap.context.override" />
+    <property name="env.LS_COLORS" value="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.tbz=01;31:*.tbz2=01;31:*.bz=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:" />
+    <property name="env.GGS_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/ggs" />
+    <property name="env.ENVIRONMENT" value="devel" />
+    <property name="env.XDG_SESSION_COOKIE" value="fe9b08a3caccdb75f01ecab700000015-1429117764.733521-1936226243" />
+    <property name="java.endorsed.dirs" value="/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/endorsed" />
+    <property name="env.LOGNAME" value="jcai" />
+    <property name="env.SKYBOT_CLASSPATH" value="/usr/local/litle-tools/java/jdk1.7.0_51//lib/tools.jar:/usr/local/litle-apps/jcai/vapHomes/current_skybot/lib/*:/usr/local/litle-apps/jcai/vapHomes/current_skybot/config" />
+    <property name="env._system_version" value="6" />
+    <property name="env.JAVA_OPTIONS_TOMCAT_WS" value="-Dvap.kit.name=Test -XX:MaxPermSize=128M -Xmx512M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="env.PAYPAGE_TOMCAT_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_paypage/deploy/paypage" />
+    <property name="env.SESSION_MANAGER" value="local/unix:@/tmp/.ICE-unix/806,unix/unix:/tmp/.ICE-unix/806" />
+    <property name="env.KDEDIRS" value="/usr" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="env.TOMCAT_REHASH_DIR" value="/usr/local/litle-tools/apache/apache-tomcat-6.0.29/" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="env.FEVAP_ENHANCEMENTS_OVERRIDE" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/config/enhancements.override" />
+    <property name="env.JP_HOME" value="/usr/local/litle-tools/java/jprofiler8" />
+    <property name="env.G_BROKEN_FILENAMES" value="1" />
+    <property name="java.version" value="1.7.0_51" />
+    <property name="env.ORBIT_SOCKETDIR" value="/tmp/orbit-jcai" />
+    <property name="env._system_type" value="Linux" />
+    <property name="env.JAVA_OPTIONS_CACHE" value="-Dvap.kit.name=Test -XX:MaxPermSize=128M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 -Dtangosol.coherence.log.level=9" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="env.VAP_HOMES" value="/usr/local/litle-apps/jcai/vapHomes" />
+    <property name="env.GEM_HOME" value="/usr/local/litle-home/jcai/.rvm/gems/ruby-2.2.0" />
+    <property name="env.PAYPAGE_JBOSS_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_paypage/deploy/paypage_jboss" />
+    <property name="env.PROD_USER" value="jcai" />
+    <property name="env.PAYPAGE_CONFIG_OVERRIDE" value="/usr/local/litle-apps/jcai/vapHomes/current_paypage/config/vap.context.override" />
+    <property name="env.IBM_DB_INCLUDE" value="/opt/phxinst1/sqllib/include" />
+    <property name="env.RUBY_VERSION" value="ruby-2.2.0" />
+    <property name="user.name" value="jcai" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="env.CVS_RSH" value="ssh" />
+    <property name="env.JAVA_OPTIONS_JBOSS_PAYPAGE" value="    -Dvap.kit.name=Test     -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0     -XX:MaxPermSize=128M     -Xms640M -Xmx640M     -Djboss.server.home.url=file:/usr/local/litle-apps/jcai/vapHomes/current_paypage/deploy/paypage_jboss     -Djboss.server.home.dir=/usr/local/litle-apps/jcai/vapHomes/current_paypage/deploy/paypage_jboss " />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="env.TOMCAT_MPM_DIR" value="/usr/local/litle-tools/apache/apache-tomcat-6.0.29" />
+    <property name="env.PERL5LIB" value=":/usr/local/litle-home/jcai/cvs/build/scripts/lib:/usr/local/litle-home/jcai/cvs/common/scripts/lib:/usr/local/litle-home/jcai/cvs/core/scripts/lib:/usr/local/litle-home/jcai/cvs/beVap/scripts/:/usr/local/litle-home/jcai/cvs/beVap/scripts/lib:/usr/local/litle-home/jcai/cvs/feVap/scripts/:/usr/local/litle-home/jcai/cvs/feVap/scripts/lib:/usr/local/litle-home/jcai/cvs/database/scripts/lib:/usr/local/litle-home/jcai/cvs/database/core/scripts/lib:/usr/local/litle-home/jcai/cvs/database/beVap/scripts/lib:/usr/local/litle-home/jcai/cvs/database/feVap/scripts/lib:/usr/local/litle-home/jcai/cvs/database/risk/scripts/lib:/usr/local/litle-home/jcai/cvs/database/prodpull/scripts/lib:/usr/local/litle-home/jcai/cvs/database/dev/scripts/lib:/usr/local/litle-home/jcai/cvs/database/vap/database/support_scripts:/usr/local/litle-home/jcai/cvs/database/replication/scripts/lib:/usr/local/litle-home/jcai/cvs/database/replication/dev/scripts/lib:/usr/local/litle-home/jcai/cvs/build/scripts/lib:/usr/local/litle-home/jcai/cvs/paypage/scripts/lib:/usr/local/litle-home/jcai/cvs/tests/scripts:.:/usr/local/litle-home/jcai/cvs/build/scripts/lib:/usr/local/litle-home/jcai/cvs/common/scripts/lib:/usr/local/litle-home/jcai/cvs/core/scripts/lib:/usr/local/litle-home/jcai/cvs/beVap/scripts/:/usr/local/litle-home/jcai/cvs/beVap/scripts/lib:/usr/local/litle-home/jcai/cvs/feVap/scripts/:/usr/local/litle-home/jcai/cvs/feVap/scripts/lib:/usr/local/litle-home/jcai/cvs/database/scripts/lib:/usr/local/litle-home/jcai/cvs/database/core/scripts/lib:/usr/local/litle-home/jcai/cvs/database/beVap/scripts/lib:/usr/local/litle-home/jcai/cvs/database/feVap/scripts/lib:/usr/local/litle-home/jcai/cvs/database/risk/scripts/lib:/usr/local/litle-home/jcai/cvs/database/prodpull/scripts/lib:/usr/local/litle-home/jcai/cvs/database/dev/scripts/lib:/usr/local/litle-home/jcai/cvs/database/vap/database/support_scripts:/usr/local/litle-home/jcai/cvs/database/replication/scripts/lib:/usr/local/litle-home/jcai/cvs/database/replication/dev/scripts/lib:/usr/local/litle-home/jcai/cvs/build/scripts/lib:/usr/local/litle-home/jcai/cvs/paypage/scripts/lib:/usr/local/litle-home/jcai/cvs/tests/scripts:." />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="env.DBUS_SESSION_BUS_ADDRESS" value="unix:abstract=/tmp/dbus-ULSiIDdftd,guid=07b92f06e5739a0b9acaf76b00001073" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="env.RTVIEW_HOME" value="/opt/rtview/rtvoc_5.8.0.0" />
+    <property name="env.SSH_ASKPASS" value="/usr/libexec/openssh/gnome-ssh-askpass" />
+    <property name="env.VAP_PYTHON_HOME" value="/usr/local/litle-tools/python/python2.7" />
+    <property name="env.DB2INSTANCE" value="phxinst1" />
+    <property name="env.CVSHOME" value="/usr/local/litle-home/jcai/cvs" />
+    <property name="env.TOMCAT_OLTP_DIR" value="/usr/local/litle-tools/apache/apache-tomcat-6.0.29/" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="env.TOMCAT_BE_REHASH_DIR" value="/usr/local/litle-tools/apache/apache-tomcat-7.0.27/" />
+    <property name="user.timezone" value="" />
+    <property name="env.LESSOPEN" value="||/usr/bin/lesspipe.sh %s" />
+    <property name="env.GIO_LAUNCHED_DESKTOP_FILE" value="/usr/share/applications/Terminal.desktop" />
+    <property name="env.MAGENTO_DB_PASS" value="magento" />
+    <property name="path.separator" value=":" />
+    <property name="env.MAGENTO_HOME" value="/usr/local/litle-home/jcai/magento" />
+    <property name="env.SKYBOT_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_skybot" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="env.JAVA_OPTIONS_USMG_SIM" value=" -Xms96M -Xmx160M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="env.HOME" value="/usr/local/litle-home/jcai" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner com.litle.magento.selenium.PayPageTransactionsTests filtertrace=true haltOnError=false haltOnFailure=true formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/usr/local/litle-home/jcai/git/litle-integration-magento/reports/selenium/TEST-com.litle.magento.selenium.PayPageTransactionsTests.xml crashfile=/usr/local/litle-home/jcai/git/litle-integration-magento/junitvmwatcher1101123862327557728.properties propsfile=/usr/local/litle-home/jcai/git/litle-integration-magento/junit7848791558031494003.properties" />
+    <property name="env.FEVAP_JBOSS_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/deploy/vap_jboss" />
+    <property name="env.JAVA_OPTIONS_TOMCAT_UI" value="-Dvap.kit.name=Test -XX:MaxPermSize=128M -Xmx512M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="ant.file" value="/usr/local/litle-home/jcai/git/litle-integration-magento/build/build.xml" />
+    <property name="env.MAGENTO_DB_USER" value="magento" />
+    <property name="env.BEVAP_REHASH_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/deploy/vap_rehash" />
+    <property name="env.FEVAP_OLTP_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/deploy/vap_oltp" />
+    <property name="env.GTK_RC_FILES" value="/etc/gtk/gtkrc:/usr/local/litle-home/jcai/.gtkrc-1.2-gnome2" />
+    <property name="env._system_name" value="RedHat" />
+    <property name="env.HOSTNAME" value="jcai-vm1" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="env.GNOME_KEYRING_PID" value="794" />
+    <property name="env.MAGENTO_DB_NAME" value="magento" />
+    <property name="user.language" value="en" />
+    <property name="env.JMETER_HOME" value="/usr/local/litle-home/jcai/cvs/capacity/jakarta-jmeter" />
+    <property name="line.separator" value="
+" />
+    <property name="env.GNUPGHOME" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/gpg" />
+    <property name="env.ANT_OPTS" value=" -XX:MaxPermSize=512m -Xmx2400M  -Xms2400M " />
+    <property name="env.DB2LIB" value="/opt/phxinst1/sqllib/lib" />
+    <property name="env.BEVAP_CONFIG" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/config" />
+    <property name="env.HISTSIZE" value="1000" />
+    <property name="env.DB2_HOME" value="/opt/phxinst1/sqllib" />
+    <property name="env.CAPACITY_RESULTS" value="/usr/local/litle-home/jcai/cvs/capacity/results" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="sun.desktop" value="gnome" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="version" value="8.15.4" />
+    <property name="env.JAVA_OPTIONS_IBC" value="-Dvap.kit.name=Test -XX:MaxPermSize=128M -Xms96M -Xmx256M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="env.FEVAP_JAVA_OPTIONS_JBOSS" value="    -Dvap.kit.name=Test     -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0     -XX:MaxPermSize=128M     -Xms640M -Xmx640M     -Djboss.server.home.url=file:/usr/local/litle-apps/jcai/vapHomes/current_fevap/deploy/vap_jboss     -Djboss.server.home.dir=/usr/local/litle-apps/jcai/vapHomes/current_fevap/deploy/vap_jboss " />
+    <property name="env.COLORTERM" value="Terminal" />
+    <property name="pathToFolderToSaveIn" value="${env.WORKSPACE}/output/" />
+    <property name="env.JAVA_OPTIONS_TOMCAT_MPM" value="-Dvap.kit.name=Test -XX:MaxPermSize=128M -Xmx512M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="env.SKYBOT_CONFIG" value="/usr/local/litle-apps/jcai/vapHomes/current_skybot/config" />
+    <property name="env.JAVA_OPTIONS_COMMON" value="-Dvap.kit.name=Test" />
+    <property name="env.KITHOME" value="/usr/local/litle-home/jcai/kit" />
+    <property name="env.JAVA_OPTIONS_FTP" value="-Xms256m -Xmx256m -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="env.EDITOR" value="/usr/bin/gedit" />
+    <property name="env.PAYPAGE_LIB_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_paypage/lib" />
+    <property name="env.FEVAP_LIB_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/lib" />
+    <property name="env.FIREFOX_PATH" value="/usr/bin/firefox" />
+    <property name="env.rvm_path" value="/usr/local/litle-home/jcai/.rvm" />
+    <property name="env.GEM_PATH" value="/usr/local/litle-home/jcai/.rvm/gems/ruby-2.2.0:/usr/local/litle-home/jcai/.rvm/gems/ruby-2.2.0@global" />
+    <property name="env.GDMSESSION" value="gnome" />
+    <property name="env.JAVA_OPTIONS_TOMCAT_REHASH" value="-Dvap.kit.name=Test -XX:MaxPermSize=128M -Xms256M -Xmx512M -XX:-OmitStackTraceInFastThrow -XX:StringTableSize=70003 -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="env.PAYPAGE_DEPLOY_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_paypage/deploy" />
+    <property name="env.BEVAP_WS_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/deploy/vap_ws" />
+    <property name="ant.version" value="Apache Ant version 1.7.1 compiled on June 27 2008" />
+    <property name="env.FEVAP_OUTPUT" value="/usr/local/litle-home/jcai/output/fevap/" />
+    <property name="env.WINDOWID" value="25165828" />
+    <property name="env.DESKTOP_STARTUP_ID" value="" />
+    <property name="env.KIT_NAME" value="Test" />
+    <property name="env.BEVAP_DEPLOY_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/deploy" />
+    <property name="env.VAP_DEV_OUTPUT" value="/usr/local/litle-home/jcai/output" />
+    <property name="env.USE_DEFAULT_LINUX_PARAMETERS" value="true" />
+    <property name="env.BEVAP_ENHANCEMENTS_OVERRIDE" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/config/enhancements.override" />
+    <property name="env.CLASSPATH" value="/usr/local/litle-home/jcai/cvs/common/javalibs/xalan-j_2_7_1/xalan.jar:/opt/phxinst1/sqllib/java/db2java.zip:/opt/phxinst1/sqllib/java/sqlj.zip:/opt/phxinst1/sqllib/function:/opt/phxinst1/sqllib/java/db2jcc_license_cu.jar:/opt/phxinst1/sqllib/tools/clpplus.jar:/opt/phxinst1/sqllib/tools/antlr-3.2.jar:/opt/phxinst1/sqllib/tools/jline-0.9.93.jar:/opt/phxinst1/sqllib/java/db2jcc.jar:.:/usr/local/litle-home/jcai/cvs/common/javalibs/xalan-j_2_7_1/xalan.jar" />
+    <property name="os.name" value="Linux" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="env.PAYPAGE_OUTPUT" value="/usr/local/litle-home/jcai/output/paypage/" />
+    <property name="env.rvm_version" value="1.26.9 (latest)" />
+    <property name="env.PYTHONPATH" value=":/usr/local/litle-home/jcai/cvs/common/scripts/lib/python:/usr/local/litle-home/jcai/cvs/infrastructure/f5/scripts/lib/python:/usr/local/litle-home/jcai/cvs/core/scripts/lib/python:/usr/local/litle-home/jcai/cvs/core/scripts/lib/python2.7/site-packages:/usr/local/litle-home/jcai/cvs/tests/scripts:.:/usr/local/litle-home/jcai/cvs/capacity/py:/usr/local/litle-home/jcai/cvs/common/scripts/lib/python:/usr/local/litle-home/jcai/cvs/infrastructure/f5/scripts/lib/python:/usr/local/litle-home/jcai/cvs/core/scripts/lib/python:/usr/local/litle-home/jcai/cvs/core/scripts/lib/python2.7/site-packages:/usr/local/litle-home/jcai/cvs/tests/scripts:.:/usr/local/litle-home/jcai/cvs/capacity/py" />
+    <property name="env.JAVA_OPTIONS_GLOBAL_SIM" value="-Dvap.kit.name=Test -Xms64M -Xmx64M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="env.TERM" value="xterm" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="env.PAYPAGE_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_paypage" />
+    <property name="env.BEVAP_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap" />
+    <property name="java.library.path" value="/opt/phxinst1/sqllib/lib64:/opt/phxinst1/sqllib/lib32:/opt/phxinst1/sqllib/lib64:/opt/phxinst1/sqllib/lib32:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib" />
+    <property name="env.rvm_prefix" value="/usr/local/litle-home/jcai" />
+    <property name="env.PATH" value="/usr/local/litle-home/jcai/.pyenv/shims:/usr/local/litle-home/jcai/.pyenv/bin:/usr/local/litle-home/jcai/.rvm/gems/ruby-2.2.0/bin:/usr/local/litle-home/jcai/.rvm/gems/ruby-2.2.0@global/bin:/usr/local/litle-home/jcai/.rvm/rubies/ruby-2.2.0/bin:/usr/local/litle-tools/java/jdk1.7.0_51//jre/bin:/usr/local/litle-tools/java/jdk1.7.0_51//bin:/usr/local/litle-tools/java/jdk1.7.0_51//jre/bin:/usr/local/litle-tools/java/jdk1.7.0_51//bin:/usr/local/litle-tools/apache-ant-1.7.1//bin:/usr/local/litle-tools/java/jprofiler8/bin:/usr/local/litle-tools/gpg/bin:/usr/local/litle-tools/python/python2.7/bin:/usr/lib64/qt-3.3/bin:/usr/local/litle-tools/java/jdk1.7.0_51//jre/bin:/usr/local/litle-tools/java/jdk1.7.0_51//bin:/usr/local/litle-tools/java/jdk1.7.0_51//jre/bin:/usr/local/litle-tools/java/jdk1.7.0_51//bin:/usr/local/litle-tools/apache-ant-1.7.1//bin:/usr/local/litle-tools/java/jprofiler8/bin:/usr/local/litle-tools/gpg/bin:/usr/local/litle-tools/python/python2.7/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/litle-home/jcai/cvs/build/scripts:/usr/local/litle-home/jcai/cvs/beVap/scripts:/usr/local/litle-home/jcai/cvs/beVap/scripts/startStop:/usr/local/litle-home/jcai/cvs/beVap/scripts/skybot:/usr/local/litle-home/jcai/cvs/core/scripts:/usr/local/litle-home/jcai/cvs/core/scripts/startStop:/usr/local/litle-home/jcai/cvs/core/scripts/env:/usr/local/litle-home/jcai/cvs/database/beVap/scripts:/usr/local/litle-home/jcai/cvs/database/beVap/scripts/startStop:/usr/local/litle-home/jcai/cvs/database/core/scripts:/usr/local/litle-home/jcai/cvs/database/feVap/scripts:/usr/local/litle-home/jcai/cvs/database/risk/scripts:/usr/local/litle-home/jcai/cvs/database/ldw/scripts:/usr/local/litle-home/jcai/cvs/database/dev/scripts:/usr/local/litle-home/jcai/cvs/database/replication/scripts:/usr/local/litle-home/jcai/cvs/database/replication/dev/scripts:/usr/local/litle-home/jcai/cvs/feVap/scripts:/usr/local/litle-home/jcai/cvs/feVap/scripts/startStop:/usr/local/litle-home/jcai/cvs/infrastructure/f5/scripts:/usr/local/litle-home/jcai/cvs/merchantProvisioner/scripts:/usr/local/litle-home/jcai/cvs/paypage/build:/usr/local/litle-home/jcai/cvs/paypage/scripts:/usr/local/litle-home/jcai/cvs/paypage/scripts/startStop:/usr/local/litle-home/jcai/cvs/tests/scripts:.:/usr/NX/bin:/usr/local/litle-home/jcai/bin:/opt/phxinst1/sqllib/bin:/opt/phxinst1/sqllib/adm:/opt/phxinst1/sqllib/misc:/opt/phxinst1/sqllib/db2tss/bin:/usr/local/litle-home/jcai/cvs/build/scripts:/usr/local/litle-home/jcai/cvs/beVap/scripts:/usr/local/litle-home/jcai/cvs/beVap/scripts/startStop:/usr/local/litle-home/jcai/cvs/beVap/scripts/skybot:/usr/local/litle-home/jcai/cvs/core/scripts:/usr/local/litle-home/jcai/cvs/core/scripts/startStop:/usr/local/litle-home/jcai/cvs/core/scripts/env:/usr/local/litle-home/jcai/cvs/database/beVap/scripts:/usr/local/litle-home/jcai/cvs/database/beVap/scripts/startStop:/usr/local/litle-home/jcai/cvs/database/core/scripts:/usr/local/litle-home/jcai/cvs/database/feVap/scripts:/usr/local/litle-home/jcai/cvs/database/risk/scripts:/usr/local/litle-home/jcai/cvs/database/ldw/scripts:/usr/local/litle-home/jcai/cvs/database/dev/scripts:/usr/local/litle-home/jcai/cvs/database/replication/scripts:/usr/local/litle-home/jcai/cvs/database/replication/dev/scripts:/usr/local/litle-home/jcai/cvs/feVap/scripts:/usr/local/litle-home/jcai/cvs/feVap/scripts/startStop:/usr/local/litle-home/jcai/cvs/infrastructure/f5/scripts:/usr/local/litle-home/jcai/cvs/merchantProvisioner/scripts:/usr/local/litle-home/jcai/cvs/paypage/build:/usr/local/litle-home/jcai/cvs/paypage/scripts:/usr/local/litle-home/jcai/cvs/paypage/scripts/startStop:/usr/local/litle-home/jcai/cvs/tests/scripts:.:/usr/NX/bin:/usr/local/litle-home/jcai/gradle-2.2.1/bin:/usr/local/litle-home/jcai/Downloads/Sublime Text 2:/usr/local/litle-home/jcai/.rvm/bin:/usr/local/litle-home/jcai/Downloads/PhpStorm-139.1348/bin:/usr/local/litle-home/jcai/.rvm/bin" />
+    <property name="env.NXDIR" value="/usr/NX" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="env.JAVA_OPTIONS_AUTOSASI" value="-Dvap.kit.name=Test -XX:MaxPermSize=128M -Xmx192M  -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="basedir" value="/usr/local/litle-home/jcai/git/litle-integration-magento" />
+    <property name="java.class.version" value="51.0" />
+    <property name="env.SHLVL" value="2" />
+    <property name="env.BUILD_TOOLS_HOME" value="/usr/local/litle-tools" />
+    <property name="env.LD_LIBRARY_PATH" value="/opt/phxinst1/sqllib/lib64:/opt/phxinst1/sqllib/lib32:/opt/phxinst1/sqllib/lib64:/opt/phxinst1/sqllib/lib32" />
+    <property name="ant.home" value="/usr/local/litle-tools/apache-ant-1.7.1/" />
+    <property name="env.JBOSS_HOME" value="/usr/local/litle-tools/jboss-4.2.3.GA" />
+    <property name="env.BEVAP_KITHOME" value="/usr/local/litle-home/jcai/kit/bevap" />
+    <property name="env.FEVAP_DEPLOY_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/deploy" />
+    <property name="env.GNOME_KEYRING_SOCKET" value="/tmp/keyring-imTVZO/socket" />
+    <property name="env.PYENV_ROOT" value="/usr/local/litle-home/jcai/.pyenv" />
+    <property name="pathToLitleMagentoIntegrationFolder" value="${env.WORKSPACE}/" />
+    <property name="env._system_arch" value="x86_64" />
+    <property name="sun.boot.library.path" value="/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/amd64" />
+    <property name="env.GGS_HOME" value="/opt/ggs" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="env.TOMCAT_PAYPAGE_DIR" value="/usr/local/litle-tools/apache/apache-tomcat-6.0.29" />
+    <property name="env.BV_DIFF" value="/usr/local/litle-home/jcai/bin/beyondcompare/bin/bcompare" />
+    <property name="env.USER" value="jcai" />
+    <property name="env.PAYPAGE_ENHANCEMENTS_OVERRIDE" value="/usr/local/litle-apps/jcai/vapHomes/current_paypage/config/enhancements.override" />
+    <property name="env.TESTS_KITHOME" value="/usr/local/litle-home/jcai/kit/tests" />
+    <property name="env.PYENV_SHELL" value="slate" />
+    <property name="ant.project.name" value="litle-integration-magento" />
+    <property name="java.vm.specification.version" value="1.7" />
+    <property name="env.GDM_KEYBOARD_LAYOUT" value="us" />
+    <property name="env.MAGENTO_HOST" value="localhost" />
+    <property name="env.VAP_OUTPUT" value="/usr/local/litle-home/jcai/output" />
+    <property name="env.NLSPATH" value="/usr/dt/lib/nls/msg/%L/%N.cat" />
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit" />
+    <property name="env.MY_RUBY_HOME" value="/usr/local/litle-home/jcai/.rvm/rubies/ruby-2.2.0" />
+    <property name="env.FEVAP_CONFIG_OVERRIDE" value="/usr/local/litle-apps/jcai/vapHomes/vap.context.override" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="java.ext.dirs" value="/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="os.version" value="2.6.32-504.8.1.el6.x86_64" />
+    <property name="user.home" value="/usr/local/litle-home/jcai" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="env.BEVAP_JBOSS_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/deploy/vap_jboss" />
+    <property name="env.JAVA_OPTIONS_QUARTZ" value="-Dvap.kit.name=Test -Xms256m -Xmx512M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0" />
+    <property name="env.JAVA_HOME" value="/usr/local/litle-tools/java/jdk1.7.0_51/" />
+    <property name="env.ACCUREV" value="true" />
+    <property name="env.CAPACITY_HOME" value="/usr/local/litle-home/jcai/cvs/capacity" />
+    <property name="env.INPUTRC" value="/etc/inputrc" />
+    <property name="env.XAUTHORITY" value="/var/run/gdm/auth-for-jcai-xievuQ/database" />
+    <property name="user.dir" value="/usr/local/litle-home/jcai/git/litle-integration-magento" />
+    <property name="env.WINDOWPATH" value="1" />
+    <property name="env.XFILESEARCHPATH" value="/usr/dt/app-defaults/%L/Dt" />
+    <property name="env.MAIL" value="/var/spool/mail/jcai" />
+    <property name="env.FILEROOT" value="/usr/local/litle-home/jcai/fileroot" />
+    <property name="env.BEVAP_LIB_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/lib" />
+    <property name="env.PWD" value="/usr/local/litle-home/jcai/git/litle-integration-magento" />
+    <property name="env.MAGENTO_CONTEXT" value="magento" />
+    <property name="env.IBM_DB_LIB" value="/opt/phxinst1/sqllib/lib" />
+    <property name="ant.file.litle-integration-magento" value="/usr/local/litle-home/jcai/git/litle-integration-magento/build/build.xml" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.QTLIB" value="/usr/lib64/qt-3.3/lib" />
+    <property name="env.IBM_DB_DIR" value="/opt/phxinst1/sqllib" />
+    <property name="java.vm.version" value="24.51-b03" />
+    <property name="java.class.path" value="/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/selenium-java-2.44.0.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/junit-4.8.2.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/mysql.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/commons-io-2.4.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/guava-18.0.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/gson-2.3.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/commons-exec-1.1.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/httpcore-4.3.2.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/httpclient-4.3.4.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/commons-logging-1.1.3.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/test/output:/usr/local/litle-home/jcai/cvs/common/javalibs/xalan-j_2_7_1/xalan.jar:/opt/phxinst1/sqllib/java/db2java.zip:/opt/phxinst1/sqllib/java/sqlj.zip:/opt/phxinst1/sqllib/function:/opt/phxinst1/sqllib/java/db2jcc_license_cu.jar:/opt/phxinst1/sqllib/tools/clpplus.jar:/opt/phxinst1/sqllib/tools/antlr-3.2.jar:/opt/phxinst1/sqllib/tools/jline-0.9.93.jar:/opt/phxinst1/sqllib/java/db2jcc.jar:/usr/local/litle-home/jcai/git/litle-integration-magento:/usr/local/litle-tools/apache-ant-1.7.1/lib/junit-4.7.jar:/usr/local/litle-tools/apache-ant-1.7.1/lib/ant-launcher.jar:/usr/local/litle-tools/apache-ant-1.7.1/lib/ant.jar:/usr/local/litle-tools/apache-ant-1.7.1/lib/ant-junit.jar" />
+    <property name="env.FEVAP_KITHOME" value="/usr/local/litle-home/jcai/kit/fevap" />
+    <property name="env.QTDIR" value="/usr/lib64/qt-3.3" />
+    <property name="env.http_proxy" value="iwp1.lowell.litle.com:8080" />
+    <property name="ant.library.dir" value="/usr/local/litle-tools/apache-ant-1.7.1//lib" />
+    <property name="env.JREBEL_HOME" value="/usr/local/litle-tools/jrebel" />
+    <property name="os.arch" value="amd64" />
+    <property name="env.VAP_DEFAULT_OUTPUT" value="/usr/local/litle-home/jcai/output" />
+    <property name="env.FEVAP_CONFIG" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/config" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="env.GIO_LAUNCHED_DESKTOP_FILE_PID" value="18117" />
+    <property name="env.BEVAP_OUTPUT" value="/usr/local/litle-home/jcai/output/bevap/" />
+    <property name="env.FEVAP_REHASH_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/deploy/vap_rehash" />
+    <property name="ant.core.lib" value="/usr/local/litle-tools/apache-ant-1.7.1/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="file.separator" value="/" />
+    <property name="env.SKYBOT_CONFIG_OVERRIDE" value="/usr/local/litle-apps/jcai/vapHomes/vap.context.override" />
+    <property name="java.runtime.version" value="1.7.0_51-b13" />
+    <property name="env.SSH_AUTH_SOCK" value="/tmp/keyring-imTVZO/socket.ssh" />
+    <property name="sun.boot.class.path" value="/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/resources.jar:/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/rt.jar:/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/sunrsasign.jar:/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/jsse.jar:/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/jce.jar:/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/charsets.jar:/usr/local/litle-tools/java/jdk1.7.0_51/jre/lib/jfr.jar:/usr/local/litle-tools/java/jdk1.7.0_51/jre/classes" />
+    <property name="env.FEVAP_HOME" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap" />
+    <property name="env.JP_OUTPUT" value="/usr/local/litle-home/jcai/output/profiler" />
+    <property name="env.JAVA_OPTIONS_TOMCAT_MP" value="-Dvap.kit.name=Test -XX:MaxPermSize=512M -Xmx640M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
+    <property name="env.PAYPAGE_KITHOME" value="/usr/local/litle-home/jcai/kit/paypage" />
+    <property name="env.TOMCAT_UI_DIR" value="/usr/local/litle-tools/apache/apache-tomcat-7.0.27/" />
+    <property name="env.https_proxy" value="iwp1.lowell.litle.com:8080" />
+    <property name="env.QTINC" value="/usr/lib64/qt-3.3/include" />
+    <property name="user.country" value="US" />
+    <property name="env.BEVAP_UI_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/deploy/vap_ui" />
+    <property name="env.ANT_HOME" value="/usr/local/litle-tools/apache-ant-1.7.1/" />
+    <property name="env.SHELL" value="/bin/slate" />
+    <property name="env.JAVA_OPTIONS_DEFAULT" value="-Dvap.kit.name=Test -XX:MaxPermSize=128M -Xmx192M " />
+    <property name="env.BEVAP_JAVA_OPTIONS_JBOSS" value="    -Dvap.kit.name=Test     -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0     -XX:MaxPermSize=128M     -Xms640M -Xmx640M     -Djboss.server.home.url=file:/usr/local/litle-apps/jcai/vapHomes/current_bevap/deploy/vap_jboss     -Djboss.server.home.dir=/usr/local/litle-apps/jcai/vapHomes/current_bevap/deploy/vap_jboss " />
+    <property name="env.PYTHONDONTWRITEBYTECODE" value="Y" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="env.TOMCAT_DIR" value="/usr/local/litle-tools/apache/apache-tomcat-6.0.29" />
+    <property name="env.JAVA_OPTIONS_GENERAL_APP" value="-Dvap.kit.name=Test -Xms128m -Xmx256m -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0  " />
+    <property name="env.FEVAP_MP_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/deploy/vap_mp" />
+    <property name="env.TOOLS_HOME" value="/usr/local/litle-tools" />
+    <property name="env.MPM_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_fevap/deploy/mpm" />
+    <property name="env.PAYPAGE_CONFIG" value="/usr/local/litle-apps/jcai/vapHomes/current_paypage/config" />
+    <property name="java.specification.version" value="1.7" />
+    <property name="env.IRBRC" value="/usr/local/litle-home/jcai/.rvm/rubies/ruby-2.2.0/.irbrc" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="env.GNOME_DESKTOP_SESSION_ID" value="this-is-deprecated" />
+  </properties>
+  <testcase classname="com.litle.magento.selenium.PayPageTransactionsTests" name="testFoo" time="3.037" />
+  <testcase classname="com.litle.magento.selenium.PayPageTransactionsTests" name="doASucessfullSale" time="22.88" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
