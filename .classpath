@@ -9,7 +9,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="build/ant.jar"/>
-	<classpathentry kind="lib" path="build/selenium-2.44.0/selenium-java-2.44.0.jar"/>
 	<classpathentry kind="lib" path="build/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="build/mysql.jar"/>
 	<classpathentry kind="lib" path="build/selenium-2.44.0/libs/commons-io-2.4.jar"/>
@@ -19,5 +18,6 @@
 	<classpathentry kind="lib" path="build/selenium-2.44.0/libs/httpcore-4.3.2.jar"/>
 	<classpathentry kind="lib" path="build/selenium-2.44.0/libs/httpclient-4.3.4.jar"/>
 	<classpathentry kind="lib" path="build/selenium-2.44.0/libs/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="build/selenium-2.46.0/selenium-java-2.46.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
