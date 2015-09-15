@@ -51,7 +51,7 @@ public class BaseTestCase {
     private static final String MAGENTO_HOME = System.getenv("MAGENTO_HOME");
     private static final String CONTEXT = System.getenv("MAGENTO_CONTEXT");
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final long DEFAULT_TIMEOUT = 20;
+    private static final long DEFAULT_TIMEOUT = 30;
     private static String JDBC_URL;
     private static Connection conn;
     static Statement stmt;
