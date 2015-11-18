@@ -16,7 +16,7 @@ public class NonPayPageTransactionsTests extends BaseTestCase {
 	    iAmDoingLitleAuth();
 	    iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 	    iHaveInMyCart("vault");
-	    iCheckOutWith("Visa", "4100000000000001");
+	    iCheckOutWith("Visa", "4100000000000000");
 	    iLogOutAsUser();
 
 	    iAmLoggedInAsAnAdministrator();
