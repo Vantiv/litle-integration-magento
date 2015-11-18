@@ -67,7 +67,7 @@ System.out.println("TEST RUNS");
 	    iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 
 	    iHaveInMyCart("vault");
-	    iCheckOutWith("American Express", "370028010000001", true);
+	    iCheckOutWith("American Express", "370028010000000", true);
 
         iHaveInMyCart("vault");
         iCheckOutWith("American Express", "Stored American Express Ending in: 0001");
