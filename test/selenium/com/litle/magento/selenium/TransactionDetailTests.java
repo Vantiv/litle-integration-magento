@@ -24,7 +24,7 @@ public class TransactionDetailTests extends BaseTestCase {
 	    iAmDoingLitleAuth();
 	    iAmLoggedInAsWithThePassword("abc@gmail.com", "password");
 	    iHaveInMyCart("vault");
-	    iCheckOutWith("Visa", "4100000000000000");
+	    iCheckOutWith("Visa", "4000162019882000");
 	    iLogOutAsUser();
 
 	    iAmLoggedInAsAnAdministrator();
