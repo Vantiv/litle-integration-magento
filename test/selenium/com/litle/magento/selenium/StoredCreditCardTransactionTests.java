@@ -72,7 +72,7 @@ System.out.println("TEST RUNS");
         iHaveInMyCart("vault");
         iCheckOutWith("American Express", "Stored American Express Ending in: 0001");
 
-        theVaultTableHas("0001", "%0001", "AE", "370028");
+        theVaultTableHas("0000", "%0000", "AE", "370028");
 
         //Verify my account lists the card
         //Click My Account
@@ -84,7 +84,7 @@ System.out.println("TEST RUNS");
         WebElement infoBox = driver.findElement(By.className("info-box"));
         String infoText = infoBox.getText();
         assertTrue(infoText, infoText.contains("American Express"));
-        assertTrue(infoText, infoText.contains("Ends in 0001"));
+        assertTrue(infoText, infoText.contains("Ends in 0000"));
         //Delete the stored card
         infoBox.findElement(By.linkText("Delete")).click();
         Alert alert = driver.switchTo().alert();
