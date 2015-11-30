@@ -70,7 +70,7 @@ System.out.println("TEST RUNS");
 	    iCheckOutWith("American Express", "370028010000000", true);
 
         iHaveInMyCart("vault");
-        iCheckOutWith("American Express", "Stored American Express Ending in: 0001");
+        iCheckOutWith("American Express", "Stored American Express Ending in: 0000");
 
         theVaultTableHas("0000", "%0000", "AE", "370028");
 
