@@ -97,7 +97,7 @@ public class BaseTestCase {
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/title',null)");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/payment_action','authorize')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LEcheck/order_status','processing')");
-        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/proxy','iwp1.lowell.litle.com:8080')");
+        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/proxy','websenseproxy:8080')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/cctypes','AE,DC,VI,MC,DI,JCB')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LPaypal/active','0')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/LPaypal/payment_action','authorize')");
@@ -173,7 +173,7 @@ public class BaseTestCase {
         stmt.executeUpdate("update core_config_data set value='Checking,Savings,Corporate,Corp Savings' where path='payment/LEcheck/accounttypes'");
         stmt.executeUpdate("update core_config_data set value='Litle ECheck' where path='payment/LEcheck/title'");
         stmt.executeUpdate("update core_config_data set value='Litle Credit Card' where path='payment/CreditCard/title'");
-        stmt.executeUpdate("update core_config_data set value='iwp1.lowell.litle.com:8080' where path='payment/CreditCard/proxy'");
+        stmt.executeUpdate("update core_config_data set value='websenseproxy:8080' where path='payment/CreditCard/proxy'");
 
         stmt.executeUpdate("delete from sales_flat_order");
         stmt.executeUpdate("delete from sales_flat_quote");
@@ -184,7 +184,7 @@ public class BaseTestCase {
         stmt.executeUpdate("update core_config_data set value='JENKINS' where path='payment/CreditCard/user'");
         stmt.executeUpdate("update core_config_data set value='LPaypalTransactions' where path='payment/CreditCard/password'");
         stmt.executeUpdate("update core_config_data set value='(\"USD\"=>\"101\",\"GBP\"=>\"102\")' where path='payment/CreditCard/merchant_id'");
-        stmt.executeUpdate("update core_config_data set value='iwp1.lowell.litle.com:8080' where path='payment/CreditCard/proxy'");
+        stmt.executeUpdate("update core_config_data set value='websenseproxy:8080' where path='payment/CreditCard/proxy'");
 
         // for Paypal
         stmt.executeUpdate("update core_config_data set value='1' where path='payment/paypal_express/active'");

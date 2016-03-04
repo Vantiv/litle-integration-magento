@@ -204,7 +204,7 @@
     <property name="java.class.path" value="/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/selenium-java-2.44.0.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/junit-4.8.2.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/mysql.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/commons-io-2.4.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/guava-18.0.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/gson-2.3.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/commons-exec-1.1.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/httpcore-4.3.2.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/httpclient-4.3.4.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/build/selenium-2.44.0/libs/commons-logging-1.1.3.jar:/usr/local/litle-home/jcai/git/litle-integration-magento/test/output:/usr/local/litle-home/jcai/cvs/common/javalibs/xalan-j_2_7_1/xalan.jar:/opt/phxinst1/sqllib/java/db2java.zip:/opt/phxinst1/sqllib/java/sqlj.zip:/opt/phxinst1/sqllib/function:/opt/phxinst1/sqllib/java/db2jcc_license_cu.jar:/opt/phxinst1/sqllib/tools/clpplus.jar:/opt/phxinst1/sqllib/tools/antlr-3.2.jar:/opt/phxinst1/sqllib/tools/jline-0.9.93.jar:/opt/phxinst1/sqllib/java/db2jcc.jar:/usr/local/litle-home/jcai/git/litle-integration-magento:/usr/local/litle-tools/apache-ant-1.7.1/lib/junit-4.7.jar:/usr/local/litle-tools/apache-ant-1.7.1/lib/ant-launcher.jar:/usr/local/litle-tools/apache-ant-1.7.1/lib/ant.jar:/usr/local/litle-tools/apache-ant-1.7.1/lib/ant-junit.jar" />
     <property name="env.FEVAP_KITHOME" value="/usr/local/litle-home/jcai/kit/fevap" />
     <property name="env.QTDIR" value="/usr/lib64/qt-3.3" />
-    <property name="env.http_proxy" value="iwp1.lowell.litle.com:8080" />
+    <property name="env.http_proxy" value="websenseproxy:8080" />
     <property name="ant.library.dir" value="/usr/local/litle-tools/apache-ant-1.7.1//lib" />
     <property name="env.JREBEL_HOME" value="/usr/local/litle-tools/jrebel" />
     <property name="os.arch" value="amd64" />
@@ -226,7 +226,7 @@
     <property name="env.JAVA_OPTIONS_TOMCAT_MP" value="-Dvap.kit.name=Test -XX:MaxPermSize=512M -Xmx640M -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:InitiatingHeapOccupancyPercent=0 " />
     <property name="env.PAYPAGE_KITHOME" value="/usr/local/litle-home/jcai/kit/paypage" />
     <property name="env.TOMCAT_UI_DIR" value="/usr/local/litle-tools/apache/apache-tomcat-7.0.27/" />
-    <property name="env.https_proxy" value="iwp1.lowell.litle.com:8080" />
+    <property name="env.https_proxy" value="websenseproxy:8080" />
     <property name="env.QTINC" value="/usr/lib64/qt-3.3/include" />
     <property name="user.country" value="US" />
     <property name="env.BEVAP_UI_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/deploy/vap_ui" />
