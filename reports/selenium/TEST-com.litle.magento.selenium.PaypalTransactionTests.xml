@@ -214,7 +214,7 @@
     <property name="env.FEVAP_KITHOME" value="/usr/local/litle-home/jcai/kit/fevap" />
     <property name="env.QTDIR" value="/usr/lib64/qt-3.3" />
     <property name="ant.library.dir" value="/usr/local/litle-tools/apache-ant-1.7.1//lib" />
-    <property name="env.http_proxy" value="iwp1.lowell.litle.com:8080" />
+    <property name="env.http_proxy" value="websenseproxy:8080" />
     <property name="env.JREBEL_HOME" value="/usr/local/litle-tools/jrebel" />
     <property name="os.arch" value="amd64" />
     <property name="env.VAP_DEFAULT_OUTPUT" value="/usr/local/litle-home/jcai/output" />
@@ -236,7 +236,7 @@
     <property name="env.JP_OUTPUT" value="/usr/local/litle-home/jcai/output/profiler" />
     <property name="env.PAYPAGE_KITHOME" value="/usr/local/litle-home/jcai/kit/paypage" />
     <property name="env.TOMCAT_UI_DIR" value="/usr/local/litle-tools/apache/apache-tomcat-7.0.27/" />
-    <property name="env.https_proxy" value="iwp1.lowell.litle.com:8080" />
+    <property name="env.https_proxy" value="websenseproxy:8080" />
     <property name="env.QTINC" value="/usr/lib64/qt-3.3/include" />
     <property name="user.country" value="US" />
     <property name="env.BEVAP_UI_DEPLOY_DIR" value="/usr/local/litle-apps/jcai/vapHomes/current_bevap/deploy/vap_ui" />
