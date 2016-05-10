@@ -38,7 +38,7 @@ Login to Admin panel in Magento - Navigate to System > Configuration
     
     Payment Action: You may choose "Authorize Only", or "Authorize and Capture". If you choose "Authorize Only", you will have to manually process the Captures later.
     
-    HTTP URL*: If performing preliminary testing, you may select Sandbox. If you are in process of setting up an account with Litle, then you may select Pre-Cert, Cert, or Production depending on which step you are at.
+    HTTP URL*: If performing preliminary testing, you may select Sandbox. If you are in process of setting up an account with Litle, then you may select Postlive, Prelive1, or Production depending on which step you are at.
     
     HTTP Proxy: If you need to use a proxy, you need to enter it here.
     

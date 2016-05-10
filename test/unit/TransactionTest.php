@@ -86,16 +86,16 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals(null,$html);
 	}
 	
-	public function testCert()
+	public function testPrelive()
 	{
-		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://cert.litle.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.cert.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
+		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://prelive.litle.com/vap/communicator/online',123);
+		$this->assertEquals("<a href='https://reports.prelive.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 
-	public function testPrecert()
+	public function testPostlive()
 	{
-		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://precert.litle.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.precert.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
+		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://postlive.litle.com/vap/communicator/online',123);
+		$this->assertEquals("<a href='https://reports.postlive.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 	
 	public function testSandbox()

@@ -28,10 +28,10 @@ class UrlMapper
 		$litleOnlineCtx = 'vap/communicator/online';
 		if ($litleEnv == "sandbox")
 			return 'https://www.testlitle.com/sandbox/communicator/online';
-		elseif ($litleEnv == "cert")
-			return 'https://cert.litle.com/' . $litleOnlineCtx;
-		elseif ($litleEnv == "precert")
-			return 'https://precert.litle.com/' . $litleOnlineCtx;
+		elseif ($litleEnv == "prelive")
+			return 'https://prelive.litle.com/' . $litleOnlineCtx;
+		elseif ($litleEnv == "postlive")
+			return 'https://postlive.litle.com/' . $litleOnlineCtx;
 		elseif ($litleEnv == "production1")
 			return 'https://payments.litle.com/' . $litleOnlineCtx;
 		elseif ($litleEnv == "production2")

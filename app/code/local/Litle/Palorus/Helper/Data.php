@@ -50,10 +50,8 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
             $baseUrl = 'https://www.testlitle.com/sandbox';
         } else if (preg_match('/prelive/', $url)) {
             $baseUrl = 'https://reports-prelive.litle.com';
-        } else if (preg_match('/precert/', $url)) {
-            $baseUrl = 'https://reports.precert.litle.com';
-        } else if (preg_match('/cert/', $url)) {
-            $baseUrl = 'https://reports.cert.litle.com';
+        } else if (preg_match('/postlive/', $url)) {
+            $baseUrl = 'https://reports.postlive.litle.com';
         } else {
             $baseUrl = 'http://localhost:2190';
         }

@@ -11,12 +11,12 @@ class  Litle_LEcheck_Model_URL
 		                'label' => 'Sandbox'
 				),
 				array(
-		                'value' => "https://cert.litle.com/vap/communicator/online",
-		                'label' => 'Cert'
+		                'value' => "https://prelive.litle.com/vap/communicator/online",
+		                'label' => 'Prelive'
 				),
 				array(
-		        		'value' => "https://precert.litle.com/vap/communicator/online",
-		                'label' => 'PreCert'
+		        		'value' => "https://postlive.litle.com/vap/communicator/online",
+		                'label' => 'Postlive'
 				),
 				array(
 				        'value' => "https://payments.litle.com/vap/communicator/online",
