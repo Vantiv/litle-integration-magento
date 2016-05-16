@@ -89,7 +89,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 	public function testPrelive()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://prelive.litle.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.prelive.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://reports-prelive.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 
 	public function testPostlive()
