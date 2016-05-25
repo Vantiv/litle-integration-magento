@@ -1,5 +1,5 @@
 ## Description
-This extension will allow you to accept payments through Litle & Co. on Magento.
+This extension will allow you to accept payments through Vantiv eCommerce on Magento.
 
 ## Installation
 *To install Magento, follow directions on the following page:
@@ -51,6 +51,6 @@ Login to Admin panel in Magento - Navigate to System > Configuration
 
     *Account Types: Select account types from which you would like to accept payments. You may select multiple types by holding Ctrl.
     
-* Click on "Save Config".  *Upon clicking "Save Config", Magento will try to connect to Litle & Co servers to check connectivity. In-case the connect fails, you will be shown an error message.  * In addition hitting the 'Save Config' file will check to see that the merchantId is in the proper format. The merchantId should be of the form ('currency'=> merchantId), this allows for multiple currecncy support. Note: USD must be present in the merchantId.If you see the error message and need help, please contact Litle SDK team at: sdksupport@litle.com.
+* Click on "Save Config".  *Upon clicking "Save Config", Magento will try to connect to Vantiv eCommerce servers to check connectivity. In-case the connect fails, you will be shown an error message.  * In addition hitting the 'Save Config' file will check to see that the merchantId is in the proper format. The merchantId should be of the form ('currency'=> merchantId), this allows for multiple currecncy support. Note: USD must be present in the merchantId.If you see the error message and need help, please contact Vantiv eCommerce SDK team at: sdksupport@Vantiv.com.
 
 NOTE: You do not need a valid username and/or password while connecting to Sandbox.  You may enter any fake values.
