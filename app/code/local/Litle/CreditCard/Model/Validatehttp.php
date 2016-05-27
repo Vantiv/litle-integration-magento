@@ -21,7 +21,7 @@ class Litle_CreditCard_Model_Validatehttp extends Mage_Core_Model_Config_Data
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_PROXY, $this->getFieldsetDataValue('proxy'));
 			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: text/xml'));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: text/xml', "Expect: "));
 			curl_setopt($ch, CURLOPT_POSTFIELDS, 'Test Connectivity');
 			curl_setopt($ch, CURLOPT_URL, $this->getFieldsetDataValue('url'));
 			curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, true);
