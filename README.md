@@ -26,11 +26,11 @@ Login to Admin panel in Magento - Navigate to System > Configuration
 
     Title: Heading you would like your customers to see. Typically set to Credit Card
     
-    User: Litle User Name
+    User: Vantiv User Name
     
-    Password: Litle password
+    Password: Vantiv password
     
-    Merchant ID*: Litle Merchant ID
+    Merchant ID*: Vantiv Merchant ID
     
     Report Group: Default Report Group
     
@@ -38,7 +38,7 @@ Login to Admin panel in Magento - Navigate to System > Configuration
     
     Payment Action: You may choose "Authorize Only", or "Authorize and Capture". If you choose "Authorize Only", you will have to manually process the Captures later.
     
-    HTTP URL*: If performing preliminary testing, you may select Sandbox. If you are in process of setting up an account with Litle, then you may select Postlive, Prelive, or Production depending on which step you are at.
+    HTTP URL*: If performing preliminary testing, you may select Sandbox. If you are in process of setting up an account with Vantiv eCommerce, then you may select Postlive, Prelive, or Production depending on which step you are at.
     
     HTTP Proxy: If you need to use a proxy, you need to enter it here.
     
