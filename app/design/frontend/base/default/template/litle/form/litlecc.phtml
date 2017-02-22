@@ -209,17 +209,21 @@ $_id = $_time . substr($_session,13);
 				);
 			}
 
-			function timeoutOnLitle() {
-				setLitleResponseFields();
-				alert('timeout error');
-				return false;
-			}
-
 			function onErrorAfterLitle(response) {
 				setLitleResponseFields(response);
 				alert('There was an error. Re-enter your payment information, or contact us for further assistance.');
 				return false;
 			}
+
+            function handleTimeout() {
+                // Create a pseudo response
+                var response = {};
+                response.response = null;
+                response.message = 'Request Timeout';
+                response.id = null;
+                response.responseTime = Math.floor(Date.now() / 1000);
+                setLitleResponseFields(response);
+            }
 
 			var formFields = {
 				"accountNum" : $('<?php echo $_code ?>_cc_number'),
@@ -236,18 +240,27 @@ $_id = $_time . substr($_session,13);
 				"url" : ($('<?php echo $_code ?>_paypage_url').value)
 			};
 
+            var timeout = function() {
+                var tOut = '<?php echo Mage::getStoreConfig('payment/CreditCard/timeout'); ?>';
+                if (!tOut || tOut < 0) {
+                    // do some sanitizing because we might have an unuseable var
+                    tOut = 15000;
+                }
+                return tOut;
+            }();
+
 			var selectmenu=$("<?php echo $_code ?>_cc_vaulted");
 
 			if(selectmenu){
 				var chosenoption=selectmenu.options[selectmenu.selectedIndex]
 				if (chosenoption.value == 0){
 					if( _currentMethod == "creditcard" ){
-						sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+						LitlePayPage().sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle, handleTimeout, timeout);
 					}
 				}
 			} else{
 				if( _currentMethod == "creditcard" ){
-					sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle);
+					LitlePayPage().sendToLitle(litleRequest, formFields, setLitleResponseFields, onErrorAfterLitle, handleTimeout, timeout);
 				}
 			}
 			submitAfterLitle();
