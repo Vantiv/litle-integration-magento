@@ -206,6 +206,10 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 		return $payment_hash;
 	}
 
+    public function getStateCodeByRegionId($regionId) {
+        return Mage::getModel('directory/region')->load($regionId)->getCode();
+    }
+
 	public function getContactInformation($contactInfo)
 	{
 		if (! empty($contactInfo)) {
@@ -217,7 +221,7 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 			$retArray['addressLine2'] = $contactInfo->getStreet(2);
 			$retArray['addressLine3'] = $contactInfo->getStreet(3);
 			$retArray['city'] = $contactInfo->getCity();
-			$retArray['state'] = $contactInfo->getRegion();
+			$retArray['state'] = $this->getStateCodeByRegionId($contactInfo->getRegionId());
 			$retArray['zip'] = $contactInfo->getPostcode();
 			$retArray['country'] = $contactInfo->getCountry();
 			$retArray['email'] = $contactInfo->getCustomerEmail();
