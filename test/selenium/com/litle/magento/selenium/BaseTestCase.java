@@ -87,7 +87,7 @@ public class BaseTestCase {
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/merchant_id','(''USD''=>''101'')')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/order_status','processing')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/payment_action','authorize')");
-        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/url','https://www.testlitle.com/sandbox/communicator/online')");
+        stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/url','https://www.testvantivcnp.com/sandbox/communicator/online')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/paypage_enable','0')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/vault_enable','0')");
         stmt.executeUpdate("INSERT INTO core_config_data (scope,scope_id,path,value) VALUES ('default',0,'payment/CreditCard/paypage_url',null)");
@@ -159,7 +159,7 @@ public class BaseTestCase {
     }
 
     static void iAmDoingCCOrEcheckTransaction() throws Exception {
-        stmt.executeUpdate("update core_config_data set value='https://www.testlitle.com/sandbox/communicator/online' where path='payment/CreditCard/url'");
+        stmt.executeUpdate("update core_config_data set value='https://www.testvantivcnp.com/sandbox/communicator/online' where path='payment/CreditCard/url'");
 
         stmt.executeUpdate("update core_config_data set value='' where path='payment/CreditCard/proxy'");
 
@@ -180,7 +180,7 @@ public class BaseTestCase {
     }
     
     static void iAmDoingLPaypalTransaction() throws Exception {
-        stmt.executeUpdate("update core_config_data set value='https://www.testlitle.com/sandbox/communicator/online' where path='payment/CreditCard/url'");
+        stmt.executeUpdate("update core_config_data set value='https://www.testvantivcnp.com/sandbox/communicator/online' where path='payment/CreditCard/url'");
         stmt.executeUpdate("update core_config_data set value='JENKINS' where path='payment/CreditCard/user'");
         stmt.executeUpdate("update core_config_data set value='LPaypalTransactions' where path='payment/CreditCard/password'");
         stmt.executeUpdate("update core_config_data set value='(\"USD\"=>\"101\",\"GBP\"=>\"102\")' where path='payment/CreditCard/merchant_id'");
@@ -208,7 +208,7 @@ public class BaseTestCase {
     static void iAmDoingPaypageTransaction() throws Exception {
         stmt.executeUpdate("update core_config_data set value='1' where path='payment/CreditCard/paypage_enable'");
         stmt.executeUpdate("update core_config_data set value='a2y4o6m8k0' where path='payment/CreditCard/paypage_id'");
-        stmt.executeUpdate("update core_config_data set value='https://request-prelive.np-securepaypage-litle.com' where path='payment/CreditCard/paypage_url'");
+        stmt.executeUpdate("update core_config_data set value='https://request.eprotect.vantivprelive.com' where path='payment/CreditCard/paypage_url'");
     }
 
     static void iAmDoingStoredCards() throws Exception {

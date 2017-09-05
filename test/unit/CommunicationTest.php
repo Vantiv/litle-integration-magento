@@ -82,7 +82,5 @@ class CommunicationTest extends PHPUnit_Framework_TestCase
 			array('<password>123456</password>','<password>NEUTERED</password>'),
 		);
 	}
-	
-	
-	
+
 }

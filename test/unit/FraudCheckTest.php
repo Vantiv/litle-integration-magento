@@ -52,7 +52,5 @@ class FraudCheckTest extends PHPUnit_Framework_TestCase
        $output = Litle_CreditCard_Model_PaymentLogic::getFraudCheck($payment);
        $this->assertEquals(array(), $output);
     }
-	
-
 
 }
