@@ -91,7 +91,7 @@
 			<creditcard>
 				<active>1</active>
 				<timeout>65</timeout>
-				<url>https://www.testlitle.com/sandbox/communicator/online</url>
+				<url>https://www.testvantivcnp.com/sandbox/communicator/online</url>
 				<model>creditcard/paymentLogic</model>
 				<order_status>pending</order_status>
 				<title>Credit Card (Litle Payment)</title>

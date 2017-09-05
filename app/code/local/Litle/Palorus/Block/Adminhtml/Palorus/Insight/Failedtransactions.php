@@ -31,7 +31,7 @@
 * @package    Litle_Palorus
 * @copyright  Copyright (c) 2012 Litle & Co.
 * @license    http://www.opensource.org/licenses/mit-license.php
-* @author     Litle & Co <sdksupport@litle.com> www.litle.com/developers
+* @author     Litle & Co <sdksupport@vantiv.com> www.litle.com/developers
 */
 class Litle_Palorus_Block_Adminhtml_Palorus_Insight_Failedtransactions
 extends Mage_Adminhtml_Block_Widget_Grid

@@ -60,10 +60,10 @@ public class TransactionDetailTests extends BaseTestCase {
         assertEquals("Transaction Type", rows.get(3).findElement(By.tagName("th")).getText());
         String transactionUrl = rows.get(0).findElement(By.tagName("a")).getAttribute("href");
         if("capture".equals(transactionType)) {
-            assertTrue(transactionUrl, transactionUrl.startsWith("https://www.testlitle.com/sandbox/ui/reports/payments/deposit/"));
+            assertTrue(transactionUrl, transactionUrl.startsWith("https://www.testvantivcnp.com/sandbox/ui/reports/payments/deposit/"));
         }
         else if("authorization".equals(transactionType)) {
-            assertTrue(transactionUrl, transactionUrl.startsWith("https://www.testlitle.com/sandbox/ui/reports/payments/authorization/"));
+            assertTrue(transactionUrl, transactionUrl.startsWith("https://www.testvantivcnp.com/sandbox/ui/reports/payments/authorization/"));
         }
         else {
             fail("Unrecognized transaction type :" + transactionType + ":");
