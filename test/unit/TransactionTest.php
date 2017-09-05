@@ -41,7 +41,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 	public function testProductionVerification()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','lecheck','https://payments.vantivcnp.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/authorization/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/verification/123'>123</a>",$html);
 	}
 	
 	public function testProductionCapture()

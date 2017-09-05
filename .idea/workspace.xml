@@ -26,8 +26,8 @@
       <file leaf-file-name="TransactionTest.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="103" column="63" lean-forward="false" selection-start-line="103" selection-start-column="63" selection-end-line="103" selection-end-column="63" />
+            <state relative-caret-position="332">
+              <caret line="45" column="4" lean-forward="true" selection-start-line="45" selection-start-column="4" selection-end-line="45" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -575,7 +575,7 @@
       <workItem from="1502393488018" duration="1252000" />
       <workItem from="1502809062030" duration="654000" />
       <workItem from="1503435526858" duration="251000" />
-      <workItem from="1504622347647" duration="1552000" />
+      <workItem from="1504622347647" duration="1722000" />
     </task>
     <task id="LOCAL-00001" summary="update iQ URLs to be current">
       <created>1504622886806</created>
@@ -598,7 +598,14 @@
       <option name="project" value="LOCAL" />
       <updated>1504623664465</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix unit tests">
+      <created>1504623910936</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1504623910936</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -628,7 +635,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21909000" />
+    <option name="totallyTimeSpent" value="22079000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1838" height="1107" extended-state="0" />
@@ -686,7 +693,8 @@
     <MESSAGE value="update iQ URLs to be current" />
     <MESSAGE value="update iQ URLs to be current in tests" />
     <MESSAGE value="fix Selenium tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix Selenium tests" />
+    <MESSAGE value="fix unit tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix unit tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1015,8 +1023,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="103" column="63" lean-forward="false" selection-start-line="103" selection-start-column="63" selection-end-line="103" selection-end-column="63" />
+        <state relative-caret-position="332">
+          <caret line="45" column="4" lean-forward="true" selection-start-line="45" selection-start-column="4" selection-end-line="45" selection-end-column="4" />
           <folding />
         </state>
       </provider>
