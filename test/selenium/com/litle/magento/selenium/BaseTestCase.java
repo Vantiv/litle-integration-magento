@@ -110,7 +110,8 @@ public class BaseTestCase {
         ProfilesIni allProfiles = new ProfilesIni();
         FirefoxProfile profile = allProfiles.getProfile("Magento");
         //profile.setEnableNativeEvents(true);
-        driver = new EventFiringWebDriver(new FirefoxDriver(profile));
+        //driver = new EventFiringWebDriver(new FirefoxDriver(profile));
+        driver = new FirefoxDriver(profile);
         wait = new WebDriverWait(driver, DEFAULT_TIMEOUT);
         WebDriverEventListener errorListener = new AbstractWebDriverEventListener() {
             @Override
