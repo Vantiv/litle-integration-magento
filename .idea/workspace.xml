@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="90a8e224-9a12-416c-befb-660c2041763e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" afterPath="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/TransactionTest.php" afterPath="$PROJECT_DIR$/test/unit/TransactionTest.php" />
     </list>
     <ignored path="litle-integration-magento.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TransactionTest.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TransactionTest.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="34" column="40" lean-forward="true" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
+            <state relative-caret-position="451">
+              <caret line="103" column="63" lean-forward="false" selection-start-line="103" selection-start-column="63" selection-end-line="103" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -116,7 +116,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BaseTestCase.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BaseTestCase.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="612">
@@ -143,6 +143,10 @@
       <find>litle</find>
       <find>doASuccessfulAuthAndThenCaptureTheAuth</find>
     </findStrings>
+    <replaceStrings>
+      <replace>https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/authorization/123</replace>
+      <replace>reports.iq.vantivcnp.com/ui/login/ui/reports/payments</replace>
+    </replaceStrings>
   </component>
   <component name="FrameworkCommandLineHistory">
     <commandsHistory>
@@ -180,11 +184,11 @@
         <option value="$PROJECT_DIR$/app/code/local/Litle/LitleSDK/XmlFields.php" />
         <option value="$PROJECT_DIR$/app/code/local/Litle/CreditCard/Model/Url.php" />
         <option value="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" />
-        <option value="$PROJECT_DIR$/test/unit/TransactionTest.php" />
         <option value="$PROJECT_DIR$/test/unit/CommunicationTest.php" />
         <option value="$PROJECT_DIR$/test/unit/FraudCheckTest.php" />
         <option value="$PROJECT_DIR$/test/unit/ValidateMerchantIdTest.php" />
         <option value="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" />
+        <option value="$PROJECT_DIR$/test/unit/TransactionTest.php" />
       </list>
     </option>
   </component>
@@ -571,7 +575,7 @@
       <workItem from="1502393488018" duration="1252000" />
       <workItem from="1502809062030" duration="654000" />
       <workItem from="1503435526858" duration="251000" />
-      <workItem from="1504622347647" duration="1294000" />
+      <workItem from="1504622347647" duration="1552000" />
     </task>
     <task id="LOCAL-00001" summary="update iQ URLs to be current">
       <created>1504622886806</created>
@@ -587,7 +591,14 @@
       <option name="project" value="LOCAL" />
       <updated>1504623463836</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix Selenium tests">
+      <created>1504623664465</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1504623664465</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -617,7 +628,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21651000" />
+    <option name="totallyTimeSpent" value="21909000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1838" height="1107" extended-state="0" />
@@ -674,7 +685,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update iQ URLs to be current" />
     <MESSAGE value="update iQ URLs to be current in tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="update iQ URLs to be current in tests" />
+    <MESSAGE value="fix Selenium tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix Selenium tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -916,14 +928,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="34" column="40" lean-forward="true" selection-start-line="34" selection-start-column="40" selection-end-line="34" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/unit/AccountUpdaterTest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1807">
@@ -1005,6 +1009,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
           <caret line="111" column="10" lean-forward="false" selection-start-line="111" selection-start-column="10" selection-end-line="111" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="451">
+          <caret line="103" column="63" lean-forward="false" selection-start-line="103" selection-start-column="63" selection-end-line="103" selection-end-column="63" />
           <folding />
         </state>
       </provider>

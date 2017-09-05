@@ -35,43 +35,43 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 	public function testProductionAuth()
 	{		
  		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://payments.vantivcnp.com/vap/communicator/online',123);
- 		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
+ 		$this->assertEquals("<a href='https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 	
 	public function testProductionVerification()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','lecheck','https://payments.vantivcnp.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/echeck/verification/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 	
 	public function testProductionCapture()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('capture','creditcard','https://payments.vantivcnp.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/deposit/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/deposit/123'>123</a>",$html);
 	}
 	
 	public function testProductionEcheckCapture()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('capture','lecheck','https://payments.vantivcnp.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/echeck/deposit/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/echeck/deposit/123'>123</a>",$html);
 	}
 	
 	public function testProductionRefund()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('refund','creditcard','https://payments.vantivcnp.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/refund/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/refund/123'>123</a>",$html);
 	}
 	
 	public function testProductionEcheckRefund()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('refund','lecheck','https://payments.vantivcnp.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/echeck/refund/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/echeck/refund/123'>123</a>",$html);
 	}
 	
 	public function testProductionVoid()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('void','creditcard','https://payments.vantivcnp.com/vap/communicator/online',"123456789012345678-void");
-		$this->assertEquals("<a href='https://reports.litle.com/ui/reports/payments/authorization/reversal/123456789012345678'>123456789012345678-void</a>",$html);
+		$this->assertEquals("<a href='https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/authorization/reversal/123456789012345678'>123456789012345678-void</a>",$html);
 	}
 	
 	public function testProductionEcheckVoid()
@@ -89,19 +89,19 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 	public function testPrelive()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://payments.vantivprelive.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports-prelive.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://reports.iq.vantivprelive.com/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 
 	public function testPostlive()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://payments.vantivpostlive.com/vap/communicator/online',123);
-		$this->assertEquals("<a href='https://reports.postlive.litle.com/ui/reports/payments/authorization/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://reports.iq.vantivpostlive.com/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 	
 	public function testSandbox()
 	{
 		$html = Litle_Palorus_Block_Adminhtml_Transaction::_getTxnIdHtml('authorization','creditcard','https://www.testvantivcnp.com/sandbox/communicator/online',123);
-		$this->assertEquals("<a href='https://www.testlitle.com/sandbox/ui/reports/payments/authorization/123'>123</a>",$html);
+		$this->assertEquals("<a href='https://www.testvantivcnp.com/sandbox/ui/reports/payments/authorization/123'>123</a>",$html);
 	}
 	
 	public function testLocal()
