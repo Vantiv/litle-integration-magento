@@ -7,19 +7,19 @@ class  Litle_LEcheck_Model_URL
 		return array(
 
 				array(
-		                'value' => "https://www.testlitle.com/sandbox/communicator/online",
+		                'value' => "https://www.testvantivcnp.com/sandbox/communicator/online",
 		                'label' => 'Sandbox'
 				),
 				array(
-		                'value' => "https://prelive.litle.com/vap/communicator/online",
+		                'value' => "https://payments.vantivprelive.com/vap/communicator/online",
 		                'label' => 'Prelive'
 				),
 				array(
-		        		'value' => "https://postlive.litle.com/vap/communicator/online",
+		        		'value' => "https://payments.vantivpostlive.com/vap/communicator/online",
 		                'label' => 'Postlive'
 				),
 				array(
-				        'value' => "https://payments.litle.com/vap/communicator/online",
+				        'value' => "https://payments.vantivcnp.com/vap/communicator/online",
 				        'label' => 'Production'
 				)
 		);
