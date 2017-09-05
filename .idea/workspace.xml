@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90a8e224-9a12-416c-befb-660c2041763e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/litle-integration-magento.iml" afterPath="$PROJECT_DIR$/.idea/litle-integration-magento.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" afterPath="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/CommunicationTest.php" afterPath="$PROJECT_DIR$/test/unit/CommunicationTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/FraudCheckTest.php" afterPath="$PROJECT_DIR$/test/unit/FraudCheckTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/TransactionTest.php" afterPath="$PROJECT_DIR$/test/unit/TransactionTest.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/ValidateMerchantIdTest.php" afterPath="$PROJECT_DIR$/test/unit/ValidateMerchantIdTest.php" />
     </list>
     <ignored path="litle-integration-magento.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,16 +23,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Data.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="57" column="24" lean-forward="true" selection-start-line="57" selection-start-column="24" selection-end-line="57" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="TransactionTest.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -134,8 +119,18 @@
       <file leaf-file-name="BaseTestCase.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="210" column="105" lean-forward="false" selection-start-line="210" selection-start-column="105" selection-end-line="210" selection-end-column="105" />
+            <state relative-caret-position="612">
+              <caret line="111" column="10" lean-forward="false" selection-start-line="111" selection-start-column="10" selection-end-line="111" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AccountUpdaterTests.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/AccountUpdaterTests.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -146,6 +141,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>litle</find>
+      <find>doASuccessfulAuthAndThenCaptureTheAuth</find>
     </findStrings>
   </component>
   <component name="FrameworkCommandLineHistory">
@@ -575,7 +571,7 @@
       <workItem from="1502393488018" duration="1252000" />
       <workItem from="1502809062030" duration="654000" />
       <workItem from="1503435526858" duration="251000" />
-      <workItem from="1504622347647" duration="1103000" />
+      <workItem from="1504622347647" duration="1294000" />
     </task>
     <task id="LOCAL-00001" summary="update iQ URLs to be current">
       <created>1504622886806</created>
@@ -584,7 +580,14 @@
       <option name="project" value="LOCAL" />
       <updated>1504622886806</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update iQ URLs to be current in tests">
+      <created>1504623463835</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1504623463836</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -614,18 +617,18 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21460000" />
+    <option name="totallyTimeSpent" value="21651000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1838" height="1107" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11232279" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1919302" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39651638" sideWeight="0.50218105" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12909836" sideWeight="0.50218105" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991803" sideWeight="0.49781898" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39651638" sideWeight="0.49781898" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12909836" sideWeight="0.49781898" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -670,20 +673,14 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update iQ URLs to be current" />
-    <option name="LAST_COMMIT_MESSAGE" value="update iQ URLs to be current" />
+    <MESSAGE value="update iQ URLs to be current in tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="update iQ URLs to be current in tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/code/local/Litle/CreditCard/Model/Order/Payment.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="132" column="29" lean-forward="false" selection-start-line="133" selection-start-column="30" selection-end-line="133" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/code/local/Litle/LPaypal/Model/PaymentLogic.php" />
     <entry file="file://$PROJECT_DIR$/app/code/local/Litle/CreditCard/Helper/Data.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -996,10 +993,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/AccountUpdaterTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="210" column="105" lean-forward="false" selection-start-line="210" selection-start-column="105" selection-end-line="210" selection-end-column="105" />
+        <state relative-caret-position="612">
+          <caret line="111" column="10" lean-forward="false" selection-start-line="111" selection-start-column="10" selection-end-line="111" selection-end-column="10" />
           <folding />
         </state>
       </provider>
