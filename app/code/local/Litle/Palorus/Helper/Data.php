@@ -47,11 +47,11 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 		if (preg_match('/sandbox/', $url)) {
             $baseUrl = 'https://www.testvantivcnp.com/sandbox';
         } else if (preg_match('/prelive/', $url)) {
-            $baseUrl = 'https://reports.iq.vantivprelive.com/';
+            $baseUrl = 'https://reports.iq.vantivprelive.com';
         } else if (preg_match('/postlive/', $url)) {
-            $baseUrl = 'https://reports.iq.vantivpostlive.com/';
+            $baseUrl = 'https://reports.iq.vantivpostlive.com';
         } else if (preg_match('/payments.vantivcnp/', $url)) {
-            $baseUrl = 'https://reports.iq.vantivcnp.com/';
+            $baseUrl = 'https://reports.iq.vantivcnp.com';
         } else {
             $baseUrl = 'http://localhost:2190';
         }

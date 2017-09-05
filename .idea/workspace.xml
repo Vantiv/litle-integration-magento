@@ -4,7 +4,6 @@
     <list default="true" id="90a8e224-9a12-416c-befb-660c2041763e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" afterPath="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/TransactionTest.php" afterPath="$PROJECT_DIR$/test/unit/TransactionTest.php" />
     </list>
     <ignored path="litle-integration-magento.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,11 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TransactionTest.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TransactionTest.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="73" column="70" lean-forward="false" selection-start-line="73" selection-start-column="70" selection-end-line="73" selection-end-column="70" />
+            <state relative-caret-position="900">
+              <caret line="81" column="4" lean-forward="true" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -44,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Data.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Data.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="53" column="57" lean-forward="false" selection-start-line="53" selection-start-column="57" selection-end-line="53" selection-end-column="57" />
+            <state relative-caret-position="221">
+              <caret line="49" column="60" lean-forward="true" selection-start-line="49" selection-start-column="60" selection-end-line="49" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -128,8 +127,8 @@
         <option value="$PROJECT_DIR$/test/unit/FraudCheckTest.php" />
         <option value="$PROJECT_DIR$/test/unit/ValidateMerchantIdTest.php" />
         <option value="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" />
-        <option value="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" />
         <option value="$PROJECT_DIR$/test/unit/TransactionTest.php" />
+        <option value="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" />
       </list>
     </option>
   </component>
@@ -516,7 +515,7 @@
       <workItem from="1502393488018" duration="1252000" />
       <workItem from="1502809062030" duration="654000" />
       <workItem from="1503435526858" duration="251000" />
-      <workItem from="1504622347647" duration="2616000" />
+      <workItem from="1504622347647" duration="2684000" />
     </task>
     <task id="LOCAL-00001" summary="update iQ URLs to be current">
       <created>1504622886806</created>
@@ -560,7 +559,14 @@
       <option name="project" value="LOCAL" />
       <updated>1504624149142</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="fix unit tests">
+      <created>1504625446524</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1504625446524</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -590,7 +596,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22973000" />
+    <option name="totallyTimeSpent" value="23041000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1838" height="1107" extended-state="0" />
@@ -968,18 +974,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php">
+    <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="53" column="57" lean-forward="false" selection-start-line="53" selection-start-column="57" selection-end-line="53" selection-end-column="57" />
+        <state relative-caret-position="900">
+          <caret line="81" column="4" lean-forward="true" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
+    <entry file="file://$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="73" column="70" lean-forward="false" selection-start-line="73" selection-start-column="70" selection-end-line="73" selection-end-column="70" />
+        <state relative-caret-position="221">
+          <caret line="49" column="60" lean-forward="true" selection-start-line="49" selection-start-column="60" selection-end-line="49" selection-end-column="60" />
           <folding />
         </state>
       </provider>
