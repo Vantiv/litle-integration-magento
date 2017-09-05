@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="90a8e224-9a12-416c-befb-660c2041763e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" afterPath="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/build.xml" afterPath="$PROJECT_DIR$/build/build.xml" />
     </list>
     <ignored path="litle-integration-magento.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -53,21 +53,64 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BaseTestCase.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BaseTestCase.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="112" column="8" lean-forward="false" selection-start-line="112" selection-start-column="8" selection-end-line="112" selection-end-column="8" />
+            <state relative-caret-position="562">
+              <caret line="118" column="39" lean-forward="true" selection-start-line="118" selection-start-column="39" selection-end-line="118" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AccountUpdaterTests.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/AccountUpdaterTests.java">
+      <file leaf-file-name="build.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/build/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="288">
+              <caret line="48" column="82" lean-forward="false" selection-start-line="48" selection-start-column="82" selection-end-line="48" selection-end-column="82" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AccountUpdaterTest.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/unit/AccountUpdaterTest.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1156">
+              <caret line="32" column="59" lean-forward="false" selection-start-line="32" selection-start-column="59" selection-end-line="32" selection-end-column="59" />
+              <folding>
+                <marker date="1494252197716" expanded="true" signature="2126:2845" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="2202:2822" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="2485:2795" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="2510:2634" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="2654:2773" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="3075:3483" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="3153:3458" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="3720:4519" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="3798:4494" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="4097:4465" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="4129:4274" ph="..." />
+                <marker date="1494252197716" expanded="true" signature="4301:4441" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/unit/test.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="24" lean-forward="false" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CommunicationTest.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/unit/CommunicationTest.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="468">
+              <caret line="71" column="4" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -82,6 +125,9 @@
       <find>date.php</find>
       <find>testProductionVerification</find>
       <find>/ui/login</find>
+      <find>profile</find>
+      <find>selenium</find>
+      <find>46</find>
     </findStrings>
     <replaceStrings>
       <replace>https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/authorization/123</replace>
@@ -129,6 +175,7 @@
         <option value="$PROJECT_DIR$/test/unit/TransactionTest.php" />
         <option value="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" />
         <option value="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" />
+        <option value="$PROJECT_DIR$/build/build.xml" />
       </list>
     </option>
   </component>
@@ -221,6 +268,11 @@
             <path>
               <item name="litle-integration-magento" type="b2602c69:ProjectViewProjectNode" />
               <item name="litle-integration-magento" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="build" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="litle-integration-magento" type="b2602c69:ProjectViewProjectNode" />
+              <item name="litle-integration-magento" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="test" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
             <path>
@@ -252,16 +304,6 @@
               <item name="com" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="litle" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="magento" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="litle-integration-magento" type="b2602c69:ProjectViewProjectNode" />
-              <item name="litle-integration-magento" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="test" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="selenium" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="com" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="litle" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="magento" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="selenium" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
             <path>
               <item name="litle-integration-magento" type="b2602c69:ProjectViewProjectNode" />
@@ -515,7 +557,7 @@
       <workItem from="1502393488018" duration="1252000" />
       <workItem from="1502809062030" duration="654000" />
       <workItem from="1503435526858" duration="251000" />
-      <workItem from="1504622347647" duration="4257000" />
+      <workItem from="1504622347647" duration="7299000" />
     </task>
     <task id="LOCAL-00001" summary="update iQ URLs to be current">
       <created>1504622886806</created>
@@ -580,7 +622,21 @@
       <option name="project" value="LOCAL" />
       <updated>1504627398533</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="selenium test failures">
+      <created>1504627461314</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1504627461314</updated>
+    </task>
+    <task id="LOCAL-00011" summary="update selenium to v2.53">
+      <created>1504631719667</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1504631719667</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -610,7 +666,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24614000" />
+    <option name="totallyTimeSpent" value="27656000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1838" height="1107" extended-state="0" />
@@ -671,14 +727,14 @@
     <MESSAGE value="fix unit tests" />
     <MESSAGE value="fix URLs" />
     <MESSAGE value="selenium test failures" />
-    <option name="LAST_COMMIT_MESSAGE" value="selenium test failures" />
+    <MESSAGE value="update selenium to v2.53" />
+    <option name="LAST_COMMIT_MESSAGE" value="update selenium to v2.53" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/code/local/Litle/LPaypal/Model/PaymentLogic.php" />
     <entry file="file://$PROJECT_DIR$/app/code/local/Litle/CreditCard/Helper/Data.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -793,13 +849,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/test.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="24" lean-forward="false" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/symfony/yaml/Symfony/Component/Yaml/Tests/Fixtures/escapedCharacters.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-90">
@@ -905,35 +954,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/AccountUpdaterTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1807">
-          <caret line="32" column="59" lean-forward="false" selection-start-line="32" selection-start-column="59" selection-end-line="32" selection-end-column="59" />
-          <folding>
-            <marker date="1494252197716" expanded="true" signature="2126:2845" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="2202:2822" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="2485:2795" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="2510:2634" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="2654:2773" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="3075:3483" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="3153:3458" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="3720:4519" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="3798:4494" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="4097:4465" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="4129:4274" ph="..." />
-            <marker date="1494252197716" expanded="true" signature="4301:4441" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/CommunicationTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/unit/CustomBillingTest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-770">
@@ -966,26 +986,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/AccountUpdaterTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/unit/HelperDataTest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-153">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="81" column="4" lean-forward="true" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
           <folding />
         </state>
       </provider>
@@ -1000,8 +1004,69 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="112" column="8" lean-forward="false" selection-start-line="112" selection-start-column="8" selection-end-line="112" selection-end-column="8" />
+        <state relative-caret-position="562">
+          <caret line="118" column="39" lean-forward="true" selection-start-line="118" selection-start-column="39" selection-end-line="118" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="81" column="4" lean-forward="true" selection-start-line="81" selection-start-column="4" selection-end-line="81" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/AccountUpdaterTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/AccountUpdaterTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1156">
+          <caret line="32" column="59" lean-forward="false" selection-start-line="32" selection-start-column="59" selection-end-line="32" selection-end-column="59" />
+          <folding>
+            <marker date="1494252197716" expanded="true" signature="2126:2845" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="2202:2822" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="2485:2795" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="2510:2634" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="2654:2773" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="3075:3483" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="3153:3458" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="3720:4519" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="3798:4494" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="4097:4465" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="4129:4274" ph="..." />
+            <marker date="1494252197716" expanded="true" signature="4301:4441" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/test.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="24" lean-forward="false" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/CommunicationTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="71" column="4" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="48" column="82" lean-forward="false" selection-start-line="48" selection-start-column="82" selection-end-line="48" selection-end-column="82" />
           <folding />
         </state>
       </provider>
