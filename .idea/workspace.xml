@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="90a8e224-9a12-416c-befb-660c2041763e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" afterPath="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/TransactionTest.php" afterPath="$PROJECT_DIR$/test/unit/TransactionTest.php" />
     </list>
     <ignored path="litle-integration-magento.iws" />
@@ -26,61 +27,8 @@
       <file leaf-file-name="TransactionTest.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="43" column="123" lean-forward="false" selection-start-line="43" selection-start-column="123" selection-end-line="43" selection-end-column="123" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AccountUpdaterTest.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/unit/AccountUpdaterTest.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1807">
-              <caret line="32" column="59" lean-forward="false" selection-start-line="32" selection-start-column="59" selection-end-line="32" selection-end-column="59" />
-              <folding>
-                <marker date="1494252197716" expanded="true" signature="2126:2845" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="2202:2822" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="2485:2795" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="2510:2634" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="2654:2773" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="3075:3483" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="3153:3458" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="3720:4519" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="3798:4494" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="4097:4465" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="4129:4274" ph="..." />
-                <marker date="1494252197716" expanded="true" signature="4301:4441" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommunicationTest.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/unit/CommunicationTest.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="84" column="0" lean-forward="false" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CustomBillingTest.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/unit/CustomBillingTest.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-770">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FraudCheckTest.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/unit/FraudCheckTest.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+            <state relative-caret-position="305">
+              <caret line="73" column="70" lean-forward="false" selection-start-line="73" selection-start-column="70" selection-end-line="73" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -89,28 +37,18 @@
       <file leaf-file-name="HelperDataTest.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/unit/HelperDataTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2215">
+            <state relative-caret-position="-153">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PaymentLogicTest.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/unit/PaymentLogicTest.php">
+      <file leaf-file-name="Data.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-668">
-              <caret line="44" column="37" lean-forward="false" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ValidateMerchantIdTest.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/unit/ValidateMerchantIdTest.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
+            <state relative-caret-position="289">
+              <caret line="53" column="57" lean-forward="false" selection-start-line="53" selection-start-column="57" selection-end-line="53" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -142,6 +80,9 @@
     <findStrings>
       <find>litle</find>
       <find>doASuccessfulAuthAndThenCaptureTheAuth</find>
+      <find>date.php</find>
+      <find>testProductionVerification</find>
+      <find>/ui/login</find>
     </findStrings>
     <replaceStrings>
       <replace>https://reports.iq.vantivcnp.com/ui/login/ui/reports/payments/authorization/123</replace>
@@ -183,11 +124,11 @@
         <option value="$PROJECT_DIR$/test/unit/AccountUpdaterTest.php" />
         <option value="$PROJECT_DIR$/app/code/local/Litle/LitleSDK/XmlFields.php" />
         <option value="$PROJECT_DIR$/app/code/local/Litle/CreditCard/Model/Url.php" />
-        <option value="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" />
         <option value="$PROJECT_DIR$/test/unit/CommunicationTest.php" />
         <option value="$PROJECT_DIR$/test/unit/FraudCheckTest.php" />
         <option value="$PROJECT_DIR$/test/unit/ValidateMerchantIdTest.php" />
         <option value="$PROJECT_DIR$/test/selenium/com/litle/magento/selenium/BaseTestCase.java" />
+        <option value="$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php" />
         <option value="$PROJECT_DIR$/test/unit/TransactionTest.php" />
       </list>
     </option>
@@ -575,7 +516,7 @@
       <workItem from="1502393488018" duration="1252000" />
       <workItem from="1502809062030" duration="654000" />
       <workItem from="1503435526858" duration="251000" />
-      <workItem from="1504622347647" duration="1796000" />
+      <workItem from="1504622347647" duration="2616000" />
     </task>
     <task id="LOCAL-00001" summary="update iQ URLs to be current">
       <created>1504622886806</created>
@@ -612,7 +553,14 @@
       <option name="project" value="LOCAL" />
       <updated>1504624076007</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix unit tests">
+      <created>1504624149141</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1504624149142</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -642,18 +590,19 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22153000" />
+    <option name="totallyTimeSpent" value="22973000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1838" height="1107" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1919302" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15049073" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12909836" sideWeight="0.50218105" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12807377" sideWeight="0.50218105" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32040817" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991803" sideWeight="0.49781898" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12909836" sideWeight="0.49781898" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12909836" sideWeight="0.49781898" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -678,7 +627,6 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Command Line Tools Console" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32959184" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32040817" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -935,14 +883,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="57" column="24" lean-forward="true" selection-start-line="57" selection-start-column="24" selection-end-line="57" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/unit/AccountUpdaterTest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1807">
@@ -988,14 +928,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/unit/HelperDataTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2215">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/unit/PaymentLogicTest.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-668">
@@ -1028,10 +960,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/unit/HelperDataTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-153">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/code/local/Litle/Palorus/Helper/Data.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="53" column="57" lean-forward="false" selection-start-line="53" selection-start-column="57" selection-end-line="53" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/unit/TransactionTest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="43" column="123" lean-forward="false" selection-start-line="43" selection-start-column="123" selection-end-line="43" selection-end-column="123" />
+        <state relative-caret-position="305">
+          <caret line="73" column="70" lean-forward="false" selection-start-line="73" selection-start-column="70" selection-end-line="73" selection-end-column="70" />
           <folding />
         </state>
       </provider>
