@@ -45,13 +45,13 @@ class Litle_Palorus_Helper_Data extends Mage_Core_Helper_Abstract
 	static public function getBaseUrlFrom($url)
 	{
 		if (preg_match('/payments/', $url)) {
-			$baseUrl = 'https://reports.litle.com';
+			$baseUrl = 'https://reports.iq.vantivcnp.com/ui/login';
 		} else if (preg_match('/sandbox/', $url)) {
-            $baseUrl = 'https://www.testlitle.com/sandbox';
+            $baseUrl = 'https://www.testvantivcnp.com/sandbox';
         } else if (preg_match('/prelive/', $url)) {
-            $baseUrl = 'https://reports-prelive.litle.com';
+            $baseUrl = 'https://reports.iq.vantivprelive.com/ui/login';
         } else if (preg_match('/postlive/', $url)) {
-            $baseUrl = 'https://reports.postlive.litle.com';
+            $baseUrl = 'https://reports.iq.vantivpostlive.com/ui/login';
         } else {
             $baseUrl = 'http://localhost:2190';
         }
