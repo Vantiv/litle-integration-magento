@@ -78,7 +78,7 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 		$parentTxnId = $payment->getParentTransactionId();
 		if ($parentTxnId == 'Litle VT') {
 			Mage::throwException(
-					"This order was placed using Litle Virtual Terminal. Please process the $txnType by logging into Litle Virtual Terminal (https://reports.litle.com).");
+					"This order was placed using Litle Virtual Terminal. Please process the $txnType by logging into Litle Virtual Terminal (https://reports.iq.vantivcnp.com).");
 		}
 	}
 
@@ -584,11 +584,11 @@ require_once ('Litle/LitleSDK/LitleOnline.php');
 			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId, Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND);
 		}
 		elseif($litleResponseCode === '370') {
-			$descriptiveMessage = "Internal System Error - Call Litle.  There is a problem with the Litle System.  Contact support@litle.com and provide the following transaction id: " . $litleTxnId; 
+			$descriptiveMessage = "Internal System Error - Call Vantiv.  There is a problem with the Vantiv eCommerce System.  Contact support@vantiv.com and provide the following transaction id: " . $litleTxnId;
 			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId, Mage_Sales_Model_Order_Payment_Transaction::TYPE_PAYMENT);
 		}
 		else { 			
-			$descriptiveMessage = "Transaction was not approved and Litle's Magento extension can not tell why. Contact Litle at support@litle.com and provide the following transaction id: " . $litleTxnId; 
+			$descriptiveMessage = "Transaction was not approved and Vantiv's Magento extension can not tell why. Contact Vantiv at support@vantiv.com and provide the following transaction id: " . $litleTxnId;
 			$this->showErrorForFailedTransaction($customerId, $orderId, $litleMessage, $litleResponse, $descriptiveMessage, $litleTxnId, Mage_Sales_Model_Order_Payment_Transaction::TYPE_PAYMENT);
 		}
 	
